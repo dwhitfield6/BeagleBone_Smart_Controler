@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/CWD/delimiter=;
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/CWD/operation=replace
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/CWD/value=C\:\\Users\\dwhitfield\\Documents\\GitHub\\BeagleBone_Smart_Controler\\Bootloader\\Debug_MMCSD
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/PWD/delimiter=;
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/PWD/operation=replace
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/PWD/value=C\:\\Users\\dwhitfield\\Documents\\GitHub\\BeagleBone_Smart_Controler\\Bootloader\\Debug_MMCSD
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/append=true
+environment/project/com.ti.ccstudio.buildDefinitions.TMS470.Debug.1586028353/appendContributed=true

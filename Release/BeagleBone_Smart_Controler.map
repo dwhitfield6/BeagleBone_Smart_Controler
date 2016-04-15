@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.5                      
 ******************************************************************************
->> Linked Thu Apr 14 17:39:52 2016
+>> Linked Fri Apr 15 11:25:46 2016
 
 OUTPUT FILE NAME:   <BeagleBone_Smart_Controler.out>
 ENTRY POINT SYMBOL: "Entry"  address: 80000000
@@ -11,17 +11,17 @@ MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  DDR_MEM               80000000   07ffffff  00006108  07ff9ef7  RWIX
+  DDR_MEM               80000000   07ffffff  00006178  07ff9e87  RWIX
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-80000000    80000000    00001f00   00001f00    r-x
+80000000    80000000    00001f70   00001f70    r-x
   80000000    80000000    000000d0   000000d0    r-x .text:Entry
-  800000d0    800000d0    00001da4   00001da4    r-x .text
-  80001e74    80001e74    0000008c   0000008c    r-- .const
+  800000d0    800000d0    00001e14   00001e14    r-x .text
+  80001ee4    80001ee4    0000008c   0000008c    r-- .const
 80004000    80004000    00004200   00000000    rw-
   80004000    80004000    00004200   00000000    rw- .bss
 87fffff0    87fffff0    00000008   00000000    rw-
@@ -38,31 +38,31 @@ section   page    origin      length       input sections
                   80000000    000000c8     system.lib : init.obj (.text:Entry)
                   800000c8    00000008     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.tramp.__TI_auto_init.1)
 
-.text      0    800000d0    00001da4     
+.text      0    800000d0    00001e14     
                   800000d0    00000b50     gpio_v2.obj (.text)
                   80000c20    00000488     system.lib : cp15.obj (.text)
-                  800010a8    0000026c     GPIO.obj (.text)
-                  80001314    00000008     --HOLE-- [fill = 0]
-                  8000131c    00000254     LEDS.obj (.text)
-                  80001570    00000180     rtsv7A8_A_le_n_eabi.lib : memcpy32.obj (.text)
-                  800016f0    0000016c     mmu.obj (.text)
-                  8000185c    00000130     cache.obj (.text)
-                  8000198c    00000124     platform.lib : gpio.obj (.text)
-                  80001ab0    0000010c     system.lib : exceptionhandler.obj (.text)
-                  80001bbc    000000a8     MEMORY.obj (.text)
-                  80001c64    000000a4     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.text)
-                  80001d08    00000008     --HOLE-- [fill = 0]
-                  80001d10    00000084                             : cpy_tbl.obj (.text)
-                  80001d94    00000060     system.lib : cpu.obj (.text)
-                  80001df4    00000044                : startup.obj (.text)
-                  80001e38    00000008     --HOLE-- [fill = 0]
-                  80001e40    0000001c     main.obj (.text)
-                  80001e5c    00000008     --HOLE-- [fill = 0]
-                  80001e64    00000010     SYSTEM.obj (.text)
+                  800010a8    000002c4     LEDS.obj (.text)
+                  8000136c    0000026c     GPIO.obj (.text)
+                  800015d8    00000008     --HOLE-- [fill = 0]
+                  800015e0    00000180     rtsv7A8_A_le_n_eabi.lib : memcpy32.obj (.text)
+                  80001760    0000016c     mmu.obj (.text)
+                  800018cc    00000130     cache.obj (.text)
+                  800019fc    00000124     platform.lib : gpio.obj (.text)
+                  80001b20    0000010c     system.lib : exceptionhandler.obj (.text)
+                  80001c2c    000000a8     MEMORY.obj (.text)
+                  80001cd4    000000a4     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.text)
+                  80001d78    00000008     --HOLE-- [fill = 0]
+                  80001d80    00000084                             : cpy_tbl.obj (.text)
+                  80001e04    00000060     system.lib : cpu.obj (.text)
+                  80001e64    00000044                : startup.obj (.text)
+                  80001ea8    00000008     --HOLE-- [fill = 0]
+                  80001eb0    0000001c     main.obj (.text)
+                  80001ecc    00000008     --HOLE-- [fill = 0]
+                  80001ed4    00000010     SYSTEM.obj (.text)
 
-.const     0    80001e74    0000008c     
-                  80001e74    00000054     MEMORY.obj (.const)
-                  80001ec8    00000038     system.lib : startup.obj (.const:vecTbl)
+.const     0    80001ee4    0000008c     
+                  80001ee4    00000054     MEMORY.obj (.const)
+                  80001f38    00000038     system.lib : startup.obj (.const:vecTbl)
 
 .bss       0    80004000    00004200     UNINITIALIZED
                   80004000    00004000     MEMORY.obj (.bss:pageTable)
@@ -81,7 +81,7 @@ callee name               trampoline name
    callee addr  tramp addr   call addr  call info
 --------------  -----------  ---------  ----------------
 __TI_auto_init            $Tramp$AA$S$$__TI_auto_init
-   80001c64     800000c8     800000a0   system.lib : init.obj (.text:Entry)
+   80001cd4     800000c8     800000a0   system.lib : init.obj (.text:Entry)
 
 [1 trampolines]
 [1 trampoline calls]
@@ -91,7 +91,7 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                         
 -------   ----                         
-80001ba4  AbortHandler                 
+80001c14  AbortHandler                 
 8000107c  CP15AuxControlFeatureDisable 
 80001068  CP15AuxControlFeatureEnable  
 80001010  CP15BranchPredictionDisable  
@@ -119,29 +119,29 @@ address   name
 80000fa4  CP15Ttb0Set                  
 80001058  CP15TtbCtlTtb0Config         
 80000fe8  CP15VectorBaseAddrSet        
-80001df0  CPUAbortHandler              
-80001de8  CPUSwitchToPrivilegedMode    
-80001dd4  CPUSwitchToUserMode          
-80001dc4  CPUfiqd                      
-80001db4  CPUfiqe                      
-80001da4  CPUirqd                      
-80001d94  CPUirqe                      
-80001920  CacheDataCleanAll            
-80001938  CacheDataCleanBuff           
-80001914  CacheDataCleanInvalidateAll  
-80001970  CacheDataCleanInvalidateBuff 
-8000192c  CacheDataInvalidateAll       
-80001954  CacheDataInvalidateBuff      
-8000185c  CacheDisable                 
-800018a0  CacheEnable                  
-800018ec  CacheInstInvalidateAll       
-800018f8  CacheInstInvalidateBuff      
+80001e60  CPUAbortHandler              
+80001e58  CPUSwitchToPrivilegedMode    
+80001e44  CPUSwitchToUserMode          
+80001e34  CPUfiqd                      
+80001e24  CPUfiqe                      
+80001e14  CPUirqd                      
+80001e04  CPUirqe                      
+80001990  CacheDataCleanAll            
+800019a8  CacheDataCleanBuff           
+80001984  CacheDataCleanInvalidateAll  
+800019e0  CacheDataCleanInvalidateBuff 
+8000199c  CacheDataInvalidateAll       
+800019c4  CacheDataInvalidateBuff      
+800018cc  CacheDisable                 
+80001910  CacheEnable                  
+8000195c  CacheInstInvalidateAll       
+80001968  CacheInstInvalidateBuff      
 80000000  Entry                        
-80001ba0  FIQHandler                   
-80001a0c  GPIO0ModuleClkConfig         
-800019b8  GPIO1ModuleClkConfig         
-800019a8  GPIO1Pin23PinMuxSetup        
-80001998  GPIO1PinMuxSetup             
+80001c10  FIQHandler                   
+80001a7c  GPIO0ModuleClkConfig         
+80001a28  GPIO1ModuleClkConfig         
+80001a18  GPIO1Pin23PinMuxSetup        
+80001a08  GPIO1PinMuxSetup             
 80000a40  GPIOAutoIdleModeControl      
 80000b0c  GPIODebounceFuncControl      
 80000b5c  GPIODebounceTimeConfig       
@@ -169,48 +169,48 @@ address   name
 800008e8  GPIOTriggerPinInt            
 8000095c  GPIOWakeupGlobalDisable      
 80000938  GPIOWakeupGlobalEnable       
-80001170  GPIO_Module0ClkConfig        
-800011d8  GPIO_Module1ClkConfig        
-80001240  GPIO_Module2ClkConfig        
-800012a8  GPIO_Module3ClkConfig        
-8000198c  GpioPinMuxSetup              
-80001af4  IRQHandler                   
-800010a8  Init_GPIO                    
-8000131c  Init_LED                     
-80001e64  Init_Modules                 
-80001320  LED_Show                     
-80001840  MMUEnable                    
-800016f0  MMUInit                      
-80001750  MMUMemRegionMap              
-80001bbc  MMU_ConfigAndEnable          
+80001434  GPIO_Module0ClkConfig        
+8000149c  GPIO_Module1ClkConfig        
+80001504  GPIO_Module2ClkConfig        
+8000156c  GPIO_Module3ClkConfig        
+800019fc  GpioPinMuxSetup              
+80001b64  IRQHandler                   
+8000136c  Init_GPIO                    
+800010a8  Init_LED                     
+80001ed4  Init_Modules                 
+800010ac  LED_Show                     
+800018b0  MMUEnable                    
+80001760  MMUInit                      
+800017c0  MMUMemRegionMap              
+80001c2c  MMU_ConfigAndEnable          
 UNDEFED   SHT$$INIT_ARRAY$$Base        
 UNDEFED   SHT$$INIT_ARRAY$$Limit       
-80001acc  SVC_Handler                  
-80001ba4  UndefInstHandler             
+80001b3c  SVC_Handler                  
+80001c14  UndefInstHandler             
 87fffff8  __STACK_END                  
 00000008  __STACK_SIZE                 
 UNDEFED   __TI_CINIT_Base              
 UNDEFED   __TI_CINIT_Limit             
 UNDEFED   __TI_Handler_Table_Base      
 UNDEFED   __TI_Handler_Table_Limit     
-80001c64  __TI_auto_init               
+80001cd4  __TI_auto_init               
 80000000  __TI_static_base__           
-80001570  __aeabi_memcpy               
-80001570  __aeabi_memcpy4              
-80001570  __aeabi_memcpy8              
+800015e0  __aeabi_memcpy               
+800015e0  __aeabi_memcpy4              
+800015e0  __aeabi_memcpy8              
 ffffffff  __binit__                    
 ffffffff  __c_args__                   
 87fffff0  __stack                      
 ffffffff  binit                        
 80008200  bss_end                      
 80004000  bss_start                    
-80001d10  copy_in                      
+80001d80  copy_in                      
 80008000  fnRAMVectors                 
 80000bdc  gpioContextRestore           
 80000b98  gpioContextSave              
-80001e40  main                         
-80001570  memcpy                       
-80001e20  start_boot                   
+80001eb0  main                         
+800015e0  memcpy                       
+80001e90  start_boot                   
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -276,53 +276,53 @@ address   name
 80001068  CP15AuxControlFeatureEnable  
 8000107c  CP15AuxControlFeatureDisable 
 80001090  CP15MainIdPrimPartNumGet     
-800010a8  Init_GPIO                    
-80001170  GPIO_Module0ClkConfig        
-800011d8  GPIO_Module1ClkConfig        
-80001240  GPIO_Module2ClkConfig        
-800012a8  GPIO_Module3ClkConfig        
-8000131c  Init_LED                     
-80001320  LED_Show                     
-80001570  __aeabi_memcpy               
-80001570  __aeabi_memcpy4              
-80001570  __aeabi_memcpy8              
-80001570  memcpy                       
-800016f0  MMUInit                      
-80001750  MMUMemRegionMap              
-80001840  MMUEnable                    
-8000185c  CacheDisable                 
-800018a0  CacheEnable                  
-800018ec  CacheInstInvalidateAll       
-800018f8  CacheInstInvalidateBuff      
-80001914  CacheDataCleanInvalidateAll  
-80001920  CacheDataCleanAll            
-8000192c  CacheDataInvalidateAll       
-80001938  CacheDataCleanBuff           
-80001954  CacheDataInvalidateBuff      
-80001970  CacheDataCleanInvalidateBuff 
-8000198c  GpioPinMuxSetup              
-80001998  GPIO1PinMuxSetup             
-800019a8  GPIO1Pin23PinMuxSetup        
-800019b8  GPIO1ModuleClkConfig         
-80001a0c  GPIO0ModuleClkConfig         
-80001acc  SVC_Handler                  
-80001af4  IRQHandler                   
-80001ba0  FIQHandler                   
-80001ba4  AbortHandler                 
-80001ba4  UndefInstHandler             
-80001bbc  MMU_ConfigAndEnable          
-80001c64  __TI_auto_init               
-80001d10  copy_in                      
-80001d94  CPUirqe                      
-80001da4  CPUirqd                      
-80001db4  CPUfiqe                      
-80001dc4  CPUfiqd                      
-80001dd4  CPUSwitchToUserMode          
-80001de8  CPUSwitchToPrivilegedMode    
-80001df0  CPUAbortHandler              
-80001e20  start_boot                   
-80001e40  main                         
-80001e64  Init_Modules                 
+800010a8  Init_LED                     
+800010ac  LED_Show                     
+8000136c  Init_GPIO                    
+80001434  GPIO_Module0ClkConfig        
+8000149c  GPIO_Module1ClkConfig        
+80001504  GPIO_Module2ClkConfig        
+8000156c  GPIO_Module3ClkConfig        
+800015e0  __aeabi_memcpy               
+800015e0  __aeabi_memcpy4              
+800015e0  __aeabi_memcpy8              
+800015e0  memcpy                       
+80001760  MMUInit                      
+800017c0  MMUMemRegionMap              
+800018b0  MMUEnable                    
+800018cc  CacheDisable                 
+80001910  CacheEnable                  
+8000195c  CacheInstInvalidateAll       
+80001968  CacheInstInvalidateBuff      
+80001984  CacheDataCleanInvalidateAll  
+80001990  CacheDataCleanAll            
+8000199c  CacheDataInvalidateAll       
+800019a8  CacheDataCleanBuff           
+800019c4  CacheDataInvalidateBuff      
+800019e0  CacheDataCleanInvalidateBuff 
+800019fc  GpioPinMuxSetup              
+80001a08  GPIO1PinMuxSetup             
+80001a18  GPIO1Pin23PinMuxSetup        
+80001a28  GPIO1ModuleClkConfig         
+80001a7c  GPIO0ModuleClkConfig         
+80001b3c  SVC_Handler                  
+80001b64  IRQHandler                   
+80001c10  FIQHandler                   
+80001c14  AbortHandler                 
+80001c14  UndefInstHandler             
+80001c2c  MMU_ConfigAndEnable          
+80001cd4  __TI_auto_init               
+80001d80  copy_in                      
+80001e04  CPUirqe                      
+80001e14  CPUirqd                      
+80001e24  CPUfiqe                      
+80001e34  CPUfiqd                      
+80001e44  CPUSwitchToUserMode          
+80001e58  CPUSwitchToPrivilegedMode    
+80001e60  CPUAbortHandler              
+80001e90  start_boot                   
+80001eb0  main                         
+80001ed4  Init_Modules                 
 80004000  bss_start                    
 80008000  fnRAMVectors                 
 80008200  bss_end                      

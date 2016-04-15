@@ -55,6 +55,12 @@ void Init_GPIO(void)
 	GPIO_Module2ClkConfig();
 	GPIO_Module3ClkConfig();
 
+	/* reset the GPIO modules */
+	GPIOModuleReset(SOC_GPIO_0_REGS);
+	GPIOModuleReset(SOC_GPIO_1_REGS);
+	GPIOModuleReset(SOC_GPIO_2_REGS);
+	GPIOModuleReset(SOC_GPIO_3_REGS);
+
     /*~~~~~~~~~~~~~~~~~~~ LEDS ~~~~~~~~~~~~~~~~~~~*/
 	GPIO_PMUX_OFFADDR_VALUE(1, 21, PAD_FS_RXD_NA_PUPDD(7));  	// LED 1
 	GPIO_PMUX_OFFADDR_VALUE(1, 22, PAD_FS_RXD_NA_PUPDD(7));  	// LED 2
@@ -66,13 +72,6 @@ void Init_GPIO(void)
 	GPIODirModeSet(LED2_REGS, LED2_PIN, GPIO_DIR_OUTPUT); 		// LED 2
 	GPIODirModeSet(LED3_REGS, LED3_PIN, GPIO_DIR_OUTPUT); 		// LED 3
 	GPIODirModeSet(LED4_REGS, LED4_PIN, GPIO_DIR_OUTPUT); 		// LED 4
-
-
-	/* reset the GPIO modules */
-	GPIOModuleReset(SOC_GPIO_0_REGS);
-	GPIOModuleReset(SOC_GPIO_1_REGS);
-	GPIOModuleReset(SOC_GPIO_2_REGS);
-	GPIOModuleReset(SOC_GPIO_3_REGS);
 
 	/* enable the GPIO modules */
 	GPIOModuleEnable(SOC_GPIO_0_REGS);

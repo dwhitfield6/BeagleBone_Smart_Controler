@@ -10,10 +10,30 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./ADC.obj" \
+"./AUDIO.obj" \
+"./BMP.obj" \
+"./EMMC.obj" \
 "./GPIO.obj" \
+"./GUI.obj" \
+"./I2C.obj" \
+"./IR.obj" \
+"./LCD.obj" \
 "./LEDS.obj" \
 "./MEMORY.obj" \
+"./MISC.obj" \
+"./PMIC.obj" \
+"./POWER.obj" \
+"./PWM.obj" \
+"./RF.obj" \
+"./RTC.obj" \
+"./SD.obj" \
+"./SPI.obj" \
 "./SYSTEM.obj" \
+"./TIMERS.obj" \
+"./UART.obj" \
+"./USB.obj" \
+"./WAV.obj" \
 "./main.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/cache.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.obj" \
@@ -41,6 +61,7 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include LinkerCommand/subdir_vars.mk
+-include FT81x/subdir_vars.mk
 -include AM335X_StarterWare_02_00_01_01/drivers/subdir_vars.mk
 -include AM335X_StarterWare_02_00_01_01/binary/armv7a/cgt_ccs/utils/Release/subdir_vars.mk
 -include AM335X_StarterWare_02_00_01_01/binary/armv7a/cgt_ccs/am335x/usblib/Release/subdir_vars.mk
@@ -75,6 +96,7 @@ RMDIR := RMDIR /S/Q
 -include AM335X_StarterWare_02_00_01_01/binary/armv7a/cgt_ccs/am335x/beaglebone/bootloader/Release_MMCSD/subdir_vars.mk
 -include subdir_rules.mk
 -include LinkerCommand/subdir_rules.mk
+-include FT81x/subdir_rules.mk
 -include AM335X_StarterWare_02_00_01_01/drivers/subdir_rules.mk
 -include AM335X_StarterWare_02_00_01_01/binary/armv7a/cgt_ccs/utils/Release/subdir_rules.mk
 -include AM335X_StarterWare_02_00_01_01/binary/armv7a/cgt_ccs/am335x/usblib/Release/subdir_rules.mk
@@ -232,8 +254,8 @@ BeagleBone_Smart_Controler.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "GPIO.pp" "LEDS.pp" "MEMORY.pp" "SYSTEM.pp" "main.pp" "AM335X_StarterWare_02_00_01_01\drivers\cache.pp" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.pp" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.pp" "AM335X_StarterWare_02_00_01_01\drivers\mmu.pp" 
-	-$(RM) "GPIO.obj" "LEDS.obj" "MEMORY.obj" "SYSTEM.obj" "main.obj" "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.obj" "AM335X_StarterWare_02_00_01_01\drivers\mmu.obj" 
+	-$(RM) "ADC.pp" "AUDIO.pp" "BMP.pp" "EMMC.pp" "GPIO.pp" "GUI.pp" "I2C.pp" "IR.pp" "LCD.pp" "LEDS.pp" "MEMORY.pp" "MISC.pp" "PMIC.pp" "POWER.pp" "PWM.pp" "RF.pp" "RTC.pp" "SD.pp" "SPI.pp" "SYSTEM.pp" "TIMERS.pp" "UART.pp" "USB.pp" "WAV.pp" "main.pp" "AM335X_StarterWare_02_00_01_01\drivers\cache.pp" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.pp" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.pp" "AM335X_StarterWare_02_00_01_01\drivers\mmu.pp" 
+	-$(RM) "ADC.obj" "AUDIO.obj" "BMP.obj" "EMMC.obj" "GPIO.obj" "GUI.obj" "I2C.obj" "IR.obj" "LCD.obj" "LEDS.obj" "MEMORY.obj" "MISC.obj" "PMIC.obj" "POWER.obj" "PWM.obj" "RF.obj" "RTC.obj" "SD.obj" "SPI.obj" "SYSTEM.obj" "TIMERS.obj" "UART.obj" "USB.obj" "WAV.obj" "main.obj" "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.obj" "AM335X_StarterWare_02_00_01_01\drivers\mmu.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

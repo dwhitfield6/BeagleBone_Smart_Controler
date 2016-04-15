@@ -55,41 +55,50 @@ void Init_LED(void)
 void LED_Show(void)
 {
 	unsigned long i;
+	unsigned long j;
 
-	/* .... */
+	for(j=0;j<10;j++)
+	{
+		/* .... */
+		GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
+		GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
+		GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
+		GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
+		for(i=0;i<SPEED;i++);
+
+		/* 0... */
+		GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_HIGH); // LED 1
+		GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
+		GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
+		GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
+		for(i=0;i<SPEED;i++);
+
+		/* .0.. */
+		GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
+		GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_HIGH); // LED 2
+		GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
+		GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
+		for(i=0;i<SPEED;i++);
+
+		/* ..0. */
+		GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
+		GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
+		GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_HIGH); // LED 3
+		GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
+		for(i=0;i<SPEED;i++);
+
+		/* ...0 */
+		GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
+		GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
+		GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
+		GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_HIGH); // LED 4
+		for(i=0;i<SPEED;i++);
+	}
+
 	GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
 	GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
 	GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
 	GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
-	for(i=0;i<SPEED;i++);
-
-	/* 0... */
-	GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_HIGH); // LED 1
-	GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
-	GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
-	GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
-	for(i=0;i<SPEED;i++);
-
-	/* .0.. */
-	GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
-	GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_HIGH); // LED 2
-	GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
-	GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
-	for(i=0;i<SPEED;i++);
-
-	/* ..0. */
-	GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
-	GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
-	GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_HIGH); // LED 3
-	GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_LOW); // LED 4
-	for(i=0;i<SPEED;i++);
-
-	/* ...0 */
-	GPIOPinWrite(LED1_REGS, LED1_PIN, GPIO_PIN_LOW); // LED 1
-	GPIOPinWrite(LED1_REGS, LED2_PIN, GPIO_PIN_LOW); // LED 2
-	GPIOPinWrite(LED1_REGS, LED3_PIN, GPIO_PIN_LOW); // LED 3
-	GPIOPinWrite(LED1_REGS, LED4_PIN, GPIO_PIN_HIGH); // LED 4
-	for(i=0;i<SPEED;i++);
 }
 
 /******************************* End of file *********************************/

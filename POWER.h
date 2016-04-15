@@ -11,12 +11,12 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to set up the GPIO.
+/* Contains functions monitors and controls the Power flow.
  *                                                                            */
 /******************************************************************************/
 
-#ifndef _GPIO_H_
-#define _GPIO_H_
+#ifndef _POWER_H_
+#define _POWER_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
@@ -33,11 +33,7 @@
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_GPIO(void);
-void GPIO_Module0ClkConfig(void);
-void GPIO_Module1ClkConfig(void);
-void GPIO_Module2ClkConfig(void);
-void GPIO_Module3ClkConfig(void);
+void Init_Power(void);
 
 #endif
 /******************************* End of file *********************************/
