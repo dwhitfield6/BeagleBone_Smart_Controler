@@ -1,0 +1,1 @@
+tiimage 0x80000000 NONE uartEcho.bin app

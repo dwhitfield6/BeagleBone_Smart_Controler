@@ -1,0 +1,319 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BlobColor	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5632;"	kind:function	line:5632	language:C	signature:(BlobsInst *pBInst,ft_int32_t TouchXY)
+BouncingCircles	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5551;"	kind:function	line:5551	language:C
+BouncingPoints	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5676;"	kind:function	line:5676	language:C
+BouncingSquares	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5310;"	kind:function	line:5310	language:C
+BouncingSquaresCall	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5166;"	kind:function	line:5166	language:C	signature:(ft_int16_t BRx,ft_int16_t BRy,ft_int16_t MovingRy,ft_uint8_t SqNumber)
+CheckCircleTouchCood	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5472;"	kind:function	line:5472	language:C	signature:(BouncingCircles_Context *context, ft_int32_t val,ft_uint8_t TouchNum,ft_uint8_t i)
+CheckTouch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5269;"	kind:function	line:5269	language:C	signature:(BouncingSquares_Context *context,ft_int16_t Tx1,ft_int32_t val1)
+CheckTouch_tile	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5044;"	kind:function	line:5044	language:C	signature:(Squares *Sq, ft_int32_t TouchXY,ft_uint8_t TouchNo)
+CirclePlot	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5531;"	kind:function	line:5531	language:C	signature:(BouncingCircles_Context *context, ft_uint16_t X,ft_uint16_t Y,ft_uint8_t Val)
+ColNo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5042;"	kind:variable	line:5042	language:C
+ColorSelection	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5737;"	kind:function	line:5737	language:C	signature:(ft_int16_t k,ft_int16_t i)
+ConcentricCircles	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5382;"	kind:function	line:5382	language:C	signature:(float C1,ft_uint16_t R,ft_uint16_t G,ft_uint16_t B)
+FT81xBitmapFormatAndOptions	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6170;"	kind:function	line:6170	language:C
+FT900_Config	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	151;"	kind:function	line:151	language:C
+FT_DLCODE_BOOTUP	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	45;"	kind:variable	line:45	language:C
+FT_DispCSpread	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	25;"	kind:variable	line:25	language:C
+FT_DispDither	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	26;"	kind:variable	line:26	language:C
+FT_DispHCycle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	14;"	kind:variable	line:14	language:C
+FT_DispHOffset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	15;"	kind:variable	line:15	language:C
+FT_DispHSync0	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	16;"	kind:variable	line:16	language:C
+FT_DispHSync1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	17;"	kind:variable	line:17	language:C
+FT_DispHeight	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	13;"	kind:variable	line:13	language:C
+FT_DispPCLK	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	22;"	kind:variable	line:22	language:C
+FT_DispPCLKPol	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	24;"	kind:variable	line:24	language:C
+FT_DispSwizzle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	23;"	kind:variable	line:23	language:C
+FT_DispVCycle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	18;"	kind:variable	line:18	language:C
+FT_DispVOffset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	19;"	kind:variable	line:19	language:C
+FT_DispVSync0	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	20;"	kind:variable	line:20	language:C
+FT_DispVSync1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	21;"	kind:variable	line:21	language:C
+FT_DispWidth	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	12;"	kind:variable	line:12	language:C
+Ft_App_Flush_Co_Buffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	111;"	kind:function	line:111	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_App_Flush_DL_Buffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	101;"	kind:function	line:101	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_App_WrCoCmd_Buffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	51;"	kind:function	line:51	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t cmd)
+Ft_App_WrCoStr_Buffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	88;"	kind:function	line:88	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,const ft_char8_t *s)
+Ft_App_WrDlCmd_Buffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	69;"	kind:function	line:69	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t cmd)
+Ft_CmdBuffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	41;"	kind:variable	line:41	language:C
+Ft_CmdBuffer_Index	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	36;"	kind:variable	line:36	language:C
+Ft_DlBuffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	40;"	kind:variable	line:40	language:C
+Ft_DlBuffer_Index	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	37;"	kind:variable	line:37	language:C
+Ft_Fifo_GetFreeSpace	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1159;"	kind:function	line:1159	language:C	signature:(Ft_Gpu_Hal_Context_t *host,Ft_Fifo_t *pFifo)
+Ft_Fifo_Init	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1055;"	kind:function	line:1055	language:C	signature:(Ft_Fifo_t *pFifo,ft_uint32_t StartAddress,ft_uint32_t Length,ft_uint32_t HWReadRegAddress,ft_uint32_t HWWriteRegAddress)
+Ft_Fifo_Update	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1068;"	kind:function	line:1068	language:C	signature:(Ft_Gpu_Hal_Context_t *host,Ft_Fifo_t *pFifo)
+Ft_Fifo_Write	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1075;"	kind:function	line:1075	language:C	signature:(Ft_Gpu_Hal_Context_t *host,Ft_Fifo_t *pFifo,ft_uint8_t *buffer,ft_uint32_t NumbytetoWrite)
+Ft_Fifo_Write32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1123;"	kind:function	line:1123	language:C	signature:(Ft_Gpu_Hal_Context_t *host,Ft_Fifo_t *pFifo,ft_uint32_t WriteWord)
+Ft_Fifo_WriteWait	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1128;"	kind:function	line:1128	language:C	signature:(Ft_Gpu_Hal_Context_t *host,Ft_Fifo_t *pFifo,ft_uint8_t *buffer,ft_uint32_t Numbyte)
+Ft_GPU_81X_PadDriveStrength	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	499;"	kind:function	line:499	language:C	signature:(Ft_Gpu_Hal_Context_t *host, FT_GPU_81X_GPIO_DRIVE_STRENGTH_T strength, FT_GPU_81X_GPIO_GROUP_T group)
+Ft_GPU_81X_PowerOffComponents	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	494;"	kind:function	line:494	language:C	signature:(Ft_Gpu_Hal_Context_t *host, ft_uint8_t val)
+Ft_GpuEmu_Mode	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	105;"	kind:function	line:105	language:C++	signature:()
+Ft_GpuEmu_SPII2C_StartRead	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	85;"	kind:function	line:85	language:C++	signature:(uint32_t addr)
+Ft_GpuEmu_SPII2C_StartWrite	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	95;"	kind:function	line:95	language:C++	signature:(uint32_t addr)
+Ft_GpuEmu_SPII2C_begin	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	68;"	kind:function	line:68	language:C++	signature:()
+Ft_GpuEmu_SPII2C_csHigh	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	63;"	kind:function	line:63	language:C++	signature:()
+Ft_GpuEmu_SPII2C_csLow	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	58;"	kind:function	line:58	language:C++	signature:()
+Ft_GpuEmu_SPII2C_end	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	73;"	kind:function	line:73	language:C++	signature:()
+Ft_GpuEmu_SPII2C_transfer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	79;"	kind:function	line:79	language:C++	signature:(uint8_t data)
+Ft_Gpu_81X_ResetActive	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	504;"	kind:function	line:504	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_81X_ResetRemoval	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	509;"	kind:function	line:509	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_81X_SelectSysCLK	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	478;"	kind:function	line:478	language:C	signature:(Ft_Gpu_Hal_Context_t *host, FT_GPU_81X_PLL_FREQ_T freq)
+Ft_Gpu_ClockSelect	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	458;"	kind:function	line:458	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_GPU_PLL_SOURCE_T pllsource)
+Ft_Gpu_ClockTrimming	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1222;"	kind:function	line:1222	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_int32_t LowFreq)
+Ft_Gpu_Cmdfifo_Freespace	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	563;"	kind:function	line:563	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_CoCmd_Append	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	389;"	kind:function	line:389	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t num)
+Ft_Gpu_CoCmd_BgColor	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	138;"	kind:function	line:138	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t c)
+Ft_Gpu_CoCmd_BitmapTransform	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	347;"	kind:function	line:347	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int32_t x0, ft_int32_t y0, ft_int32_t x1, ft_int32_t y1, ft_int32_t x2, ft_int32_t y2, ft_int32_t tx0, ft_int32_t ty0, ft_int32_t tx1, ft_int32_t ty1, ft_int32_t tx2, ft_int32_t ty2, ft_uint16_t result)
+Ft_Gpu_CoCmd_Button	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	243;"	kind:function	line:243	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h, ft_int16_t font, ft_uint16_t options, const ft_char8_t* s)
+Ft_Gpu_CoCmd_CSketch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	295;"	kind:function	line:295	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_uint16_t w, ft_uint16_t h, ft_uint32_t ptr, ft_uint16_t format,ft_uint16_t freq)
+Ft_Gpu_CoCmd_Calibrate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	366;"	kind:function	line:366	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t result)
+Ft_Gpu_CoCmd_Clock	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	413;"	kind:function	line:413	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t r, ft_uint16_t options, ft_uint16_t h, ft_uint16_t m, ft_uint16_t s, ft_uint16_t ms)
+Ft_Gpu_CoCmd_ColdStart	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	487;"	kind:function	line:487	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_Dial	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	514;"	kind:function	line:514	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t r, ft_uint16_t options, ft_uint16_t val)
+Ft_Gpu_CoCmd_Dlstart	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	561;"	kind:function	line:561	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_EndFunc	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	669;"	kind:function	line:669	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint16_t count)
+Ft_Gpu_CoCmd_FgColor	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	229;"	kind:function	line:229	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t c)
+Ft_Gpu_CoCmd_Gauge	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	85;"	kind:function	line:85	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t r, ft_uint16_t options, ft_uint16_t major, ft_uint16_t minor, ft_uint16_t val, ft_uint16_t range)
+Ft_Gpu_CoCmd_GetMatrix	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	271;"	kind:function	line:271	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int32_t a, ft_int32_t b, ft_int32_t c, ft_int32_t d, ft_int32_t e, ft_int32_t f)
+Ft_Gpu_CoCmd_GetProps	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	112;"	kind:function	line:112	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t w, ft_uint32_t h)
+Ft_Gpu_CoCmd_GetPtr	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	468;"	kind:function	line:468	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t result)
+Ft_Gpu_CoCmd_GradColor	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	332;"	kind:function	line:332	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t c)
+Ft_Gpu_CoCmd_Gradient	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	424;"	kind:function	line:424	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x0, ft_int16_t y0, ft_uint32_t rgb0, ft_int16_t x1, ft_int16_t y1, ft_uint32_t rgb1)
+Ft_Gpu_CoCmd_Inflate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	151;"	kind:function	line:151	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr)
+Ft_Gpu_CoCmd_Int_RAMShared	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	452;"	kind:function	line:452	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr)
+Ft_Gpu_CoCmd_Int_SWLoadImage	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	459;"	kind:function	line:459	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t options)
+Ft_Gpu_CoCmd_Interrupt	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	222;"	kind:function	line:222	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ms)
+Ft_Gpu_CoCmd_Keys	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	503;"	kind:function	line:503	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h, ft_int16_t font, ft_uint16_t options, const ft_char8_t* s)
+Ft_Gpu_CoCmd_LoadIdentity	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	68;"	kind:function	line:68	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_LoadImage	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	535;"	kind:function	line:535	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t options)
+Ft_Gpu_CoCmd_Logo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	383;"	kind:function	line:383	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_MediaFifo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	494;"	kind:function	line:494	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t size)
+Ft_Gpu_CoCmd_MemCrc	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	582;"	kind:function	line:582	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t num, ft_uint32_t result)
+Ft_Gpu_CoCmd_MemSet	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	323;"	kind:function	line:323	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t value, ft_uint32_t num)
+Ft_Gpu_CoCmd_MemWrite	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	253;"	kind:function	line:253	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t num)
+Ft_Gpu_CoCmd_MemZero	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	397;"	kind:function	line:397	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t num)
+Ft_Gpu_CoCmd_Memcpy	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	121;"	kind:function	line:121	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t dest, ft_uint32_t src, ft_uint32_t num)
+Ft_Gpu_CoCmd_Number	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	59;"	kind:function	line:59	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t font, ft_uint16_t options, ft_int32_t n)
+Ft_Gpu_CoCmd_PlayVideo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	315;"	kind:function	line:315	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t options)
+Ft_Gpu_CoCmd_Progress	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	476;"	kind:function	line:476	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h, ft_uint16_t options, ft_uint16_t val, ft_uint16_t range)
+Ft_Gpu_CoCmd_RegRead	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	95;"	kind:function	line:95	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr, ft_uint32_t result)
+Ft_Gpu_CoCmd_RomFont	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	307;"	kind:function	line:307	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t font, ft_uint32_t romslot)
+Ft_Gpu_CoCmd_Rotate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	236;"	kind:function	line:236	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int32_t a)
+Ft_Gpu_CoCmd_Scale	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	405;"	kind:function	line:405	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int32_t sx, ft_int32_t sy)
+Ft_Gpu_CoCmd_ScreenSaver	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	576;"	kind:function	line:576	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_Scrollbar	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	261;"	kind:function	line:261	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h, ft_uint16_t options, ft_uint16_t val, ft_uint16_t size, ft_uint16_t range)
+Ft_Gpu_CoCmd_SendStr	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	619;"	kind:function	line:619	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,const ft_char8_t *s)
+Ft_Gpu_CoCmd_SetBase	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	173;"	kind:function	line:173	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t base)
+Ft_Gpu_CoCmd_SetBitmap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	33;"	kind:function	line:33	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t source, ft_uint16_t fmt, ft_uint16_t w, ft_uint16_t h)
+Ft_Gpu_CoCmd_SetFont	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	375;"	kind:function	line:375	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t font, ft_uint32_t ptr)
+Ft_Gpu_CoCmd_SetFont2	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	544;"	kind:function	line:544	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t font, ft_uint32_t ptr, ft_uint32_t firstchar)
+Ft_Gpu_CoCmd_SetMatrix	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	435;"	kind:function	line:435	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_SetRotate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	553;"	kind:function	line:553	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t r)
+Ft_Gpu_CoCmd_SetScratch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	42;"	kind:function	line:42	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t handle)
+Ft_Gpu_CoCmd_Sketch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	284;"	kind:function	line:284	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_uint16_t w, ft_uint16_t h, ft_uint32_t ptr, ft_uint16_t format)
+Ft_Gpu_CoCmd_Slider	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	181;"	kind:function	line:181	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h, ft_uint16_t options, ft_uint16_t val, ft_uint16_t range)
+Ft_Gpu_CoCmd_Snapshot	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	568;"	kind:function	line:568	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t ptr)
+Ft_Gpu_CoCmd_Snapshot2	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	524;"	kind:function	line:524	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t fmt, ft_uint32_t ptr, ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h)
+Ft_Gpu_CoCmd_Spinner	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	130;"	kind:function	line:130	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_uint16_t style, ft_uint16_t scale)
+Ft_Gpu_CoCmd_StartFunc	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	646;"	kind:function	line:646	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint16_t count)
+Ft_Gpu_CoCmd_Stop	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	166;"	kind:function	line:166	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_Swap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	145;"	kind:function	line:145	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_Sync	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	340;"	kind:function	line:340	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_CoCmd_Text	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	50;"	kind:function	line:50	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t font, ft_uint16_t options, const ft_char8_t* s)
+Ft_Gpu_CoCmd_Toggle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	74;"	kind:function	line:74	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t font, ft_uint16_t options, ft_uint16_t state, const ft_char8_t* s)
+Ft_Gpu_CoCmd_TouchTransform	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	203;"	kind:function	line:203	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int32_t x0, ft_int32_t y0, ft_int32_t x1, ft_int32_t y1, ft_int32_t x2, ft_int32_t y2, ft_int32_t tx0, ft_int32_t ty0, ft_int32_t tx1, ft_int32_t ty1, ft_int32_t tx2, ft_int32_t ty2, ft_uint16_t result)
+Ft_Gpu_CoCmd_Track	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	442;"	kind:function	line:442	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int16_t x, ft_int16_t y, ft_int16_t w, ft_int16_t h, ft_int16_t tag)
+Ft_Gpu_CoCmd_Translate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	158;"	kind:function	line:158	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_int32_t tx, ft_int32_t ty)
+Ft_Gpu_CoCmd_VideoFrame	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	193;"	kind:function	line:193	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t dst, ft_uint32_t ptr)
+Ft_Gpu_CoCmd_VideoStart	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	105;"	kind:function	line:105	language:C	signature:(Ft_Gpu_Hal_Context_t *phost)
+Ft_Gpu_Copro_SendCmd	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_CoPro_Cmds.c	594;"	kind:function	line:594	language:C	signature:(Ft_Gpu_Hal_Context_t *phost,ft_uint32_t cmd)
+Ft_Gpu_CoreReset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	470;"	kind:function	line:470	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_CurrentFrequency	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1183;"	kind:function	line:1183	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_CheckCmdBuffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	656;"	kind:function	line:656	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t count)
+Ft_Gpu_Hal_Close	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	141;"	kind:function	line:141	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_DeInit	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	160;"	kind:function	line:160	language:C
+Ft_Gpu_Hal_Dec2Ascii	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	896;"	kind:function	line:896	language:C	signature:(ft_char8_t *pSrc,ft_int32_t value)
+Ft_Gpu_Hal_EndTransfer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	335;"	kind:function	line:335	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_Init	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	34;"	kind:function	line:34	language:C	signature:(Ft_Gpu_HalInit_t *halinit)
+Ft_Gpu_Hal_Open	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	90;"	kind:function	line:90	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_Powercycle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	763;"	kind:function	line:763	language:C	signature:(Ft_Gpu_Hal_Context_t *host, ft_bool_t up)
+Ft_Gpu_Hal_Rd16	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	371;"	kind:function	line:371	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr)
+Ft_Gpu_Hal_Rd32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	386;"	kind:function	line:386	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr)
+Ft_Gpu_Hal_Rd8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	356;"	kind:function	line:356	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr)
+Ft_Gpu_Hal_RdMem	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	869;"	kind:function	line:869	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr, ft_uint8_t *buffer, ft_uint32_t length)
+Ft_Gpu_Hal_ResetCmdFifo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	742;"	kind:function	line:742	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_ResetDLBuffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	758;"	kind:function	line:758	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_SetSPI	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	951;"	kind:function	line:951	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_GPU_SPI_NUMCHANNELS_T numchnls,FT_GPU_SPI_NUMDUMMYBYTES numdummy)
+Ft_Gpu_Hal_Sleep	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	938;"	kind:function	line:938	language:C	signature:(ft_uint32_t ms)
+Ft_Gpu_Hal_StartCmdTransfer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	252;"	kind:function	line:252	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_GPU_TRANSFERDIR_T rw, ft_uint16_t count)
+Ft_Gpu_Hal_StartTransfer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	172;"	kind:function	line:172	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_GPU_TRANSFERDIR_T rw,ft_uint32_t addr)
+Ft_Gpu_Hal_Transfer16	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	308;"	kind:function	line:308	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint16_t value)
+Ft_Gpu_Hal_Transfer32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	322;"	kind:function	line:322	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t value)
+Ft_Gpu_Hal_Transfer8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	269;"	kind:function	line:269	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint8_t value)
+Ft_Gpu_Hal_TransferString	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	257;"	kind:function	line:257	language:C	signature:(Ft_Gpu_Hal_Context_t *host,const ft_char8_t *string)
+Ft_Gpu_Hal_Updatecmdfifo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	553;"	kind:function	line:553	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t count)
+Ft_Gpu_Hal_WaitCmdfifo_empty	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	663;"	kind:function	line:663	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_WaitCmdfifo_empty_status	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	717;"	kind:function	line:717	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_WaitLogo_Finish	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	730;"	kind:function	line:730	language:C	signature:(Ft_Gpu_Hal_Context_t *host)
+Ft_Gpu_Hal_Wr16	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	408;"	kind:function	line:408	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr, ft_uint16_t v)
+Ft_Gpu_Hal_Wr32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	414;"	kind:function	line:414	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr, ft_uint32_t v)
+Ft_Gpu_Hal_Wr8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	402;"	kind:function	line:402	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr, ft_uint8_t v)
+Ft_Gpu_Hal_WrCmd32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	748;"	kind:function	line:748	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t cmd)
+Ft_Gpu_Hal_WrCmdBuf	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	574;"	kind:function	line:574	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint8_t *buffer,ft_uint32_t count)
+Ft_Gpu_Hal_WrCmdBufFromFlash	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	622;"	kind:function	line:622	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_PROGMEM ft_prog_uchar8_t *buffer,ft_uint32_t count)
+Ft_Gpu_Hal_WrCmdBuf_nowait	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	670;"	kind:function	line:670	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint8_t *buffer,ft_uint32_t count)
+Ft_Gpu_Hal_WrMem	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	841;"	kind:function	line:841	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr,const ft_uint8_t *buffer, ft_uint32_t length)
+Ft_Gpu_Hal_WrMemFromFlash	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	818;"	kind:function	line:818	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t addr,const ft_prog_uchar8_t *buffer, ft_uint32_t length)
+Ft_Gpu_HostCommand	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	421;"	kind:function	line:421	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint8_t cmd)
+Ft_Gpu_HostCommand_Ext3	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	516;"	kind:function	line:516	language:C	signature:(Ft_Gpu_Hal_Context_t *host,ft_uint32_t cmd)
+Ft_Gpu_PLL_FreqSelect	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	462;"	kind:function	line:462	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_GPU_PLL_FREQ_T freq)
+Ft_Gpu_PowerModeSwitch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	466;"	kind:function	line:466	language:C	signature:(Ft_Gpu_Hal_Context_t *host,FT_GPU_POWER_MODE_T pwrmode)
+HigherResolutionBitmap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6834;"	kind:function	line:6834	language:C
+ILI9488_Bootup	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	357;"	kind:function	line:357	language:C
+ILI9488_SPI_Read	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	145;"	kind:function	line:145	language:C	signature:(ft_uint8_t cmd)
+ILI9488_SPI_ReadN	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	196;"	kind:function	line:196	language:C	signature:(ft_uint8_t cmd,ft_uint8_t numbytes,ft_uint8_t *pbuffer)
+ILI9488_SPI_ReadRDDID	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	253;"	kind:function	line:253	language:C	signature:(ft_uint8_t cmd)
+ILI9488_SPI_ReadRDDST	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	304;"	kind:function	line:304	language:C	signature:(ft_uint8_t cmd)
+ILI9488_SPI_WriteCmd	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	36;"	kind:function	line:36	language:C	signature:(ft_uint8_t cmd, ft_uint8_t data)
+ILI9488_SPI_WriteCmdN	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_ILI9488.c	90;"	kind:function	line:90	language:C	signature:(ft_uint8_t cmd, ft_uint8_t bytecount,ft_uint8_t *pbuff)
+Lenaface40	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	1238;"	kind:variable	line:1238	language:C
+Load_file2gram	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5028;"	kind:function	line:5028	language:C	signature:(ft_uint32_t add,ft_uint8_t sectors, FILE *afile)
+Logo_Intial_setup	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5004;"	kind:function	line:5004	language:C	signature:(struct logoim sptr[],ft_uint8_t num)
+MAX_CMD_FIFO_TRANSFER	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	578;"	kind:macro	line:578	language:C	file:
+MAX_CMD_FIFO_TRANSFER	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	626;"	kind:macro	line:626	language:C	file:
+MAX_CMD_FIFO_TRANSFER	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	674;"	kind:macro	line:674	language:C	file:
+MSVC_PI	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1110;"	kind:macro	line:1110	language:C	file:
+MainWindow	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5075;"	kind:function	line:5075	language:C
+Main_Icons	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4975;"	kind:variable	line:4975	language:C
+Mandrill256	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	786;"	kind:variable	line:786	language:C
+MovingPoints	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5814;"	kind:function	line:5814	language:C
+MovingRect	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5225;"	kind:function	line:5225	language:C	signature:(ft_int16_t BRy,ft_int16_t MovingRy,ft_uint8_t EndPtReach)
+NumberBases	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5909;"	kind:function	line:5909	language:C
+PlotXY	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5440;"	kind:function	line:5440	language:C
+PointsCalc	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5776;"	kind:function	line:5776	language:C	signature:(MovingPoints_Context *context, ft_uint8_t TouchNo, ft_int16_t *X, ft_int16_t *Y, ft_uint8_t *t)
+RectangleCalc	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5241;"	kind:function	line:5241	language:C	signature:(BouncingSquares_Context *context,ft_uint8_t Arrayno)
+Roboto_BoldCondensed_12	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	1330;"	kind:variable	line:1330	language:C
+RowNo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5042;"	kind:variable	line:5042	language:C
+SAMAPP_81X_ChangePadDriveStrength	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6971;"	kind:function	line:6971	language:C
+SAMAPP_81X_Paletted_Bitmap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6232;"	kind:function	line:6232	language:C
+SAMAPP_81X_PowerOffComponents	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6947;"	kind:function	line:6947	language:C
+SAMAPP_API_Screen	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1261;"	kind:function	line:1261	language:C	signature:(ft_char8_t *str)
+SAMAPP_Aud_Music_Player	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4096;"	kind:function	line:4096	language:C
+SAMAPP_Aud_Music_Player_Streaming	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3994;"	kind:function	line:3994	language:C
+SAMAPP_BARGRAPH_ARRAY_SIZE	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	752;"	kind:macro	line:752	language:C	file:
+SAMAPP_Bitmap_RawData	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	726;"	kind:variable	line:726	language:C
+SAMAPP_Bitmap_RawData_Header	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	716;"	kind:variable	line:716	language:C
+SAMAPP_BootupConfig	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4725;"	kind:function	line:4725	language:C
+SAMAPP_COPRO_WIDGET_KEYS_INTERACTIVE_TEXTSIZE	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2294;"	kind:macro	line:2294	language:C	file:
+SAMAPP_ChangeFreq	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6916;"	kind:function	line:6916	language:C
+SAMAPP_ChineseFont	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4924;"	kind:function	line:4924	language:C
+SAMAPP_CoPro_AppendCmds	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1641;"	kind:function	line:1641	language:C
+SAMAPP_CoPro_Inflate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1695;"	kind:function	line:1695	language:C
+SAMAPP_CoPro_Loadimage	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1796;"	kind:function	line:1796	language:C
+SAMAPP_CoPro_Logo	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1627;"	kind:function	line:1627	language:C
+SAMAPP_CoPro_Matrix	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3318;"	kind:function	line:3318	language:C
+SAMAPP_CoPro_MultiTracker	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6268;"	kind:function	line:6268	language:C
+SAMAPP_CoPro_Screensaver	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2914;"	kind:function	line:2914	language:C
+SAMAPP_CoPro_Setfont	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3492;"	kind:function	line:3492	language:C
+SAMAPP_CoPro_Setfont2	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6767;"	kind:function	line:6767	language:C
+SAMAPP_CoPro_Sketch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3174;"	kind:function	line:3174	language:C
+SAMAPP_CoPro_Snapshot	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2970;"	kind:function	line:2970	language:C
+SAMAPP_CoPro_Track	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3706;"	kind:function	line:3706	language:C
+SAMAPP_CoPro_Widget_Button	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1546;"	kind:function	line:1546	language:C
+SAMAPP_CoPro_Widget_Calibrate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1170;"	kind:function	line:1170	language:C
+SAMAPP_CoPro_Widget_Clock	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1964;"	kind:function	line:1964	language:C
+SAMAPP_CoPro_Widget_Dial	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2694;"	kind:function	line:2694	language:C
+SAMAPP_CoPro_Widget_Gradient	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2198;"	kind:function	line:2198	language:C
+SAMAPP_CoPro_Widget_Guage	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2079;"	kind:function	line:2079	language:C
+SAMAPP_CoPro_Widget_Keys	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2401;"	kind:function	line:2401	language:C
+SAMAPP_CoPro_Widget_Keys_Interactive	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2283;"	kind:function	line:2283	language:C
+SAMAPP_CoPro_Widget_Number	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1492;"	kind:function	line:1492	language:C
+SAMAPP_CoPro_Widget_Progressbar	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2479;"	kind:function	line:2479	language:C
+SAMAPP_CoPro_Widget_Scroll	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2541;"	kind:function	line:2541	language:C
+SAMAPP_CoPro_Widget_Slider	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2616;"	kind:function	line:2616	language:C
+SAMAPP_CoPro_Widget_Spinner	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2819;"	kind:function	line:2819	language:C
+SAMAPP_CoPro_Widget_Text	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1208;"	kind:function	line:1208	language:C
+SAMAPP_CoPro_Widget_Toggle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	2753;"	kind:function	line:2753	language:C
+SAMAPP_DELAY_BTW_APIS	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6;"	kind:macro	line:6	language:C	file:
+SAMAPP_ENABLE_DELAY	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	7;"	kind:macro	line:7	language:C	file:
+SAMAPP_ENABLE_DELAY_VALUE	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	8;"	kind:macro	line:8	language:C	file:
+SAMAPP_GPU_AdditiveBlendPoints	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1106;"	kind:function	line:1106	language:C
+SAMAPP_GPU_AdditiveBlendText	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1019;"	kind:function	line:1019	language:C
+SAMAPP_GPU_Ball_Stencil	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4160;"	kind:function	line:4160	language:C
+SAMAPP_GPU_Bargraph	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	750;"	kind:function	line:750	language:C
+SAMAPP_GPU_Bitmap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	382;"	kind:function	line:382	language:C
+SAMAPP_GPU_Bitmap_Palette	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	498;"	kind:function	line:498	language:C
+SAMAPP_GPU_Bitmap_Palette_Background	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	429;"	kind:function	line:429	language:C
+SAMAPP_GPU_Bitmap_Paletted8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6662;"	kind:function	line:6662	language:C
+SAMAPP_GPU_DLSwap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	261;"	kind:function	line:261	language:C	signature:(ft_uint8_t DL_Swap_Type)
+SAMAPP_GPU_DXT1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6587;"	kind:function	line:6587	language:C
+SAMAPP_GPU_EdgeStrips	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	867;"	kind:function	line:867	language:C
+SAMAPP_GPU_Fonts	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	568;"	kind:function	line:568	language:C
+SAMAPP_GPU_FtdiString	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	931;"	kind:function	line:931	language:C
+SAMAPP_GPU_LineStrips	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	846;"	kind:function	line:846	language:C
+SAMAPP_GPU_Lines	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	320;"	kind:function	line:320	language:C
+SAMAPP_GPU_MacroUsage	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1041;"	kind:function	line:1041	language:C
+SAMAPP_GPU_Points	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	292;"	kind:function	line:292	language:C
+SAMAPP_GPU_Rectangles	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	349;"	kind:function	line:349	language:C
+SAMAPP_GPU_Scissor	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	887;"	kind:function	line:887	language:C
+SAMAPP_GPU_Stencil	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	905;"	kind:function	line:905	language:C
+SAMAPP_GPU_StreetMap	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	963;"	kind:function	line:963	language:C
+SAMAPP_GPU_Text8x8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	656;"	kind:function	line:656	language:C
+SAMAPP_GPU_TextVGA	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	701;"	kind:function	line:701	language:C
+SAMAPP_GPU_Vertex_Translate	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6868;"	kind:function	line:6868	language:C
+SAMAPP_Gpu_Cube	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3885;"	kind:function	line:3885	language:C
+SAMAPP_Gpu_Polygon	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	3843;"	kind:function	line:3843	language:C
+SAMAPP_HoldResetState	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6983;"	kind:function	line:6983	language:C
+SAMAPP_LENAFACE40_PNG_HEX_DUMP	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	27;"	kind:variable	line:27	language:C
+SAMAPP_LoadRawFromFile	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5871;"	kind:function	line:5871	language:C	signature:(ft_char8_t *fileName, ft_int32_t ramOffset)
+SAMAPP_NUM_OF_ROM_FONTS	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	562;"	kind:macro	line:562	language:C	file:
+SAMAPP_NUM_OF_ROM_FONTS	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	564;"	kind:macro	line:564	language:C	file:
+SAMAPP_PowerMode	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1288;"	kind:function	line:1288	language:C
+SAMAPP_Snd_Array	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4548;"	kind:variable	line:4548	language:C
+SAMAPP_Snd_TagArray	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4550;"	kind:variable	line:4550	language:C
+SAMAPP_Sound	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4562;"	kind:function	line:4562	language:C
+SAMAPP_Tomato_DXT1_B0_Data_Raw	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	17;"	kind:variable	line:17	language:C
+SAMAPP_Tomato_DXT1_B1_Data_Raw	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	22;"	kind:variable	line:22	language:C
+SAMAPP_Tomato_DXT1_C0_Data_Raw	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	7;"	kind:variable	line:7	language:C
+SAMAPP_Tomato_DXT1_C1_Data_Raw	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	12;"	kind:variable	line:12	language:C
+SAMAPP_Tomato_HEX	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	30;"	kind:variable	line:30	language:C
+SAMAPP_Touch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4306;"	kind:function	line:4306	language:C
+SAMAPP_Touch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4429;"	kind:function	line:4429	language:C
+SAMAPP_fadein	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	135;"	kind:function	line:135	language:C
+SAMAPP_fadeout	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	122;"	kind:function	line:122	language:C
+SAMAPP_playmutesound	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	1282;"	kind:function	line:1282	language:C	file:
+SAMAPP_qcos	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	252;"	kind:function	line:252	language:C	signature:(ft_uint16_t a)
+SAMAPP_qsin	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	236;"	kind:function	line:236	language:C	signature:(ft_uint16_t a)
+SAMApp_ChineseFont_FontBmpData	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	51;"	kind:variable	line:51	language:C
+SAMApp_ChineseFont_MetricBlock	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp_RawData.c	35;"	kind:variable	line:35	language:C
+SCRATCH_BUFF_SZ	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5962;"	kind:macro	line:5962	language:C	file:
+SCRATCH_BUFF_SZ	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5964;"	kind:macro	line:5964	language:C	file:
+ScreenOrientation	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6803;"	kind:function	line:6803	language:C
+StoreTouch	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5541;"	kind:function	line:5541	language:C	signature:(BouncingCircles_Context *context, ft_int32_t Touchval,ft_uint8_t TouchNo)
+TouchPoints	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5429;"	kind:function	line:5429	language:C	signature:(ft_int16_t C1X,ft_int16_t C1Y,ft_uint8_t i)
+VideoPlayBackFrameByFrame	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5969;"	kind:function	line:5969	language:C
+VideoPlayback	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6465;"	kind:function	line:6465	language:C
+VideoPlaybackViaCMDBuff	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	6351;"	kind:function	line:6351	language:C
+Volume	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5043;"	kind:variable	line:5043	language:C
+ft_TotalMilliseconds	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	982;"	kind:variable	line:982	language:C
+ft_millis	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1014;"	kind:function	line:1014	language:C
+ft_millis_curr	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	979;"	kind:variable	line:979	language:C
+ft_millis_exit	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1045;"	kind:function	line:1045	language:C
+ft_millis_init	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	993;"	kind:function	line:993	language:C
+ft_millis_prev	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	979;"	kind:variable	line:979	language:C
+ft_millis_ticker	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	984;"	kind:function	line:984	language:C
+getFlashTextString	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Gpu_Hal.c	1151;"	kind:function	line:1151	language:C	signature:(char __flash__ *str, ft_uchar8_t *destArray, ft_uint16_t numOfChars)
+host	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	29;"	kind:variable	line:29	language:C
+lerp	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4146;"	kind:function	line:4146	language:C	signature:(float t, float a, float b)
+linear	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	5770;"	kind:function	line:5770	language:C	signature:(float p1,float p2,ft_uint16_t t,ft_uint16_t rate)
+load_inflate_image	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4980;"	kind:function	line:4980	language:C	signature:(ft_uint32_t address, const char *filename)
+loop	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	7281;"	kind:function	line:7281	language:C
+main	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\FT_Emu_main.cpp	43;"	kind:function	line:43	language:C++	signature:(ft_int32_t argc,ft_char8_t *argv[])
+phost	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	29;"	kind:variable	line:29	language:C
+setup	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	7010;"	kind:function	line:7010	language:C
+sintab	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	222;"	kind:variable	line:222	language:C
+smoothlerp	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SampleApp\Src\SampleApp.c	4150;"	kind:function	line:4150	language:C	signature:(float t, float a, float b)

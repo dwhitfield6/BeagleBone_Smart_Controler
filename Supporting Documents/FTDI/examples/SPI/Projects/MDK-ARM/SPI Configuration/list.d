@@ -1,0 +1,11 @@
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\list.c
+spi configuration\list.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+spi configuration\list.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+spi configuration\list.o: ..\..\Inc\FreeRTOSConfig.h
+spi configuration\list.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+spi configuration\list.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h

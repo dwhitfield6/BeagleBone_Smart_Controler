@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+BLACK	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	59;"	kind:macro	line:59	language:C	file:
+BLUE	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	57;"	kind:macro	line:57	language:C	file:
+FT800_CS_N	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	48;"	kind:macro	line:48	language:C	file:
+FT800_PD_N	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	47;"	kind:macro	line:47	language:C	file:
+GREEN	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	56;"	kind:macro	line:56	language:C	file:
+HAL_SPI_MspDeInit	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\stm32f4xx_hal_msp.c	64;"	kind:function	line:64	language:C	signature:(SPI_HandleTypeDef* hspi)
+HAL_SPI_MspInit	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\stm32f4xx_hal_msp.c	42;"	kind:function	line:42	language:C	signature:(SPI_HandleTypeDef* hspi)
+LCD_WQVGA	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	52;"	kind:macro	line:52	language:C	file:
+MX_GPIO_Init	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	379;"	kind:function	line:379	language:C	signature:(void)
+MX_SPI1_Init	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	352;"	kind:function	line:352	language:C	signature:(void)
+RED	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	55;"	kind:macro	line:55	language:C	file:
+SysTick_Handler	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\stm32f4xx_it.c	47;"	kind:function	line:47	language:C	signature:(void)
+SystemClock_Config	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	340;"	kind:function	line:340	language:C	file:	signature:(void)
+WHITE	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	58;"	kind:macro	line:58	language:C	file:
+assert_failed	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	710;"	kind:function	line:710	language:C	signature:(uint8_t* file, uint32_t line)
+cmdBufferRd	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	86;"	kind:variable	line:86	language:C
+cmdBufferWr	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	87;"	kind:variable	line:87	language:C
+cmdOffset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	88;"	kind:variable	line:88	language:C
+color	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	92;"	kind:variable	line:92	language:C
+ft800Gpio	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	93;"	kind:variable	line:93	language:C
+ft800cmdWrite	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	472;"	kind:function	line:472	language:C	signature:(unsigned char ftCommand)
+ft800csPin	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	66;"	kind:variable	line:66	language:C
+ft800irqPin	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	64;"	kind:variable	line:64	language:C
+ft800memRead16	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	608;"	kind:function	line:608	language:C	signature:(unsigned long ftAddress)
+ft800memRead32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	641;"	kind:function	line:641	language:C	signature:(unsigned long ftAddress)
+ft800memRead8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	579;"	kind:function	line:579	language:C	signature:(unsigned long ftAddress)
+ft800memWrite16	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	515;"	kind:function	line:515	language:C	signature:(unsigned long ftAddress, unsigned int ftData16)
+ft800memWrite32	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	542;"	kind:function	line:542	language:C	signature:(unsigned long ftAddress, unsigned long ftData32)
+ft800memWrite8	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	492;"	kind:function	line:492	language:C	signature:(unsigned long ftAddress, unsigned char ftData8)
+ft800pwrPin	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	65;"	kind:variable	line:65	language:C
+hspi1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	112;"	kind:variable	line:112	language:C
+hspi1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	41;"	kind:variable	line:41	language:C
+incCMDOffset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	688;"	kind:function	line:688	language:C	signature:(unsigned int currentOffset, unsigned char commandSize)
+lcdHcycle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	71;"	kind:variable	line:71	language:C
+lcdHeight	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	70;"	kind:variable	line:70	language:C
+lcdHoffset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	72;"	kind:variable	line:72	language:C
+lcdHsync0	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	73;"	kind:variable	line:73	language:C
+lcdHsync1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	74;"	kind:variable	line:74	language:C
+lcdPclk	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	79;"	kind:variable	line:79	language:C
+lcdPclkpol	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	81;"	kind:variable	line:81	language:C
+lcdSwizzle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	80;"	kind:variable	line:80	language:C
+lcdVcycle	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	75;"	kind:variable	line:75	language:C
+lcdVoffset	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	76;"	kind:variable	line:76	language:C
+lcdVsync0	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	77;"	kind:variable	line:77	language:C
+lcdVsync1	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	78;"	kind:variable	line:78	language:C
+lcdWidth	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	69;"	kind:variable	line:69	language:C
+main	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	114;"	kind:function	line:114	language:C	signature:(void)
+point_size	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	89;"	kind:variable	line:89	language:C
+point_x	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	90;"	kind:variable	line:90	language:C
+point_y	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	91;"	kind:variable	line:91	language:C
+ramCommandBuffer	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	84;"	kind:variable	line:84	language:C
+ramDisplayList	C:\code\CCS_workspace\AM335x_SPI_FT81x\Supporting Documents\FTDI\SPI\Src\main.c	83;"	kind:variable	line:83	language:C

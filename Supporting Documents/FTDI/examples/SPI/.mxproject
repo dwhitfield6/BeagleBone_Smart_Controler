@@ -1,0 +1,6 @@
+[PreviousGenFiles]
+HeaderPath=C:/Users/bob.recny.FTDI/Documents/Keil/SPI/Inc
+SourcePath=C:/Users/bob.recny.FTDI/Documents/Keil/SPI/Src
+SourceFiles=stm32f4xx_it.c;stm32f4xx_hal_msp.c;main.c;
+HeaderFiles=stm32f4xx_hal_conf.h;
+

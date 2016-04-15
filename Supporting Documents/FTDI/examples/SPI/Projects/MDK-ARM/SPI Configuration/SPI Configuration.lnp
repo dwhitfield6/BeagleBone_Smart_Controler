@@ -1,0 +1,23 @@
+--cpu Cortex-M4.fp
+"spi configuration\startup_stm32f407xx.o"
+"spi configuration\system_stm32f4xx.o"
+"spi configuration\stm32f4xx_hal.o"
+"spi configuration\stm32f4xx_hal_cortex.o"
+"spi configuration\stm32f4xx_hal_dma.o"
+"spi configuration\stm32f4xx_hal_dma_ex.o"
+"spi configuration\stm32f4xx_hal_flash.o"
+"spi configuration\stm32f4xx_hal_flash_ex.o"
+"spi configuration\stm32f4xx_hal_gpio.o"
+"spi configuration\stm32f4xx_hal_pwr.o"
+"spi configuration\stm32f4xx_hal_pwr_ex.o"
+"spi configuration\stm32f4xx_hal_rcc.o"
+"spi configuration\stm32f4xx_hal_rcc_ex.o"
+"spi configuration\stm32f4xx_hal_spi.o"
+"spi configuration\main.o"
+"spi configuration\stm32f4xx_hal_msp.o"
+"spi configuration\stm32f4xx_it.o"
+--library_type=microlib --strict --scatter "SPI Configuration\SPI Configuration.sct"
+
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "SPI Configuration.map" -o "SPI Configuration\SPI Configuration.axf"

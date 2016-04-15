@@ -1,0 +1,17 @@
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.c
+spi configuration\cmsis_os.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h
+spi configuration\cmsis_os.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+spi configuration\cmsis_os.o: ..\..\Drivers\CMSIS\Include\core_cmFunc.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+spi configuration\cmsis_os.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+spi configuration\cmsis_os.o: ..\..\Inc\FreeRTOSConfig.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h
+spi configuration\cmsis_os.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h

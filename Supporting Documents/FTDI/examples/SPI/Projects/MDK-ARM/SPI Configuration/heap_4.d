@@ -1,0 +1,12 @@
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_4.c
+spi configuration\heap_4.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+spi configuration\heap_4.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+spi configuration\heap_4.o: ..\..\Inc\FreeRTOSConfig.h
+spi configuration\heap_4.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+spi configuration\heap_4.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h

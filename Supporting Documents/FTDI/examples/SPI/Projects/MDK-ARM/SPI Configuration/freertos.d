@@ -1,0 +1,11 @@
+spi configuration\freertos.o: ..\..\Src\freertos.c
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+spi configuration\freertos.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+spi configuration\freertos.o: ..\..\Inc\FreeRTOSConfig.h
+spi configuration\freertos.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+spi configuration\freertos.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h

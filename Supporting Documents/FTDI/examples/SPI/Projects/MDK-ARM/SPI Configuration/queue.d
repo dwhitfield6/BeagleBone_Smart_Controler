@@ -1,0 +1,14 @@
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\queue.c
+spi configuration\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdlib.h
+spi configuration\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\string.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+spi configuration\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stddef.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+spi configuration\queue.o: ..\..\Inc\FreeRTOSConfig.h
+spi configuration\queue.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h
+spi configuration\queue.o: ..\..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h
