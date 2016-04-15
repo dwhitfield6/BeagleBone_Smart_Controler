@@ -11,12 +11,12 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to set up the GPIO.
+/* Contains functions to control the internal Analog to digital converter.
  *                                                                            */
 /******************************************************************************/
 
-#ifndef _GPIO_H_
-#define _GPIO_H_
+#ifndef _ADC_H_
+#define _ADC_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
@@ -33,11 +33,7 @@
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_GPIO(void);
-void GPIO_Module0ClkConfig(void);
-void GPIO_Module1ClkConfig(void);
-void GPIO_Module2ClkConfig(void);
-void GPIO_Module3ClkConfig(void);
+void Init_ADC(void);
 
 #endif
 /******************************* End of file *********************************/

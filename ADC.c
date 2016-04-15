@@ -11,16 +11,23 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to set up the GPIO.
+/* Contains functions to control the internal Analog to digital converter.
  *                                                                            */
 /******************************************************************************/
-
-#ifndef _GPIO_H_
-#define _GPIO_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "gpio_v2.h"
+#include "hw_cm_per.h"
+#include "hw_cm_wkup.h"
+#include "hw_types.h"
+#include "pin_mux.h"
+#include "soc_AM335x.h"
+
+#include "beaglebone.h"
+#include "GPIO.h"
+#include "LEDS.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -33,11 +40,16 @@
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_GPIO(void);
-void GPIO_Module0ClkConfig(void);
-void GPIO_Module1ClkConfig(void);
-void GPIO_Module2ClkConfig(void);
-void GPIO_Module3ClkConfig(void);
 
-#endif
+/******************************************************************************/
+/* Init_ADC
+ *
+ * Initializes the ADC module.
+ *                                                                            */
+/******************************************************************************/
+void Init_ADC(void)
+{
+
+}
+
 /******************************* End of file *********************************/
