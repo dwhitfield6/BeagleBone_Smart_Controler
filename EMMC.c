@@ -11,7 +11,8 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to configure and control the I2C bus.
+/* Contains functions to configure and communicate with the EMMC device
+ *  (MTFC4GACAAAM-1M WT).
  *                                                                            */
 /******************************************************************************/
 

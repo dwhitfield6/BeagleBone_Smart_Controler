@@ -15,8 +15,8 @@
  *                                                                            */
 /******************************************************************************/
 
-#ifndef _GPIO_H_
-#define _GPIO_H_
+#ifndef _AUDIO_H_
+#define _AUDIO_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
@@ -33,11 +33,7 @@
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_GPIO(void);
-void GPIO_Module0ClkConfig(void);
-void GPIO_Module1ClkConfig(void);
-void GPIO_Module2ClkConfig(void);
-void GPIO_Module3ClkConfig(void);
+void Init_Audio(void);
 
 #endif
 /******************************* End of file *********************************/

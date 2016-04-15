@@ -18,6 +18,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "beaglebone.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -25,7 +26,6 @@
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 
-#include "beaglebone.h"
 #include "GPIO.h"
 #include "LEDS.h"
 
