@@ -33,6 +33,8 @@
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
+void MSC_BufferCopy(void* From, void* To, unsigned short bytes);
+unsigned char MSC_LowercaseChar(unsigned char Input);
 
 #endif
 /******************************* End of file *********************************/

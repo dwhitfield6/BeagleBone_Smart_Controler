@@ -7,6 +7,7 @@ C_SRCS += \
 ../ADC.c \
 ../AUDIO.c \
 ../BMP.c \
+../CMD.c \
 ../EMMC.c \
 ../GPIO.c \
 ../GUI.c \
@@ -34,6 +35,7 @@ OBJS += \
 ./ADC.obj \
 ./AUDIO.obj \
 ./BMP.obj \
+./CMD.obj \
 ./EMMC.obj \
 ./GPIO.obj \
 ./GUI.obj \
@@ -61,6 +63,7 @@ C_DEPS += \
 ./ADC.pp \
 ./AUDIO.pp \
 ./BMP.pp \
+./CMD.pp \
 ./EMMC.pp \
 ./GPIO.pp \
 ./GUI.pp \
@@ -88,6 +91,7 @@ C_DEPS__QUOTED += \
 "ADC.pp" \
 "AUDIO.pp" \
 "BMP.pp" \
+"CMD.pp" \
 "EMMC.pp" \
 "GPIO.pp" \
 "GUI.pp" \
@@ -115,6 +119,7 @@ OBJS__QUOTED += \
 "ADC.obj" \
 "AUDIO.obj" \
 "BMP.obj" \
+"CMD.obj" \
 "EMMC.obj" \
 "GPIO.obj" \
 "GUI.obj" \
@@ -142,6 +147,7 @@ C_SRCS__QUOTED += \
 "../ADC.c" \
 "../AUDIO.c" \
 "../BMP.c" \
+"../CMD.c" \
 "../EMMC.c" \
 "../GPIO.c" \
 "../GUI.c" \

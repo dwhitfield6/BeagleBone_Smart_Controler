@@ -41,5 +41,41 @@
 /* Function Declarations                                                      */
 /******************************************************************************/
 
+/******************************************************************************/
+/* MSC_BufferCopy
+ *
+ * This function copies 'from' buffer to 'To' buffer.
+ * 																			  */
+/******************************************************************************/
+void MSC_BufferCopy(void* From, void* To, unsigned short bytes)
+{
+    unsigned short i;
+    unsigned char* tempFrom = (unsigned char*)From;
+    unsigned char* tempTo   = (unsigned char*)To;
 
+    for(i=0;i<bytes;i++)
+    {
+        *tempTo = *tempFrom;
+        tempTo++;
+        tempFrom++;
+    }
+}
+
+/******************************************************************************/
+/* MSC_LowercaseChar
+ *
+ * This function turns the character to lowercase.
+ * 																			  */
+/******************************************************************************/
+unsigned char MSC_LowercaseChar(unsigned char Input)
+{
+    if((Input >= 65) && (Input <= 90 ))
+    {
+        return Input + 32;
+    }
+    else
+    {
+        return Input;
+    }
+}
 /******************************* End of file *********************************/

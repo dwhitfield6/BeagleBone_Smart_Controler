@@ -4,3 +4,4 @@
 /subdir_rules.mk
 /subdir_vars.mk
 /makefile
+/objects.mk

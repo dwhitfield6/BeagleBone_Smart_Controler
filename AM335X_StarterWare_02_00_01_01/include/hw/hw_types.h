@@ -83,5 +83,7 @@ typedef unsigned char tBoolean;
 
 #define TRUE    1
 #define FALSE   0
+#define PASS    1
+#define FAIL    0
 
 #endif // __HW_TYPES_H__

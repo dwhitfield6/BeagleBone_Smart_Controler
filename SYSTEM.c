@@ -18,9 +18,13 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "interrupt.h"
+
+#include "CMD.h"
 #include "GPIO.h"
 #include "LEDS.h"
 #include "SYSTEM.h"
+#include "UART.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -42,8 +46,16 @@
 /******************************************************************************/
 void Init_Modules(void)
 {
+    /* Initialze ARM interrupt controller */
+    IntAINTCInit();
+
+    /* Enabling IRQ in CPSR of ARM processor. */
+    IntMasterIRQEnable();
+
 	Init_GPIO();
 	Init_LED();
+	InitCMD();
+	Init_UART();
 }
 
 /******************************* End of file *********************************/

@@ -23,21 +23,55 @@
 #define _UART_H_
 
 /******************************************************************************/
-/* Pin Definitions			                                                  */
+/* UART_TX_SIZE
+ *
+ * UART transmit buffer size.
+ * 							                                                  */
 /******************************************************************************/
+#define UART_TX_SIZE 2000
+
+/******************************************************************************/
+/* UART_RX_SIZE
+ *
+ * UART receive buffer size.
+ * 							                                                  */
+/******************************************************************************/
+#define UART_RX_SIZE 2000
 
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
+#define UART_MODULE_INPUT_CLK      (48000000u)
+#define CR '\r'
+#define LN '\n'
+#define CRLN "\r\n"
+#define BACKSPACE 0x08
+#define DELETE 0x7F
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+extern unsigned char UART_TX_buffer[UART_TX_SIZE];
+extern unsigned char UART_RX_buffer[UART_RX_SIZE];
+extern unsigned long UART_RX_place;
+extern unsigned long UART_TX_add;
+extern unsigned long UART_TX_remove;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_UART(void);
+void UART_Module0ClkConfig(void);
+void UART_PrintChar(unsigned char data);
+void UART_PrintBuffer(unsigned char* data, unsigned long bytes);
+void UART_PrintString(unsigned char* data);
+void UartFIFOConfigure(void);
+void UartBaudRateSet(unsigned int baudRate);
+void UartLineCharacSet(unsigned int lineCharConfig);
+void UartConfigure(unsigned int baudRate, unsigned int lineCharConfig);
+void UART_ISR(void);
+void UART_INTCConfigure0(void);
+void UART_AddToBuffer (unsigned char data);
 
 #endif
 /******************************* End of file *********************************/
