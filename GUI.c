@@ -71,44 +71,10 @@ void GUI_DrawInitialScreen(void)
 	LCD_cmd(CLEAR_COLOR_RGB(0,0,0));
 	LCD_cmd(CLEAR(1,1,1));
 
-	/* draw square */
-	LCD_cmd(COLOR_RGB(50, 50, 50));
-	LCD_cmd(BEGIN(RECTS));
-	LCD_cmd(LINE_WIDTH(10 *16));
-	LCD_cmd(VERTEX2F(20 *16, 40 *16));
-	LCD_cmd(VERTEX2F(780 *16, 430 *16));
-	LCD_cmd(END());
-
-	LCD_cmd(COLOR_RGB(0,0,0));
-	LCD_cmd(BEGIN(RECTS));
-	LCD_cmd(LINE_WIDTH(10 *16));
-	LCD_cmd(VERTEX2F(25 *16, 45 *16));
-	LCD_cmd(VERTEX2F(775 *16, 425 *16));
-	LCD_cmd(END());
-
-	/* draw line */
-	LCD_cmd(COLOR_RGB(50,50,50));
-	LCD_cmd(BEGIN(RECTS));
-	LCD_cmd(LINE_WIDTH(1 *16));
-	LCD_cmd(VERTEX2F(15 *16, 90 *16));
-	LCD_cmd(VERTEX2F(200 *16, 150 *16));
-	LCD_cmd(END());
-
-	LCD_cmd(BEGIN(RECTS));
-	LCD_cmd(LINE_WIDTH(21 *16));
-	LCD_cmd(VERTEX2F(80 *16, 110 *16));
-	LCD_cmd(VERTEX2F(200 *16, 130 *16));
-	LCD_cmd(END());
-
 	/* draw text */
-	LCD_cmd(COLOR_RGB(255, 255, 255));
-	LCD_cmd_text(35, 97, 31, 0, "Voyant 2");
+	LCD_cmd(COLOR_RGB(155, 155, 0));
+	LCD_cmd_text(CENTER_X, CENTER_Y, 31, OPT_CENTER, "LOADING");
 
-	LCD_cmd_romfont(1, 32);
-	LCD_cmd_text(400, 240, 1, OPT_CENTER, "Connect a Device");
-
-	LCD_cmd_text(140, 455, 28, 0, "Menu");
-	LCD_cmd_text(605, 455, 28, 0, "Volume");
 
 	LCD_cmd(DISPLAY());
 	LCD_cmd(CMD_SWAP);

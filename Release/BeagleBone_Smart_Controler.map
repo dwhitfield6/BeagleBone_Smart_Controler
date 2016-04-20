@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.6                      
 ******************************************************************************
->> Linked Tue Apr 19 18:17:16 2016
+>> Linked Tue Apr 19 18:26:02 2016
 
 OUTPUT FILE NAME:   <BeagleBone_Smart_Controler.out>
 ENTRY POINT SYMBOL: "Entry"  address: 80000000
@@ -11,19 +11,19 @@ MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  DDR_MEM               80000000   07ffffff  0000db4e  07ff24b1  RWIX
+  DDR_MEM               80000000   07ffffff  0000d99a  07ff2665  RWIX
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-80000000    80000000    00008968   00008968    r-x
+80000000    80000000    000087b4   000087b4    r-x
   80000000    80000000    000000d0   000000d0    r-x .text:Entry
-  800000d0    800000d0    000087fc   000087fc    r-x .text
-  800088cc    800088cc    0000009c   0000009c    r-- .const
-80008968    80008968    0000002e   0000002e    rw-
-  80008968    80008968    0000002e   0000002e    rw- .data
+  800000d0    800000d0    00008648   00008648    r-x .text
+  80008718    80008718    0000009c   0000009c    r-- .const
+800087b4    800087b4    0000002e   0000002e    rw-
+  800087b4    800087b4    0000002e   0000002e    rw- .data
 8000c000    8000c000    000051b0   00000000    rw-
   8000c000    8000c000    000051b0   00000000    rw- .bss
 87fffff0    87fffff0    00000008   00000000    rw-
@@ -40,48 +40,48 @@ section   page    origin      length       input sections
                   80000000    000000c8     system.lib : init.obj (.text:Entry)
                   800000c8    00000008     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.tramp.__TI_auto_init.1)
 
-.text      0    800000d0    000087fc     
+.text      0    800000d0    00008648     
                   800000d0    000027d0     LCD.obj (.text)
                   800028a0    00001d10     uart_irda_cir.obj (.text)
                   800045b0    00000ec4     mcspi.obj (.text)
                   80005474    00000b50     gpio_v2.obj (.text)
                   80005fc4    00000640     UART.obj (.text)
-                  80006604    0000049c     SPI.obj (.text)
-                  80006aa0    00000488     system.lib : cp15.obj (.text)
-                  80006f28    000003e4     interrupt.obj (.text)
-                  8000730c    00000334     GPIO.obj (.text)
-                  80007640    000002c0     LEDS.obj (.text)
-                  80007900    0000020c     GUI.obj (.text)
-                  80007b0c    000001d8     CMD.obj (.text)
-                  80007ce4    00000180     rtsv7A8_A_le_n_eabi.lib : memcpy32.obj (.text)
-                  80007e64    00000170     mmu.obj (.text)
-                  80007fd4    00000130     cache.obj (.text)
-                  80008104    00000128     MISC.obj (.text)
-                  8000822c    00000124     platform.lib : gpio.obj (.text)
-                  80008350    0000010c     system.lib : exceptionhandler.obj (.text)
-                  8000845c    000000f0     rtsv7A8_A_le_n_eabi.lib : u_div32.obj (.text)
-                  8000854c    000000d0     main.obj (.text)
-                  8000861c    000000a8     MEMORY.obj (.text)
-                  800086c4    000000a4     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.text)
-                  80008768    00000084                             : cpy_tbl.obj (.text)
-                  800087ec    00000060     system.lib : cpu.obj (.text)
-                  8000884c    00000044                : startup.obj (.text)
-                  80008890    0000002c     SYSTEM.obj (.text)
-                  800088bc    0000000c     system.lib : cpu.obj (.text:CPUIntStatus)
-                  800088c8    00000004     rtsv7A8_A_le_n_eabi.lib : i_div0.obj (.text)
+                  80006604    00000488     system.lib : cp15.obj (.text)
+                  80006a8c    00000458     SPI.obj (.text)
+                  80006ee4    000003e4     interrupt.obj (.text)
+                  800072c8    00000334     GPIO.obj (.text)
+                  800075fc    000002c0     LEDS.obj (.text)
+                  800078bc    000001d8     CMD.obj (.text)
+                  80007a94    00000180     rtsv7A8_A_le_n_eabi.lib : memcpy32.obj (.text)
+                  80007c14    00000170     mmu.obj (.text)
+                  80007d84    00000130     cache.obj (.text)
+                  80007eb4    00000128     MISC.obj (.text)
+                  80007fdc    00000124     platform.lib : gpio.obj (.text)
+                  80008100    0000010c     system.lib : exceptionhandler.obj (.text)
+                  8000820c    000000f0     rtsv7A8_A_le_n_eabi.lib : u_div32.obj (.text)
+                  800082fc    000000d0     main.obj (.text)
+                  800083cc    000000a8     MEMORY.obj (.text)
+                  80008474    000000a4     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.text)
+                  80008518    0000009c     GUI.obj (.text)
+                  800085b4    00000084     rtsv7A8_A_le_n_eabi.lib : cpy_tbl.obj (.text)
+                  80008638    00000060     system.lib : cpu.obj (.text)
+                  80008698    00000044                : startup.obj (.text)
+                  800086dc    0000002c     SYSTEM.obj (.text)
+                  80008708    0000000c     system.lib : cpu.obj (.text:CPUIntStatus)
+                  80008714    00000004     rtsv7A8_A_le_n_eabi.lib : i_div0.obj (.text)
 
-.const     0    800088cc    0000009c     
-                  800088cc    00000054     MEMORY.obj (.const)
-                  80008920    00000038     system.lib : startup.obj (.const:vecTbl)
-                  80008958    00000010     CMD.obj (.const)
+.const     0    80008718    0000009c     
+                  80008718    00000054     MEMORY.obj (.const)
+                  8000876c    00000038     system.lib : startup.obj (.const:vecTbl)
+                  800087a4    00000010     CMD.obj (.const)
 
-.data      0    80008968    0000002e     
-                  80008968    00000020     LCD.obj (.data)
-                  80008988    0000000c     UART.obj (.data)
-                  80008994    00000002     CMD.obj (.data)
+.data      0    800087b4    0000002e     
+                  800087b4    00000020     LCD.obj (.data)
+                  800087d4    0000000c     UART.obj (.data)
+                  800087e0    00000002     CMD.obj (.data)
 
 .TI.persistent 
-*          0    80008968    00000000     UNINITIALIZED
+*          0    800087b4    00000000     UNINITIALIZED
 
 .bss       0    8000c000    000051b0     UNINITIALIZED
                   8000c000    00004000     MEMORY.obj (.bss:pageTable)
@@ -104,7 +104,7 @@ callee name               trampoline name
    callee addr  tramp addr   call addr  call info
 --------------  -----------  ---------  ----------------
 __TI_auto_init            $Tramp$AA$S$$__TI_auto_init
-   800086c4     800000c8     800000a0   system.lib : init.obj (.text:Entry)
+   80008474     800000c8     800000a0   system.lib : init.obj (.text:Entry)
 
 [1 trampolines]
 [1 trampoline calls]
@@ -114,80 +114,80 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                           
 -------   ----                           
-80008444  AbortHandler                   
-80007b1c  CMD_CheckMatch                 
-80007ca8  CMD_ClearNewCommand            
-80007cb8  CMD_GetNewCommand              
-80007c88  CMD_Help                       
-80007c98  CMD_SetNewCommand              
-80006efc  CP15AuxControlFeatureDisable   
-80006ee8  CP15AuxControlFeatureEnable    
-80006e90  CP15BranchPredictionDisable    
-80006e80  CP15BranchPredictionEnable     
-80006e74  CP15BranchPredictorInvalidate  
-80006eb0  CP15ControlFeatureDisable      
-80006ec4  CP15ControlFeatureEnable       
-80006b8c  CP15DCacheClean                
-80006cc4  CP15DCacheCleanBuff            
-80006c20  CP15DCacheCleanFlush           
-80006d18  CP15DCacheCleanFlushBuff       
-80006abc  CP15DCacheDisable              
-80006ae8  CP15DCacheEnable               
-80006af8  CP15DCacheFlush                
-80006d6c  CP15DCacheFlushBuff            
-80006ea0  CP15DomainAccessClientSet      
-80006aa0  CP15ICacheDisable              
-80006ad8  CP15ICacheEnable               
-80006cb4  CP15ICacheFlush                
-80006dd0  CP15ICacheFlushBuff            
-80006e3c  CP15MMUDisable                 
-80006e54  CP15MMUEnable                  
-80006f10  CP15MainIdPrimPartNumGet       
-80006e30  CP15TlbInvalidate              
-80006e24  CP15Ttb0Set                    
-80006ed8  CP15TtbCtlTtb0Config           
-80006e68  CP15VectorBaseAddrSet          
-80008848  CPUAbortHandler                
-800088bc  CPUIntStatus                   
-80008840  CPUSwitchToPrivilegedMode      
-8000882c  CPUSwitchToUserMode            
-8000881c  CPUfiqd                        
-8000880c  CPUfiqe                        
-800087fc  CPUirqd                        
-800087ec  CPUirqe                        
-80008098  CacheDataCleanAll              
-800080b0  CacheDataCleanBuff             
-8000808c  CacheDataCleanInvalidateAll    
-800080e8  CacheDataCleanInvalidateBuff   
-800080a4  CacheDataInvalidateAll         
-800080cc  CacheDataInvalidateBuff        
-80007fd4  CacheDisable                   
-80008018  CacheEnable                    
-80008064  CacheInstInvalidateAll         
-80008070  CacheInstInvalidateBuff        
+800081f4  AbortHandler                   
+800078cc  CMD_CheckMatch                 
+80007a58  CMD_ClearNewCommand            
+80007a68  CMD_GetNewCommand              
+80007a38  CMD_Help                       
+80007a48  CMD_SetNewCommand              
+80006a60  CP15AuxControlFeatureDisable   
+80006a4c  CP15AuxControlFeatureEnable    
+800069f4  CP15BranchPredictionDisable    
+800069e4  CP15BranchPredictionEnable     
+800069d8  CP15BranchPredictorInvalidate  
+80006a14  CP15ControlFeatureDisable      
+80006a28  CP15ControlFeatureEnable       
+800066f0  CP15DCacheClean                
+80006828  CP15DCacheCleanBuff            
+80006784  CP15DCacheCleanFlush           
+8000687c  CP15DCacheCleanFlushBuff       
+80006620  CP15DCacheDisable              
+8000664c  CP15DCacheEnable               
+8000665c  CP15DCacheFlush                
+800068d0  CP15DCacheFlushBuff            
+80006a04  CP15DomainAccessClientSet      
+80006604  CP15ICacheDisable              
+8000663c  CP15ICacheEnable               
+80006818  CP15ICacheFlush                
+80006934  CP15ICacheFlushBuff            
+800069a0  CP15MMUDisable                 
+800069b8  CP15MMUEnable                  
+80006a74  CP15MainIdPrimPartNumGet       
+80006994  CP15TlbInvalidate              
+80006988  CP15Ttb0Set                    
+80006a3c  CP15TtbCtlTtb0Config           
+800069cc  CP15VectorBaseAddrSet          
+80008694  CPUAbortHandler                
+80008708  CPUIntStatus                   
+8000868c  CPUSwitchToPrivilegedMode      
+80008678  CPUSwitchToUserMode            
+80008668  CPUfiqd                        
+80008658  CPUfiqe                        
+80008648  CPUirqd                        
+80008638  CPUirqe                        
+80007e48  CacheDataCleanAll              
+80007e60  CacheDataCleanBuff             
+80007e3c  CacheDataCleanInvalidateAll    
+80007e98  CacheDataCleanInvalidateBuff   
+80007e54  CacheDataInvalidateAll         
+80007e7c  CacheDataInvalidateBuff        
+80007d84  CacheDisable                   
+80007dc8  CacheEnable                    
+80007e14  CacheInstInvalidateAll         
+80007e20  CacheInstInvalidateBuff        
 800111a0  Command_String                 
-80008958  Commands                       
+800087a4  Commands                       
 80000000  Entry                          
-80008440  FIQHandler                     
-80008984  FT_DispCSpread                 
-80008986  FT_DispDither                  
-8000896e  FT_DispHCycle                  
-80008970  FT_DispHOffset                 
-80008972  FT_DispHSync0                  
-80008974  FT_DispHSync1                  
-8000896c  FT_DispHeight                  
-8000897e  FT_DispPCLK                    
-80008982  FT_DispPCLKPol                 
-80008980  FT_DispSwizzle                 
-80008976  FT_DispVCycle                  
-80008978  FT_DispVOffset                 
-8000897a  FT_DispVSync0                  
-8000897c  FT_DispVSync1                  
-8000896a  FT_DispWidth                   
-800082ac  GPIO0ModuleClkConfig           
-80008258  GPIO1ModuleClkConfig           
-80008248  GPIO1Pin23PinMuxSetup          
-80008238  GPIO1PinMuxSetup               
+800081f0  FIQHandler                     
+800087d0  FT_DispCSpread                 
+800087d2  FT_DispDither                  
+800087ba  FT_DispHCycle                  
+800087bc  FT_DispHOffset                 
+800087be  FT_DispHSync0                  
+800087c0  FT_DispHSync1                  
+800087b8  FT_DispHeight                  
+800087ca  FT_DispPCLK                    
+800087ce  FT_DispPCLKPol                 
+800087cc  FT_DispSwizzle                 
+800087c2  FT_DispVCycle                  
+800087c4  FT_DispVOffset                 
+800087c6  FT_DispVSync0                  
+800087c8  FT_DispVSync1                  
+800087b6  FT_DispWidth                   
+8000805c  GPIO0ModuleClkConfig           
+80008008  GPIO1ModuleClkConfig           
+80007ff8  GPIO1Pin23PinMuxSetup          
+80007fe8  GPIO1PinMuxSetup               
 80005de4  GPIOAutoIdleModeControl        
 80005eb0  GPIODebounceFuncControl        
 80005f00  GPIODebounceTimeConfig         
@@ -215,53 +215,53 @@ address   name
 80005c8c  GPIOTriggerPinInt              
 80005d00  GPIOWakeupGlobalDisable        
 80005cdc  GPIOWakeupGlobalEnable         
-80007474  GPIO_Module0ClkConfig          
-800074dc  GPIO_Module1ClkConfig          
-80007544  GPIO_Module2ClkConfig          
-800075ac  GPIO_Module3ClkConfig          
-8000790c  GUI_DrawInitialScreen          
-8000822c  GpioPinMuxSetup                
-80008394  IRQHandler                     
-80007b0c  InitCMD                        
-8000730c  Init_GPIO                      
-80007900  Init_GUI                       
+80007430  GPIO_Module0ClkConfig          
+80007498  GPIO_Module1ClkConfig          
+80007500  GPIO_Module2ClkConfig          
+80007568  GPIO_Module3ClkConfig          
+80008524  GUI_DrawInitialScreen          
+80007fdc  GpioPinMuxSetup                
+80008144  IRQHandler                     
+800078bc  InitCMD                        
+800072c8  Init_GPIO                      
+80008518  Init_GUI                       
 800000d0  Init_LCD                       
-80007640  Init_LED                       
-80008890  Init_Modules                   
-80006604  Init_SPI                       
-80006768  Init_SPI_Module0               
-80006658  Init_SPI_Module1               
+800075fc  Init_LED                       
+800086dc  Init_Modules                   
+80006a8c  Init_SPI                       
+80006bac  Init_SPI_Module0               
+80006a9c  Init_SPI_Module1               
 80005fc4  Init_UART                      
-80006f70  IntAINTCInit                   
-800070a8  IntActiveIrqNumGet             
-80007140  IntCurrIrqPriorityGet          
-80007298  IntDisable                     
-800072b0  IntEnable                      
-8000712c  IntFuncClkAutoGateSet          
-80007118  IntFuncClkFreeRunSet           
-80007094  IntIfClkAutoGateSet            
-80007080  IntIfClkFreeRunSet             
-80007280  IntMasterFIQDisable            
-80007274  IntMasterFIQEnable             
-80007268  IntMasterIRQDisable            
-8000725c  IntMasterIRQEnable             
-8000728c  IntMasterStatusGet             
-80007220  IntPendingIrqMaskedStatusGet   
-80006fe0  IntPrioritySet                 
-80007150  IntPriorityThresholdGet        
-80007160  IntPriorityThresholdSet        
-800070dc  IntProtectionDisable           
-800070cc  IntProtectionEnable            
-80007180  IntRawStatusGet                
-80006f2c  IntRegister                    
-800071f0  IntSoftwareIntClear            
-800071c0  IntSoftwareIntSet              
-800070b8  IntSpurIrqFlagGet              
-80007104  IntSyncClkAutoGateSet          
-800070f0  IntSyncClkFreeRunSet           
-8000704c  IntSystemDisable               
-80007018  IntSystemEnable                
-80006f50  IntUnRegister                  
+80006f2c  IntAINTCInit                   
+80007064  IntActiveIrqNumGet             
+800070fc  IntCurrIrqPriorityGet          
+80007254  IntDisable                     
+8000726c  IntEnable                      
+800070e8  IntFuncClkAutoGateSet          
+800070d4  IntFuncClkFreeRunSet           
+80007050  IntIfClkAutoGateSet            
+8000703c  IntIfClkFreeRunSet             
+8000723c  IntMasterFIQDisable            
+80007230  IntMasterFIQEnable             
+80007224  IntMasterIRQDisable            
+80007218  IntMasterIRQEnable             
+80007248  IntMasterStatusGet             
+800071dc  IntPendingIrqMaskedStatusGet   
+80006f9c  IntPrioritySet                 
+8000710c  IntPriorityThresholdGet        
+8000711c  IntPriorityThresholdSet        
+80007098  IntProtectionDisable           
+80007088  IntProtectionEnable            
+8000713c  IntRawStatusGet                
+80006ee8  IntRegister                    
+800071ac  IntSoftwareIntClear            
+8000717c  IntSoftwareIntSet              
+80007074  IntSpurIrqFlagGet              
+800070c0  IntSyncClkAutoGateSet          
+800070ac  IntSyncClkFreeRunSet           
+80007008  IntSystemDisable               
+80006fd4  IntSystemEnable                
+80006f0c  IntUnRegister                  
 80000aac  LCD_IncrementWriteOffset       
 80000330  LCD_Reset                      
 80000b18  LCD_SendRAMAddress             
@@ -339,14 +339,14 @@ address   name
 800006cc  LCD_wr8                        
 80000720  LCD_wr8s                       
 800007cc  LCD_wr_buffer                  
-80007644  LED_Show                       
-80007fb8  MMUEnable                      
-80007e64  MMUInit                        
-80007ec4  MMUMemRegionMap                
-8000861c  MMU_ConfigAndEnable            
-80008104  MSC_BufferCopy                 
-800081b8  MSC_DelayUS                    
-8000817c  MSC_LowercaseChar              
+80007600  LED_Show                       
+80007d68  MMUEnable                      
+80007c14  MMUInit                        
+80007c74  MMUMemRegionMap                
+800083cc  MMU_ConfigAndEnable            
+80007eb4  MSC_BufferCopy                 
+80007f68  MSC_DelayUS                    
+80007f2c  MSC_LowercaseChar              
 800052f0  McSPI0ModuleClkConfig          
 80005194  McSPI1ModuleClkConfig          
 80004914  McSPICSAssert                  
@@ -383,19 +383,19 @@ address   name
 80004d00  McSPITxFIFOConfig              
 80004ed0  McSPIWordCountSet              
 80004790  McSPIWordLengthSet             
-80008995  NumCommand                     
-80008968  RAM_CMD_Offset                 
+800087e1  NumCommand                     
+800087b4  RAM_CMD_Offset                 
 UNDEFED   SHT$$INIT_ARRAY$$Base          
 UNDEFED   SHT$$INIT_ARRAY$$Limit         
-800068a4  SPI_1_ISR                      
-80006878  SPI_INTCConfigure1             
-80006958  SPI_ReadWriteByte0             
-800069b0  SPI_ReadWriteByte1             
-800068a8  SPI_WriteByte0                 
-80006900  SPI_WriteByte1                 
-80006a08  SPI_WriteByteNoRx0             
-80006a38  SPI_WriteByteNoRx1             
-8000836c  SVC_Handler                    
+80006ce8  SPI_1_ISR                      
+80006cbc  SPI_INTCConfigure1             
+80006d9c  SPI_ReadWriteByte0             
+80006df4  SPI_ReadWriteByte1             
+80006cec  SPI_WriteByte0                 
+80006d44  SPI_WriteByte1                 
+80006e4c  SPI_WriteByteNoRx0             
+80006e7c  SPI_WriteByteNoRx1             
+8000811c  SVC_Handler                    
 80003ee0  UARTAutoIdleModeControl        
 80003c8c  UARTAutoRTSAutoCTSControl      
 800043c8  UARTAutobaudParityGet          
@@ -484,38 +484,38 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 8000605c  UART_PrintChar                 
 800060bc  UART_PrintString               
 80010000  UART_RX_buffer                 
-80008988  UART_RX_place                  
-8000898c  UART_TX_add                    
+800087d4  UART_RX_place                  
+800087d8  UART_TX_add                    
 800107d0  UART_TX_buffer                 
-80008990  UART_TX_remove                 
-80008444  UndefInstHandler               
+800087dc  UART_TX_remove                 
+800081f4  UndefInstHandler               
 87fffff8  __STACK_END                    
 00000008  __STACK_SIZE                   
 UNDEFED   __TI_CINIT_Base                
 UNDEFED   __TI_CINIT_Limit               
 UNDEFED   __TI_Handler_Table_Base        
 UNDEFED   __TI_Handler_Table_Limit       
-800086c4  __TI_auto_init                 
+80008474  __TI_auto_init                 
 80000000  __TI_static_base__             
-800088c8  __aeabi_idiv0                  
-80007ce4  __aeabi_memcpy                 
-80007ce4  __aeabi_memcpy4                
-80007ce4  __aeabi_memcpy8                
-8000845c  __aeabi_uidiv                  
-8000845c  __aeabi_uidivmod               
+80008714  __aeabi_idiv0                  
+80007a94  __aeabi_memcpy                 
+80007a94  __aeabi_memcpy4                
+80007a94  __aeabi_memcpy8                
+8000820c  __aeabi_uidiv                  
+8000820c  __aeabi_uidivmod               
 ffffffff  __binit__                      
 ffffffff  __c_args__                     
 87fffff0  __stack                        
 ffffffff  binit                          
 800111b0  bss_end                        
 8000c000  bss_start                      
-80008768  copy_in                        
+800085b4  copy_in                        
 80010fa0  fnRAMVectors                   
 80005f80  gpioContextRestore             
 80005f3c  gpioContextSave                
-8000854c  main                           
-80007ce4  memcpy                         
-80008878  start_boot                     
+800082fc  main                           
+80007a94  memcpy                         
+800086c4  start_boot                     
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -756,157 +756,157 @@ address   name
 800063ac  UART_AddToRXBuffer             
 800064dc  UART_AddToTXBuffer             
 80006588  UART_GetTXInterruptStatus      
-80006604  Init_SPI                       
-80006658  Init_SPI_Module1               
-80006768  Init_SPI_Module0               
-80006878  SPI_INTCConfigure1             
-800068a4  SPI_1_ISR                      
-800068a8  SPI_WriteByte0                 
-80006900  SPI_WriteByte1                 
-80006958  SPI_ReadWriteByte0             
-800069b0  SPI_ReadWriteByte1             
-80006a08  SPI_WriteByteNoRx0             
-80006a38  SPI_WriteByteNoRx1             
-80006aa0  CP15ICacheDisable              
-80006abc  CP15DCacheDisable              
-80006ad8  CP15ICacheEnable               
-80006ae8  CP15DCacheEnable               
-80006af8  CP15DCacheFlush                
-80006b8c  CP15DCacheClean                
-80006c20  CP15DCacheCleanFlush           
-80006cb4  CP15ICacheFlush                
-80006cc4  CP15DCacheCleanBuff            
-80006d18  CP15DCacheCleanFlushBuff       
-80006d6c  CP15DCacheFlushBuff            
-80006dd0  CP15ICacheFlushBuff            
-80006e24  CP15Ttb0Set                    
-80006e30  CP15TlbInvalidate              
-80006e3c  CP15MMUDisable                 
-80006e54  CP15MMUEnable                  
-80006e68  CP15VectorBaseAddrSet          
-80006e74  CP15BranchPredictorInvalidate  
-80006e80  CP15BranchPredictionEnable     
-80006e90  CP15BranchPredictionDisable    
-80006ea0  CP15DomainAccessClientSet      
-80006eb0  CP15ControlFeatureDisable      
-80006ec4  CP15ControlFeatureEnable       
-80006ed8  CP15TtbCtlTtb0Config           
-80006ee8  CP15AuxControlFeatureEnable    
-80006efc  CP15AuxControlFeatureDisable   
-80006f10  CP15MainIdPrimPartNumGet       
-80006f2c  IntRegister                    
-80006f50  IntUnRegister                  
-80006f70  IntAINTCInit                   
-80006fe0  IntPrioritySet                 
-80007018  IntSystemEnable                
-8000704c  IntSystemDisable               
-80007080  IntIfClkFreeRunSet             
-80007094  IntIfClkAutoGateSet            
-800070a8  IntActiveIrqNumGet             
-800070b8  IntSpurIrqFlagGet              
-800070cc  IntProtectionEnable            
-800070dc  IntProtectionDisable           
-800070f0  IntSyncClkFreeRunSet           
-80007104  IntSyncClkAutoGateSet          
-80007118  IntFuncClkFreeRunSet           
-8000712c  IntFuncClkAutoGateSet          
-80007140  IntCurrIrqPriorityGet          
-80007150  IntPriorityThresholdGet        
-80007160  IntPriorityThresholdSet        
-80007180  IntRawStatusGet                
-800071c0  IntSoftwareIntSet              
-800071f0  IntSoftwareIntClear            
-80007220  IntPendingIrqMaskedStatusGet   
-8000725c  IntMasterIRQEnable             
-80007268  IntMasterIRQDisable            
-80007274  IntMasterFIQEnable             
-80007280  IntMasterFIQDisable            
-8000728c  IntMasterStatusGet             
-80007298  IntDisable                     
-800072b0  IntEnable                      
-8000730c  Init_GPIO                      
-80007474  GPIO_Module0ClkConfig          
-800074dc  GPIO_Module1ClkConfig          
-80007544  GPIO_Module2ClkConfig          
-800075ac  GPIO_Module3ClkConfig          
-80007640  Init_LED                       
-80007644  LED_Show                       
-80007900  Init_GUI                       
-8000790c  GUI_DrawInitialScreen          
-80007b0c  InitCMD                        
-80007b1c  CMD_CheckMatch                 
-80007c88  CMD_Help                       
-80007c98  CMD_SetNewCommand              
-80007ca8  CMD_ClearNewCommand            
-80007cb8  CMD_GetNewCommand              
-80007ce4  __aeabi_memcpy                 
-80007ce4  __aeabi_memcpy4                
-80007ce4  __aeabi_memcpy8                
-80007ce4  memcpy                         
-80007e64  MMUInit                        
-80007ec4  MMUMemRegionMap                
-80007fb8  MMUEnable                      
-80007fd4  CacheDisable                   
-80008018  CacheEnable                    
-80008064  CacheInstInvalidateAll         
-80008070  CacheInstInvalidateBuff        
-8000808c  CacheDataCleanInvalidateAll    
-80008098  CacheDataCleanAll              
-800080a4  CacheDataInvalidateAll         
-800080b0  CacheDataCleanBuff             
-800080cc  CacheDataInvalidateBuff        
-800080e8  CacheDataCleanInvalidateBuff   
-80008104  MSC_BufferCopy                 
-8000817c  MSC_LowercaseChar              
-800081b8  MSC_DelayUS                    
-8000822c  GpioPinMuxSetup                
-80008238  GPIO1PinMuxSetup               
-80008248  GPIO1Pin23PinMuxSetup          
-80008258  GPIO1ModuleClkConfig           
-800082ac  GPIO0ModuleClkConfig           
-8000836c  SVC_Handler                    
-80008394  IRQHandler                     
-80008440  FIQHandler                     
-80008444  AbortHandler                   
-80008444  UndefInstHandler               
-8000845c  __aeabi_uidiv                  
-8000845c  __aeabi_uidivmod               
-8000854c  main                           
-8000861c  MMU_ConfigAndEnable            
-800086c4  __TI_auto_init                 
-80008768  copy_in                        
-800087ec  CPUirqe                        
-800087fc  CPUirqd                        
-8000880c  CPUfiqe                        
-8000881c  CPUfiqd                        
-8000882c  CPUSwitchToUserMode            
-80008840  CPUSwitchToPrivilegedMode      
-80008848  CPUAbortHandler                
-80008878  start_boot                     
-80008890  Init_Modules                   
-800088bc  CPUIntStatus                   
-800088c8  __aeabi_idiv0                  
-80008958  Commands                       
-80008968  RAM_CMD_Offset                 
-8000896a  FT_DispWidth                   
-8000896c  FT_DispHeight                  
-8000896e  FT_DispHCycle                  
-80008970  FT_DispHOffset                 
-80008972  FT_DispHSync0                  
-80008974  FT_DispHSync1                  
-80008976  FT_DispVCycle                  
-80008978  FT_DispVOffset                 
-8000897a  FT_DispVSync0                  
-8000897c  FT_DispVSync1                  
-8000897e  FT_DispPCLK                    
-80008980  FT_DispSwizzle                 
-80008982  FT_DispPCLKPol                 
-80008984  FT_DispCSpread                 
-80008986  FT_DispDither                  
-80008988  UART_RX_place                  
-8000898c  UART_TX_add                    
-80008990  UART_TX_remove                 
-80008995  NumCommand                     
+80006604  CP15ICacheDisable              
+80006620  CP15DCacheDisable              
+8000663c  CP15ICacheEnable               
+8000664c  CP15DCacheEnable               
+8000665c  CP15DCacheFlush                
+800066f0  CP15DCacheClean                
+80006784  CP15DCacheCleanFlush           
+80006818  CP15ICacheFlush                
+80006828  CP15DCacheCleanBuff            
+8000687c  CP15DCacheCleanFlushBuff       
+800068d0  CP15DCacheFlushBuff            
+80006934  CP15ICacheFlushBuff            
+80006988  CP15Ttb0Set                    
+80006994  CP15TlbInvalidate              
+800069a0  CP15MMUDisable                 
+800069b8  CP15MMUEnable                  
+800069cc  CP15VectorBaseAddrSet          
+800069d8  CP15BranchPredictorInvalidate  
+800069e4  CP15BranchPredictionEnable     
+800069f4  CP15BranchPredictionDisable    
+80006a04  CP15DomainAccessClientSet      
+80006a14  CP15ControlFeatureDisable      
+80006a28  CP15ControlFeatureEnable       
+80006a3c  CP15TtbCtlTtb0Config           
+80006a4c  CP15AuxControlFeatureEnable    
+80006a60  CP15AuxControlFeatureDisable   
+80006a74  CP15MainIdPrimPartNumGet       
+80006a8c  Init_SPI                       
+80006a9c  Init_SPI_Module1               
+80006bac  Init_SPI_Module0               
+80006cbc  SPI_INTCConfigure1             
+80006ce8  SPI_1_ISR                      
+80006cec  SPI_WriteByte0                 
+80006d44  SPI_WriteByte1                 
+80006d9c  SPI_ReadWriteByte0             
+80006df4  SPI_ReadWriteByte1             
+80006e4c  SPI_WriteByteNoRx0             
+80006e7c  SPI_WriteByteNoRx1             
+80006ee8  IntRegister                    
+80006f0c  IntUnRegister                  
+80006f2c  IntAINTCInit                   
+80006f9c  IntPrioritySet                 
+80006fd4  IntSystemEnable                
+80007008  IntSystemDisable               
+8000703c  IntIfClkFreeRunSet             
+80007050  IntIfClkAutoGateSet            
+80007064  IntActiveIrqNumGet             
+80007074  IntSpurIrqFlagGet              
+80007088  IntProtectionEnable            
+80007098  IntProtectionDisable           
+800070ac  IntSyncClkFreeRunSet           
+800070c0  IntSyncClkAutoGateSet          
+800070d4  IntFuncClkFreeRunSet           
+800070e8  IntFuncClkAutoGateSet          
+800070fc  IntCurrIrqPriorityGet          
+8000710c  IntPriorityThresholdGet        
+8000711c  IntPriorityThresholdSet        
+8000713c  IntRawStatusGet                
+8000717c  IntSoftwareIntSet              
+800071ac  IntSoftwareIntClear            
+800071dc  IntPendingIrqMaskedStatusGet   
+80007218  IntMasterIRQEnable             
+80007224  IntMasterIRQDisable            
+80007230  IntMasterFIQEnable             
+8000723c  IntMasterFIQDisable            
+80007248  IntMasterStatusGet             
+80007254  IntDisable                     
+8000726c  IntEnable                      
+800072c8  Init_GPIO                      
+80007430  GPIO_Module0ClkConfig          
+80007498  GPIO_Module1ClkConfig          
+80007500  GPIO_Module2ClkConfig          
+80007568  GPIO_Module3ClkConfig          
+800075fc  Init_LED                       
+80007600  LED_Show                       
+800078bc  InitCMD                        
+800078cc  CMD_CheckMatch                 
+80007a38  CMD_Help                       
+80007a48  CMD_SetNewCommand              
+80007a58  CMD_ClearNewCommand            
+80007a68  CMD_GetNewCommand              
+80007a94  __aeabi_memcpy                 
+80007a94  __aeabi_memcpy4                
+80007a94  __aeabi_memcpy8                
+80007a94  memcpy                         
+80007c14  MMUInit                        
+80007c74  MMUMemRegionMap                
+80007d68  MMUEnable                      
+80007d84  CacheDisable                   
+80007dc8  CacheEnable                    
+80007e14  CacheInstInvalidateAll         
+80007e20  CacheInstInvalidateBuff        
+80007e3c  CacheDataCleanInvalidateAll    
+80007e48  CacheDataCleanAll              
+80007e54  CacheDataInvalidateAll         
+80007e60  CacheDataCleanBuff             
+80007e7c  CacheDataInvalidateBuff        
+80007e98  CacheDataCleanInvalidateBuff   
+80007eb4  MSC_BufferCopy                 
+80007f2c  MSC_LowercaseChar              
+80007f68  MSC_DelayUS                    
+80007fdc  GpioPinMuxSetup                
+80007fe8  GPIO1PinMuxSetup               
+80007ff8  GPIO1Pin23PinMuxSetup          
+80008008  GPIO1ModuleClkConfig           
+8000805c  GPIO0ModuleClkConfig           
+8000811c  SVC_Handler                    
+80008144  IRQHandler                     
+800081f0  FIQHandler                     
+800081f4  AbortHandler                   
+800081f4  UndefInstHandler               
+8000820c  __aeabi_uidiv                  
+8000820c  __aeabi_uidivmod               
+800082fc  main                           
+800083cc  MMU_ConfigAndEnable            
+80008474  __TI_auto_init                 
+80008518  Init_GUI                       
+80008524  GUI_DrawInitialScreen          
+800085b4  copy_in                        
+80008638  CPUirqe                        
+80008648  CPUirqd                        
+80008658  CPUfiqe                        
+80008668  CPUfiqd                        
+80008678  CPUSwitchToUserMode            
+8000868c  CPUSwitchToPrivilegedMode      
+80008694  CPUAbortHandler                
+800086c4  start_boot                     
+800086dc  Init_Modules                   
+80008708  CPUIntStatus                   
+80008714  __aeabi_idiv0                  
+800087a4  Commands                       
+800087b4  RAM_CMD_Offset                 
+800087b6  FT_DispWidth                   
+800087b8  FT_DispHeight                  
+800087ba  FT_DispHCycle                  
+800087bc  FT_DispHOffset                 
+800087be  FT_DispHSync0                  
+800087c0  FT_DispHSync1                  
+800087c2  FT_DispVCycle                  
+800087c4  FT_DispVOffset                 
+800087c6  FT_DispVSync0                  
+800087c8  FT_DispVSync1                  
+800087ca  FT_DispPCLK                    
+800087cc  FT_DispSwizzle                 
+800087ce  FT_DispPCLKPol                 
+800087d0  FT_DispCSpread                 
+800087d2  FT_DispDither                  
+800087d4  UART_RX_place                  
+800087d8  UART_TX_add                    
+800087dc  UART_TX_remove                 
+800087e1  NumCommand                     
 8000c000  bss_start                      
 80010000  UART_RX_buffer                 
 800107d0  UART_TX_buffer                 
