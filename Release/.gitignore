@@ -1,7 +1,8 @@
+/AM335X_StarterWare_02_00_01_01/
 /FT81x/
 /LinkerCommand/
+/makefile
+/objects.mk
 /sources.mk
 /subdir_rules.mk
 /subdir_vars.mk
-/makefile
-/objects.mk

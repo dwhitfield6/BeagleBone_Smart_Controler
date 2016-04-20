@@ -1,7 +1,7 @@
 ******************************************************************************
-                  TI ARM Linker PC v5.2.5                      
+                  TI ARM Linker PC v5.2.6                      
 ******************************************************************************
->> Linked Fri Apr 15 18:28:48 2016
+>> Linked Tue Apr 19 18:17:16 2016
 
 OUTPUT FILE NAME:   <BeagleBone_Smart_Controler.out>
 ENTRY POINT SYMBOL: "Entry"  address: 80000000
@@ -11,22 +11,21 @@ MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  DDR_MEM               80000000   07ffffff  0000951e  07ff6ae1  RWIX
+  DDR_MEM               80000000   07ffffff  0000db4e  07ff24b1  RWIX
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-80000000    80000000    0000016c   0000016c    r-x
+80000000    80000000    00008968   00008968    r-x
   80000000    80000000    000000d0   000000d0    r-x .text:Entry
-  800000d0    800000d0    0000009c   0000009c    r-- .const
-8000016c    8000016c    0000000e   0000000e    rw-
-  8000016c    8000016c    0000000e   0000000e    rw- .data
-80004000    80004000    000049dc   00000000    rw-
-  80004000    80004000    000049dc   00000000    rw- .bss
-800089dc    800089dc    000049c0   000049c0    r-x
-  800089dc    800089dc    000049c0   000049c0    r-x .text
+  800000d0    800000d0    000087fc   000087fc    r-x .text
+  800088cc    800088cc    0000009c   0000009c    r-- .const
+80008968    80008968    0000002e   0000002e    rw-
+  80008968    80008968    0000002e   0000002e    rw- .data
+8000c000    8000c000    000051b0   00000000    rw-
+  8000c000    8000c000    000051b0   00000000    rw- .bss
 87fffff0    87fffff0    00000008   00000000    rw-
   87fffff0    87fffff0    00000008   00000000    rw- .stack
 
@@ -41,53 +40,59 @@ section   page    origin      length       input sections
                   80000000    000000c8     system.lib : init.obj (.text:Entry)
                   800000c8    00000008     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.tramp.__TI_auto_init.1)
 
-.const     0    800000d0    0000009c     
-                  800000d0    00000054     MEMORY.obj (.const)
-                  80000124    00000038     system.lib : startup.obj (.const:vecTbl)
-                  8000015c    00000010     CMD.obj (.const)
+.text      0    800000d0    000087fc     
+                  800000d0    000027d0     LCD.obj (.text)
+                  800028a0    00001d10     uart_irda_cir.obj (.text)
+                  800045b0    00000ec4     mcspi.obj (.text)
+                  80005474    00000b50     gpio_v2.obj (.text)
+                  80005fc4    00000640     UART.obj (.text)
+                  80006604    0000049c     SPI.obj (.text)
+                  80006aa0    00000488     system.lib : cp15.obj (.text)
+                  80006f28    000003e4     interrupt.obj (.text)
+                  8000730c    00000334     GPIO.obj (.text)
+                  80007640    000002c0     LEDS.obj (.text)
+                  80007900    0000020c     GUI.obj (.text)
+                  80007b0c    000001d8     CMD.obj (.text)
+                  80007ce4    00000180     rtsv7A8_A_le_n_eabi.lib : memcpy32.obj (.text)
+                  80007e64    00000170     mmu.obj (.text)
+                  80007fd4    00000130     cache.obj (.text)
+                  80008104    00000128     MISC.obj (.text)
+                  8000822c    00000124     platform.lib : gpio.obj (.text)
+                  80008350    0000010c     system.lib : exceptionhandler.obj (.text)
+                  8000845c    000000f0     rtsv7A8_A_le_n_eabi.lib : u_div32.obj (.text)
+                  8000854c    000000d0     main.obj (.text)
+                  8000861c    000000a8     MEMORY.obj (.text)
+                  800086c4    000000a4     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.text)
+                  80008768    00000084                             : cpy_tbl.obj (.text)
+                  800087ec    00000060     system.lib : cpu.obj (.text)
+                  8000884c    00000044                : startup.obj (.text)
+                  80008890    0000002c     SYSTEM.obj (.text)
+                  800088bc    0000000c     system.lib : cpu.obj (.text:CPUIntStatus)
+                  800088c8    00000004     rtsv7A8_A_le_n_eabi.lib : i_div0.obj (.text)
 
-.data      0    8000016c    0000000e     
-                  8000016c    0000000c     UART.obj (.data)
-                  80000178    00000002     CMD.obj (.data)
+.const     0    800088cc    0000009c     
+                  800088cc    00000054     MEMORY.obj (.const)
+                  80008920    00000038     system.lib : startup.obj (.const:vecTbl)
+                  80008958    00000010     CMD.obj (.const)
+
+.data      0    80008968    0000002e     
+                  80008968    00000020     LCD.obj (.data)
+                  80008988    0000000c     UART.obj (.data)
+                  80008994    00000002     CMD.obj (.data)
 
 .TI.persistent 
-*          0    8000016c    00000000     UNINITIALIZED
+*          0    80008968    00000000     UNINITIALIZED
 
-.bss       0    80004000    000049dc     UNINITIALIZED
-                  80004000    00004000     MEMORY.obj (.bss:pageTable)
-                  80008000    000007d0     UART.obj (.bss:UART_RX_buffer)
-                  800087d0    00000200     interrupt.obj (.bss:fnRAMVectors)
-                  800089d0    0000000c     (.common:Command_String)
+.bss       0    8000c000    000051b0     UNINITIALIZED
+                  8000c000    00004000     MEMORY.obj (.bss:pageTable)
+                  80010000    000007d0     UART.obj (.bss:UART_RX_buffer)
+                  800107d0    000007d0     UART.obj (.bss:UART_TX_buffer)
+                  80010fa0    00000200     interrupt.obj (.bss:fnRAMVectors)
+                  800111a0    0000000c     (.common:Command_String)
+                  800111ac    00000004     (.common:dummy)
 
 .TI.noinit 
-*          0    80004000    00000000     UNINITIALIZED
-
-.text      0    800089dc    000049c0     
-                  800089dc    00001d10     uart_irda_cir.obj (.text)
-                  8000a6ec    00000b50     gpio_v2.obj (.text)
-                  8000b23c    000004d0     UART.obj (.text)
-                  8000b70c    00000488     system.lib : cp15.obj (.text)
-                  8000bb94    000003e4     interrupt.obj (.text)
-                  8000bf78    000002c0     LEDS.obj (.text)
-                  8000c238    0000026c     GPIO.obj (.text)
-                  8000c4a4    000001d8     CMD.obj (.text)
-                  8000c67c    000001c4     platform.lib : uart.obj (.text)
-                  8000c840    00000180     rtsv7A8_A_le_n_eabi.lib : memcpy32.obj (.text)
-                  8000c9c0    0000016c     mmu.obj (.text)
-                  8000cb2c    00000130     cache.obj (.text)
-                  8000cc5c    00000124     platform.lib : gpio.obj (.text)
-                  8000cd80    0000010c     system.lib : exceptionhandler.obj (.text)
-                  8000ce8c    000000f0     rtsv7A8_A_le_n_eabi.lib : u_div32.obj (.text)
-                  8000cf7c    000000c8     main.obj (.text)
-                  8000d044    000000b4     MISC.obj (.text)
-                  8000d0f8    000000a8     MEMORY.obj (.text)
-                  8000d1a0    000000a4     rtsv7A8_A_le_n_eabi.lib : autoinit.obj (.text)
-                  8000d244    00000084                             : cpy_tbl.obj (.text)
-                  8000d2c8    00000060     system.lib : cpu.obj (.text)
-                  8000d328    00000044                : startup.obj (.text)
-                  8000d36c    00000020     SYSTEM.obj (.text)
-                  8000d38c    0000000c     system.lib : cpu.obj (.text:CPUIntStatus)
-                  8000d398    00000004     rtsv7A8_A_le_n_eabi.lib : i_div0.obj (.text)
+*          0    8000c000    00000000     UNINITIALIZED
 
 .stack     0    87fffff0    00000008     UNINITIALIZED
                   87fffff0    00000008     --HOLE--
@@ -99,7 +104,7 @@ callee name               trampoline name
    callee addr  tramp addr   call addr  call info
 --------------  -----------  ---------  ----------------
 __TI_auto_init            $Tramp$AA$S$$__TI_auto_init
-   8000d1a0     800000c8     800000a0   system.lib : init.obj (.text:Entry)
+   800086c4     800000c8     800000a0   system.lib : init.obj (.text:Entry)
 
 [1 trampolines]
 [1 trampoline calls]
@@ -109,263 +114,408 @@ GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name
 
 address   name                           
 -------   ----                           
-8000ce74  AbortHandler                   
-8000c4b4  CMD_CheckMatch                 
-8000c640  CMD_ClearNewCommand            
-8000c650  CMD_GetNewCommand              
-8000c620  CMD_Help                       
-8000c630  CMD_SetNewCommand              
-8000bb68  CP15AuxControlFeatureDisable   
-8000bb54  CP15AuxControlFeatureEnable    
-8000bafc  CP15BranchPredictionDisable    
-8000baec  CP15BranchPredictionEnable     
-8000bae0  CP15BranchPredictorInvalidate  
-8000bb1c  CP15ControlFeatureDisable      
-8000bb30  CP15ControlFeatureEnable       
-8000b7f8  CP15DCacheClean                
-8000b930  CP15DCacheCleanBuff            
-8000b88c  CP15DCacheCleanFlush           
-8000b984  CP15DCacheCleanFlushBuff       
-8000b728  CP15DCacheDisable              
-8000b754  CP15DCacheEnable               
-8000b764  CP15DCacheFlush                
-8000b9d8  CP15DCacheFlushBuff            
-8000bb0c  CP15DomainAccessClientSet      
-8000b70c  CP15ICacheDisable              
-8000b744  CP15ICacheEnable               
-8000b920  CP15ICacheFlush                
-8000ba3c  CP15ICacheFlushBuff            
-8000baa8  CP15MMUDisable                 
-8000bac0  CP15MMUEnable                  
-8000bb7c  CP15MainIdPrimPartNumGet       
-8000ba9c  CP15TlbInvalidate              
-8000ba90  CP15Ttb0Set                    
-8000bb44  CP15TtbCtlTtb0Config           
-8000bad4  CP15VectorBaseAddrSet          
-8000d324  CPUAbortHandler                
-8000d38c  CPUIntStatus                   
-8000d31c  CPUSwitchToPrivilegedMode      
-8000d308  CPUSwitchToUserMode            
-8000d2f8  CPUfiqd                        
-8000d2e8  CPUfiqe                        
-8000d2d8  CPUirqd                        
-8000d2c8  CPUirqe                        
-8000cbf0  CacheDataCleanAll              
-8000cc08  CacheDataCleanBuff             
-8000cbe4  CacheDataCleanInvalidateAll    
-8000cc40  CacheDataCleanInvalidateBuff   
-8000cbfc  CacheDataInvalidateAll         
-8000cc24  CacheDataInvalidateBuff        
-8000cb2c  CacheDisable                   
-8000cb70  CacheEnable                    
-8000cbbc  CacheInstInvalidateAll         
-8000cbc8  CacheInstInvalidateBuff        
-800089d0  Command_String                 
-8000015c  Commands                       
+80008444  AbortHandler                   
+80007b1c  CMD_CheckMatch                 
+80007ca8  CMD_ClearNewCommand            
+80007cb8  CMD_GetNewCommand              
+80007c88  CMD_Help                       
+80007c98  CMD_SetNewCommand              
+80006efc  CP15AuxControlFeatureDisable   
+80006ee8  CP15AuxControlFeatureEnable    
+80006e90  CP15BranchPredictionDisable    
+80006e80  CP15BranchPredictionEnable     
+80006e74  CP15BranchPredictorInvalidate  
+80006eb0  CP15ControlFeatureDisable      
+80006ec4  CP15ControlFeatureEnable       
+80006b8c  CP15DCacheClean                
+80006cc4  CP15DCacheCleanBuff            
+80006c20  CP15DCacheCleanFlush           
+80006d18  CP15DCacheCleanFlushBuff       
+80006abc  CP15DCacheDisable              
+80006ae8  CP15DCacheEnable               
+80006af8  CP15DCacheFlush                
+80006d6c  CP15DCacheFlushBuff            
+80006ea0  CP15DomainAccessClientSet      
+80006aa0  CP15ICacheDisable              
+80006ad8  CP15ICacheEnable               
+80006cb4  CP15ICacheFlush                
+80006dd0  CP15ICacheFlushBuff            
+80006e3c  CP15MMUDisable                 
+80006e54  CP15MMUEnable                  
+80006f10  CP15MainIdPrimPartNumGet       
+80006e30  CP15TlbInvalidate              
+80006e24  CP15Ttb0Set                    
+80006ed8  CP15TtbCtlTtb0Config           
+80006e68  CP15VectorBaseAddrSet          
+80008848  CPUAbortHandler                
+800088bc  CPUIntStatus                   
+80008840  CPUSwitchToPrivilegedMode      
+8000882c  CPUSwitchToUserMode            
+8000881c  CPUfiqd                        
+8000880c  CPUfiqe                        
+800087fc  CPUirqd                        
+800087ec  CPUirqe                        
+80008098  CacheDataCleanAll              
+800080b0  CacheDataCleanBuff             
+8000808c  CacheDataCleanInvalidateAll    
+800080e8  CacheDataCleanInvalidateBuff   
+800080a4  CacheDataInvalidateAll         
+800080cc  CacheDataInvalidateBuff        
+80007fd4  CacheDisable                   
+80008018  CacheEnable                    
+80008064  CacheInstInvalidateAll         
+80008070  CacheInstInvalidateBuff        
+800111a0  Command_String                 
+80008958  Commands                       
 80000000  Entry                          
-8000ce70  FIQHandler                     
-8000ccdc  GPIO0ModuleClkConfig           
-8000cc88  GPIO1ModuleClkConfig           
-8000cc78  GPIO1Pin23PinMuxSetup          
-8000cc68  GPIO1PinMuxSetup               
-8000b05c  GPIOAutoIdleModeControl        
-8000b128  GPIODebounceFuncControl        
-8000b178  GPIODebounceTimeConfig         
-8000a7c8  GPIODirModeGet                 
-8000a768  GPIODirModeSet                 
-8000b0e4  GPIOGatingRatioConfigure       
-8000b0a0  GPIOIdleModeConfigure          
-8000ad14  GPIOIntTypeGet                 
-8000a974  GPIOIntTypeSet                 
-8000a744  GPIOModuleDisable              
-8000a720  GPIOModuleEnable               
-8000a6ec  GPIOModuleReset                
-8000a8b0  GPIOMultiplePinsRead           
-8000a880  GPIOMultiplePinsWrite          
-8000ae58  GPIOPinIntClear                
-8000a924  GPIOPinIntDisable              
-8000a8d4  GPIOPinIntEnable               
-8000adf4  GPIOPinIntStatus               
-8000affc  GPIOPinIntWakeUpDisable        
-8000af9c  GPIOPinIntWakeUpEnable         
-8000a858  GPIOPinRead                    
-8000a808  GPIOPinWrite                   
-8000aea8  GPIORawIntStatus               
-8000b19c  GPIORevisionInfoGet            
-8000af04  GPIOTriggerPinInt              
-8000af78  GPIOWakeupGlobalDisable        
-8000af54  GPIOWakeupGlobalEnable         
-8000c300  GPIO_Module0ClkConfig          
-8000c368  GPIO_Module1ClkConfig          
-8000c3d0  GPIO_Module2ClkConfig          
-8000c438  GPIO_Module3ClkConfig          
-8000cc5c  GpioPinMuxSetup                
-8000cdc4  IRQHandler                     
-8000c4a4  InitCMD                        
-8000c238  Init_GPIO                      
-8000bf78  Init_LED                       
-8000d36c  Init_Modules                   
-8000b23c  Init_UART                      
-8000bbdc  IntAINTCInit                   
-8000bd14  IntActiveIrqNumGet             
-8000bdac  IntCurrIrqPriorityGet          
-8000bf04  IntDisable                     
-8000bf1c  IntEnable                      
-8000bd98  IntFuncClkAutoGateSet          
-8000bd84  IntFuncClkFreeRunSet           
-8000bd00  IntIfClkAutoGateSet            
-8000bcec  IntIfClkFreeRunSet             
-8000beec  IntMasterFIQDisable            
-8000bee0  IntMasterFIQEnable             
-8000bed4  IntMasterIRQDisable            
-8000bec8  IntMasterIRQEnable             
-8000bef8  IntMasterStatusGet             
-8000be8c  IntPendingIrqMaskedStatusGet   
-8000bc4c  IntPrioritySet                 
-8000bdbc  IntPriorityThresholdGet        
-8000bdcc  IntPriorityThresholdSet        
-8000bd48  IntProtectionDisable           
-8000bd38  IntProtectionEnable            
-8000bdec  IntRawStatusGet                
-8000bb98  IntRegister                    
-8000be5c  IntSoftwareIntClear            
-8000be2c  IntSoftwareIntSet              
-8000bd24  IntSpurIrqFlagGet              
-8000bd70  IntSyncClkAutoGateSet          
-8000bd5c  IntSyncClkFreeRunSet           
-8000bcb8  IntSystemDisable               
-8000bc84  IntSystemEnable                
-8000bbbc  IntUnRegister                  
-8000bf7c  LED_Show                       
-8000cb10  MMUEnable                      
-8000c9c0  MMUInit                        
-8000ca20  MMUMemRegionMap                
-8000d0f8  MMU_ConfigAndEnable            
-8000d044  MSC_BufferCopy                 
-8000d0bc  MSC_LowercaseChar              
-80000179  NumCommand                     
+80008440  FIQHandler                     
+80008984  FT_DispCSpread                 
+80008986  FT_DispDither                  
+8000896e  FT_DispHCycle                  
+80008970  FT_DispHOffset                 
+80008972  FT_DispHSync0                  
+80008974  FT_DispHSync1                  
+8000896c  FT_DispHeight                  
+8000897e  FT_DispPCLK                    
+80008982  FT_DispPCLKPol                 
+80008980  FT_DispSwizzle                 
+80008976  FT_DispVCycle                  
+80008978  FT_DispVOffset                 
+8000897a  FT_DispVSync0                  
+8000897c  FT_DispVSync1                  
+8000896a  FT_DispWidth                   
+800082ac  GPIO0ModuleClkConfig           
+80008258  GPIO1ModuleClkConfig           
+80008248  GPIO1Pin23PinMuxSetup          
+80008238  GPIO1PinMuxSetup               
+80005de4  GPIOAutoIdleModeControl        
+80005eb0  GPIODebounceFuncControl        
+80005f00  GPIODebounceTimeConfig         
+80005550  GPIODirModeGet                 
+800054f0  GPIODirModeSet                 
+80005e6c  GPIOGatingRatioConfigure       
+80005e28  GPIOIdleModeConfigure          
+80005a9c  GPIOIntTypeGet                 
+800056fc  GPIOIntTypeSet                 
+800054cc  GPIOModuleDisable              
+800054a8  GPIOModuleEnable               
+80005474  GPIOModuleReset                
+80005638  GPIOMultiplePinsRead           
+80005608  GPIOMultiplePinsWrite          
+80005be0  GPIOPinIntClear                
+800056ac  GPIOPinIntDisable              
+8000565c  GPIOPinIntEnable               
+80005b7c  GPIOPinIntStatus               
+80005d84  GPIOPinIntWakeUpDisable        
+80005d24  GPIOPinIntWakeUpEnable         
+800055e0  GPIOPinRead                    
+80005590  GPIOPinWrite                   
+80005c30  GPIORawIntStatus               
+80005f24  GPIORevisionInfoGet            
+80005c8c  GPIOTriggerPinInt              
+80005d00  GPIOWakeupGlobalDisable        
+80005cdc  GPIOWakeupGlobalEnable         
+80007474  GPIO_Module0ClkConfig          
+800074dc  GPIO_Module1ClkConfig          
+80007544  GPIO_Module2ClkConfig          
+800075ac  GPIO_Module3ClkConfig          
+8000790c  GUI_DrawInitialScreen          
+8000822c  GpioPinMuxSetup                
+80008394  IRQHandler                     
+80007b0c  InitCMD                        
+8000730c  Init_GPIO                      
+80007900  Init_GUI                       
+800000d0  Init_LCD                       
+80007640  Init_LED                       
+80008890  Init_Modules                   
+80006604  Init_SPI                       
+80006768  Init_SPI_Module0               
+80006658  Init_SPI_Module1               
+80005fc4  Init_UART                      
+80006f70  IntAINTCInit                   
+800070a8  IntActiveIrqNumGet             
+80007140  IntCurrIrqPriorityGet          
+80007298  IntDisable                     
+800072b0  IntEnable                      
+8000712c  IntFuncClkAutoGateSet          
+80007118  IntFuncClkFreeRunSet           
+80007094  IntIfClkAutoGateSet            
+80007080  IntIfClkFreeRunSet             
+80007280  IntMasterFIQDisable            
+80007274  IntMasterFIQEnable             
+80007268  IntMasterIRQDisable            
+8000725c  IntMasterIRQEnable             
+8000728c  IntMasterStatusGet             
+80007220  IntPendingIrqMaskedStatusGet   
+80006fe0  IntPrioritySet                 
+80007150  IntPriorityThresholdGet        
+80007160  IntPriorityThresholdSet        
+800070dc  IntProtectionDisable           
+800070cc  IntProtectionEnable            
+80007180  IntRawStatusGet                
+80006f2c  IntRegister                    
+800071f0  IntSoftwareIntClear            
+800071c0  IntSoftwareIntSet              
+800070b8  IntSpurIrqFlagGet              
+80007104  IntSyncClkAutoGateSet          
+800070f0  IntSyncClkFreeRunSet           
+8000704c  IntSystemDisable               
+80007018  IntSystemEnable                
+80006f50  IntUnRegister                  
+80000aac  LCD_IncrementWriteOffset       
+80000330  LCD_Reset                      
+80000b18  LCD_SendRAMAddress             
+80000b88  LCD_WaitCoprocessorDone        
+80000aec  LCD_WriteCommandParameters     
+80000a34  LCD_cmd                        
+80001b04  LCD_cmd_append                 
+80000f10  LCD_cmd_bgcolor                
+80000cf8  LCD_cmd_button                 
+800022c0  LCD_cmd_calibrate              
+80000e5c  LCD_cmd_clock                  
+800021ec  LCD_cmd_coldstart              
+8000157c  LCD_cmd_dial                   
+80000f68  LCD_cmd_fgcolor                
+80001018  LCD_cmd_gauge                  
+80001e40  LCD_cmd_getmatrix              
+80001f54  LCD_cmd_getprops               
+80001efc  LCD_cmd_getptr                 
+80000fc0  LCD_cmd_gradcolor              
+800010d0  LCD_cmd_gradient               
+80001b78  LCD_cmd_inflate                
+800021fc  LCD_cmd_interrupt              
+80001208  LCD_cmd_keys                   
+80001c88  LCD_cmd_loadidentity           
+80001c1c  LCD_cmd_loadimage              
+80002858  LCD_cmd_logo                   
+80001fe4  LCD_cmd_mediafifo              
+80001a84  LCD_cmd_memcpy                 
+80001860  LCD_cmd_memcrc                 
+8000194c  LCD_cmd_memset                 
+800019d0  LCD_cmd_memwrite               
+800018e0  LCD_cmd_memzero                
+800017cc  LCD_cmd_number                 
+80002050  LCD_cmd_playvideo              
+8000136c  LCD_cmd_progress               
+80002254  LCD_cmd_regread                
+80002318  LCD_cmd_romfont                
+80001da4  LCD_cmd_rotate                 
+80001d38  LCD_cmd_scale                  
+80002674  LCD_cmd_screensaver            
+80001418  LCD_cmd_scrollbar              
+80001774  LCD_cmd_setbase                
+80002520  LCD_cmd_setbitmap              
+80002384  LCD_cmd_setfont                
+800023f0  LCD_cmd_setfont2               
+80001dfc  LCD_cmd_setmatrix              
+800024c8  LCD_cmd_setrotate              
+80002470  LCD_cmd_setscratch             
+800026b8  LCD_cmd_sketch                 
+800014cc  LCD_cmd_slider                 
+8000275c  LCD_cmd_snapshot               
+800027b4  LCD_cmd_snapshot2              
+800025ac  LCD_cmd_spinner                
+80002630  LCD_cmd_stop                   
+80000bac  LCD_cmd_text                   
+80001610  LCD_cmd_toggle                 
+80002158  LCD_cmd_track                  
+80001ccc  LCD_cmd_translate              
+800020ec  LCD_cmd_videoframe             
+800020a8  LCD_cmd_videostart             
+800003b8  LCD_ft810memRead16             
+8000041c  LCD_ft810memRead32             
+8000036c  LCD_ft810memRead8              
+800004e4  LCD_ft810memWrite16            
+80000548  LCD_ft810memWrite32            
+800004a8  LCD_ft810memWrite8             
+800005dc  LCD_ft810memWriteBuffer        
+80000a5c  LCD_host_command               
+800007a0  LCD_rd16                       
+800007b8  LCD_rd32                       
+8000078c  LCD_rd8                        
+8000090c  LCD_rd_buffer                  
+800006e8  LCD_wr16                       
+80000704  LCD_wr32                       
+800006cc  LCD_wr8                        
+80000720  LCD_wr8s                       
+800007cc  LCD_wr_buffer                  
+80007644  LED_Show                       
+80007fb8  MMUEnable                      
+80007e64  MMUInit                        
+80007ec4  MMUMemRegionMap                
+8000861c  MMU_ConfigAndEnable            
+80008104  MSC_BufferCopy                 
+800081b8  MSC_DelayUS                    
+8000817c  MSC_LowercaseChar              
+800052f0  McSPI0ModuleClkConfig          
+80005194  McSPI1ModuleClkConfig          
+80004914  McSPICSAssert                  
+8000494c  McSPICSDeAssert                
+8000481c  McSPICSDisable                 
+800047f8  McSPICSEnable                  
+80004840  McSPICSPolarityConfig          
+800048a8  McSPICSTimeControlSet          
+80004c24  McSPIChannelDisable            
+80004bec  McSPIChannelEnable             
+800050e0  McSPIChannelStatusGet          
+800045b0  McSPIClkConfig                 
+80004f54  McSPIDMADisable                
+80004f10  McSPIDMAEnable                 
+80005150  McSPIFIFODatManagementConfig   
+80004dd0  McSPIFIFOTrigLvlSet            
+80004ff0  McSPIInitDelayConfig           
+80004fc4  McSPIIntDisable                
+80004f98  McSPIIntEnable                 
+800050ac  McSPIIntStatusClear            
+80005094  McSPIIntStatusGet              
+80004a80  McSPIMasterModeConfig          
+80004a5c  McSPIMasterModeEnable          
+8000510c  McSPIMultipleWordAccessConfig  
+80005068  McSPIReceiveData               
+80004c5c  McSPIReset                     
+80004d68  McSPIRxFIFOConfig              
+80004a24  McSPIStartBitDisable           
+80004984  McSPIStartBitEnable            
+800049bc  McSPIStartBitPolarityConfig    
+80005034  McSPITransmitData              
+80004cc8  McSPITurboModeDisable          
+80004c90  McSPITurboModeEnable           
+80004d00  McSPITxFIFOConfig              
+80004ed0  McSPIWordCountSet              
+80004790  McSPIWordLengthSet             
+80008995  NumCommand                     
+80008968  RAM_CMD_Offset                 
 UNDEFED   SHT$$INIT_ARRAY$$Base          
 UNDEFED   SHT$$INIT_ARRAY$$Limit         
-8000cd9c  SVC_Handler                    
-8000c69c  UART0ModuleClkConfig           
-8000a01c  UARTAutoIdleModeControl        
-80009dc8  UARTAutoRTSAutoCTSControl      
-8000a504  UARTAutobaudParityGet          
-8000a59c  UARTAutobaudSpeedGet           
-8000a550  UARTAutobaudWordLenGet         
-80008d64  UARTBreakCtl                   
-80009aa4  UARTCharGet                    
-80009a4c  UARTCharGetNonBlocking         
-80009afc  UARTCharGetTimeout             
-80009b8c  UARTCharPut                    
-800099e0  UARTCharPutNonBlocking         
-8000998c  UARTCharsAvail                 
-8000a474  UARTDMACounterResetControl     
-800092a0  UARTDMADisable                 
-80009244  UARTDMAEnable                  
-8000a38c  UARTDSRInterruptControl        
-80008ca8  UARTDivisorLatchDisable        
-80008c84  UARTDivisorLatchEnable         
-80008b00  UARTDivisorLatchWrite          
-80008a3c  UARTDivisorValCompute          
-800093c4  UARTEnhanFuncBitValRestore     
-80009364  UARTEnhanFuncEnable            
-80009c00  UARTFIFOCharGet                
-80009be0  UARTFIFOCharPut                
-80008e80  UARTFIFOConfig                 
-80009d74  UARTFIFOEnableStatusGet        
-800092d8  UARTFIFORegisterWrite          
-8000a328  UARTFIFOTrigLvlGranControl     
-80009c1c  UARTFIFOWrite                  
-8000a060  UARTFlowCtrlTrigLvlConfig      
-80009f94  UARTIdleModeConfigure          
-80009870  UARTIntDisable                 
-8000978c  UARTIntEnable                  
-80009cd4  UARTIntIdentityGet             
-80009d20  UARTIntPendingStatusGet        
-80008da8  UARTLineCharacConfig           
-8000a1d4  UARTLoopbackModeControl        
-8000a248  UARTModemControlClear          
-8000a218  UARTModemControlSet            
-8000a294  UARTModemStatusChangeCheck     
-8000a278  UARTModemStatusGet             
-80009f60  UARTModuleReset                
-8000a648  UARTModuleVersionNumberGet     
-800089dc  UARTOperatingModeSelect        
-80008e64  UARTParityModeGet              
-80008e20  UARTParityModeSet              
-8000c67c  UARTPinMuxSetup                
-80009f1c  UARTPulseShapingControl        
-8000a458  UARTRXCTSDSRTransitionStatusGet
-8000a414  UARTRXCTSDSRWakeUpConfigure    
-80008d44  UARTRegConfModeRestore         
-80008ccc  UARTRegConfigModeEnable        
-8000a2b0  UARTResumeOperation            
-80009c88  UARTRxErrorGet                 
-8000a4ec  UARTRxFIFOLevelGet             
-8000a62c  UARTScratchPadRegRead          
-8000a5e8  UARTScratchPadRegWrite         
-80009eb8  UARTSoftwareFlowCtrlOptSet     
-80009938  UARTSpaceAvail                 
-80009e54  UARTSpecialCharDetectControl   
-80009428  UARTSubConfigMSRSPRModeEn      
-80009500  UARTSubConfigTCRTLRModeEn      
-800095d8  UARTSubConfigXOFFModeEn        
-800096b0  UARTTCRTLRBitValRestore        
-8000a664  UARTTxDMAThresholdControl      
-8000a6a8  UARTTxDMAThresholdValConfig    
-8000a3d0  UARTTxEmptyIntControl          
-8000a4b8  UARTTxFIFOFullStatusGet        
-8000a4d4  UARTTxFIFOLevelGet             
-80009fd8  UARTWakeUpControl              
-8000a2f8  UARTWakeUpEventsDisable        
-8000a2c8  UARTWakeUpEventsEnable         
-8000a0b0  UARTXON1XOFF1ValProgram        
-8000a0e0  UARTXON2XOFF2ValProgram        
-8000a110  UARTXONAnyFeatureControl       
-8000b5a0  UART_AddToBuffer               
-8000b574  UART_INTCConfigure0            
-8000b468  UART_ISR                       
-8000b294  UART_Module0ClkConfig          
-8000b2f4  UART_PrintBuffer               
-8000b2dc  UART_PrintChar                 
-8000b344  UART_PrintString               
-80008000  UART_RX_buffer                 
-8000016c  UART_RX_place                  
-80000170  UART_TX_add                    
-80000174  UART_TX_remove                 
-8000b3a0  UartBaudRateSet                
-8000b41c  UartConfigure                  
-8000b37c  UartFIFOConfigure              
-8000b3d8  UartLineCharacSet              
-8000ce74  UndefInstHandler               
+800068a4  SPI_1_ISR                      
+80006878  SPI_INTCConfigure1             
+80006958  SPI_ReadWriteByte0             
+800069b0  SPI_ReadWriteByte1             
+800068a8  SPI_WriteByte0                 
+80006900  SPI_WriteByte1                 
+80006a08  SPI_WriteByteNoRx0             
+80006a38  SPI_WriteByteNoRx1             
+8000836c  SVC_Handler                    
+80003ee0  UARTAutoIdleModeControl        
+80003c8c  UARTAutoRTSAutoCTSControl      
+800043c8  UARTAutobaudParityGet          
+80004460  UARTAutobaudSpeedGet           
+80004414  UARTAutobaudWordLenGet         
+80002c28  UARTBreakCtl                   
+80003968  UARTCharGet                    
+80003910  UARTCharGetNonBlocking         
+800039c0  UARTCharGetTimeout             
+80003a50  UARTCharPut                    
+800038a4  UARTCharPutNonBlocking         
+80003850  UARTCharsAvail                 
+80004338  UARTDMACounterResetControl     
+80003164  UARTDMADisable                 
+80003108  UARTDMAEnable                  
+80004250  UARTDSRInterruptControl        
+80002b6c  UARTDivisorLatchDisable        
+80002b48  UARTDivisorLatchEnable         
+800029c4  UARTDivisorLatchWrite          
+80002900  UARTDivisorValCompute          
+80003288  UARTEnhanFuncBitValRestore     
+80003228  UARTEnhanFuncEnable            
+80003ac4  UARTFIFOCharGet                
+80003aa4  UARTFIFOCharPut                
+80002d44  UARTFIFOConfig                 
+80003c38  UARTFIFOEnableStatusGet        
+8000319c  UARTFIFORegisterWrite          
+800041ec  UARTFIFOTrigLvlGranControl     
+80003ae0  UARTFIFOWrite                  
+80003f24  UARTFlowCtrlTrigLvlConfig      
+80003e58  UARTIdleModeConfigure          
+80003734  UARTIntDisable                 
+80003650  UARTIntEnable                  
+80003b98  UARTIntIdentityGet             
+80003be4  UARTIntPendingStatusGet        
+80002c6c  UARTLineCharacConfig           
+80004098  UARTLoopbackModeControl        
+8000410c  UARTModemControlClear          
+800040dc  UARTModemControlSet            
+80004158  UARTModemStatusChangeCheck     
+8000413c  UARTModemStatusGet             
+80003e24  UARTModuleReset                
+8000450c  UARTModuleVersionNumberGet     
+800028a0  UARTOperatingModeSelect        
+80002d28  UARTParityModeGet              
+80002ce4  UARTParityModeSet              
+80003de0  UARTPulseShapingControl        
+8000431c  UARTRXCTSDSRTransitionStatusGet
+800042d8  UARTRXCTSDSRWakeUpConfigure    
+80002c08  UARTRegConfModeRestore         
+80002b90  UARTRegConfigModeEnable        
+80004174  UARTResumeOperation            
+80003b4c  UARTRxErrorGet                 
+800043b0  UARTRxFIFOLevelGet             
+800044f0  UARTScratchPadRegRead          
+800044ac  UARTScratchPadRegWrite         
+80003d7c  UARTSoftwareFlowCtrlOptSet     
+800037fc  UARTSpaceAvail                 
+80003d18  UARTSpecialCharDetectControl   
+800032ec  UARTSubConfigMSRSPRModeEn      
+800033c4  UARTSubConfigTCRTLRModeEn      
+8000349c  UARTSubConfigXOFFModeEn        
+80003574  UARTTCRTLRBitValRestore        
+80004528  UARTTxDMAThresholdControl      
+8000456c  UARTTxDMAThresholdValConfig    
+80004294  UARTTxEmptyIntControl          
+8000437c  UARTTxFIFOFullStatusGet        
+80004398  UARTTxFIFOLevelGet             
+80003e9c  UARTWakeUpControl              
+800041bc  UARTWakeUpEventsDisable        
+8000418c  UARTWakeUpEventsEnable         
+80003f74  UARTXON1XOFF1ValProgram        
+80003fa4  UARTXON2XOFF2ValProgram        
+80003fd4  UARTXONAnyFeatureControl       
+800061e0  UART_0_ISR                     
+800063ac  UART_AddToRXBuffer             
+800064dc  UART_AddToTXBuffer             
+80006118  UART_BaudRateSet               
+80006194  UART_Configure                 
+800060f4  UART_FIFOConfigure             
+80006588  UART_GetTXInterruptStatus      
+80006380  UART_InterruptConfigure0       
+80006150  UART_LineCharacSet             
+80006014  UART_Module0ClkConfig          
+80006070  UART_PrintBuffer               
+8000605c  UART_PrintChar                 
+800060bc  UART_PrintString               
+80010000  UART_RX_buffer                 
+80008988  UART_RX_place                  
+8000898c  UART_TX_add                    
+800107d0  UART_TX_buffer                 
+80008990  UART_TX_remove                 
+80008444  UndefInstHandler               
 87fffff8  __STACK_END                    
 00000008  __STACK_SIZE                   
 UNDEFED   __TI_CINIT_Base                
 UNDEFED   __TI_CINIT_Limit               
 UNDEFED   __TI_Handler_Table_Base        
 UNDEFED   __TI_Handler_Table_Limit       
-8000d1a0  __TI_auto_init                 
+800086c4  __TI_auto_init                 
 80000000  __TI_static_base__             
-8000d398  __aeabi_idiv0                  
-8000c840  __aeabi_memcpy                 
-8000c840  __aeabi_memcpy4                
-8000c840  __aeabi_memcpy8                
-8000ce8c  __aeabi_uidiv                  
-8000ce8c  __aeabi_uidivmod               
+800088c8  __aeabi_idiv0                  
+80007ce4  __aeabi_memcpy                 
+80007ce4  __aeabi_memcpy4                
+80007ce4  __aeabi_memcpy8                
+8000845c  __aeabi_uidiv                  
+8000845c  __aeabi_uidivmod               
 ffffffff  __binit__                      
 ffffffff  __c_args__                     
 87fffff0  __stack                        
 ffffffff  binit                          
-800089dc  bss_end                        
-80004000  bss_start                      
-8000d244  copy_in                        
-800087d0  fnRAMVectors                   
-8000b1f8  gpioContextRestore             
-8000b1b4  gpioContextSave                
-8000cf7c  main                           
-8000c840  memcpy                         
-8000d354  start_boot                     
+800111b0  bss_end                        
+8000c000  bss_start                      
+80008768  copy_in                        
+80010fa0  fnRAMVectors                   
+80005f80  gpioContextRestore             
+80005f3c  gpioContextSave                
+8000854c  main                           
+80007ce4  memcpy                         
+80008878  start_boot                     
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -375,249 +525,394 @@ address   name
 00000008  __STACK_SIZE                   
 80000000  Entry                          
 80000000  __TI_static_base__             
-8000015c  Commands                       
-8000016c  UART_RX_place                  
-80000170  UART_TX_add                    
-80000174  UART_TX_remove                 
-80000179  NumCommand                     
-80004000  bss_start                      
-80008000  UART_RX_buffer                 
-800087d0  fnRAMVectors                   
-800089d0  Command_String                 
-800089dc  UARTOperatingModeSelect        
-800089dc  bss_end                        
-80008a3c  UARTDivisorValCompute          
-80008b00  UARTDivisorLatchWrite          
-80008c84  UARTDivisorLatchEnable         
-80008ca8  UARTDivisorLatchDisable        
-80008ccc  UARTRegConfigModeEnable        
-80008d44  UARTRegConfModeRestore         
-80008d64  UARTBreakCtl                   
-80008da8  UARTLineCharacConfig           
-80008e20  UARTParityModeSet              
-80008e64  UARTParityModeGet              
-80008e80  UARTFIFOConfig                 
-80009244  UARTDMAEnable                  
-800092a0  UARTDMADisable                 
-800092d8  UARTFIFORegisterWrite          
-80009364  UARTEnhanFuncEnable            
-800093c4  UARTEnhanFuncBitValRestore     
-80009428  UARTSubConfigMSRSPRModeEn      
-80009500  UARTSubConfigTCRTLRModeEn      
-800095d8  UARTSubConfigXOFFModeEn        
-800096b0  UARTTCRTLRBitValRestore        
-8000978c  UARTIntEnable                  
-80009870  UARTIntDisable                 
-80009938  UARTSpaceAvail                 
-8000998c  UARTCharsAvail                 
-800099e0  UARTCharPutNonBlocking         
-80009a4c  UARTCharGetNonBlocking         
-80009aa4  UARTCharGet                    
-80009afc  UARTCharGetTimeout             
-80009b8c  UARTCharPut                    
-80009be0  UARTFIFOCharPut                
-80009c00  UARTFIFOCharGet                
-80009c1c  UARTFIFOWrite                  
-80009c88  UARTRxErrorGet                 
-80009cd4  UARTIntIdentityGet             
-80009d20  UARTIntPendingStatusGet        
-80009d74  UARTFIFOEnableStatusGet        
-80009dc8  UARTAutoRTSAutoCTSControl      
-80009e54  UARTSpecialCharDetectControl   
-80009eb8  UARTSoftwareFlowCtrlOptSet     
-80009f1c  UARTPulseShapingControl        
-80009f60  UARTModuleReset                
-80009f94  UARTIdleModeConfigure          
-80009fd8  UARTWakeUpControl              
-8000a01c  UARTAutoIdleModeControl        
-8000a060  UARTFlowCtrlTrigLvlConfig      
-8000a0b0  UARTXON1XOFF1ValProgram        
-8000a0e0  UARTXON2XOFF2ValProgram        
-8000a110  UARTXONAnyFeatureControl       
-8000a1d4  UARTLoopbackModeControl        
-8000a218  UARTModemControlSet            
-8000a248  UARTModemControlClear          
-8000a278  UARTModemStatusGet             
-8000a294  UARTModemStatusChangeCheck     
-8000a2b0  UARTResumeOperation            
-8000a2c8  UARTWakeUpEventsEnable         
-8000a2f8  UARTWakeUpEventsDisable        
-8000a328  UARTFIFOTrigLvlGranControl     
-8000a38c  UARTDSRInterruptControl        
-8000a3d0  UARTTxEmptyIntControl          
-8000a414  UARTRXCTSDSRWakeUpConfigure    
-8000a458  UARTRXCTSDSRTransitionStatusGet
-8000a474  UARTDMACounterResetControl     
-8000a4b8  UARTTxFIFOFullStatusGet        
-8000a4d4  UARTTxFIFOLevelGet             
-8000a4ec  UARTRxFIFOLevelGet             
-8000a504  UARTAutobaudParityGet          
-8000a550  UARTAutobaudWordLenGet         
-8000a59c  UARTAutobaudSpeedGet           
-8000a5e8  UARTScratchPadRegWrite         
-8000a62c  UARTScratchPadRegRead          
-8000a648  UARTModuleVersionNumberGet     
-8000a664  UARTTxDMAThresholdControl      
-8000a6a8  UARTTxDMAThresholdValConfig    
-8000a6ec  GPIOModuleReset                
-8000a720  GPIOModuleEnable               
-8000a744  GPIOModuleDisable              
-8000a768  GPIODirModeSet                 
-8000a7c8  GPIODirModeGet                 
-8000a808  GPIOPinWrite                   
-8000a858  GPIOPinRead                    
-8000a880  GPIOMultiplePinsWrite          
-8000a8b0  GPIOMultiplePinsRead           
-8000a8d4  GPIOPinIntEnable               
-8000a924  GPIOPinIntDisable              
-8000a974  GPIOIntTypeSet                 
-8000ad14  GPIOIntTypeGet                 
-8000adf4  GPIOPinIntStatus               
-8000ae58  GPIOPinIntClear                
-8000aea8  GPIORawIntStatus               
-8000af04  GPIOTriggerPinInt              
-8000af54  GPIOWakeupGlobalEnable         
-8000af78  GPIOWakeupGlobalDisable        
-8000af9c  GPIOPinIntWakeUpEnable         
-8000affc  GPIOPinIntWakeUpDisable        
-8000b05c  GPIOAutoIdleModeControl        
-8000b0a0  GPIOIdleModeConfigure          
-8000b0e4  GPIOGatingRatioConfigure       
-8000b128  GPIODebounceFuncControl        
-8000b178  GPIODebounceTimeConfig         
-8000b19c  GPIORevisionInfoGet            
-8000b1b4  gpioContextSave                
-8000b1f8  gpioContextRestore             
-8000b23c  Init_UART                      
-8000b294  UART_Module0ClkConfig          
-8000b2dc  UART_PrintChar                 
-8000b2f4  UART_PrintBuffer               
-8000b344  UART_PrintString               
-8000b37c  UartFIFOConfigure              
-8000b3a0  UartBaudRateSet                
-8000b3d8  UartLineCharacSet              
-8000b41c  UartConfigure                  
-8000b468  UART_ISR                       
-8000b574  UART_INTCConfigure0            
-8000b5a0  UART_AddToBuffer               
-8000b70c  CP15ICacheDisable              
-8000b728  CP15DCacheDisable              
-8000b744  CP15ICacheEnable               
-8000b754  CP15DCacheEnable               
-8000b764  CP15DCacheFlush                
-8000b7f8  CP15DCacheClean                
-8000b88c  CP15DCacheCleanFlush           
-8000b920  CP15ICacheFlush                
-8000b930  CP15DCacheCleanBuff            
-8000b984  CP15DCacheCleanFlushBuff       
-8000b9d8  CP15DCacheFlushBuff            
-8000ba3c  CP15ICacheFlushBuff            
-8000ba90  CP15Ttb0Set                    
-8000ba9c  CP15TlbInvalidate              
-8000baa8  CP15MMUDisable                 
-8000bac0  CP15MMUEnable                  
-8000bad4  CP15VectorBaseAddrSet          
-8000bae0  CP15BranchPredictorInvalidate  
-8000baec  CP15BranchPredictionEnable     
-8000bafc  CP15BranchPredictionDisable    
-8000bb0c  CP15DomainAccessClientSet      
-8000bb1c  CP15ControlFeatureDisable      
-8000bb30  CP15ControlFeatureEnable       
-8000bb44  CP15TtbCtlTtb0Config           
-8000bb54  CP15AuxControlFeatureEnable    
-8000bb68  CP15AuxControlFeatureDisable   
-8000bb7c  CP15MainIdPrimPartNumGet       
-8000bb98  IntRegister                    
-8000bbbc  IntUnRegister                  
-8000bbdc  IntAINTCInit                   
-8000bc4c  IntPrioritySet                 
-8000bc84  IntSystemEnable                
-8000bcb8  IntSystemDisable               
-8000bcec  IntIfClkFreeRunSet             
-8000bd00  IntIfClkAutoGateSet            
-8000bd14  IntActiveIrqNumGet             
-8000bd24  IntSpurIrqFlagGet              
-8000bd38  IntProtectionEnable            
-8000bd48  IntProtectionDisable           
-8000bd5c  IntSyncClkFreeRunSet           
-8000bd70  IntSyncClkAutoGateSet          
-8000bd84  IntFuncClkFreeRunSet           
-8000bd98  IntFuncClkAutoGateSet          
-8000bdac  IntCurrIrqPriorityGet          
-8000bdbc  IntPriorityThresholdGet        
-8000bdcc  IntPriorityThresholdSet        
-8000bdec  IntRawStatusGet                
-8000be2c  IntSoftwareIntSet              
-8000be5c  IntSoftwareIntClear            
-8000be8c  IntPendingIrqMaskedStatusGet   
-8000bec8  IntMasterIRQEnable             
-8000bed4  IntMasterIRQDisable            
-8000bee0  IntMasterFIQEnable             
-8000beec  IntMasterFIQDisable            
-8000bef8  IntMasterStatusGet             
-8000bf04  IntDisable                     
-8000bf1c  IntEnable                      
-8000bf78  Init_LED                       
-8000bf7c  LED_Show                       
-8000c238  Init_GPIO                      
-8000c300  GPIO_Module0ClkConfig          
-8000c368  GPIO_Module1ClkConfig          
-8000c3d0  GPIO_Module2ClkConfig          
-8000c438  GPIO_Module3ClkConfig          
-8000c4a4  InitCMD                        
-8000c4b4  CMD_CheckMatch                 
-8000c620  CMD_Help                       
-8000c630  CMD_SetNewCommand              
-8000c640  CMD_ClearNewCommand            
-8000c650  CMD_GetNewCommand              
-8000c67c  UARTPinMuxSetup                
-8000c69c  UART0ModuleClkConfig           
-8000c840  __aeabi_memcpy                 
-8000c840  __aeabi_memcpy4                
-8000c840  __aeabi_memcpy8                
-8000c840  memcpy                         
-8000c9c0  MMUInit                        
-8000ca20  MMUMemRegionMap                
-8000cb10  MMUEnable                      
-8000cb2c  CacheDisable                   
-8000cb70  CacheEnable                    
-8000cbbc  CacheInstInvalidateAll         
-8000cbc8  CacheInstInvalidateBuff        
-8000cbe4  CacheDataCleanInvalidateAll    
-8000cbf0  CacheDataCleanAll              
-8000cbfc  CacheDataInvalidateAll         
-8000cc08  CacheDataCleanBuff             
-8000cc24  CacheDataInvalidateBuff        
-8000cc40  CacheDataCleanInvalidateBuff   
-8000cc5c  GpioPinMuxSetup                
-8000cc68  GPIO1PinMuxSetup               
-8000cc78  GPIO1Pin23PinMuxSetup          
-8000cc88  GPIO1ModuleClkConfig           
-8000ccdc  GPIO0ModuleClkConfig           
-8000cd9c  SVC_Handler                    
-8000cdc4  IRQHandler                     
-8000ce70  FIQHandler                     
-8000ce74  AbortHandler                   
-8000ce74  UndefInstHandler               
-8000ce8c  __aeabi_uidiv                  
-8000ce8c  __aeabi_uidivmod               
-8000cf7c  main                           
-8000d044  MSC_BufferCopy                 
-8000d0bc  MSC_LowercaseChar              
-8000d0f8  MMU_ConfigAndEnable            
-8000d1a0  __TI_auto_init                 
-8000d244  copy_in                        
-8000d2c8  CPUirqe                        
-8000d2d8  CPUirqd                        
-8000d2e8  CPUfiqe                        
-8000d2f8  CPUfiqd                        
-8000d308  CPUSwitchToUserMode            
-8000d31c  CPUSwitchToPrivilegedMode      
-8000d324  CPUAbortHandler                
-8000d354  start_boot                     
-8000d36c  Init_Modules                   
-8000d38c  CPUIntStatus                   
-8000d398  __aeabi_idiv0                  
+800000d0  Init_LCD                       
+80000330  LCD_Reset                      
+8000036c  LCD_ft810memRead8              
+800003b8  LCD_ft810memRead16             
+8000041c  LCD_ft810memRead32             
+800004a8  LCD_ft810memWrite8             
+800004e4  LCD_ft810memWrite16            
+80000548  LCD_ft810memWrite32            
+800005dc  LCD_ft810memWriteBuffer        
+800006cc  LCD_wr8                        
+800006e8  LCD_wr16                       
+80000704  LCD_wr32                       
+80000720  LCD_wr8s                       
+8000078c  LCD_rd8                        
+800007a0  LCD_rd16                       
+800007b8  LCD_rd32                       
+800007cc  LCD_wr_buffer                  
+8000090c  LCD_rd_buffer                  
+80000a34  LCD_cmd                        
+80000a5c  LCD_host_command               
+80000aac  LCD_IncrementWriteOffset       
+80000aec  LCD_WriteCommandParameters     
+80000b18  LCD_SendRAMAddress             
+80000b88  LCD_WaitCoprocessorDone        
+80000bac  LCD_cmd_text                   
+80000cf8  LCD_cmd_button                 
+80000e5c  LCD_cmd_clock                  
+80000f10  LCD_cmd_bgcolor                
+80000f68  LCD_cmd_fgcolor                
+80000fc0  LCD_cmd_gradcolor              
+80001018  LCD_cmd_gauge                  
+800010d0  LCD_cmd_gradient               
+80001208  LCD_cmd_keys                   
+8000136c  LCD_cmd_progress               
+80001418  LCD_cmd_scrollbar              
+800014cc  LCD_cmd_slider                 
+8000157c  LCD_cmd_dial                   
+80001610  LCD_cmd_toggle                 
+80001774  LCD_cmd_setbase                
+800017cc  LCD_cmd_number                 
+80001860  LCD_cmd_memcrc                 
+800018e0  LCD_cmd_memzero                
+8000194c  LCD_cmd_memset                 
+800019d0  LCD_cmd_memwrite               
+80001a84  LCD_cmd_memcpy                 
+80001b04  LCD_cmd_append                 
+80001b78  LCD_cmd_inflate                
+80001c1c  LCD_cmd_loadimage              
+80001c88  LCD_cmd_loadidentity           
+80001ccc  LCD_cmd_translate              
+80001d38  LCD_cmd_scale                  
+80001da4  LCD_cmd_rotate                 
+80001dfc  LCD_cmd_setmatrix              
+80001e40  LCD_cmd_getmatrix              
+80001efc  LCD_cmd_getptr                 
+80001f54  LCD_cmd_getprops               
+80001fe4  LCD_cmd_mediafifo              
+80002050  LCD_cmd_playvideo              
+800020a8  LCD_cmd_videostart             
+800020ec  LCD_cmd_videoframe             
+80002158  LCD_cmd_track                  
+800021ec  LCD_cmd_coldstart              
+800021fc  LCD_cmd_interrupt              
+80002254  LCD_cmd_regread                
+800022c0  LCD_cmd_calibrate              
+80002318  LCD_cmd_romfont                
+80002384  LCD_cmd_setfont                
+800023f0  LCD_cmd_setfont2               
+80002470  LCD_cmd_setscratch             
+800024c8  LCD_cmd_setrotate              
+80002520  LCD_cmd_setbitmap              
+800025ac  LCD_cmd_spinner                
+80002630  LCD_cmd_stop                   
+80002674  LCD_cmd_screensaver            
+800026b8  LCD_cmd_sketch                 
+8000275c  LCD_cmd_snapshot               
+800027b4  LCD_cmd_snapshot2              
+80002858  LCD_cmd_logo                   
+800028a0  UARTOperatingModeSelect        
+80002900  UARTDivisorValCompute          
+800029c4  UARTDivisorLatchWrite          
+80002b48  UARTDivisorLatchEnable         
+80002b6c  UARTDivisorLatchDisable        
+80002b90  UARTRegConfigModeEnable        
+80002c08  UARTRegConfModeRestore         
+80002c28  UARTBreakCtl                   
+80002c6c  UARTLineCharacConfig           
+80002ce4  UARTParityModeSet              
+80002d28  UARTParityModeGet              
+80002d44  UARTFIFOConfig                 
+80003108  UARTDMAEnable                  
+80003164  UARTDMADisable                 
+8000319c  UARTFIFORegisterWrite          
+80003228  UARTEnhanFuncEnable            
+80003288  UARTEnhanFuncBitValRestore     
+800032ec  UARTSubConfigMSRSPRModeEn      
+800033c4  UARTSubConfigTCRTLRModeEn      
+8000349c  UARTSubConfigXOFFModeEn        
+80003574  UARTTCRTLRBitValRestore        
+80003650  UARTIntEnable                  
+80003734  UARTIntDisable                 
+800037fc  UARTSpaceAvail                 
+80003850  UARTCharsAvail                 
+800038a4  UARTCharPutNonBlocking         
+80003910  UARTCharGetNonBlocking         
+80003968  UARTCharGet                    
+800039c0  UARTCharGetTimeout             
+80003a50  UARTCharPut                    
+80003aa4  UARTFIFOCharPut                
+80003ac4  UARTFIFOCharGet                
+80003ae0  UARTFIFOWrite                  
+80003b4c  UARTRxErrorGet                 
+80003b98  UARTIntIdentityGet             
+80003be4  UARTIntPendingStatusGet        
+80003c38  UARTFIFOEnableStatusGet        
+80003c8c  UARTAutoRTSAutoCTSControl      
+80003d18  UARTSpecialCharDetectControl   
+80003d7c  UARTSoftwareFlowCtrlOptSet     
+80003de0  UARTPulseShapingControl        
+80003e24  UARTModuleReset                
+80003e58  UARTIdleModeConfigure          
+80003e9c  UARTWakeUpControl              
+80003ee0  UARTAutoIdleModeControl        
+80003f24  UARTFlowCtrlTrigLvlConfig      
+80003f74  UARTXON1XOFF1ValProgram        
+80003fa4  UARTXON2XOFF2ValProgram        
+80003fd4  UARTXONAnyFeatureControl       
+80004098  UARTLoopbackModeControl        
+800040dc  UARTModemControlSet            
+8000410c  UARTModemControlClear          
+8000413c  UARTModemStatusGet             
+80004158  UARTModemStatusChangeCheck     
+80004174  UARTResumeOperation            
+8000418c  UARTWakeUpEventsEnable         
+800041bc  UARTWakeUpEventsDisable        
+800041ec  UARTFIFOTrigLvlGranControl     
+80004250  UARTDSRInterruptControl        
+80004294  UARTTxEmptyIntControl          
+800042d8  UARTRXCTSDSRWakeUpConfigure    
+8000431c  UARTRXCTSDSRTransitionStatusGet
+80004338  UARTDMACounterResetControl     
+8000437c  UARTTxFIFOFullStatusGet        
+80004398  UARTTxFIFOLevelGet             
+800043b0  UARTRxFIFOLevelGet             
+800043c8  UARTAutobaudParityGet          
+80004414  UARTAutobaudWordLenGet         
+80004460  UARTAutobaudSpeedGet           
+800044ac  UARTScratchPadRegWrite         
+800044f0  UARTScratchPadRegRead          
+8000450c  UARTModuleVersionNumberGet     
+80004528  UARTTxDMAThresholdControl      
+8000456c  UARTTxDMAThresholdValConfig    
+800045b0  McSPIClkConfig                 
+80004790  McSPIWordLengthSet             
+800047f8  McSPICSEnable                  
+8000481c  McSPICSDisable                 
+80004840  McSPICSPolarityConfig          
+800048a8  McSPICSTimeControlSet          
+80004914  McSPICSAssert                  
+8000494c  McSPICSDeAssert                
+80004984  McSPIStartBitEnable            
+800049bc  McSPIStartBitPolarityConfig    
+80004a24  McSPIStartBitDisable           
+80004a5c  McSPIMasterModeEnable          
+80004a80  McSPIMasterModeConfig          
+80004bec  McSPIChannelEnable             
+80004c24  McSPIChannelDisable            
+80004c5c  McSPIReset                     
+80004c90  McSPITurboModeEnable           
+80004cc8  McSPITurboModeDisable          
+80004d00  McSPITxFIFOConfig              
+80004d68  McSPIRxFIFOConfig              
+80004dd0  McSPIFIFOTrigLvlSet            
+80004ed0  McSPIWordCountSet              
+80004f10  McSPIDMAEnable                 
+80004f54  McSPIDMADisable                
+80004f98  McSPIIntEnable                 
+80004fc4  McSPIIntDisable                
+80004ff0  McSPIInitDelayConfig           
+80005034  McSPITransmitData              
+80005068  McSPIReceiveData               
+80005094  McSPIIntStatusGet              
+800050ac  McSPIIntStatusClear            
+800050e0  McSPIChannelStatusGet          
+8000510c  McSPIMultipleWordAccessConfig  
+80005150  McSPIFIFODatManagementConfig   
+80005194  McSPI1ModuleClkConfig          
+800052f0  McSPI0ModuleClkConfig          
+80005474  GPIOModuleReset                
+800054a8  GPIOModuleEnable               
+800054cc  GPIOModuleDisable              
+800054f0  GPIODirModeSet                 
+80005550  GPIODirModeGet                 
+80005590  GPIOPinWrite                   
+800055e0  GPIOPinRead                    
+80005608  GPIOMultiplePinsWrite          
+80005638  GPIOMultiplePinsRead           
+8000565c  GPIOPinIntEnable               
+800056ac  GPIOPinIntDisable              
+800056fc  GPIOIntTypeSet                 
+80005a9c  GPIOIntTypeGet                 
+80005b7c  GPIOPinIntStatus               
+80005be0  GPIOPinIntClear                
+80005c30  GPIORawIntStatus               
+80005c8c  GPIOTriggerPinInt              
+80005cdc  GPIOWakeupGlobalEnable         
+80005d00  GPIOWakeupGlobalDisable        
+80005d24  GPIOPinIntWakeUpEnable         
+80005d84  GPIOPinIntWakeUpDisable        
+80005de4  GPIOAutoIdleModeControl        
+80005e28  GPIOIdleModeConfigure          
+80005e6c  GPIOGatingRatioConfigure       
+80005eb0  GPIODebounceFuncControl        
+80005f00  GPIODebounceTimeConfig         
+80005f24  GPIORevisionInfoGet            
+80005f3c  gpioContextSave                
+80005f80  gpioContextRestore             
+80005fc4  Init_UART                      
+80006014  UART_Module0ClkConfig          
+8000605c  UART_PrintChar                 
+80006070  UART_PrintBuffer               
+800060bc  UART_PrintString               
+800060f4  UART_FIFOConfigure             
+80006118  UART_BaudRateSet               
+80006150  UART_LineCharacSet             
+80006194  UART_Configure                 
+800061e0  UART_0_ISR                     
+80006380  UART_InterruptConfigure0       
+800063ac  UART_AddToRXBuffer             
+800064dc  UART_AddToTXBuffer             
+80006588  UART_GetTXInterruptStatus      
+80006604  Init_SPI                       
+80006658  Init_SPI_Module1               
+80006768  Init_SPI_Module0               
+80006878  SPI_INTCConfigure1             
+800068a4  SPI_1_ISR                      
+800068a8  SPI_WriteByte0                 
+80006900  SPI_WriteByte1                 
+80006958  SPI_ReadWriteByte0             
+800069b0  SPI_ReadWriteByte1             
+80006a08  SPI_WriteByteNoRx0             
+80006a38  SPI_WriteByteNoRx1             
+80006aa0  CP15ICacheDisable              
+80006abc  CP15DCacheDisable              
+80006ad8  CP15ICacheEnable               
+80006ae8  CP15DCacheEnable               
+80006af8  CP15DCacheFlush                
+80006b8c  CP15DCacheClean                
+80006c20  CP15DCacheCleanFlush           
+80006cb4  CP15ICacheFlush                
+80006cc4  CP15DCacheCleanBuff            
+80006d18  CP15DCacheCleanFlushBuff       
+80006d6c  CP15DCacheFlushBuff            
+80006dd0  CP15ICacheFlushBuff            
+80006e24  CP15Ttb0Set                    
+80006e30  CP15TlbInvalidate              
+80006e3c  CP15MMUDisable                 
+80006e54  CP15MMUEnable                  
+80006e68  CP15VectorBaseAddrSet          
+80006e74  CP15BranchPredictorInvalidate  
+80006e80  CP15BranchPredictionEnable     
+80006e90  CP15BranchPredictionDisable    
+80006ea0  CP15DomainAccessClientSet      
+80006eb0  CP15ControlFeatureDisable      
+80006ec4  CP15ControlFeatureEnable       
+80006ed8  CP15TtbCtlTtb0Config           
+80006ee8  CP15AuxControlFeatureEnable    
+80006efc  CP15AuxControlFeatureDisable   
+80006f10  CP15MainIdPrimPartNumGet       
+80006f2c  IntRegister                    
+80006f50  IntUnRegister                  
+80006f70  IntAINTCInit                   
+80006fe0  IntPrioritySet                 
+80007018  IntSystemEnable                
+8000704c  IntSystemDisable               
+80007080  IntIfClkFreeRunSet             
+80007094  IntIfClkAutoGateSet            
+800070a8  IntActiveIrqNumGet             
+800070b8  IntSpurIrqFlagGet              
+800070cc  IntProtectionEnable            
+800070dc  IntProtectionDisable           
+800070f0  IntSyncClkFreeRunSet           
+80007104  IntSyncClkAutoGateSet          
+80007118  IntFuncClkFreeRunSet           
+8000712c  IntFuncClkAutoGateSet          
+80007140  IntCurrIrqPriorityGet          
+80007150  IntPriorityThresholdGet        
+80007160  IntPriorityThresholdSet        
+80007180  IntRawStatusGet                
+800071c0  IntSoftwareIntSet              
+800071f0  IntSoftwareIntClear            
+80007220  IntPendingIrqMaskedStatusGet   
+8000725c  IntMasterIRQEnable             
+80007268  IntMasterIRQDisable            
+80007274  IntMasterFIQEnable             
+80007280  IntMasterFIQDisable            
+8000728c  IntMasterStatusGet             
+80007298  IntDisable                     
+800072b0  IntEnable                      
+8000730c  Init_GPIO                      
+80007474  GPIO_Module0ClkConfig          
+800074dc  GPIO_Module1ClkConfig          
+80007544  GPIO_Module2ClkConfig          
+800075ac  GPIO_Module3ClkConfig          
+80007640  Init_LED                       
+80007644  LED_Show                       
+80007900  Init_GUI                       
+8000790c  GUI_DrawInitialScreen          
+80007b0c  InitCMD                        
+80007b1c  CMD_CheckMatch                 
+80007c88  CMD_Help                       
+80007c98  CMD_SetNewCommand              
+80007ca8  CMD_ClearNewCommand            
+80007cb8  CMD_GetNewCommand              
+80007ce4  __aeabi_memcpy                 
+80007ce4  __aeabi_memcpy4                
+80007ce4  __aeabi_memcpy8                
+80007ce4  memcpy                         
+80007e64  MMUInit                        
+80007ec4  MMUMemRegionMap                
+80007fb8  MMUEnable                      
+80007fd4  CacheDisable                   
+80008018  CacheEnable                    
+80008064  CacheInstInvalidateAll         
+80008070  CacheInstInvalidateBuff        
+8000808c  CacheDataCleanInvalidateAll    
+80008098  CacheDataCleanAll              
+800080a4  CacheDataInvalidateAll         
+800080b0  CacheDataCleanBuff             
+800080cc  CacheDataInvalidateBuff        
+800080e8  CacheDataCleanInvalidateBuff   
+80008104  MSC_BufferCopy                 
+8000817c  MSC_LowercaseChar              
+800081b8  MSC_DelayUS                    
+8000822c  GpioPinMuxSetup                
+80008238  GPIO1PinMuxSetup               
+80008248  GPIO1Pin23PinMuxSetup          
+80008258  GPIO1ModuleClkConfig           
+800082ac  GPIO0ModuleClkConfig           
+8000836c  SVC_Handler                    
+80008394  IRQHandler                     
+80008440  FIQHandler                     
+80008444  AbortHandler                   
+80008444  UndefInstHandler               
+8000845c  __aeabi_uidiv                  
+8000845c  __aeabi_uidivmod               
+8000854c  main                           
+8000861c  MMU_ConfigAndEnable            
+800086c4  __TI_auto_init                 
+80008768  copy_in                        
+800087ec  CPUirqe                        
+800087fc  CPUirqd                        
+8000880c  CPUfiqe                        
+8000881c  CPUfiqd                        
+8000882c  CPUSwitchToUserMode            
+80008840  CPUSwitchToPrivilegedMode      
+80008848  CPUAbortHandler                
+80008878  start_boot                     
+80008890  Init_Modules                   
+800088bc  CPUIntStatus                   
+800088c8  __aeabi_idiv0                  
+80008958  Commands                       
+80008968  RAM_CMD_Offset                 
+8000896a  FT_DispWidth                   
+8000896c  FT_DispHeight                  
+8000896e  FT_DispHCycle                  
+80008970  FT_DispHOffset                 
+80008972  FT_DispHSync0                  
+80008974  FT_DispHSync1                  
+80008976  FT_DispVCycle                  
+80008978  FT_DispVOffset                 
+8000897a  FT_DispVSync0                  
+8000897c  FT_DispVSync1                  
+8000897e  FT_DispPCLK                    
+80008980  FT_DispSwizzle                 
+80008982  FT_DispPCLKPol                 
+80008984  FT_DispCSpread                 
+80008986  FT_DispDither                  
+80008988  UART_RX_place                  
+8000898c  UART_TX_add                    
+80008990  UART_TX_remove                 
+80008995  NumCommand                     
+8000c000  bss_start                      
+80010000  UART_RX_buffer                 
+800107d0  UART_TX_buffer                 
+80010fa0  fnRAMVectors                   
+800111a0  Command_String                 
+800111b0  bss_end                        
 87fffff0  __stack                        
 87fffff8  __STACK_END                    
 ffffffff  __binit__                      
@@ -630,4 +925,4 @@ UNDEFED   __TI_CINIT_Limit
 UNDEFED   __TI_Handler_Table_Base        
 UNDEFED   __TI_Handler_Table_Limit       
 
-[257 symbols]
+[402 symbols]

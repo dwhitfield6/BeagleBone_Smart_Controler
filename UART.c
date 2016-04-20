@@ -28,6 +28,7 @@
 #include "uart_irda_cir.h"
 
 #include "CMD.h"
+#include "MISC.h"
 #include "UART.h"
 
 /******************************************************************************/
@@ -62,22 +63,19 @@ void Init_UART(void)
     HWREG(SOC_CONTROL_REGS + CONTROL_CONF_UART_TXD(0)) = CONTROL_CONF_UART0_TXD_CONF_UART0_TXD_PUTYPESEL; // TXD
 
     /* Configuring the system clocks for UART0 instance. */
-    UART0ModuleClkConfig();
-
-    /* Performing the Pin Multiplexing for UART0 instance. */
-    UARTPinMuxSetup(0);
+    UART_Module0ClkConfig();
 
     /* Performing a module reset. */
     UARTModuleReset(SOC_UART_0_REGS);
 
-    UartConfigure(115200, (UART_FRAME_WORD_LENGTH_8 |
+    UART_Configure(115200, (UART_FRAME_WORD_LENGTH_8 |
                                      UART_FRAME_NUM_STB_1 |
                                      UART_PARITY_NONE));
 
-    UartFIFOConfigure();
+    UART_FIFOConfigure();
 
     /* Configuring AINTC to receive UART0 interrupts. */
-    UART_INTCConfigure0();
+    UART_InterruptConfigure0();
 
     /* Enabling required UART Interrupts. */
     UARTIntEnable(SOC_UART_0_REGS,
@@ -128,7 +126,7 @@ void UART_Module0ClkConfig(void)
 /******************************************************************************/
 void UART_PrintChar(unsigned char data)
 {
-	UARTCharPut(SOC_UART_0_REGS, data);
+	UART_AddToTXBuffer(data);
 }
 
 /******************************************************************************/
@@ -141,7 +139,7 @@ void UART_PrintBuffer(unsigned char* data, unsigned long bytes)
 {
 	while(bytes > 0)
 	{
-		UARTCharPut(SOC_UART_0_REGS, *data);
+		UART_AddToTXBuffer(*data);
 		data++;
 		bytes--;
 	}
@@ -157,7 +155,7 @@ void UART_PrintString(unsigned char* data)
 {
 	while(*data != 0)
 	{
-		UART_PrintChar(*data);
+		UART_AddToTXBuffer(*data);
 		data++;
 	}
 }
@@ -168,7 +166,7 @@ void UART_PrintString(unsigned char* data)
  * Sets up the UART FIFO.
  *                                                                            */
 /******************************************************************************/
-void UartFIFOConfigure(void)
+void UART_FIFOConfigure(void)
 {
     unsigned int fifoConfig = 0;
 
@@ -203,7 +201,7 @@ void UartFIFOConfigure(void)
  * Sets up the UART baud rate.
  *                                                                            */
 /******************************************************************************/
-void UartBaudRateSet(unsigned int baudRate)
+void UART_BaudRateSet(unsigned int baudRate)
 {
     unsigned int divisorValue = 0;
 
@@ -223,7 +221,7 @@ void UartBaudRateSet(unsigned int baudRate)
  * Sets up the parity and character length
  *                                                                            */
 /******************************************************************************/
-void UartLineCharacSet(unsigned int lineCharConfig)
+void UART_LineCharacSet(unsigned int lineCharConfig)
 {
     unsigned int wLenStbFlag = 0;
     unsigned int parityFlag = 0;
@@ -242,14 +240,14 @@ void UartLineCharacSet(unsigned int lineCharConfig)
  * Configures the UART.
  *                                                                            */
 /******************************************************************************/
-void UartConfigure(unsigned int baudRate, unsigned int lineCharConfig)
+void UART_Configure(unsigned int baudRate, unsigned int lineCharConfig)
 {
-    UartBaudRateSet(baudRate);
+    UART_BaudRateSet(baudRate);
 
     /* Switching to Configuration Mode B. */
     UARTRegConfigModeEnable(SOC_UART_0_REGS, UART_REG_CONFIG_MODE_B);
 
-    UartLineCharacSet(lineCharConfig);
+    UART_LineCharacSet(lineCharConfig);
 
     /* Disabling write access to Divisor Latches. */
     UARTDivisorLatchDisable(SOC_UART_0_REGS);
@@ -267,7 +265,7 @@ void UartConfigure(unsigned int baudRate, unsigned int lineCharConfig)
  * UART Interrupt service routine.
  *                                                                            */
 /******************************************************************************/
-void UART_ISR(void)
+void UART_0_ISR(void)
 {
     unsigned int rxErrorType = 0;
     unsigned char rxByte = 0;
@@ -281,11 +279,10 @@ void UART_ISR(void)
     {
         case UART_INTID_RX_THRES_REACH:
             rxByte = UARTCharGetNonBlocking(SOC_UART_0_REGS);
-            UART_AddToBuffer(rxByte);
-        break;
+            UART_AddToRXBuffer(rxByte);
+            break;
 
         case UART_INTID_RX_LINE_STAT_ERROR:
-
             rxErrorType = UARTRxErrorGet(SOC_UART_0_REGS);
 
             /* Check if Overrun Error has occured. */
@@ -295,40 +292,60 @@ void UART_ISR(void)
                 for(idx = 0; idx < (RX_FIFO_SIZE + 1); idx++)
                 {
                     rxByte = UARTFIFOCharGet(SOC_UART_0_REGS);
-                    UART_AddToBuffer(rxByte);
+                    UART_AddToRXBuffer(rxByte);
                 }
 
                 break;
             }
             rxByte = UARTFIFOCharGet(SOC_UART_0_REGS);
-        break;
+            break;
 
         case UART_INTID_CHAR_TIMEOUT:
-
             /* Read all the data in RX FIFO. */
             while(TRUE == UARTCharsAvail(SOC_UART_0_REGS))
             {
                 rxByte = UARTFIFOCharGet(SOC_UART_0_REGS);
-                UART_AddToBuffer(rxByte);
+                UART_AddToRXBuffer(rxByte);
             }
 
-        break;
+            break;
+
+        case (UART_INTID_TX_THRES_REACH):
+			/* UART transfer register and FIFO is empty */
+			if(UART_TX_remove != UART_TX_add)
+			{
+				while(UARTTxFIFOFullStatusGet(SOC_UART_0_REGS) == UART_TX_FIFO_NOT_FULL)
+				{
+					if(UART_TX_remove == UART_TX_add)
+					{
+						break;
+					}
+					UARTFIFOCharPut(SOC_UART_0_REGS, UART_TX_buffer[UART_TX_remove]);
+					UART_TX_remove = (UART_TX_remove + 1UL) % UART_TX_SIZE;
+				}
+			}
+			else
+			{
+				/* Disabling required TX Interrupts. */
+				UARTIntDisable(SOC_UART_0_REGS, UART_INT_THR);
+			}
+			break;
 
         default:
-        break;
+        	break;
     }
 }
 
 /******************************************************************************/
-/* UART_INTCConfigure0
+/* UART_InterruptConfigure0
  *
  * Configures the UART interupt.
  *                                                                            */
 /******************************************************************************/
-void UART_INTCConfigure0(void)
+void UART_InterruptConfigure0(void)
 {
     /* Registering the Interrupt Service Routine(ISR). */
-    IntRegister(SYS_INT_UART0INT, UART_ISR);
+    IntRegister(SYS_INT_UART0INT, UART_0_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
     IntPrioritySet(SYS_INT_UART0INT, 10, AINTC_HOSTINT_ROUTE_IRQ);
@@ -338,12 +355,12 @@ void UART_INTCConfigure0(void)
 }
 
 /******************************************************************************/
-/* UART_AddToBuffer
+/* UART_AddToRXBuffer
  *
- * Adds a character to the UART buffer.
+ * Adds a character to the UART RX buffer.
  *                                                                            */
 /******************************************************************************/
-void UART_AddToBuffer (unsigned char data)
+void UART_AddToRXBuffer(unsigned char data)
 {
 	if(data == CR)
 	{
@@ -385,6 +402,51 @@ void UART_AddToBuffer (unsigned char data)
 			UART_RX_place++;
 		}
 	}
+}
+
+/******************************************************************************/
+/* UART_AddToTXBuffer
+ *
+ * Adds a character to the UART TX buffer.
+ *                                                                            */
+/******************************************************************************/
+void UART_AddToTXBuffer(unsigned char data)
+{
+    if(CIRCULAR_BUFFER_SPACE(UART_TX_add, UART_TX_remove, UART_TX_SIZE) == 0U)
+    {
+        /* transmit buffer is full */
+        if(UART_GetTXInterruptStatus())
+        {
+            /* we are currently in a transmitting cycle */
+            while(CIRCULAR_BUFFER_SPACE(UART_TX_add, UART_TX_remove, UART_TX_SIZE) == 0U);
+        }
+    }
+
+    UART_TX_buffer[UART_TX_add] = data;
+    UART_TX_add = (UART_TX_add + 1U) % UART_TX_SIZE;
+
+    /* Enabling required TX Interrupts. */
+    if((HWREG(SOC_UART_0_REGS + UART_IER) & UART_INT_THR) == 0U)
+    {
+        /* enable TX interrupts */
+        UARTIntEnable(SOC_UART_0_REGS, UART_INT_THR); // enable TX interrupts
+    }
+}
+
+/******************************************************************************/
+/* UART_GetTXInterruptStatus
+ *
+ * Returns the status of the TX interrupts.
+ *                                                                            */
+/******************************************************************************/
+unsigned char UART_GetTXInterruptStatus(void)
+{
+    unsigned char status = 0U;
+    if(HWREG(SOC_UART_0_REGS + UART_IER) & UART_INT_THR)
+    {
+        status = 1U;
+    }
+    return status;
 }
 
 /******************************* End of file *********************************/

@@ -35,6 +35,7 @@
 /******************************************************************************/
 void MSC_BufferCopy(void* From, void* To, unsigned short bytes);
 unsigned char MSC_LowercaseChar(unsigned char Input);
+void MSC_DelayUS(unsigned long US);
 
 #endif
 /******************************* End of file *********************************/

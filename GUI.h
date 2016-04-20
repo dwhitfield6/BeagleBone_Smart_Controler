@@ -34,6 +34,7 @@
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_GUI(void);
+void GUI_DrawInitialScreen(void);
 
 #endif
 /******************************* End of file *********************************/

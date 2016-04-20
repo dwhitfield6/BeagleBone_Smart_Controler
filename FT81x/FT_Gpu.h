@@ -38,6 +38,14 @@ Revision History:
 #define FT_CMD_FIFO_SIZE     (4*1024L)  //4KB coprocessor Fifo size
 #define FT_CMD_SIZE          (4)       //4 byte per coprocessor command of EVE
 
+#define FT810_ACTIVE					0x00			// Initializes FT800
+#define FT810_STANDBY					0x41			// Place FT800 in Standby (clk running)
+#define FT810_SLEEP						0x42			// Place FT800 in Sleep (clk off)
+#define FT810_PWRDOWN					0x50			// Place FT800 in Power Down (core off)
+#define FT810_CLKEXT					0x44			// Select external clock source
+#define FT810_CLK48M					0x62			// Select 48MHz PLL
+#define FT810_CLK36M					0x61			// Select 36MHz PLL
+#define FT810_CORERST					0x68			// Reset core - all registers default
 
 /* For FT801, FT811 and FT813 */
 #define CTOUCH_MODE_COMPATIBILITY 1
@@ -672,7 +680,7 @@ Revision History:
 #define PALETTE_SOURCE(addr) ((42UL<<24)|(((addr)&4194303UL)<<0))
 #define VERTEX_TRANSLATE_X(x) ((43UL<<24)|(((x)&131071UL)<<0))
 #define VERTEX_TRANSLATE_Y(y) ((44UL<<24)|(((y)&131071UL)<<0))
-#define NOP() ((45UL<<24))
+//#define NOP() ((45UL<<24))
 #define END() ((33UL<<24))
 #define SAVE_CONTEXT() ((34UL<<24))
 #define RESTORE_CONTEXT() ((35UL<<24))

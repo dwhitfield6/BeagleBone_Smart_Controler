@@ -18,6 +18,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "beaglebone.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -25,9 +26,9 @@
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 
-#include "beaglebone.h"
 #include "GPIO.h"
 #include "LEDS.h"
+#include "SYSTEM.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -78,4 +79,25 @@ unsigned char MSC_LowercaseChar(unsigned char Input)
         return Input;
     }
 }
+
+/******************************************************************************/
+/* MSC_DelayUS
+ *
+ * This function waits for the specified number of microseconds.
+ * 																			  */
+/******************************************************************************/
+void MSC_DelayUS(unsigned long US)
+{
+	unsigned long i;
+	unsigned long j;
+
+	for(i=0;i<US;i++)
+	{
+		for(j=0;j<250;j++)
+		{
+			NOP();
+		}
+	}
+}
+
 /******************************* End of file *********************************/

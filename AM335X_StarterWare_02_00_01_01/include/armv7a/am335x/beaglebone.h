@@ -96,7 +96,6 @@ extern void GPIO0ModuleClkConfig(void);
 extern void GPIO1ModuleClkConfig(void);
 extern void GPIO2ModuleClkConfig(void);
 extern void GPIO3ModuleClkConfig(void);
-extern void UART0ModuleClkConfig(void);
 extern void UARTPinMuxSetup(unsigned int instanceNum);
 extern void CPSWPinMuxSetup(void);
 extern void CPSWClkEnable(void);

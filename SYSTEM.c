@@ -11,7 +11,8 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions for initializing the modules.
+/* Contains functions for initializing the modules. Pin mux values are on page
+ *  1356 in TRM.
  *                                                                            */
 /******************************************************************************/
 
@@ -22,7 +23,10 @@
 
 #include "CMD.h"
 #include "GPIO.h"
+#include "GUI.h"
+#include "LCD.h"
 #include "LEDS.h"
+#include "SPI.h"
 #include "SYSTEM.h"
 #include "UART.h"
 
@@ -51,8 +55,10 @@ void Init_Modules(void)
 
     /* Enabling IRQ in CPSR of ARM processor. */
     IntMasterIRQEnable();
-
 	Init_GPIO();
+	Init_SPI();
+    Init_LCD();
+    Init_GUI();
 	Init_LED();
 	InitCMD();
 	Init_UART();
