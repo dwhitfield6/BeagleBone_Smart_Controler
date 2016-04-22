@@ -80,7 +80,6 @@ void UART_FIFOConfigure(void);
 void UART_BaudRateSet(unsigned int baudRate);
 void UART_LineCharacSet(unsigned int lineCharConfig);
 void UART_Configure(unsigned int baudRate, unsigned int lineCharConfig);
-void UART_0_ISR(void);
 void UART_InterruptConfigure0(void);
 void UART_AddToRXBuffer(unsigned char data);
 void UART_AddToTXBuffer(unsigned char data);

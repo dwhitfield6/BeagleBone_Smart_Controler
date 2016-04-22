@@ -111,5 +111,6 @@ SUBDIRS := \
 . \
 LinkerCommand \
 FT81x \
+Bitmaps \
 AM335X_StarterWare_02_00_01_01/drivers \
 

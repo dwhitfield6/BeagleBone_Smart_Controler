@@ -12,6 +12,7 @@ C_SRCS += \
 ../GPIO.c \
 ../GUI.c \
 ../I2C.c \
+../INTERRUPTS.c \
 ../IR.c \
 ../LCD.c \
 ../LEDS.c \
@@ -40,6 +41,7 @@ OBJS += \
 ./GPIO.obj \
 ./GUI.obj \
 ./I2C.obj \
+./INTERRUPTS.obj \
 ./IR.obj \
 ./LCD.obj \
 ./LEDS.obj \
@@ -68,6 +70,7 @@ C_DEPS += \
 ./GPIO.pp \
 ./GUI.pp \
 ./I2C.pp \
+./INTERRUPTS.pp \
 ./IR.pp \
 ./LCD.pp \
 ./LEDS.pp \
@@ -96,6 +99,7 @@ C_DEPS__QUOTED += \
 "GPIO.pp" \
 "GUI.pp" \
 "I2C.pp" \
+"INTERRUPTS.pp" \
 "IR.pp" \
 "LCD.pp" \
 "LEDS.pp" \
@@ -124,6 +128,7 @@ OBJS__QUOTED += \
 "GPIO.obj" \
 "GUI.obj" \
 "I2C.obj" \
+"INTERRUPTS.obj" \
 "IR.obj" \
 "LCD.obj" \
 "LEDS.obj" \
@@ -152,6 +157,7 @@ C_SRCS__QUOTED += \
 "../GPIO.c" \
 "../GUI.c" \
 "../I2C.c" \
+"../INTERRUPTS.c" \
 "../IR.c" \
 "../LCD.c" \
 "../LEDS.c" \

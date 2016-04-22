@@ -18,16 +18,17 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "interrupt.h"
 #include "gpio_v2.h"
 #include "hw_cm_wkup.h"
 #include "hw_cm_per.h"
 #include "hw_control_AM335x.h"
 #include "hw_types.h"
-#include "interrupt.h"
 #include "soc_AM335x.h"
 #include "uart_irda_cir.h"
 
 #include "CMD.h"
+#include "INTERRUPTS.h"
 #include "MISC.h"
 #include "UART.h"
 
@@ -257,83 +258,6 @@ void UART_Configure(unsigned int baudRate, unsigned int lineCharConfig)
 
     /* Switching to UART16x operating mode. */
     UARTOperatingModeSelect(SOC_UART_0_REGS, UART16x_OPER_MODE);
-}
-
-/******************************************************************************/
-/* UART_ISR
- *
- * UART Interrupt service routine.
- *                                                                            */
-/******************************************************************************/
-void UART_0_ISR(void)
-{
-    unsigned int rxErrorType = 0;
-    unsigned char rxByte = 0;
-    unsigned int intId = 0;
-    unsigned int idx = 0;
-
-    /* Checking ths source of UART interrupt. */
-    intId = UARTIntIdentityGet(SOC_UART_0_REGS);
-
-    switch(intId)
-    {
-        case UART_INTID_RX_THRES_REACH:
-            rxByte = UARTCharGetNonBlocking(SOC_UART_0_REGS);
-            UART_AddToRXBuffer(rxByte);
-            break;
-
-        case UART_INTID_RX_LINE_STAT_ERROR:
-            rxErrorType = UARTRxErrorGet(SOC_UART_0_REGS);
-
-            /* Check if Overrun Error has occured. */
-            if(rxErrorType & UART_LSR_RX_OE)
-            {
-                /* Read the entire RX FIFO and the data in RX Shift register. */
-                for(idx = 0; idx < (RX_FIFO_SIZE + 1); idx++)
-                {
-                    rxByte = UARTFIFOCharGet(SOC_UART_0_REGS);
-                    UART_AddToRXBuffer(rxByte);
-                }
-
-                break;
-            }
-            rxByte = UARTFIFOCharGet(SOC_UART_0_REGS);
-            break;
-
-        case UART_INTID_CHAR_TIMEOUT:
-            /* Read all the data in RX FIFO. */
-            while(TRUE == UARTCharsAvail(SOC_UART_0_REGS))
-            {
-                rxByte = UARTFIFOCharGet(SOC_UART_0_REGS);
-                UART_AddToRXBuffer(rxByte);
-            }
-
-            break;
-
-        case (UART_INTID_TX_THRES_REACH):
-			/* UART transfer register and FIFO is empty */
-			if(UART_TX_remove != UART_TX_add)
-			{
-				while(UARTTxFIFOFullStatusGet(SOC_UART_0_REGS) == UART_TX_FIFO_NOT_FULL)
-				{
-					if(UART_TX_remove == UART_TX_add)
-					{
-						break;
-					}
-					UARTFIFOCharPut(SOC_UART_0_REGS, UART_TX_buffer[UART_TX_remove]);
-					UART_TX_remove = (UART_TX_remove + 1UL) % UART_TX_SIZE;
-				}
-			}
-			else
-			{
-				/* Disabling required TX Interrupts. */
-				UARTIntDisable(SOC_UART_0_REGS, UART_INT_THR);
-			}
-			break;
-
-        default:
-        	break;
-    }
 }
 
 /******************************************************************************/

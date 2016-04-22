@@ -29,7 +29,7 @@
 #define LCD_INT_REGS	SOC_GPIO_3_REGS
 
 #define LCD_PD_PIN	19
-#define LCD_INT_PIN	22
+#define LCD_INT_PIN	21
 
 #define CENTER_X 240
 #define CENTER_Y 136
@@ -55,6 +55,27 @@ typedef enum e_read_or_write
 	MEM_READ = 0,
 	MEM_WRITE = 0x80,
 }ENUM_FTDI_READ_WRITE;
+
+typedef enum e_lcd_interrupt
+{
+	INTERRUPT_SWAP 			= 0x01,
+	INTERRUPT_TOUCH 		= 0x02,
+	INTERRUPT_TAG 			= 0x04,
+	INTERRUPT_SOUNT 		= 0x08,
+	INTERRUPT_PLAYBACK 		= 0x10,
+	INTERRUPT_CMDEMPTY 		= 0x20,
+	INTERRUPT_CMDFLAG		= 0x40,
+	INTERRUPT_CONVCOMPLETE 	= 0x80,
+}ENUM_LCD_INTERRUPT;
+
+typedef struct t_bitmap_header
+{
+	unsigned char 	Format;
+	unsigned short 	Width;
+	unsigned short 	Height;
+	unsigned short 	Stride;
+	unsigned long 	Totalsize;
+}TYPE_BITMAP_HEADER;
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -85,7 +106,11 @@ extern unsigned char SnapshotBuffer[FULL_SCREEN_SNAPSHOT_SIZE];
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_LCD(void);
+void LCD_InterruptConfigure(void);
+void LCD_InteruptEnable(ENUM_LCD_INTERRUPT Int);
+void LCD_InteruptDisable(ENUM_LCD_INTERRUPT Int);
 void LCD_Reset(unsigned char state);
+void LCD_Interrupt(unsigned char state);
 unsigned char LCD_ft810memRead8(unsigned long ftAddress);
 unsigned int LCD_ft810memRead16(unsigned long ftAddress);
 unsigned long LCD_ft810memRead32(unsigned long ftAddress);
@@ -162,7 +187,9 @@ void LCD_cmd_sketch(unsigned short x, unsigned short y, unsigned short w, unsign
 void LCD_cmd_snapshot(unsigned long ptr);
 void LCD_cmd_snapshot2(unsigned long fmt, unsigned long ptr, unsigned short x, unsigned short y, unsigned short w, unsigned short h);
 void LCD_cmd_logo(void);
-
+void LCD_SetInterruptFlag(void);
+void LCD_ClearInterruptFlag(void);
+unsigned char LCD_GetInterruptFlag(void);
 
 #endif
 /******************************* End of file *********************************/

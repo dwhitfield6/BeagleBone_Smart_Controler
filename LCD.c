@@ -18,6 +18,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "interrupt.h"
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
 #include "hw_types.h"
@@ -25,6 +26,7 @@
 #include "soc_AM335x.h"
 
 #include "GUI.h"
+#include "INTERRUPTS.h"
 #include "LCD.h"
 #include "MISC.h"
 #include "SPI.h"
@@ -33,6 +35,11 @@
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
+
+/******************************************************************************/
+/* Private Variable                                                           */
+/******************************************************************************/
+static unsigned char LCD_Interruptflag = FALSE;
 
 /******************************************************************************/
 /* Global Variable                                                            */
@@ -72,6 +79,9 @@ void Init_LCD(void)
 	unsigned char  FailCount;
 	unsigned char gpio;
 	unsigned char duty;
+
+	/* configure GPIO interrupt pin */
+	LCD_InterruptConfigure();
 
 	HardRestartFTDI:
 	HardFailCount = 0;
@@ -131,6 +141,9 @@ void Init_LCD(void)
 	LCD_wr16(REG_CSPREAD, FT_DispCSpread);
 	LCD_wr16(REG_DITHER, FT_DispDither);
 
+	/* Backlight PWM frequency */
+	LCD_wr16(REG_PWM_HZ, 10000);
+
 	LCD_wr16(REG_ROTATE, 0x01); // rotate screen
 
 	gpio = LCD_rd8(REG_GPIO);	// Read the FT800 GPIO register for a read/modify/write operation
@@ -144,6 +157,61 @@ void Init_LCD(void)
 		LCD_wr8(REG_PWM_DUTY, duty);									// Turn on backlight - ramp up slowly to full brighness
 		MSC_DelayUS(50);
 	}
+
+
+	LCD_wr16(REG_GPIOX, 0x8020); 									// INT_N is push -pull
+	LCD_wr8(REG_INT_MASK, 0);										// disable all interrupts
+	GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);	// clear flag
+	LCD_wr8(REG_INT_EN, 1);											// enable interrupts on FT81x
+	LCD_Interrupt(ON);												// enable interrupts on INT pin
+}
+
+/******************************************************************************/
+/* UART_InterruptConfigure0
+ *
+ * Configures the UART interupt.
+ *                                                                            */
+/******************************************************************************/
+void LCD_InterruptConfigure(void)
+{
+
+    GPIOIntTypeSet(LCD_INT_REGS, LCD_INT_PIN, GPIO_INT_TYPE_NO_LEVEL);
+    GPIOIntTypeSet(LCD_INT_REGS, LCD_INT_PIN, GPIO_INT_TYPE_FALL_EDGE);
+
+    /* Registering the Interrupt Service Routine(ISR). */
+    IntRegister(SYS_INT_GPIOINT3A, GPIO_3A_ISR);
+
+    /* Setting the priority for the system interrupt in AINTC. */
+    IntPrioritySet(SYS_INT_GPIOINT3A, 6, AINTC_HOSTINT_ROUTE_IRQ);
+
+    /* Enabling the system interrupt in AINTC. */
+    IntSystemEnable(SYS_INT_GPIOINT3A);
+}
+
+/******************************************************************************/
+/* LCD_InteruptEnable
+ *
+ * Enables an interrupt.
+ *                                                                            */
+/******************************************************************************/
+void LCD_InteruptEnable(ENUM_LCD_INTERRUPT Int)
+{
+	LCD_wr8(REG_INT_MASK, Int); // rotate screen
+}
+
+/******************************************************************************/
+/* LCD_InteruptDisable
+ *
+ * Disables an interrupt.
+ *                                                                            */
+/******************************************************************************/
+void LCD_InteruptDisable(ENUM_LCD_INTERRUPT Int)
+{
+	unsigned char temp;
+
+	temp = LCD_rd8(REG_INT_MASK); // rotate screen
+	temp &= ~Int;
+	LCD_wr8(REG_INT_MASK, temp); // rotate screen
 }
 
 /******************************************************************************/
@@ -161,6 +229,24 @@ void LCD_Reset(unsigned char state)
 	else
 	{
 		GPIOPinWrite(LCD_PD_REGS, LCD_PD_PIN, GPIO_PIN_HIGH);
+	}
+}
+
+/******************************************************************************/
+/* LCD_Interrupt
+ *
+ * Controls the GPIO interrupt associated with the LCD INT line.
+ *                                                                            */
+/******************************************************************************/
+void LCD_Interrupt(unsigned char state)
+{
+	if(state)
+	{
+	    GPIOPinIntEnable(LCD_INT_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);
+	}
+	else
+	{
+	    GPIOPinIntDisable(LCD_INT_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);
 	}
 }
 
@@ -2156,6 +2242,39 @@ void LCD_cmd_logo(void)
 
 	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+}
+
+/******************************************************************************/
+/* LCD_SetInterruptFlag
+ *
+ * Sets the flag interrupt activity flag status.
+ *                                                                            */
+/******************************************************************************/
+void LCD_SetInterruptFlag(void)
+{
+	LCD_Interruptflag = TRUE;
+}
+
+/******************************************************************************/
+/* LCD_ClearInterruptFlag
+ *
+ * Clears the flag interrupt activity flag status.
+ *                                                                            */
+/******************************************************************************/
+void LCD_ClearInterruptFlag(void)
+{
+	LCD_Interruptflag = FALSE;
+}
+
+/******************************************************************************/
+/* LCD_GetInterruptFlag
+ *
+ * Gets the flag interrupt activity flag status.
+ *                                                                            */
+/******************************************************************************/
+unsigned char LCD_GetInterruptFlag(void)
+{
+	return LCD_Interruptflag;
 }
 
 /******************************* End of file *********************************/

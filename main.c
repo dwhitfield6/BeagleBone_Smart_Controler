@@ -18,11 +18,15 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "FT_Gpu.h"
 #include "hw_control_AM335x.h"
+#include "hw_types.h"
 #include "soc_AM335x.h"
 #include "cache.h"
 
 #include "CMD.h"
+#include "GUI.h"
+#include "LCD.h"
 #include "LEDS.h"
 #include "MEMORY.h"
 #include "SYSTEM.h"
@@ -41,6 +45,10 @@
 /******************************************************************************/
 void main (void)
 {
+	unsigned char flags;
+	unsigned char tags;
+	unsigned char mask;
+
     /* Configure and enable the MMU. */
 	MMU_ConfigAndEnable();
 
@@ -72,6 +80,30 @@ void main (void)
 			UART_PrintString(CRLN);
 			UART_PrintString("> ");
 			CMD_ClearNewCommand();
+		}
+
+		/* check for LCD interrupt flag */
+		if(LCD_GetInterruptFlag())
+		{
+	    	mask = LCD_rd8(REG_INT_MASK); // read interrupt mask
+	    	flags = LCD_rd8(REG_INT_FLAGS); // read interrupt flags
+
+	    	/* check for touch flag */
+	    	if((flags & INTERRUPT_TOUCH) && (mask & INTERRUPT_TOUCH))
+	    	{
+	    		/* there was a touch interrupt */
+	    		NOP();
+	    	}
+
+	    	/* check for tag flag */
+	    	if((flags & INTERRUPT_TAG) && (mask & INTERRUPT_TAG))
+	    	{
+	    		/* there was a touch interrupt */
+	    		tags = LCD_rd8(REG_TOUCH_TAG); // read interrupt flags
+	    		GUI_UpdateScreen(tags);
+	    	}
+			LCD_ClearInterruptFlag();
+			LCD_Interrupt(ON);
 		}
     }
 }

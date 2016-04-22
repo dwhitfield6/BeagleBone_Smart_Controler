@@ -18,6 +18,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "beaglebone.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -25,9 +26,10 @@
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 
-#include "beaglebone.h"
 #include "GPIO.h"
+#include "LCD.h"
 #include "LEDS.h"
+#include "SPI.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -62,16 +64,38 @@ void Init_GPIO(void)
 	GPIOModuleReset(SOC_GPIO_3_REGS);
 
     /*~~~~~~~~~~~~~~~~~~~ LEDS ~~~~~~~~~~~~~~~~~~~*/
-	GPIO_PMUX_OFFADDR_VALUE(1, 21, PAD_FS_RXD_NA_PUPDD(7));  	// LED 1
-	GPIO_PMUX_OFFADDR_VALUE(1, 22, PAD_FS_RXD_NA_PUPDD(7));  	// LED 2
-	GPIO_PMUX_OFFADDR_VALUE(1, 23, PAD_FS_RXD_NA_PUPDD(7)); 	// LED 3
-	GPIO_PMUX_OFFADDR_VALUE(1, 24, PAD_FS_RXD_NA_PUPDD(7)); 	// LED 4
+	GPIO_PMUX_OFFADDR_VALUE(1, 21, PAD_FS_RXD_NA_PUPDD(7));  	// LED 1 = GPIO1_21 = pin V15
+	GPIO_PMUX_OFFADDR_VALUE(1, 22, PAD_FS_RXD_NA_PUPDD(7));  	// LED 2 = GPIO1_22 = pin U15
+	GPIO_PMUX_OFFADDR_VALUE(1, 23, PAD_FS_RXD_NA_PUPDD(7)); 	// LED 3 = GPIO1_23 = pin T15
+	GPIO_PMUX_OFFADDR_VALUE(1, 24, PAD_FS_RXD_NA_PUPDD(7)); 	// LED 4 = GPIO1_24 = pin V16
 
-	/* Setting the GPIO pin as an output pin. */
+	/* Setting the GPIO pin direction */
 	GPIODirModeSet(LED1_REGS, LED1_PIN, GPIO_DIR_OUTPUT); 		// LED 1
 	GPIODirModeSet(LED2_REGS, LED2_PIN, GPIO_DIR_OUTPUT); 		// LED 2
 	GPIODirModeSet(LED3_REGS, LED3_PIN, GPIO_DIR_OUTPUT); 		// LED 3
 	GPIODirModeSet(LED4_REGS, LED4_PIN, GPIO_DIR_OUTPUT); 		// LED 4
+
+	/*~~~~~~~~~~~~~~~~~~~ LCD FT81x module ~~~~~~~~~~~~~~~~~~~*/
+    /* set up the pins */
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_MCASP0_ACLKX) = PAD_FS_RXE_PU_PUPDE(3); 	// SCK 	= pin A13
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_MCASP0_FSX) = PAD_FS_RXE_PU_PUPDE(3); 	// MOSI = pin B13
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_MCASP0_AXR0) = PAD_FS_RXE_PU_PUPDE(3);	// MISO = pin D12
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_MCASP0_AHCLKR) = PAD_FS_RXE_PU_PUPDE(3);	// CS   = pin C12
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_MCASP0_FSR) = PAD_FS_RXD_NA_PUPDD(7);	    // PD   = GPIO3_19 = pin C13
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_MCASP0_AHCLKX) = PAD_FS_RXE_PD_PUPDE(7);	// INT  = GPIO3_21 = pin A14
+
+	LCD_Reset(TRUE);
+
+	/* Setting the GPIO pin direction */
+	GPIODirModeSet(LCD_PD_REGS, LCD_PD_PIN, GPIO_DIR_OUTPUT); 		// PD
+	GPIODirModeSet(LCD_INT_REGS, LCD_INT_PIN, GPIO_DIR_INPUT); 		// INT
+
+	/*~~~~~~~~~~~~~~~~~~~ RF module ~~~~~~~~~~~~~~~~~~~*/
+    /* set up the pins */
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_SPI0_SCLK) = PAD_FS_RXE_PU_PUPDE(0); 	// SCK 	= pin A17
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_SPI0_D0) = PAD_FS_RXE_PU_PUPDE(0); 	// MOSI = pin B17
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_SPI0_D1) = PAD_FS_RXE_PU_PUPDE(0);	// MISO = pin B16
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_SPI0_CS0) = PAD_FS_RXE_PU_PUPDE(0);	// CS   = pin A16
 
 	/* enable the GPIO modules */
 	GPIOModuleEnable(SOC_GPIO_0_REGS);
