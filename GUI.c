@@ -28,6 +28,7 @@
 #include "soc_AM335x.h"
 
 #include "BITMAP_CHARLIE_BEACH.h"
+#include "BITMAP_TV_REMOTE.h"
 #include "GPIO.h"
 #include "GUI.h"
 #include "LCD.h"
@@ -38,19 +39,52 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* Private Variable                                                           */
+/******************************************************************************/
+static unsigned char GUI_CurrentTag = 0;
+
+/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-ENUM_SCREEN_SELECT CurrentScreen = SCREEN_MAIN;
-ENUM_SCREEN_SELECT PreviousScreen = SCREEN_MAIN;
+ENUM_SCREEN_SELECT CurrentScreen;
+ENUM_SCREEN_SELECT PreviousScreen;
+ENUM_SCREEN_SELECT PreviousPreviousScreen;
+pFunction p_PreviousScreen;
 TYPE_SCREEN Screens[MAX_SCREENS] =
 {
+	{
+	/* main screen */
+	.p_CurrentScreen = GUI_DrawHomeScreen,
+	.NextScreen.p_NextScreen = {GUI_DrawTVRemoteScreen},
+	.NextScreen.ScreenName = {SCREEN_TV_REMOTE},
+	.NextScreen.TagButtons = {MAIN_SCREEN_TV_REMOTE},
+	},
+
+	{
+	/* TV screen */
+	.p_CurrentScreen = GUI_DrawTVRemoteScreen,
+	.NextScreen.p_NextScreen =
 		{
-		/* main screen */
-		.p_CurrentScreen = GUI_DrawHomeScreen,
-		.ScreenButtons = 1,
-		.p_NextScreen = {GUI_DrawTVRemoteScreen},
-		.NextScreen = {SCREEN_TV_REMOTE},
-		}
+				GUI_DrawTVRemoteScreen, // TV_REMOTE_SCREEN_1
+				GUI_DrawTVRemoteScreen, // TV_REMOTE_SCREEN_2
+				GUI_DrawTVRemoteScreen, // TV_REMOTE_SCREEN_3
+				GUI_DrawPreviousScreen, // TV_REMOTE_SCREEN_BACK
+		},
+	.NextScreen.ScreenName =
+		{
+				SCREEN_TV_REMOTE, 	// TV_REMOTE_SCREEN_1
+				SCREEN_TV_REMOTE, 	// TV_REMOTE_SCREEN_2
+				SCREEN_TV_REMOTE, 	// TV_REMOTE_SCREEN_3
+				SCREEN_PREVIOUS, 	// TV_REMOTE_SCREEN_BACK
+		},
+	.NextScreen.TagButtons =
+		{
+				TV_REMOTE_SCREEN_1,		// TV_REMOTE_SCREEN_1
+				TV_REMOTE_SCREEN_2,		// TV_REMOTE_SCREEN_2
+				TV_REMOTE_SCREEN_3,		// TV_REMOTE_SCREEN_3
+				TV_REMOTE_SCREEN_BACK,	// TV_REMOTE_SCREEN_BACK
+		},
+	},
 };
 
 /******************************************************************************/
@@ -66,6 +100,10 @@ TYPE_SCREEN Screens[MAX_SCREENS] =
 void Init_GUI(void)
 {
 	GUI_DrawInitialScreen();
+	CurrentScreen = SCREEN_MAIN;
+	PreviousScreen = SCREEN_MAIN;
+	PreviousPreviousScreen = SCREEN_MAIN;
+	 p_PreviousScreen = GUI_DrawHomeScreen;
 }
 
 /******************************************************************************/
@@ -150,7 +188,7 @@ void GUI_DrawInitialScreenProgress(unsigned char progress)
 /******************************************************************************/
 void GUI_DrawHomeScreen(void)
 {
-	const TYPE_BITMAP_HEADER* header = &HEADER_CharlieBeach;
+	const TYPE_BITMAP_HEADER* header;
 
 	RAM_CMD_Offset = LCD_rd16(REG_CMD_WRITE);
 
@@ -159,6 +197,7 @@ void GUI_DrawHomeScreen(void)
 	LCD_cmd(CLEAR(1,1,1));
 
 	/* draw bitmap */
+	header = &HEADER_CharlieBeach;
 	LCD_cmd(BITMAP_HANDLE(0));
 	LCD_cmd(BEGIN(BITMAPS));
 	LCD_cmd(BITMAP_SOURCE(RAM_G));
@@ -170,10 +209,26 @@ void GUI_DrawHomeScreen(void)
 	LCD_cmd(END());
 
 	/* draw the button */
-	LCD_cmd(TAG(0));
-	LCD_cmd_bgcolor(CREATE_COLOR_RBG(255, 0, 0));
-	LCD_cmd(COLOR_RGB(7, 255, 133));
-	LCD_cmd_button(10, 10, 100, 75, 31, 0, "TV Remote");
+	LCD_cmd( COLOR_RGB(128, 0, 0) );
+	LCD_cmd( LINE_WIDTH(1 * 16) );
+	LCD_cmd( BEGIN(RECTS) );
+	LCD_cmd( TAG(MAIN_SCREEN_TV_REMOTE) );
+	LCD_cmd( VERTEX2F(15 * 16,25 * 16) );
+	LCD_cmd( VERTEX2F(95 * 16,115 * 16) );
+	LCD_cmd(END());
+
+	header = &HEADER_TVRemote;
+	LCD_cmd( COLOR_RGB(255, 255, 255) );
+	LCD_cmd(BITMAP_HANDLE(1));
+	LCD_cmd(BEGIN(BITMAPS));
+	LCD_cmd(BITMAP_SOURCE(RAM_G + SIZE_BITMAP_CHARLIE_BEACH));
+	LCD_cmd(BITMAP_LAYOUT(header->Format, header->Stride, header->Height));
+	LCD_cmd(BITMAP_LAYOUT_H((header->Stride >> 10), (header->Height >> 9))); 	// for linestrides larger than 1023 and heights larger than 512
+	LCD_cmd(BITMAP_SIZE(BILINEAR, BORDER, BORDER, header->Width, header->Height));
+	LCD_cmd(BITMAP_SIZE_H((header->Width >> 9), (header->Height >> 9)));		// for widths larger than 512 and heights larger than 512
+	LCD_cmd(COLOR_A(255));
+	LCD_cmd(VERTEX2II(20, 30, 1, 0));
+	LCD_cmd(END());
 
 	LCD_cmd(DISPLAY());
 	LCD_cmd(CMD_SWAP);
@@ -197,24 +252,13 @@ void GUI_DrawTVRemoteScreen(void)
 	LCD_cmd(CLEAR(1,1,1));
 
 	/*~~~~~~~~~~~ draw the buttons ~~~~~~~~~~~ */
-
-	/* draw 1 */
-	LCD_cmd(TAG(1));
-	LCD_cmd_bgcolor(CREATE_COLOR_RBG(255, 0, 0));
+	LCD_cmd(BEGIN(BITMAPS));
 	LCD_cmd(COLOR_RGB(7, 255, 133));
-	LCD_cmd_button(10, 10, 100, 75, 31, 0, "1");
-
-	/* draw 2 */
-	LCD_cmd(TAG(2));
-	LCD_cmd_bgcolor(CREATE_COLOR_RBG(255, 0, 0));
-	LCD_cmd(COLOR_RGB(7, 255, 133));
-	LCD_cmd_button(120, 10, 100, 75, 31, 0, "2");
-
-	/* draw 3 */
-	LCD_cmd(TAG(3));
-	LCD_cmd_bgcolor(CREATE_COLOR_RBG(255, 0, 0));
-	LCD_cmd(COLOR_RGB(7, 255, 133));
-	LCD_cmd_button(230, 10, 100, 75, 31, 0, "3");
+	LCD_cmd( POINT_SIZE(40 * 16) );
+	LCD_cmd( BEGIN(POINTS) );
+	LCD_cmd( TAG(TV_REMOTE_SCREEN_BACK) );
+	LCD_cmd( VERTEX2II(80, 60, 0, 0) );
+	LCD_cmd(END());
 
 	LCD_cmd(DISPLAY());
 	LCD_cmd(CMD_SWAP);
@@ -238,6 +282,10 @@ void GUI_LoadItemToRAMG(ENUM_RAMG_ITEM item)
 			header =  (TYPE_BITMAP_HEADER *)&HEADER_CharlieBeach;
 			LCD_wr_buffer(RAM_G, (unsigned char*)BITMAP_CharlieBeach, header->Stride*header->Height); // load image to RAM_G
 			break;
+		case TV_REMOTE:
+			header =  (TYPE_BITMAP_HEADER *)&HEADER_TVRemote;
+			LCD_wr_buffer(RAM_G + SIZE_BITMAP_CHARLIE_BEACH, (unsigned char*)BITMAP_TVRemote, header->Stride*header->Height); // load image to RAM_G
+			break;
 	}
 }
 
@@ -250,8 +298,6 @@ void GUI_LoadItemToRAMG(ENUM_RAMG_ITEM item)
 void GUI_TouchConfig(void)
 {
 	unsigned long temp;
-
-	LCD_wr32(CLEAR_TAG(0), 0);
 
 	/* turn on the touch screen */
 	temp = LCD_rd32(REG_TOUCH_MODE);
@@ -276,14 +322,71 @@ void GUI_TouchConfig(void)
  *  button that was pressed).
  * 																			  */
 /******************************************************************************/
-void GUI_UpdateScreen(unsigned char tag)
+void GUI_DrawNextScreen(unsigned char tag)
 {
-	if(tag <= Screens[CurrentScreen].ScreenButtons)
+	unsigned short i;
+
+	if(tag != 0)
 	{
-		PreviousScreen = CurrentScreen;
-		Screens[CurrentScreen].p_NextScreen[tag]();
-		CurrentScreen = Screens[CurrentScreen].NextScreen[tag];
+		for(i=0;i<MAX_BUTTONS_PER_SCREEN;i++)
+		{
+			if( tag == Screens[CurrentScreen].NextScreen.TagButtons[i])
+			{
+				GUI_CurrentTag = tag;
+				PreviousScreen = CurrentScreen;
+				PreviousPreviousScreen = PreviousScreen;
+				Screens[CurrentScreen].NextScreen.p_NextScreen[i]();
+				if(Screens[CurrentScreen].NextScreen.ScreenName[i] != SCREEN_PREVIOUS)
+				{
+					if(PreviousPreviousScreen != CurrentScreen)
+					{
+						p_PreviousScreen = Screens[CurrentScreen].p_CurrentScreen;
+					}
+					CurrentScreen = Screens[CurrentScreen].NextScreen.ScreenName[i];
+				}
+				break;
+			}
+		}
 	}
+}
+
+/******************************************************************************/
+/* GUI_DrawPreviousScreen
+ *
+ * This function navigates to the previous screen.
+ * 																			  */
+/******************************************************************************/
+void GUI_DrawPreviousScreen(void)
+{
+	p_PreviousScreen();
+	CurrentScreen = PreviousScreen;
+	PreviousScreen = SCREEN_MAIN;
+	PreviousPreviousScreen = PreviousScreen;
+	p_PreviousScreen = GUI_DrawHomeScreen;
+}
+
+/******************************************************************************/
+/* GUI_DrawScreenCalibration
+ *
+ * This function does a screen calibration.
+ * 																			  */
+/******************************************************************************/
+void GUI_DrawScreenCalibration(void)
+{
+	RAM_CMD_Offset = LCD_rd16(REG_CMD_WRITE);
+
+	LCD_cmd(CMD_DLSTART);
+	LCD_cmd(CLEAR_COLOR_RGB(0,0,0));
+	LCD_cmd(CLEAR(1,1,1));
+
+	LCD_cmd_text(240, 50, 27, OPT_CENTER, "Please tap on the dot");
+	LCD_cmd_calibrate(3);
+
+	LCD_cmd(DISPLAY());
+	LCD_cmd(CMD_SWAP);
+
+	LCD_wr16(REG_CMD_WRITE,RAM_CMD_Offset);
+	LCD_WaitCoprocessorDone();
 }
 
 /******************************* End of file *********************************/

@@ -144,13 +144,12 @@ void Init_LCD(void)
 	/* Backlight PWM frequency */
 	LCD_wr16(REG_PWM_HZ, 10000);
 
-	LCD_wr16(REG_ROTATE, 0x01); // rotate screen
-
 	gpio = LCD_rd8(REG_GPIO);	// Read the FT800 GPIO register for a read/modify/write operation
 	gpio = gpio | 0x80;			// set bit 7 of FT800 GPIO register (DISP) - others are inputs
 	LCD_wr8(REG_GPIO, gpio);		// Enable the DISP signal to the LCD panel
 	LCD_wr8(REG_PCLK, FT_DispPCLK);	// Now start clocking data to the LCD panel
 
+	LCD_cmd_setrotate(2);
 	GUI_DrawInitialScreen();
 	for(duty = 0; duty <= 128; duty+=5)
 	{
@@ -158,12 +157,8 @@ void Init_LCD(void)
 		MSC_DelayUS(50);
 	}
 
-
 	LCD_wr16(REG_GPIOX, 0x8020); 									// INT_N is push -pull
 	LCD_wr8(REG_INT_MASK, 0);										// disable all interrupts
-	GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);	// clear flag
-	LCD_wr8(REG_INT_EN, 1);											// enable interrupts on FT81x
-	LCD_Interrupt(ON);												// enable interrupts on INT pin
 }
 
 /******************************************************************************/
@@ -196,7 +191,11 @@ void LCD_InterruptConfigure(void)
 /******************************************************************************/
 void LCD_InteruptEnable(ENUM_LCD_INTERRUPT Int)
 {
-	LCD_wr8(REG_INT_MASK, Int); // rotate screen
+	unsigned char temp;
+
+	temp = LCD_rd8(REG_INT_MASK); // rotate screen
+	temp |= Int;
+	LCD_wr8(REG_INT_MASK, temp); // rotate screen
 }
 
 /******************************************************************************/

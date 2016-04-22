@@ -48,6 +48,8 @@ void main (void)
 	unsigned char flags;
 	unsigned char tags;
 	unsigned char mask;
+	unsigned long touchX;
+	unsigned long touchY;
 
     /* Configure and enable the MMU. */
 	MMU_ConfigAndEnable();
@@ -92,6 +94,9 @@ void main (void)
 	    	if((flags & INTERRUPT_TOUCH) && (mask & INTERRUPT_TOUCH))
 	    	{
 	    		/* there was a touch interrupt */
+	    		touchY = LCD_rd32(REG_TOUCH_SCREEN_XY);
+	    		touchX = touchY >> 16;
+	    		touchY &= 0x0000FFFF;
 	    		NOP();
 	    	}
 
@@ -99,8 +104,10 @@ void main (void)
 	    	if((flags & INTERRUPT_TAG) && (mask & INTERRUPT_TAG))
 	    	{
 	    		/* there was a touch interrupt */
+	    		LCD_InteruptDisable(INTERRUPT_TAG);
+	    		GUI_StartNewScreenTagTimer();
 	    		tags = LCD_rd8(REG_TOUCH_TAG); // read interrupt flags
-	    		GUI_UpdateScreen(tags);
+	    		GUI_DrawNextScreen(tags);
 	    	}
 			LCD_ClearInterruptFlag();
 			LCD_Interrupt(ON);

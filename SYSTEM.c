@@ -19,6 +19,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "FT_Gpu.h"
 #include "gpio_v2.h"
 #include "interrupt.h"
 #include "soc_AM335x.h"
@@ -28,6 +29,7 @@
 #include "GUI.h"
 #include "LCD.h"
 #include "LEDS.h"
+#include "MISC.h"
 #include "SPI.h"
 #include "SYSTEM.h"
 #include "UART.h"
@@ -74,12 +76,15 @@ void Init_Modules(void)
 	/* load bitmaps and other items to RAM_G */
 	GUI_LoadItemToRAMG(CHARLIE_BEACH);
 	GUI_DrawInitialScreenProgress(20);
-	GUI_LoadItemToRAMG(SD_CARD);
-	GUI_DrawInitialScreenProgress(40);
 	GUI_LoadItemToRAMG(TV_REMOTE);
 	GUI_DrawInitialScreenProgress(60);
-	GUI_TouchConfig();
 	GUI_DrawInitialScreenProgress(100);
+	GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);	// clear flag
+	LCD_wr8(REG_INT_EN, 1);											// enable interrupts on FT81x
+	LCD_Interrupt(ON);												// enable interrupts on INT pin
+	dummy = LCD_rd8(REG_INT_FLAGS); // read interrupt flags
+	GUI_TouchConfig();
+	GUI_DrawScreenCalibration();
 	GUI_DrawHomeScreen();
 }
 

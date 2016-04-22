@@ -11,12 +11,12 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains Bitmap of Charlie at the beach. See Charlie_Beach.rawh
+/* Contains Bitmap of TV remote. See TV_Remote.rawh
  *                                                                            */
 /******************************************************************************/
 
-#ifndef _BITMAP_CHARLIE_BEACH_H_
-#define _BITMAP_CHARLIE_BEACH_H_
+#ifndef _BITMAP_TV_REMOTE_H_
+#define _BITMAP_TV_REMOTE_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
@@ -26,13 +26,13 @@
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
-#define SIZE_BITMAP_CHARLIE_BEACH 261120
+#define SIZE_BITMAP_TV_REMOTE 11200
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-extern const TYPE_BITMAP_HEADER HEADER_CharlieBeach;
-extern const unsigned char BITMAP_CharlieBeach[];
+extern const TYPE_BITMAP_HEADER HEADER_TVRemote;
+extern const unsigned char BITMAP_TVRemote[];
 
 #endif
 /******************************* End of file *********************************/
