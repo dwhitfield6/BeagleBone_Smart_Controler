@@ -25,6 +25,7 @@
 #include "soc_AM335x.h"
 
 #include "CMD.h"
+#include "FRAM.h"
 #include "GPIO.h"
 #include "GUI.h"
 #include "LCD.h"
@@ -32,6 +33,8 @@
 #include "MISC.h"
 #include "SPI.h"
 #include "SYSTEM.h"
+#include "TEST.h"
+#include "TIMERS.h"
 #include "UART.h"
 
 /******************************************************************************/
@@ -66,26 +69,31 @@ void Init_Modules(void)
     IntMasterIRQEnable();
 
     GUI_DrawInitialScreenProgress(0);
-	Init_LED();
+	Init_FRAM();
 	GUI_DrawInitialScreenProgress(5);
 	InitCMD();
 	GUI_DrawInitialScreenProgress(10);
 	Init_UART();
 	GUI_DrawInitialScreenProgress(15);
+	Init_Test();
+	Init_Timers();
+	GUI_DrawInitialScreenProgress(20);
+	Init_LED();
+	GUI_DrawInitialScreenProgress(40);
 
 	/* load bitmaps and other items to RAM_G */
 	GUI_LoadItemToRAMG(CHARLIE_BEACH);
-	GUI_DrawInitialScreenProgress(20);
+	GUI_DrawInitialScreenProgress(50);
 	GUI_LoadItemToRAMG(TV_REMOTE);
 	GUI_DrawInitialScreenProgress(60);
-	GUI_DrawInitialScreenProgress(100);
 	GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);	// clear flag
 	LCD_wr8(REG_INT_EN, 1);											// enable interrupts on FT81x
 	LCD_Interrupt(ON);												// enable interrupts on INT pin
 	dummy = LCD_rd8(REG_INT_FLAGS); // read interrupt flags
 	GUI_TouchConfig();
-	GUI_DrawScreenCalibration();
+	GUI_DrawInitialScreenProgress(100);
 	GUI_DrawHomeScreen();
+
 }
 
 /******************************* End of file *********************************/

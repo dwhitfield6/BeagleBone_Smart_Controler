@@ -19,6 +19,7 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 #include "beaglebone.h"
+#include "dmtimer.h"
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
@@ -29,11 +30,14 @@
 #include "uart_irda_cir.h"
 
 #include "GPIO.h"
+#include "GUI.h"
 #include "LCD.h"
 #include "INTERRUPTS.h"
 #include "LEDS.h"
 #include "MISC.h"
 #include "SYSTEM.h"
+#include "TEST.h"
+#include "TIMERS.h"
 #include "UART.h"
 
 /******************************************************************************/
@@ -131,6 +135,40 @@ void UART_0_ISR(void)
         default:
         	break;
     }
+}
+
+/******************************************************************************/
+/* TMR_2_ISR
+ *
+ * Timer 2 Interrupt service routine.
+ *                                                                            */
+/******************************************************************************/
+void TMR_2_ISR(void)
+{
+	unsigned char status;
+
+	status = DMTimerIntStatusGet(SOC_DMTIMER_2_REGS);
+
+	if(status == DMTIMER_INT_OVF_IT_FLAG)
+	{
+		TEST_Togglepoint1();
+
+		/* GUI  New Screen Tag Timer */
+		if(TMR_GetNewScreenTagTimerEnabled())
+		{
+			TMR_NewScreenTagTimer++;
+			if(TMR_NewScreenTagTimer >= GUI_NEW_SCREEN_TAG_TIMER)
+			{
+				TMR_SetNewScreenTagTimerEnabled(OFF);
+				TMR_ResetNewScreenTagTimer();
+				GUI_SetTagTimoutFlag();
+			}
+		}
+
+
+	    /* Clear the status of the interrupt flags */
+	    DMTimerIntStatusClear(SOC_DMTIMER_2_REGS, DMTIMER_INT_OVF_IT_FLAG);
+	}
 }
 
 /******************************* End of file *********************************/

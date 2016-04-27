@@ -85,6 +85,17 @@ typedef enum e_tv_screen_tags
 	TV_REMOTE_SCREEN_BACK 	= 4,
 }ENUM_TV_REMOTE_SCREEN_TAGS;
 
+typedef struct t_touch_calibration
+{
+	unsigned char Calibrated;
+	double TransformA;
+	double TransformB;
+	double TransformC;
+	double TransformD;
+	double TransformE;
+	double TransformF;
+}TYPE_TOUCH_CALIBRATION;
+
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
@@ -106,7 +117,12 @@ void GUI_LoadItemToRAMG(ENUM_RAMG_ITEM item);
 void GUI_TouchConfig(void);
 void GUI_DrawNextScreen(unsigned char tag);
 void GUI_DrawPreviousScreen(void);
-void GUI_DrawScreenCalibration(void);
+void GUI_LoadTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration);
+void GUI_CreateTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration);
+void GUI_StartNewScreenTagTimer(void);
+void GUI_SetTagTimoutFlag(void);
+void GUI_ClearTagTimoutFlag(void);
+unsigned char GUI_GetTagTimoutFlag(void);
 
 #endif
 /******************************* End of file *********************************/

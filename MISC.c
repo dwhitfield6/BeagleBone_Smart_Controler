@@ -101,4 +101,16 @@ void MSC_DelayUS(unsigned long US)
 	}
 }
 
+/******************************************************************************/
+/* MSC_Round
+ *
+ * This function rounds to the nearest whole number.						  */
+/******************************************************************************/
+double MSC_Round(double input)
+{
+    long temp = (long)(input + 0.5);
+
+    return (double) temp;
+}
+
 /******************************* End of file *********************************/

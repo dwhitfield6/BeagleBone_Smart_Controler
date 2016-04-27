@@ -69,50 +69,50 @@ void Init_SPI_Module1(void)
     McSPI1ModuleClkConfig();
 
 	/* Reset the McSPI instance.*/
-	McSPIReset(LCD_SPI_REGS);
+	McSPIReset(LCD_FRAM_SPI_REGS);
 
 	/* Enable chip select pin.*/
-	McSPICSEnable(LCD_SPI_REGS);
+	McSPICSEnable(LCD_FRAM_SPI_REGS);
 
 	/* Enable master mode of operation.*/
-	McSPIMasterModeEnable(LCD_SPI_REGS);
+	McSPIMasterModeEnable(LCD_FRAM_SPI_REGS);
 
-	HWREG(LCD_SPI_REGS + MCSPI_SYSCONFIG) &= ~MCSPI_SYSCONFIG_AUTOIDLE;
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_SYSCONFIG) &= ~MCSPI_SYSCONFIG_AUTOIDLE;
 
 	/* D0 is output D1 is input */
-	HWREG(LCD_SPI_REGS + MCSPI_SYST) &= ~MCSPI_SYST_SPIDATDIR0;
-	HWREG(LCD_SPI_REGS + MCSPI_SYST) |= MCSPI_SYST_SPIDATDIR1;
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_SYST) &= ~MCSPI_SYST_SPIDATDIR0;
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_SYST) |= MCSPI_SYST_SPIDATDIR1;
 
 	/* Chip select time control */
-	HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_CH0CONF_TCS0_3P5 << MCSPI_CH0CONF_TCS0_SHIFT); // 3h = 3.5 clock cycles
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_CH0CONF_TCS0_3P5 << MCSPI_CH0CONF_TCS0_SHIFT); // 3h = 3.5 clock cycles
 
     /* Set the Initial SPI delay for first transfer */
-    HWREG(LCD_SPI_REGS + MCSPI_MODULCTRL) |= (MCSPI_MODULCTRL_INITDLY_32CLKDLY << MCSPI_MODULCTRL_INITDLY_SHIFT);
+    HWREG(LCD_FRAM_SPI_REGS + MCSPI_MODULCTRL) |= (MCSPI_MODULCTRL_INITDLY_32CLKDLY << MCSPI_MODULCTRL_INITDLY_SHIFT);
 
     /* Set the MS field with the user sent value. */
-    HWREG(LCD_SPI_REGS + MCSPI_MODULCTRL) |= MCSPI_MODULCTRL_SINGLE;
+    HWREG(LCD_FRAM_SPI_REGS + MCSPI_MODULCTRL) |= MCSPI_MODULCTRL_SINGLE;
 
 	/* D1 for reception */
-	HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= MCSPI_CH0CONF_IS; // 1h = Data line 1 (SPIDAT[1]) selected for reception.
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= MCSPI_CH0CONF_IS; // 1h = Data line 1 (SPIDAT[1]) selected for reception.
 
 	/* D0 for Transmission */
-	HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= MCSPI_CH0CONF_DPE1; // 1h = No transmission on data line 1 (SPIDAT[1])
-	HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~MCSPI_CH0CONF_DPE0; // 0h = Data line 0 (SPIDAT[0]) selected for transmission
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= MCSPI_CH0CONF_DPE1; // 1h = No transmission on data line 1 (SPIDAT[1])
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~MCSPI_CH0CONF_DPE0; // 0h = Data line 0 (SPIDAT[0]) selected for transmission
 
 	/* Configure the McSPI bus clock depending on clock mode. */
-	McSPIClkConfig(LCD_SPI_REGS, 48000000, 100000, LCD_CS, MCSPI_CLK_MODE_0);
+	McSPIClkConfig(LCD_FRAM_SPI_REGS, 48000000, 100000, LCD_CS, MCSPI_CLK_MODE_0);
 
 	/* Configure the word length.*/
-	McSPIWordLengthSet(LCD_SPI_REGS, MCSPI_WORD_LENGTH(8), LCD_CS);
+	McSPIWordLengthSet(LCD_FRAM_SPI_REGS, MCSPI_WORD_LENGTH(8), LCD_CS);
 
 	/* Set polarity of SPIEN to low.*/
-	McSPICSPolarityConfig(LCD_SPI_REGS, MCSPI_CS_POL_LOW, LCD_CS);
+	McSPICSPolarityConfig(LCD_FRAM_SPI_REGS, MCSPI_CS_POL_LOW, LCD_CS);
 
     /* Enable the transmitter FIFO of McSPI peripheral.*/
-    McSPITxFIFOConfig(LCD_SPI_REGS, MCSPI_TX_FIFO_DISABLE, LCD_CS);
+    McSPITxFIFOConfig(LCD_FRAM_SPI_REGS, MCSPI_TX_FIFO_DISABLE, LCD_CS);
 
     /* Enable the receiver FIFO of McSPI peripheral.*/
-    McSPIRxFIFOConfig(LCD_SPI_REGS, MCSPI_RX_FIFO_DISABLE, LCD_CS);
+    McSPIRxFIFOConfig(LCD_FRAM_SPI_REGS, MCSPI_RX_FIFO_DISABLE, LCD_CS);
 }
 
 /******************************************************************************/
@@ -224,10 +224,10 @@ void SPI_WriteByte0(unsigned char data)
 /******************************************************************************/
 void SPI_WriteByte1(unsigned char data)
 {
-	while(!(McSPIChannelStatusGet(LCD_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(LCD_SPI_REGS, data, LCD_CS);
-    while(!(McSPIChannelStatusGet(LCD_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_RXS_FULL));
-    dummy = McSPIReceiveData(LCD_SPI_REGS, LCD_CS);
+	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(LCD_FRAM_SPI_REGS, data, LCD_CS);
+    while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_RXS_FULL));
+    dummy = McSPIReceiveData(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -257,10 +257,10 @@ unsigned char SPI_ReadWriteByte1(unsigned char data)
 {
 	unsigned int dummy;
 
-	while(!(McSPIChannelStatusGet(LCD_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(LCD_SPI_REGS, data, LCD_CS);
-    while(!(McSPIChannelStatusGet(LCD_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_RXS_FULL));
-    dummy = McSPIReceiveData(LCD_SPI_REGS, LCD_CS);
+	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(LCD_FRAM_SPI_REGS, data, LCD_CS);
+    while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_RXS_FULL));
+    dummy = McSPIReceiveData(LCD_FRAM_SPI_REGS, LCD_CS);
     return (unsigned char)dummy;
 }
 
@@ -284,8 +284,8 @@ void SPI_WriteByteNoRx0(unsigned char data)
 /******************************************************************************/
 void SPI_WriteByteNoRx1(unsigned char data)
 {
-	while(!(McSPIChannelStatusGet(LCD_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(LCD_SPI_REGS, data, LCD_CS);
+	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(LCD_FRAM_SPI_REGS, data, LCD_CS);
 }
 
 

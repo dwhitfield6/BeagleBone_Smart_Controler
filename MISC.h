@@ -37,6 +37,7 @@ extern unsigned int dummy;
 void MSC_BufferCopy(void* From, void* To, unsigned short bytes);
 unsigned char MSC_LowercaseChar(unsigned char Input);
 void MSC_DelayUS(unsigned long US);
+double MSC_Round(double input);
 
 #endif
 /******************************* End of file *********************************/

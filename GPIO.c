@@ -30,6 +30,7 @@
 #include "LCD.h"
 #include "LEDS.h"
 #include "SPI.h"
+#include "TEST.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -62,6 +63,16 @@ void Init_GPIO(void)
 	GPIOModuleReset(SOC_GPIO_1_REGS);
 	GPIOModuleReset(SOC_GPIO_2_REGS);
 	GPIOModuleReset(SOC_GPIO_3_REGS);
+
+    /*~~~~~~~~~~~~~~~~~~~ Test Points ~~~~~~~~~~~~~~~~~~~*/
+	GPIO_PMUX_OFFADDR_VALUE(1, 13, PAD_FS_RXD_NA_PUPDD(7));  	// TP 1 = GPIO1_13 = pin R12
+	GPIO_PMUX_OFFADDR_VALUE(1, 15, PAD_FS_RXD_NA_PUPDD(7));  	// TP 2 = GPIO1_15 = pin U13
+	GPIO_PMUX_OFFADDR_VALUE(0, 27, PAD_FS_RXD_NA_PUPDD(7)); 	// TP 3 = GPIO0_27 = pin U12
+
+	/* Setting the GPIO pin direction */
+	GPIODirModeSet(TP1_REGS, TP1_PIN, GPIO_DIR_OUTPUT); 		// TP 1
+	GPIODirModeSet(TP2_REGS, TP2_PIN, GPIO_DIR_OUTPUT); 		// TP 2
+	GPIODirModeSet(TP3_REGS, TP3_PIN, GPIO_DIR_OUTPUT); 		// TP 3
 
     /*~~~~~~~~~~~~~~~~~~~ LEDS ~~~~~~~~~~~~~~~~~~~*/
 	GPIO_PMUX_OFFADDR_VALUE(1, 21, PAD_FS_RXD_NA_PUPDD(7));  	// LED 1 = GPIO1_21 = pin V15

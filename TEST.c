@@ -11,163 +11,174 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to configure and control the internal timers.
+/* Contains functions to control the test points.
  *                                                                            */
 /******************************************************************************/
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-#include "beaglebone.h"
-#include "dmtimer.h"
 #include "gpio_v2.h"
-#include "interrupt.h"
+#include "hw_types.h"
 #include "soc_AM335x.h"
 
-#include "INTERRUPTS.h"
-#include "I2C.h"
-#include "MISC.h"
-#include "TIMERS.h"
+#include "TEST.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
 
 /******************************************************************************/
-/* Private Variable                                                            */
-/******************************************************************************/
-static unsigned char TMR_TagTimerEnabled = FALSE;
-
-/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-unsigned long TMR_NewScreenTagTimer = 0;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
 
 /******************************************************************************/
-/* Init_Timers
+/* Init_Test
  *
- * Initializes the Timers.
+ * Initializes the LEDs.
  *                                                                            */
 /******************************************************************************/
-void Init_Timers(void)
+void Init_Test(void)
 {
-	Init_Timer2();
+	TEST_Setpoint1(OFF);
+	TEST_Setpoint1(ON);
+	TEST_Setpoint2(OFF);
+	TEST_Setpoint2(ON);
+	TEST_Setpoint3(OFF);
+	TEST_Setpoint3(ON);
+	TEST_Togglepoint1();
+	TEST_Togglepoint2();
+	TEST_Togglepoint3();
+	TEST_Togglepoint1();
+	TEST_Togglepoint2();
+	TEST_Togglepoint3();
 }
 
 /******************************************************************************/
-/* Init_Timer2
+/* TEST_Setpoint1
  *
- * Initialize timer 2.
+ * Controls Test point 1.
  *                                                                            */
 /******************************************************************************/
-void Init_Timer2(void)
-{
-	unsigned int InitialTimerCount;
-
-	InitialTimerCount = TMR_CalculateReload(TIMER_MODULE_INPUT_CLK, 1000);	// 1 milisecond timer
-
-    /* Reset the DMTimer module */
-    HWREG(SOC_DMTIMER_2_REGS + DMTIMER_TIOCP_CFG) |= DMTIMER_TIOCP_CFG_SOFTRESET;
-    while(DMTIMER_TIOCP_CFG_SOFTRESET == (HWREG(SOC_DMTIMER_2_REGS + DMTIMER_TIOCP_CFG) & DMTIMER_TIOCP_CFG_SOFTRESET));
-
-	DMTimer2ModuleClkConfig();
-
-    /* Load the counter with the initial count value */
-    DMTimerCounterSet(SOC_DMTIMER_2_REGS, InitialTimerCount);
-
-    /* Load the load register with the reload count value */
-    DMTimerReloadSet(SOC_DMTIMER_2_REGS, InitialTimerCount);
-
-    /* Configure the DMTimer for Auto-reload */
-    DMTimerModeConfigure(SOC_DMTIMER_2_REGS, DMTIMER_AUTORLD_NOCMP_ENABLE);
-
-    /* Enable the DMTimer interrupts */
-    DMTimerIntEnable(SOC_DMTIMER_2_REGS, DMTIMER_INT_OVF_EN_FLAG);
-
-    /* Start the DMTimer */
-    DMTimerEnable(SOC_DMTIMER_2_REGS);
-
-    TMR_InterruptConfigure2();
-}
-
-
-
-/******************************************************************************/
-/* TMR_InterruptConfigure2
- *
- * Configure the timer 2 interrupt.
- *                                                                            */
-/******************************************************************************/
-unsigned int TMR_CalculateReload(unsigned int timerinput, unsigned int timeroutput)
-{
-	unsigned int value;
-	value = (unsigned int) MSC_Round((double) (timerinput / timeroutput));
-	value = 0xFFFFFFFF - value;
-	value -= 1;
-	return value;
-}
-
-/******************************************************************************/
-/* TMR_InterruptConfigure2
- *
- * Configure the tiemr 2 interrupt.
- *                                                                            */
-/******************************************************************************/
-void TMR_InterruptConfigure2(void)
-{
-
-    /* Registering DMTimerIsr */
-    IntRegister(SYS_INT_TINT2, TMR_2_ISR);
-
-    /* Set the priority */
-    IntPrioritySet(SYS_INT_TINT2, 2, AINTC_HOSTINT_ROUTE_IRQ);
-
-    /* Enable the system interrupt */
-    IntSystemEnable(SYS_INT_TINT2);
-}
-
-/******************************************************************************/
-/* TMR_GetNewScreenTagTimerEnabled
- *
- * This gets the GUI tag timer enabled status.
- * 																			  */
-/******************************************************************************/
-unsigned char TMR_GetNewScreenTagTimerEnabled(void)
-{
-	return TMR_TagTimerEnabled;
-}
-
-/******************************************************************************/
-/* TMR_SetNewScreenTagTimerEnabled
- *
- * This sets the GUI tag timer enabled status.
- * 																			  */
-/******************************************************************************/
-void TMR_SetNewScreenTagTimerEnabled(unsigned char state)
+void TEST_Setpoint1(unsigned char state)
 {
 	if(state)
 	{
-		TMR_TagTimerEnabled = TRUE;
+		GPIOPinWrite(TP1_REGS, TP1_PIN, GPIO_PIN_HIGH); // TP 1
 	}
 	else
 	{
-		TMR_TagTimerEnabled = FALSE;
+		GPIOPinWrite(TP1_REGS, TP1_PIN, GPIO_PIN_LOW); // TP 1
 	}
 }
 
 /******************************************************************************/
-/* TMR_ResetNewScreenTagTimer
+/* TEST_Setpoint2
  *
- * This resets the GUI tag timer count.
- * 																			  */
+ * Controls Test point 2.
+ *                                                                            */
 /******************************************************************************/
-void TMR_ResetNewScreenTagTimer(void)
+void TEST_Setpoint2(unsigned char state)
 {
-	TMR_NewScreenTagTimer = 0;
+	if(state)
+	{
+		GPIOPinWrite(TP2_REGS, TP2_PIN, GPIO_PIN_HIGH); // TP 2
+	}
+	else
+	{
+		GPIOPinWrite(TP2_REGS, TP2_PIN, GPIO_PIN_LOW); // TP 2
+	}
+}
+
+/******************************************************************************/
+/* TEST_Setpoint3
+ *
+ * Controls Test point 3.
+ *                                                                            */
+/******************************************************************************/
+void TEST_Setpoint3(unsigned char state)
+{
+	if(state)
+	{
+		GPIOPinWrite(TP3_REGS, TP3_PIN, GPIO_PIN_HIGH); // TP 3
+	}
+	else
+	{
+		GPIOPinWrite(TP3_REGS, TP3_PIN, GPIO_PIN_LOW); // TP 3
+	}
+}
+
+/******************************************************************************/
+/* TEST_Togglepoint1
+ *
+ * Toggles Test point 1.
+ *                                                                            */
+/******************************************************************************/
+void TEST_Togglepoint1(void)
+{
+	unsigned int state;
+
+	state = HWREG(TP1_REGS + GPIO_DATAOUT);
+	state &= (1L << TP1_PIN);
+
+	if(state)
+	{
+		GPIOPinWrite(TP1_REGS, TP1_PIN, GPIO_PIN_LOW); // TP 1
+	}
+	else
+	{
+		GPIOPinWrite(TP1_REGS, TP1_PIN, GPIO_PIN_HIGH); // TP 1
+	}
+}
+
+/******************************************************************************/
+/* TEST_Togglepoint2
+ *
+ * Toggles Test point 2.
+ *                                                                            */
+/******************************************************************************/
+void TEST_Togglepoint2(void)
+{
+	unsigned int state;
+
+	state = HWREG(TP2_REGS + GPIO_DATAOUT);
+	state &= (1L << TP2_PIN);
+
+	if(state)
+	{
+		GPIOPinWrite(TP2_REGS, TP2_PIN, GPIO_PIN_LOW); // TP 2
+	}
+	else
+	{
+		GPIOPinWrite(TP2_REGS, TP2_PIN, GPIO_PIN_HIGH); // TP 2
+	}
+}
+
+/******************************************************************************/
+/* TEST_Togglepoint3
+ *
+ * Toggles Test point 3.
+ *                                                                            */
+/******************************************************************************/
+void TEST_Togglepoint3(void)
+{
+	unsigned int state;
+
+	state = HWREG(TP3_REGS + GPIO_DATAOUT);
+	state &= (1L << TP3_PIN);
+
+	if(state)
+	{
+		GPIOPinWrite(TP3_REGS, TP3_PIN, GPIO_PIN_LOW); // TP 3
+	}
+	else
+	{
+		GPIOPinWrite(TP3_REGS, TP3_PIN, GPIO_PIN_HIGH); // TP 3
+	}
 }
 
 /******************************* End of file *********************************/

@@ -9,6 +9,7 @@ C_SRCS += \
 ../BMP.c \
 ../CMD.c \
 ../EMMC.c \
+../FRAM.c \
 ../GPIO.c \
 ../GUI.c \
 ../I2C.c \
@@ -26,6 +27,7 @@ C_SRCS += \
 ../SD.c \
 ../SPI.c \
 ../SYSTEM.c \
+../TEST.c \
 ../TIMERS.c \
 ../UART.c \
 ../USB.c \
@@ -38,6 +40,7 @@ OBJS += \
 ./BMP.obj \
 ./CMD.obj \
 ./EMMC.obj \
+./FRAM.obj \
 ./GPIO.obj \
 ./GUI.obj \
 ./I2C.obj \
@@ -55,6 +58,7 @@ OBJS += \
 ./SD.obj \
 ./SPI.obj \
 ./SYSTEM.obj \
+./TEST.obj \
 ./TIMERS.obj \
 ./UART.obj \
 ./USB.obj \
@@ -67,6 +71,7 @@ C_DEPS += \
 ./BMP.pp \
 ./CMD.pp \
 ./EMMC.pp \
+./FRAM.pp \
 ./GPIO.pp \
 ./GUI.pp \
 ./I2C.pp \
@@ -84,6 +89,7 @@ C_DEPS += \
 ./SD.pp \
 ./SPI.pp \
 ./SYSTEM.pp \
+./TEST.pp \
 ./TIMERS.pp \
 ./UART.pp \
 ./USB.pp \
@@ -96,6 +102,7 @@ C_DEPS__QUOTED += \
 "BMP.pp" \
 "CMD.pp" \
 "EMMC.pp" \
+"FRAM.pp" \
 "GPIO.pp" \
 "GUI.pp" \
 "I2C.pp" \
@@ -113,6 +120,7 @@ C_DEPS__QUOTED += \
 "SD.pp" \
 "SPI.pp" \
 "SYSTEM.pp" \
+"TEST.pp" \
 "TIMERS.pp" \
 "UART.pp" \
 "USB.pp" \
@@ -125,6 +133,7 @@ OBJS__QUOTED += \
 "BMP.obj" \
 "CMD.obj" \
 "EMMC.obj" \
+"FRAM.obj" \
 "GPIO.obj" \
 "GUI.obj" \
 "I2C.obj" \
@@ -142,6 +151,7 @@ OBJS__QUOTED += \
 "SD.obj" \
 "SPI.obj" \
 "SYSTEM.obj" \
+"TEST.obj" \
 "TIMERS.obj" \
 "UART.obj" \
 "USB.obj" \
@@ -154,6 +164,7 @@ C_SRCS__QUOTED += \
 "../BMP.c" \
 "../CMD.c" \
 "../EMMC.c" \
+"../FRAM.c" \
 "../GPIO.c" \
 "../GUI.c" \
 "../I2C.c" \
@@ -171,6 +182,7 @@ C_SRCS__QUOTED += \
 "../SD.c" \
 "../SPI.c" \
 "../SYSTEM.c" \
+"../TEST.c" \
 "../TIMERS.c" \
 "../UART.c" \
 "../USB.c" \

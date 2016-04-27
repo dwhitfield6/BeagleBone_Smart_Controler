@@ -213,7 +213,11 @@ void GPIOPinWrite(unsigned int baseAdd,
 unsigned int GPIOPinRead(unsigned int baseAdd,
                          unsigned int pinNumber)
 {
-    return((HWREG(baseAdd + GPIO_DATAIN) & (1 << pinNumber)) >> pinNumber);
+	unsigned int temp;
+	temp = HWREG(baseAdd + GPIO_DATAIN);
+	temp &= (1L << pinNumber);
+	temp >>= pinNumber;
+    return temp;
 }
 
 /**

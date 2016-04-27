@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../AM335X_StarterWare_02_00_01_01/drivers/cache.c \
+../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/interrupt.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/mcspi.c \
@@ -13,6 +14,7 @@ C_SRCS += \
 
 OBJS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.obj \
+./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/interrupt.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/mcspi.obj \
@@ -21,6 +23,7 @@ OBJS += \
 
 C_DEPS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.pp \
+./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/interrupt.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/mcspi.pp \
@@ -29,6 +32,7 @@ C_DEPS += \
 
 C_DEPS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.pp" \
+"AM335X_StarterWare_02_00_01_01\drivers\dmtimer.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\interrupt.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\mcspi.pp" \
@@ -37,6 +41,7 @@ C_DEPS__QUOTED += \
 
 OBJS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" \
+"AM335X_StarterWare_02_00_01_01\drivers\dmtimer.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\interrupt.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\mcspi.obj" \
@@ -45,6 +50,7 @@ OBJS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../AM335X_StarterWare_02_00_01_01/drivers/cache.c" \
+"../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/interrupt.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/mcspi.c" \

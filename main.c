@@ -104,14 +104,20 @@ void main (void)
 	    	if((flags & INTERRUPT_TAG) && (mask & INTERRUPT_TAG))
 	    	{
 	    		/* there was a touch interrupt */
-	    		LCD_InteruptDisable(INTERRUPT_TAG);
-	    		GUI_StartNewScreenTagTimer();
 	    		tags = LCD_rd8(REG_TOUCH_TAG); // read interrupt flags
 	    		GUI_DrawNextScreen(tags);
 	    	}
 			LCD_ClearInterruptFlag();
 			LCD_Interrupt(ON);
 		}
+
+		/* check for tag timer timeout */
+		if(GUI_GetTagTimoutFlag())
+		{
+			LCD_InteruptEnable(INTERRUPT_TAG);
+			GUI_ClearTagTimoutFlag();
+		}
+
     }
 }
 

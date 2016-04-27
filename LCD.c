@@ -124,7 +124,7 @@ void Init_LCD(void)
 	LCD_wr8(REG_PWM_DUTY, ZERO);										// Turn off backlight
 
 	/* Configure the McSPI bus clock depending on clock mode. */
-	McSPIClkConfig(LCD_SPI_REGS, 48000000, 4000000, LCD_CS, MCSPI_CLK_MODE_0);
+	McSPIClkConfig(LCD_FRAM_SPI_REGS, 48000000, 4000000, LCD_CS, MCSPI_CLK_MODE_0);
 
 	LCD_wr16(REG_HCYCLE, FT_DispHCycle);
 	LCD_wr16(REG_HOFFSET, FT_DispHOffset);
@@ -149,7 +149,6 @@ void Init_LCD(void)
 	LCD_wr8(REG_GPIO, gpio);		// Enable the DISP signal to the LCD panel
 	LCD_wr8(REG_PCLK, FT_DispPCLK);	// Now start clocking data to the LCD panel
 
-	LCD_cmd_setrotate(2);
 	GUI_DrawInitialScreen();
 	for(duty = 0; duty <= 128; duty+=5)
 	{
@@ -262,8 +261,8 @@ unsigned char LCD_ft810memRead8(unsigned long ftAddress)
 
 	receive[0] = SPI_ReadWriteByte1(0x00);
 	receive[1] = SPI_ReadWriteByte1(0x00);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 
 	return receive[1];
 }
@@ -281,8 +280,8 @@ unsigned int LCD_ft810memRead16(unsigned long ftAddress)
 	receive[0] = SPI_ReadWriteByte1(0x00);// dummy
 	receive[1] = SPI_ReadWriteByte1(0x00);
 	receive[2] = SPI_ReadWriteByte1(0x00);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 
 	return ((receive[2] << 8) + (receive[1] & 0x00FF));
 }
@@ -303,8 +302,8 @@ unsigned long LCD_ft810memRead32(unsigned long ftAddress)
 	receive[2] = SPI_ReadWriteByte1(0x00);
 	receive[3] = SPI_ReadWriteByte1(0x00);
 	receive[4] = SPI_ReadWriteByte1(0x00);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 
 	return ((receive[4] << 24) + (receive[3] << 16) + (receive[2] << 8) + receive[1]);
 }
@@ -319,8 +318,8 @@ void LCD_ft810memWrite8(unsigned long ftAddress, unsigned char ftData8)
 {
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
 	SPI_WriteByte1(ftData8);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -340,8 +339,8 @@ void LCD_ft810memWrite16(unsigned long ftAddress, unsigned int ftData16)
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
 	SPI_WriteByte1((unsigned char)data[0]);
 	SPI_WriteByte1((unsigned char)data[1]);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -364,8 +363,8 @@ void LCD_ft810memWrite32(unsigned long ftAddress, unsigned long ftData32)
 	SPI_WriteByte1((unsigned char)data[1]);
 	SPI_WriteByte1((unsigned char)data[2]);
 	SPI_WriteByte1((unsigned char)data[3]);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -378,7 +377,7 @@ void LCD_ft810memWriteBuffer(unsigned long ftAddress, unsigned char* ftData, uns
 {
 	unsigned long i;									// low byte
 
-	HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
 	for(i=0;i<bytes;i++)
 	{
@@ -390,9 +389,9 @@ void LCD_ft810memWriteBuffer(unsigned long ftAddress, unsigned char* ftData, uns
 		i++;
 		i--;
 	}
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-    McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
-    HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~(MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+    McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
+    HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~(MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
 }
 
 /*************** Programs guide ***********************/
@@ -445,8 +444,8 @@ void LCD_wr8s(unsigned long ftAddress, unsigned char* ftData8)
 		ftData8++;
 	}
 	SPI_WriteByte1(*ftData8);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -498,9 +497,9 @@ void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 	cTempAddr[1] = (unsigned char) ((ftAddress >> 8) & 0x0000FFU);								// middle byte
 	cTempAddr[0] = (unsigned char) (ftAddress & 0x000000FFU);										// low byte
 
-	HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
-	McSPIChannelEnable(LCD_SPI_REGS, LCD_CS);
-	McSPICSAssert(LCD_SPI_REGS, LCD_CS);
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
+	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	SPI_WriteByteNoRx1(cTempAddr[2]);
 	SPI_WriteByteNoRx1(cTempAddr[1]);
 	SPI_WriteByteNoRx1(cTempAddr[0]);
@@ -514,9 +513,9 @@ void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 		i++;
 		i--;
 	}
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-    McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
-    HWREG(LCD_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~(MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+    McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
+    HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~(MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
 }
 
 /******************************************************************************/
@@ -535,8 +534,8 @@ void LCD_rd_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 	cTempAddr[1] = (unsigned char) ((ftAddress >> 8) & 0x0000FFU);								// middle byte
 	cTempAddr[0] = (unsigned char) (ftAddress & 0x000000FFU);										// low byte
 
-	McSPIChannelEnable(LCD_SPI_REGS, LCD_CS);
-	McSPICSAssert(LCD_SPI_REGS, LCD_CS);
+	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	SPI_ReadWriteByte1(cTempAddr[2]);
 	SPI_ReadWriteByte1(cTempAddr[1]);
 	SPI_ReadWriteByte1(cTempAddr[0]);
@@ -551,8 +550,8 @@ void LCD_rd_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 		i++;
 		i--;
 	}
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-    McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+    McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -575,12 +574,12 @@ void LCD_cmd(unsigned long command)
 /******************************************************************************/
 void LCD_host_command(unsigned char MSB, unsigned char Middle, unsigned char LSB)
 {
-	McSPIChannelEnable(LCD_SPI_REGS, LCD_CS);
-	McSPICSAssert(LCD_SPI_REGS, LCD_CS);
+	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	SPI_WriteByte1(MSB);
 	SPI_WriteByte1(Middle);
 	SPI_WriteByte1(LSB);
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -627,8 +626,8 @@ void LCD_SendRAMAddress(unsigned long address, ENUM_FTDI_READ_WRITE read_nwrite)
 	cTempAddr[1] = (unsigned char) ((address >> 8) & 0x0000FFU);								// middle byte
 	cTempAddr[0] = (unsigned char) (address & 0x000000FFU);										// low byte
 
-	McSPIChannelEnable(LCD_SPI_REGS, LCD_CS);
-	McSPICSAssert(LCD_SPI_REGS, LCD_CS);
+	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	SPI_WriteByte1((unsigned char)cTempAddr[2]);
 	SPI_WriteByte1((unsigned char)cTempAddr[1]);
 	SPI_WriteByte1((unsigned char)cTempAddr[0]);
@@ -693,8 +692,8 @@ void LCD_cmd_text(unsigned short x, unsigned short y, unsigned short font, unsig
 		LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 	}
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -746,8 +745,8 @@ void LCD_cmd_button(unsigned short x, unsigned short y, unsigned short w, unsign
 		LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 	}
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -777,8 +776,8 @@ void LCD_cmd_clock(unsigned short x, unsigned short y, unsigned short r, unsigne
 	LCD_WriteCommandParameters(((unsigned long)ms<<16)|(s & 0xffff));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -799,8 +798,8 @@ void LCD_cmd_bgcolor(unsigned long C)
 	LCD_WriteCommandParameters(C);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -821,8 +820,8 @@ void LCD_cmd_fgcolor(unsigned long C)
 	LCD_WriteCommandParameters(C);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -843,8 +842,8 @@ void LCD_cmd_gradcolor(unsigned long C)
 	LCD_WriteCommandParameters(C);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -874,8 +873,8 @@ void LCD_cmd_gauge(unsigned short x, unsigned short y, unsigned short r, unsigne
 	LCD_WriteCommandParameters(((unsigned long)range<<16)|(val & 0xffff));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -905,8 +904,8 @@ void LCD_cmd_gradient(unsigned short x0, unsigned short y0, unsigned long rgb0, 
 	LCD_WriteCommandParameters(rgb1);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -958,8 +957,8 @@ void LCD_cmd_keys(unsigned short x, unsigned short y, unsigned short w, unsigned
 		LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 	}
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -989,8 +988,8 @@ void LCD_cmd_progress(unsigned short x, unsigned short y, unsigned short w, unsi
 	LCD_WriteCommandParameters(((unsigned long)range));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1020,8 +1019,8 @@ void LCD_cmd_scrollbar(unsigned short x, unsigned short y, unsigned short w, uns
 	LCD_WriteCommandParameters(((unsigned long)range<<16)|(size & 0xffff));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1051,8 +1050,8 @@ void LCD_cmd_slider(unsigned short x, unsigned short y, unsigned short w, unsign
 	LCD_WriteCommandParameters(((unsigned long)range));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1084,8 +1083,8 @@ void LCD_cmd_dial(unsigned short x, unsigned short y, unsigned short r, unsigned
 	LCD_WriteCommandParameters(((unsigned long)value));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1140,8 +1139,8 @@ void LCD_cmd_toggle(unsigned short x, unsigned short y, unsigned short w, unsign
 		LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 	}
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1166,8 +1165,8 @@ void LCD_cmd_setbase(unsigned long b)
 	LCD_WriteCommandParameters(b);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1194,8 +1193,8 @@ void LCD_cmd_number(unsigned short x, unsigned short y, unsigned short font, uns
 	LCD_WriteCommandParameters(n);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ commands to operate on memory ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -1226,8 +1225,8 @@ void LCD_cmd_memcrc(unsigned long ptr, unsigned long num, unsigned long result)
 	LCD_WriteCommandParameters(result);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1251,8 +1250,8 @@ void LCD_cmd_memzero(unsigned long ptr, unsigned long num)
 	LCD_WriteCommandParameters(num);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1279,8 +1278,8 @@ void LCD_cmd_memset(unsigned long ptr, unsigned long value, unsigned long num)
 	LCD_WriteCommandParameters(num);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1312,8 +1311,8 @@ void LCD_cmd_memwrite(unsigned long ptr, unsigned long num, unsigned long* buffe
 		buffer++;
 	}
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1340,8 +1339,8 @@ void LCD_cmd_memcpy(unsigned long dest, unsigned long src, unsigned long num)
 	LCD_WriteCommandParameters(num);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1365,8 +1364,8 @@ void LCD_cmd_append(unsigned long ptr, unsigned long num)
 	LCD_WriteCommandParameters(num);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 
@@ -1398,8 +1397,8 @@ void LCD_cmd_inflate(unsigned long ptr, unsigned long num, unsigned long* buffer
 		buffer++;
 	}
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1427,8 +1426,8 @@ void LCD_cmd_loadimage(unsigned long ptr, unsigned long options)
 	LCD_WriteCommandParameters(options);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 
@@ -1449,8 +1448,8 @@ void LCD_cmd_loadidentity(void)
 	LCD_WriteCommandParameters(CMD_LOADIDENTITY);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1478,8 +1477,8 @@ void LCD_cmd_translate(unsigned long tx, unsigned long ty)
 	LCD_WriteCommandParameters(ty);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1507,8 +1506,8 @@ void LCD_cmd_scale(unsigned long sx, unsigned long sy)
 	LCD_WriteCommandParameters(sy);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1533,8 +1532,8 @@ void LCD_cmd_rotate(unsigned long a)
 	LCD_WriteCommandParameters(a);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1552,8 +1551,8 @@ void LCD_cmd_setmatrix(void)
 	LCD_WriteCommandParameters(CMD_SETMATRIX);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1587,8 +1586,8 @@ void LCD_cmd_getmatrix(unsigned long a, unsigned long b, unsigned long c, unsign
 	LCD_WriteCommandParameters(f);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1615,8 +1614,8 @@ void LCD_cmd_getptr(unsigned long result)
 	LCD_WriteCommandParameters(result);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1644,8 +1643,8 @@ void LCD_cmd_getprops(unsigned long ptr, unsigned long width, unsigned long heig
 	LCD_WriteCommandParameters(height);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ media/video commands ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -1671,8 +1670,8 @@ void LCD_cmd_mediafifo(unsigned long ptr, unsigned long size)
 	LCD_WriteCommandParameters(size);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1696,8 +1695,8 @@ void LCD_cmd_playvideo(unsigned long opts)
 
 	/* send video data */
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1716,8 +1715,8 @@ void LCD_cmd_videostart(void)
 	LCD_WriteCommandParameters(CMD_VIDEOSTART);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1742,8 +1741,8 @@ void LCD_cmd_videoframe(unsigned long dst, unsigned long ptr)
 	LCD_WriteCommandParameters(ptr);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Other commands ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -1785,8 +1784,8 @@ void LCD_cmd_track(unsigned short x, unsigned short y, unsigned short w, unsigne
 	LCD_WriteCommandParameters((unsigned long) tag);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1820,8 +1819,8 @@ void LCD_cmd_interrupt(unsigned long ms)
 	LCD_WriteCommandParameters(ms);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1848,8 +1847,8 @@ void LCD_cmd_regread(unsigned long ptr, unsigned long result)
 	LCD_WriteCommandParameters(result);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1873,8 +1872,8 @@ void LCD_cmd_calibrate(unsigned long result)
 	LCD_WriteCommandParameters(result);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1898,8 +1897,8 @@ void LCD_cmd_romfont(unsigned long font, unsigned long romslot)
 	LCD_WriteCommandParameters(romslot);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1928,8 +1927,8 @@ void LCD_cmd_setfont(unsigned long font, unsigned long ptr)
 	LCD_WriteCommandParameters(ptr);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1958,8 +1957,8 @@ void LCD_cmd_setfont2(unsigned long font, unsigned long ptr, unsigned long first
 	LCD_WriteCommandParameters(firstchar);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -1984,8 +1983,8 @@ void LCD_cmd_setscratch(unsigned long handle)
 	LCD_WriteCommandParameters(handle);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2006,8 +2005,8 @@ void LCD_cmd_setrotate(unsigned long r)
 	LCD_WriteCommandParameters(r);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2032,8 +2031,8 @@ void LCD_cmd_setbitmap(unsigned long addr, unsigned short fmt, unsigned short wi
 	LCD_WriteCommandParameters((unsigned long)height);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2060,8 +2059,8 @@ void LCD_cmd_spinner(unsigned short x, unsigned short y, unsigned short style, u
 	LCD_WriteCommandParameters(((unsigned long)scale<<16)|(style & 0xffff));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2079,8 +2078,8 @@ void LCD_cmd_stop(void)
 	LCD_WriteCommandParameters(CMD_STOP);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2104,8 +2103,8 @@ void LCD_cmd_screensaver(void)
 	LCD_WriteCommandParameters(CMD_SCREENSAVER);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2145,8 +2144,8 @@ void LCD_cmd_sketch(unsigned short x, unsigned short y, unsigned short w, unsign
 	LCD_WriteCommandParameters((unsigned long)format);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2183,8 +2182,8 @@ void LCD_cmd_snapshot(unsigned long ptr)
 	LCD_WriteCommandParameters(ptr);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2218,8 +2217,8 @@ void LCD_cmd_snapshot2(unsigned long fmt, unsigned long ptr, unsigned short x, u
 	LCD_WriteCommandParameters(((unsigned long)h<<16)|(w & 0xffff));
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/
@@ -2239,8 +2238,8 @@ void LCD_cmd_logo(void)
 	LCD_WriteCommandParameters(CMD_LOGO);
 	LCD_IncrementWriteOffset(&RAM_CMD_Offset);
 
-	McSPICSDeAssert(LCD_SPI_REGS, LCD_CS);
-	McSPIChannelDisable(LCD_SPI_REGS, LCD_CS);
+	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
 /******************************************************************************/

@@ -29,10 +29,12 @@
 
 #include "BITMAP_CHARLIE_BEACH.h"
 #include "BITMAP_TV_REMOTE.h"
+#include "FRAM.h"
 #include "GPIO.h"
 #include "GUI.h"
 #include "LCD.h"
 #include "LEDS.h"
+#include "TIMERS.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -42,6 +44,7 @@
 /* Private Variable                                                           */
 /******************************************************************************/
 static unsigned char GUI_CurrentTag = 0;
+static unsigned char GUI_TagTimoutFlag = FALSE;
 
 /******************************************************************************/
 /* Global Variable                                                            */
@@ -125,6 +128,9 @@ void GUI_DrawInitialScreen(void)
 	/* draw text */
 	LCD_cmd(COLOR_RGB(155, 155, 0));
 	LCD_cmd_text(CENTER_X, CENTER_Y, 31, OPT_CENTER, "Initializing");
+
+	/* rotate screen */
+	LCD_cmd_setrotate(2);
 
 	LCD_cmd(END());
 	LCD_cmd(DISPLAY());
@@ -311,6 +317,16 @@ void GUI_TouchConfig(void)
 	temp = LCD_rd32(REG_TOUCH_RZ);
 	LCD_wr32(REG_TOUCH_RZTHRESH, 0x1000);
 
+	if(CurrentSystemSettings.TouchCalibration.Calibrated)
+	{
+		GUI_LoadTouchCalibration(&CurrentSystemSettings.TouchCalibration);
+	}
+	else
+	{
+		GUI_CreateTouchCalibration(&CurrentSystemSettings.TouchCalibration);
+		FRAM_SaveSettings(&CurrentSystemSettings);
+	}
+
 	LCD_InteruptEnable(INTERRUPT_TOUCH);
 	LCD_InteruptEnable(INTERRUPT_TAG);
 }
@@ -332,6 +348,8 @@ void GUI_DrawNextScreen(unsigned char tag)
 		{
 			if( tag == Screens[CurrentScreen].NextScreen.TagButtons[i])
 			{
+	    		LCD_InteruptDisable(INTERRUPT_TAG);
+	    		GUI_StartNewScreenTagTimer();
 				GUI_CurrentTag = tag;
 				PreviousScreen = CurrentScreen;
 				PreviousPreviousScreen = PreviousScreen;
@@ -366,12 +384,31 @@ void GUI_DrawPreviousScreen(void)
 }
 
 /******************************************************************************/
-/* GUI_DrawScreenCalibration
+/* GUI_LoadTouchCalibration
+ *
+ * This function loads the screen calibration.
+ * 																			  */
+/******************************************************************************/
+void GUI_LoadTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
+{
+	if(calibration->Calibrated)
+	{
+		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformA);
+		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformB);
+		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformC);
+		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformD);
+		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformE);
+		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformF);
+	}
+}
+
+/******************************************************************************/
+/* GUI_CreateTouchCalibration
  *
  * This function does a screen calibration.
  * 																			  */
 /******************************************************************************/
-void GUI_DrawScreenCalibration(void)
+void GUI_CreateTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
 {
 	RAM_CMD_Offset = LCD_rd16(REG_CMD_WRITE);
 
@@ -387,6 +424,64 @@ void GUI_DrawScreenCalibration(void)
 
 	LCD_wr16(REG_CMD_WRITE,RAM_CMD_Offset);
 	LCD_WaitCoprocessorDone();
+
+	calibration->Calibrated = TRUE;
+	calibration->TransformA = LCD_rd32(REG_TOUCH_TRANSFORM_A);
+	calibration->TransformB = LCD_rd32(REG_TOUCH_TRANSFORM_B);
+	calibration->TransformC = LCD_rd32(REG_TOUCH_TRANSFORM_C);
+	calibration->TransformD = LCD_rd32(REG_TOUCH_TRANSFORM_D);
+	calibration->TransformE = LCD_rd32(REG_TOUCH_TRANSFORM_E);
+	calibration->TransformF = LCD_rd32(REG_TOUCH_TRANSFORM_F);
 }
+
+/******************************************************************************/
+/* GUI_StartNewScreenTagTimer
+ *
+ * This starts the timer controlling the touch access.
+ * 																			  */
+/******************************************************************************/
+void GUI_StartNewScreenTagTimer(void)
+{
+	TMR_SetNewScreenTagTimerEnabled(OFF);
+	TMR_ResetNewScreenTagTimer();
+	TMR_SetNewScreenTagTimerEnabled(ON);
+}
+
+/******************************************************************************/
+/* GUI_SetTagTimoutFlag
+ *
+ * This sets the flag indicating the tag timer has ended and a new tag can
+ *  be touched.
+ * 																			  */
+/******************************************************************************/
+void GUI_SetTagTimoutFlag(void)
+{
+	GUI_TagTimoutFlag = TRUE;
+}
+
+/******************************************************************************/
+/* GUI_ClearTagTimoutFlag
+ *
+ * This clears the flag indicating the tag timer has ended and a new tag can
+ *  be touched.
+ * 																			  */
+/******************************************************************************/
+void GUI_ClearTagTimoutFlag(void)
+{
+	GUI_TagTimoutFlag = FALSE;
+}
+
+/******************************************************************************/
+/* GUI_GetTagTimoutFlag
+ *
+ * This gets the flag indicating the tag timer has ended and a new tag can
+ *  be touched.
+ * 																			  */
+/******************************************************************************/
+unsigned char GUI_GetTagTimoutFlag(void)
+{
+	return GUI_TagTimoutFlag;
+}
+
 
 /******************************* End of file *********************************/

@@ -11,82 +11,76 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to configure and control the SPI bus.
+/* Contains functions to communicate with the FRAM device (FM25W256).
  *                                                                            */
 /******************************************************************************/
+
+#ifndef _FRAM_H_
+#define _FRAM_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-
-#ifndef _SPI_H_
-#define _SPI_H_
-
-/******************************************************************************/
-/* SPI1_BUFFER_SIZE
- *
- * This is the size of the SPI1 buffer for sending data.
- *                                                                            */
-/******************************************************************************/
-#define SPI1_BUFFER_SIZE 1000
-
-/******************************************************************************/
-/* SPI1_MISC_BUFFER_SIZE
- *
- * This is the size of the SPI1 buffer for holding data. This is pointed to by
- *  the SPI buffer.
- *                                                                            */
-/******************************************************************************/
-#define SPI1_MISC_BUFFER_SIZE 1000
-
+#include "GUI.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
-#define LCD_FRAM_SPI_REGS SOC_SPI_1_REGS
-#define RF_SPI_REGS SOC_SPI_0_REGS
 
-#define RF_CS	0
-#define LCD_CS	0
-#define FRAM_CS	1
+/******************************************************************************/
+/* SYSTEM_SETTINGS_ADDRESS_START
+ *
+ * Address where we start the structure burn in FRAM.
+ *                                                                            */
+/******************************************************************************/
+#define SYSTEM_SETTINGS_ADDRESS_START 0
 
 /******************************************************************************/
 /* Structure Declaration                                                      */
 /******************************************************************************/
-typedef enum e_spi_transfer_mode
+typedef struct t_system_settings
 {
-    TX_RX = 0,
-	TX_ONLY = 1,
-	RX_ONLY = 2,
-}ENUM_SPI_TRANSFER_MODE;
+	/* touch screen calibration */
+	TYPE_TOUCH_CALIBRATION TouchCalibration;
+}TYPE_SYSTEM_SETTINGS;
 
-typedef struct t_spi_transfer_buffer
+typedef enum e_optcode
 {
-    unsigned char* TXdata;
-    unsigned char* RXdata;
-    ENUM_SPI_TRANSFER_MODE TransferType;
-    unsigned long BytesRemaining;
-    unsigned char Complete;
-}TYPE_SPI_TRANSFER;
+	WREN  	= 0x06, // Set write enable latch
+	WRDI  	= 0x04, // Write disable
+	RDSR  	= 0x05, // Read Status Register
+	WRSR  	= 0x01, // Write Status Register
+	READ  	= 0x03, // Read memory data
+	WRITE  	= 0x02, // Write memory data
+}ENUM_OPCODE;
+
+typedef enum e_Fram_write_read
+{
+	FRAM_READ,			// read to FRAM
+	FRAM_WRITE,			// write to FRAM
+	FRAM_WRITE_READ,	// read and write to FRAM
+}ENUM_FRAM_READ_WRITE;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+extern TYPE_SYSTEM_SETTINGS CurrentSystemSettings;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_SPI(void);
-void Init_SPI_Module1(void);
-void Init_SPI_Module0(void);
-void SPI_INTCConfigure1(void);
-void SPI_1_ISR(void);
-void SPI_WriteByte0(unsigned char data);
-void SPI_WriteByte1(unsigned char data);
-unsigned char SPI_ReadWriteByte0(unsigned char data);
-unsigned char SPI_ReadWriteByte1(unsigned char data);
-void SPI_WriteByteNoRx0(unsigned char data);
-void SPI_WriteByteNoRx1(unsigned char data);
+void Init_FRAM(void);
+void FRAM_LoadSettings(TYPE_SYSTEM_SETTINGS* settings);
+void FRAM_SaveSettings(TYPE_SYSTEM_SETTINGS* settings);
+void FRAM_WriteEnable(void);
+void FRAM_WriteDisable(void);
+void FRAM_WriteStatusRegister(unsigned char StatusRegister);
+unsigned char FRAM_ReadStatusRegister(void);
+void FRAM_WriteMemory(unsigned long address, unsigned char* write, unsigned long bytes);
+void FRAM_ReadMemory(unsigned long address, unsigned char* read, unsigned long bytes);
+void FRAM_WriteRead(ENUM_OPCODE optcode, unsigned char* write, unsigned char* read,
+					unsigned long bytes, ENUM_FRAM_READ_WRITE type, unsigned char ChipSelect);
+
 
 #endif
 /******************************* End of file *********************************/
