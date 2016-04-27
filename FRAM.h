@@ -24,6 +24,15 @@
 #include "GUI.h"
 
 /******************************************************************************/
+/* Pin Definitions			                                                  */
+/******************************************************************************/
+#define FRAM_WP_REGS	SOC_GPIO_0_REGS
+#define FRAM_HOLD_REGS	SOC_GPIO_1_REGS
+
+#define FRAM_WP_PIN		26
+#define FRAM_HOLD_PIN 	12
+
+/******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
 
@@ -80,7 +89,8 @@ void FRAM_WriteMemory(unsigned long address, unsigned char* write, unsigned long
 void FRAM_ReadMemory(unsigned long address, unsigned char* read, unsigned long bytes);
 void FRAM_WriteRead(ENUM_OPCODE optcode, unsigned char* write, unsigned char* read,
 					unsigned long bytes, ENUM_FRAM_READ_WRITE type, unsigned char ChipSelect);
-
+void FRAM_WriteProtect(unsigned char state);
+void FRAM_Hold(unsigned char state);
 
 #endif
 /******************************* End of file *********************************/

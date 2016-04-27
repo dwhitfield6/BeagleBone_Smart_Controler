@@ -73,6 +73,8 @@ void Init_FRAM(void)
 		FRAM_WriteEnable();
 		StatusRegister = FRAM_ReadStatusRegister();
 	}
+	FRAM_Hold(FALSE);
+	FRAM_WriteProtect(FALSE);
 	FRAM_LoadSettings(&CurrentSystemSettings);
 }
 
@@ -250,7 +252,43 @@ void FRAM_WriteRead(ENUM_OPCODE optcode, unsigned char* write, unsigned char* re
 	if(ChipSelect)
 	{
 		McSPICSDeAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
-	}																			// Return 8-bits
+	}
+}
+
+/******************************************************************************/
+/* FRAM_WriteProtect
+ *
+ * Controls the write protect pin.
+ *                                                                            */
+/******************************************************************************/
+void FRAM_WriteProtect(unsigned char state)
+{
+	if(state)
+	{
+		GPIOPinWrite(FRAM_WP_REGS, FRAM_WP_PIN, GPIO_PIN_LOW);
+	}
+	else
+	{
+		GPIOPinWrite(FRAM_WP_REGS, FRAM_WP_PIN, GPIO_PIN_HIGH);
+	}
+}
+
+/******************************************************************************/
+/* FRAM_Hold
+ *
+ * Controls the hold pin.
+ *                                                                            */
+/******************************************************************************/
+void FRAM_Hold(unsigned char state)
+{
+	if(state)
+	{
+		GPIOPinWrite(FRAM_HOLD_REGS, FRAM_HOLD_PIN, GPIO_PIN_LOW);
+	}
+	else
+	{
+		GPIOPinWrite(FRAM_HOLD_REGS, FRAM_HOLD_PIN, GPIO_PIN_HIGH);
+	}
 }
 
 /******************************* End of file *********************************/

@@ -26,6 +26,7 @@
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 
+#include "FRAM.h"
 #include "GPIO.h"
 #include "LCD.h"
 #include "LEDS.h"
@@ -100,6 +101,15 @@ void Init_GPIO(void)
 	/* Setting the GPIO pin direction */
 	GPIODirModeSet(LCD_PD_REGS, LCD_PD_PIN, GPIO_DIR_OUTPUT); 		// PD
 	GPIODirModeSet(LCD_INT_REGS, LCD_INT_PIN, GPIO_DIR_INPUT); 		// INT
+
+	/*~~~~~~~~~~~~~~~~~~~ FRAM module ~~~~~~~~~~~~~~~~~~~*/
+    /* set up the pins */
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(10)) = PAD_FS_RXD_NA_PUPDD(7);	// WP   = GPIO0_26 = pin T11
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(12)) = PAD_FS_RXE_PD_PUPDE(7);	// HOLD	= GPIO1_12 = pin T12
+
+	/* Setting the GPIO pin direction */
+	GPIODirModeSet(FRAM_WP_REGS, FRAM_WP_PIN, GPIO_DIR_OUTPUT); 		// WP
+	GPIODirModeSet(FRAM_HOLD_REGS, FRAM_HOLD_PIN, GPIO_DIR_OUTPUT); 	// HOLD
 
 	/*~~~~~~~~~~~~~~~~~~~ RF module ~~~~~~~~~~~~~~~~~~~*/
     /* set up the pins */
