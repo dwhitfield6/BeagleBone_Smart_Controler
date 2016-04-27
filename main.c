@@ -29,6 +29,7 @@
 #include "LCD.h"
 #include "LEDS.h"
 #include "MEMORY.h"
+#include "RTCC.h"
 #include "SYSTEM.h"
 #include "UART.h"
 
@@ -116,6 +117,13 @@ void main (void)
 		{
 			LCD_InteruptEnable(INTERRUPT_TAG);
 			GUI_ClearTagTimoutFlag();
+		}
+
+		/* check for an RTC time update */
+		if(RTC_GetFlag())
+		{
+			GUI_ScreenRefresh();
+			RTC_ClearFlag();
 		}
 
     }

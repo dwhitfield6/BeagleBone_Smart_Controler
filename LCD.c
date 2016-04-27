@@ -259,8 +259,8 @@ unsigned char LCD_ft810memRead8(unsigned long ftAddress)
 	unsigned char receive[2];
 	LCD_SendRAMAddress(ftAddress, MEM_READ);
 
-	receive[0] = SPI_ReadWriteByte1(0x00);
-	receive[1] = SPI_ReadWriteByte1(0x00);
+	receive[0] = SPI_ReadWriteByte1(0x00, LCD_CS);
+	receive[1] = SPI_ReadWriteByte1(0x00, LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 
@@ -277,9 +277,9 @@ unsigned int LCD_ft810memRead16(unsigned long ftAddress)
 {
 	unsigned char receive[3];
 	LCD_SendRAMAddress(ftAddress, MEM_READ);
-	receive[0] = SPI_ReadWriteByte1(0x00);// dummy
-	receive[1] = SPI_ReadWriteByte1(0x00);
-	receive[2] = SPI_ReadWriteByte1(0x00);
+	receive[0] = SPI_ReadWriteByte1(0x00, LCD_CS);// dummy
+	receive[1] = SPI_ReadWriteByte1(0x00, LCD_CS);
+	receive[2] = SPI_ReadWriteByte1(0x00, LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 
@@ -297,11 +297,11 @@ unsigned long LCD_ft810memRead32(unsigned long ftAddress)
 	unsigned char receive[5];
 	LCD_SendRAMAddress(ftAddress, MEM_READ);
 
-	receive[0] = SPI_ReadWriteByte1(0x00); // dummy
-	receive[1] = SPI_ReadWriteByte1(0x00);
-	receive[2] = SPI_ReadWriteByte1(0x00);
-	receive[3] = SPI_ReadWriteByte1(0x00);
-	receive[4] = SPI_ReadWriteByte1(0x00);
+	receive[0] = SPI_ReadWriteByte1(0x00, LCD_CS); // dummy
+	receive[1] = SPI_ReadWriteByte1(0x00, LCD_CS);
+	receive[2] = SPI_ReadWriteByte1(0x00, LCD_CS);
+	receive[3] = SPI_ReadWriteByte1(0x00, LCD_CS);
+	receive[4] = SPI_ReadWriteByte1(0x00, LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 
@@ -317,7 +317,7 @@ unsigned long LCD_ft810memRead32(unsigned long ftAddress)
 void LCD_ft810memWrite8(unsigned long ftAddress, unsigned char ftData8)
 {
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
-	SPI_WriteByte1(ftData8);
+	SPI_WriteByte1(ftData8, LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
@@ -337,8 +337,8 @@ void LCD_ft810memWrite16(unsigned long ftAddress, unsigned int ftData16)
 	data[0] = ftData16 & 0x00FF;
 
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
-	SPI_WriteByte1((unsigned char)data[0]);
-	SPI_WriteByte1((unsigned char)data[1]);
+	SPI_WriteByte1((unsigned char)data[0], LCD_CS);
+	SPI_WriteByte1((unsigned char)data[1], LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
@@ -359,10 +359,10 @@ void LCD_ft810memWrite32(unsigned long ftAddress, unsigned long ftData32)
 	data[0] = (ftData32 & 0x0000FF);
 
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
-	SPI_WriteByte1((unsigned char)data[0]);
-	SPI_WriteByte1((unsigned char)data[1]);
-	SPI_WriteByte1((unsigned char)data[2]);
-	SPI_WriteByte1((unsigned char)data[3]);
+	SPI_WriteByte1((unsigned char)data[0], LCD_CS);
+	SPI_WriteByte1((unsigned char)data[1], LCD_CS);
+	SPI_WriteByte1((unsigned char)data[2], LCD_CS);
+	SPI_WriteByte1((unsigned char)data[3], LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
@@ -381,7 +381,7 @@ void LCD_ft810memWriteBuffer(unsigned long ftAddress, unsigned char* ftData, uns
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
 	for(i=0;i<bytes;i++)
 	{
-		SPI_WriteByteNoRx1(*ftData);
+		SPI_WriteByteNoRx1(*ftData, LCD_CS);
 		ftData++;
 	}
 	for(i=0;i<1000;i++)
@@ -440,10 +440,10 @@ void LCD_wr8s(unsigned long ftAddress, unsigned char* ftData8)
 	LCD_SendRAMAddress(ftAddress, MEM_WRITE);
 	while(*ftData8)
 	{
-		SPI_WriteByte1(*ftData8);
+		SPI_WriteByte1(*ftData8, LCD_CS);
 		ftData8++;
 	}
-	SPI_WriteByte1(*ftData8);
+	SPI_WriteByte1(*ftData8, LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
 }
@@ -500,12 +500,12 @@ void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);
 	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
-	SPI_WriteByteNoRx1(cTempAddr[2]);
-	SPI_WriteByteNoRx1(cTempAddr[1]);
-	SPI_WriteByteNoRx1(cTempAddr[0]);
+	SPI_WriteByteNoRx1(cTempAddr[2], LCD_CS);
+	SPI_WriteByteNoRx1(cTempAddr[1], LCD_CS);
+	SPI_WriteByteNoRx1(cTempAddr[0], LCD_CS);
 	for(i=0;i<bytes;i++)
 	{
-		SPI_WriteByteNoRx1(*ftData);
+		SPI_WriteByteNoRx1(*ftData, LCD_CS);
 		ftData++;
 	}
 	for(i=0;i<1000;i++)
@@ -536,13 +536,13 @@ void LCD_rd_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 
 	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
-	SPI_ReadWriteByte1(cTempAddr[2]);
-	SPI_ReadWriteByte1(cTempAddr[1]);
-	SPI_ReadWriteByte1(cTempAddr[0]);
-	SPI_ReadWriteByte1(0xFF);
+	SPI_ReadWriteByte1(cTempAddr[2], LCD_CS);
+	SPI_ReadWriteByte1(cTempAddr[1], LCD_CS);
+	SPI_ReadWriteByte1(cTempAddr[0], LCD_CS);
+	SPI_ReadWriteByte1(0xFF, LCD_CS);
 	for(i=0;i<bytes;i++)
 	{
-		*ftData = SPI_ReadWriteByte1(0xFF);
+		*ftData = SPI_ReadWriteByte1(0xFF, LCD_CS);
 		ftData++;
 	}
 	for(i=0;i<1000;i++)
@@ -576,9 +576,9 @@ void LCD_host_command(unsigned char MSB, unsigned char Middle, unsigned char LSB
 {
 	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
-	SPI_WriteByte1(MSB);
-	SPI_WriteByte1(Middle);
-	SPI_WriteByte1(LSB);
+	SPI_WriteByte1(MSB, LCD_CS);
+	SPI_WriteByte1(Middle, LCD_CS);
+	SPI_WriteByte1(LSB, LCD_CS);
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
 }
 
@@ -605,10 +605,10 @@ void LCD_IncrementWriteOffset(unsigned short* offset)
 /******************************************************************************/
 void LCD_WriteCommandParameters(unsigned long parms)
 {
-	SPI_WriteByte1((unsigned char)parms);
-	SPI_WriteByte1((unsigned char)(parms >> 8));
-	SPI_WriteByte1((unsigned char)(parms >> 16));
-	SPI_WriteByte1((unsigned char)(parms >> 24));
+	SPI_WriteByte1((unsigned char)parms, LCD_CS);
+	SPI_WriteByte1((unsigned char)(parms >> 8), LCD_CS);
+	SPI_WriteByte1((unsigned char)(parms >> 16), LCD_CS);
+	SPI_WriteByte1((unsigned char)(parms >> 24), LCD_CS);
 }
 
 /******************************************************************************/
@@ -628,9 +628,9 @@ void LCD_SendRAMAddress(unsigned long address, ENUM_FTDI_READ_WRITE read_nwrite)
 
 	McSPIChannelEnable(LCD_FRAM_SPI_REGS, LCD_CS);
 	McSPICSAssert(LCD_FRAM_SPI_REGS, LCD_CS);
-	SPI_WriteByte1((unsigned char)cTempAddr[2]);
-	SPI_WriteByte1((unsigned char)cTempAddr[1]);
-	SPI_WriteByte1((unsigned char)cTempAddr[0]);
+	SPI_WriteByte1((unsigned char)cTempAddr[2], LCD_CS);
+	SPI_WriteByte1((unsigned char)cTempAddr[1], LCD_CS);
+	SPI_WriteByte1((unsigned char)cTempAddr[0], LCD_CS);
 }
 
 /******************************************************************************/
@@ -673,17 +673,17 @@ void LCD_cmd_text(unsigned short x, unsigned short y, unsigned short font, unsig
 	/* write out string */
 	while(*string)
 	{
-		SPI_WriteByte1(*string);
+		SPI_WriteByte1(*string, LCD_CS);
 		characters++;
 		string++;
 	}
-	SPI_WriteByte1(0); // send null terminator
+	SPI_WriteByte1(0, LCD_CS); // send null terminator
 	characters++;
 
 	/* must write a 'string' that is a multiple of 4 bytes */
 	while((characters % 4) != 0)
 	{
-		SPI_WriteByte1(0);
+		SPI_WriteByte1(0, LCD_CS);
 		characters++;
 	}
 
@@ -726,17 +726,17 @@ void LCD_cmd_button(unsigned short x, unsigned short y, unsigned short w, unsign
 	/* write out string */
 	while(*string)
 	{
-		SPI_WriteByte1(*string);
+		SPI_WriteByte1(*string, LCD_CS);
 		characters++;
 		string++;
 	}
-	SPI_WriteByte1(0); // send null terminator
+	SPI_WriteByte1(0, LCD_CS); // send null terminator
 	characters++;
 
 	/* must write a 'string' that is a multiple of 4 bytes */
 	while((characters % 4) != 0)
 	{
-		SPI_WriteByte1(0);
+		SPI_WriteByte1(0, LCD_CS);
 		characters++;
 	}
 
@@ -938,17 +938,17 @@ void LCD_cmd_keys(unsigned short x, unsigned short y, unsigned short w, unsigned
 	/* write out string */
 	while(*string)
 	{
-		SPI_WriteByte1(*string);
+		SPI_WriteByte1(*string, LCD_CS);
 		characters++;
 		string++;
 	}
-	SPI_WriteByte1(0); // send null terminator
+	SPI_WriteByte1(0, LCD_CS); // send null terminator
 	characters++;
 
 	/* must write a 'string' that is a multiple of 4 bytes */
 	while((characters % 4) != 0)
 	{
-		SPI_WriteByte1(0);
+		SPI_WriteByte1(0, LCD_CS);
 		characters++;
 	}
 
@@ -1120,17 +1120,17 @@ void LCD_cmd_toggle(unsigned short x, unsigned short y, unsigned short w, unsign
 	/* write out string */
 	while(*string)
 	{
-		SPI_WriteByte1(*string);
+		SPI_WriteByte1(*string, LCD_CS);
 		characters++;
 		string++;
 	}
-	SPI_WriteByte1(0); // send null terminator
+	SPI_WriteByte1(0, LCD_CS); // send null terminator
 	characters++;
 
 	/* must write a 'string' that is a multiple of 4 bytes */
 	while((characters % 4) != 0)
 	{
-		SPI_WriteByte1(0);
+		SPI_WriteByte1(0, LCD_CS);
 		characters++;
 	}
 

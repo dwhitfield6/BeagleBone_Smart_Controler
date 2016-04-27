@@ -208,12 +208,12 @@ void SPI_1_ISR(void)
  * Sends a byte over the SPI0 port and waites for reception.
  *                                                                            */
 /******************************************************************************/
-void SPI_WriteByte0(unsigned char data)
+void SPI_WriteByte0(unsigned char data, unsigned char cs)
 {
-	while(!(McSPIChannelStatusGet(RF_SPI_REGS, RF_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(RF_SPI_REGS, data, RF_CS);
-    while(!(McSPIChannelStatusGet(RF_SPI_REGS, RF_CS) & MCSPI_CH_STAT_RXS_FULL));
-    dummy = McSPIReceiveData(RF_SPI_REGS, RF_CS);
+	while(!(McSPIChannelStatusGet(RF_SPI_REGS, cs) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(RF_SPI_REGS, data, cs);
+    while(!(McSPIChannelStatusGet(RF_SPI_REGS, cs) & MCSPI_CH_STAT_RXS_FULL));
+    dummy = McSPIReceiveData(RF_SPI_REGS, cs);
 }
 
 /******************************************************************************/
@@ -222,12 +222,12 @@ void SPI_WriteByte0(unsigned char data)
  * Sends a byte over the SPI1 port and waites for reception.
  *                                                                            */
 /******************************************************************************/
-void SPI_WriteByte1(unsigned char data)
+void SPI_WriteByte1(unsigned char data, unsigned char cs)
 {
-	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(LCD_FRAM_SPI_REGS, data, LCD_CS);
-    while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_RXS_FULL));
-    dummy = McSPIReceiveData(LCD_FRAM_SPI_REGS, LCD_CS);
+	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, cs) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(LCD_FRAM_SPI_REGS, data, cs);
+    while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, cs) & MCSPI_CH_STAT_RXS_FULL));
+    dummy = McSPIReceiveData(LCD_FRAM_SPI_REGS, cs);
 }
 
 /******************************************************************************/
@@ -236,14 +236,14 @@ void SPI_WriteByte1(unsigned char data)
  * Sends/receives a byte over the SPI0 port.
  *                                                                            */
 /******************************************************************************/
-unsigned char SPI_ReadWriteByte0(unsigned char data)
+unsigned char SPI_ReadWriteByte0(unsigned char data, unsigned char cs)
 {
 	unsigned int dummy;
 
-	while(!(McSPIChannelStatusGet(RF_SPI_REGS, RF_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(RF_SPI_REGS, data, RF_CS);
-    while(!(McSPIChannelStatusGet(RF_SPI_REGS, RF_CS) & MCSPI_CH_STAT_RXS_FULL));
-    dummy = McSPIReceiveData(RF_SPI_REGS, RF_CS);
+	while(!(McSPIChannelStatusGet(RF_SPI_REGS, cs) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(RF_SPI_REGS, data, cs);
+    while(!(McSPIChannelStatusGet(RF_SPI_REGS, cs) & MCSPI_CH_STAT_RXS_FULL));
+    dummy = McSPIReceiveData(RF_SPI_REGS, cs);
     return (unsigned char)dummy;
 }
 
@@ -253,14 +253,14 @@ unsigned char SPI_ReadWriteByte0(unsigned char data)
  * Sends/receives a byte over the SPI1 port.
  *                                                                            */
 /******************************************************************************/
-unsigned char SPI_ReadWriteByte1(unsigned char data)
+unsigned char SPI_ReadWriteByte1(unsigned char data, unsigned char cs)
 {
 	unsigned int dummy;
 
-	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(LCD_FRAM_SPI_REGS, data, LCD_CS);
-    while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_RXS_FULL));
-    dummy = McSPIReceiveData(LCD_FRAM_SPI_REGS, LCD_CS);
+	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, cs) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(LCD_FRAM_SPI_REGS, data, cs);
+    while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, cs) & MCSPI_CH_STAT_RXS_FULL));
+    dummy = McSPIReceiveData(LCD_FRAM_SPI_REGS, cs);
     return (unsigned char)dummy;
 }
 
@@ -270,10 +270,10 @@ unsigned char SPI_ReadWriteByte1(unsigned char data)
  * Sends a byte over the SPI0 port.
  *                                                                            */
 /******************************************************************************/
-void SPI_WriteByteNoRx0(unsigned char data)
+void SPI_WriteByteNoRx0(unsigned char data, unsigned char cs)
 {
-	while(!(McSPIChannelStatusGet(RF_SPI_REGS, RF_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(RF_SPI_REGS, data, RF_CS);
+	while(!(McSPIChannelStatusGet(RF_SPI_REGS, cs) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(RF_SPI_REGS, data, cs);
 }
 
 /******************************************************************************/
@@ -282,10 +282,10 @@ void SPI_WriteByteNoRx0(unsigned char data)
  * Sends a byte over the SPI1 port.
  *                                                                            */
 /******************************************************************************/
-void SPI_WriteByteNoRx1(unsigned char data)
+void SPI_WriteByteNoRx1(unsigned char data, unsigned char cs)
 {
-	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, LCD_CS) & MCSPI_CH_STAT_TXS_EMPTY));
-    McSPITransmitData(LCD_FRAM_SPI_REGS, data, LCD_CS);
+	while(!(McSPIChannelStatusGet(LCD_FRAM_SPI_REGS, cs) & MCSPI_CH_STAT_TXS_EMPTY));
+    McSPITransmitData(LCD_FRAM_SPI_REGS, data, cs);
 }
 
 

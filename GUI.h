@@ -104,6 +104,7 @@ extern ENUM_SCREEN_SELECT PreviousScreen;
 extern ENUM_SCREEN_SELECT PreviousPreviousScreen;
 extern TYPE_SCREEN Screens[MAX_SCREENS];
 extern pFunction p_PreviousScreen;
+extern pFunction p_CurrentScreen;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -123,6 +124,8 @@ void GUI_StartNewScreenTagTimer(void);
 void GUI_SetTagTimoutFlag(void);
 void GUI_ClearTagTimoutFlag(void);
 unsigned char GUI_GetTagTimoutFlag(void);
+void GUI_ScreenRefresh(void);
+void GUI_DrawTime(unsigned short x, unsigned short y, unsigned short font);
 
 #endif
 /******************************* End of file *********************************/

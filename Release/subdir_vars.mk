@@ -23,7 +23,7 @@ C_SRCS += \
 ../POWER.c \
 ../PWM.c \
 ../RF.c \
-../RTC.c \
+../RTCC.c \
 ../SD.c \
 ../SPI.c \
 ../SYSTEM.c \
@@ -54,7 +54,7 @@ OBJS += \
 ./POWER.obj \
 ./PWM.obj \
 ./RF.obj \
-./RTC.obj \
+./RTCC.obj \
 ./SD.obj \
 ./SPI.obj \
 ./SYSTEM.obj \
@@ -85,7 +85,7 @@ C_DEPS += \
 ./POWER.pp \
 ./PWM.pp \
 ./RF.pp \
-./RTC.pp \
+./RTCC.pp \
 ./SD.pp \
 ./SPI.pp \
 ./SYSTEM.pp \
@@ -116,7 +116,7 @@ C_DEPS__QUOTED += \
 "POWER.pp" \
 "PWM.pp" \
 "RF.pp" \
-"RTC.pp" \
+"RTCC.pp" \
 "SD.pp" \
 "SPI.pp" \
 "SYSTEM.pp" \
@@ -147,7 +147,7 @@ OBJS__QUOTED += \
 "POWER.obj" \
 "PWM.obj" \
 "RF.obj" \
-"RTC.obj" \
+"RTCC.obj" \
 "SD.obj" \
 "SPI.obj" \
 "SYSTEM.obj" \
@@ -178,7 +178,7 @@ C_SRCS__QUOTED += \
 "../POWER.c" \
 "../PWM.c" \
 "../RF.c" \
-"../RTC.c" \
+"../RTCC.c" \
 "../SD.c" \
 "../SPI.c" \
 "../SYSTEM.c" \

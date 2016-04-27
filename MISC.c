@@ -28,6 +28,7 @@
 
 #include "GPIO.h"
 #include "LEDS.h"
+#include "MISC.h"
 #include "SYSTEM.h"
 
 /******************************************************************************/
@@ -38,6 +39,7 @@
 /* Global Variable                                                            */
 /******************************************************************************/
 unsigned int dummy;
+unsigned char MISC_Buffer[MISC_BUFFER_SIZE];
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -111,6 +113,54 @@ double MSC_Round(double input)
     long temp = (long)(input + 0.5);
 
     return (double) temp;
+}
+
+/******************************************************************************/
+/* MSC_HEXtoBCD
+ *
+ * This function converts from Hex to BCD.									  */
+/******************************************************************************/
+unsigned short MSC_HEXtoBCD(unsigned short input)
+{
+    unsigned short temp0;
+    unsigned short temp1;
+    unsigned short temp2;
+    unsigned short temp3;
+    unsigned short Value = input;
+
+    temp3 = Value/1000;
+    Value -= (temp3 * 1000);
+    temp2 = Value / 100;
+    Value -= (temp2 * 100);
+    temp1 = Value / 10;
+    Value -= (temp1 * 10);
+    temp0 = Value;
+
+    return (temp0 + (temp1 << 4) + (temp2 << 8) + (temp3 << 12));
+}
+
+/******************************************************************************/
+/* MSC_BCDtoHEX
+ *
+ * This function converts from BCD to Hex.									  */
+/******************************************************************************/
+unsigned short MSC_BCDtoHEX(unsigned short input)
+{
+    unsigned short temp0;
+    unsigned short temp1;
+    unsigned short temp2;
+    unsigned short temp3;
+    unsigned short Value = input;
+
+    temp3 = Value >> 12;
+    Value -= (temp3 << 12);
+    temp2 = Value >> 8;
+    Value -= (temp2 << 8);
+    temp1 = Value >> 4;
+    Value -= (temp1 << 4);
+    temp0 = Value;
+
+    return (temp0 + (temp1 * 10) + (temp2 * 100) + (temp3 * 1000));
 }
 
 /******************************* End of file *********************************/

@@ -1,4 +1,5 @@
 /AM335X_StarterWare_02_00_01_01/
+/Bitmaps/
 /FT81x/
 /LinkerCommand/
 /makefile
@@ -6,4 +7,3 @@
 /sources.mk
 /subdir_rules.mk
 /subdir_vars.mk
-/Bitmaps/

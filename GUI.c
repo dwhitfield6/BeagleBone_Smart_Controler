@@ -18,6 +18,8 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include <stdio.h>
+
 #include "beaglebone.h"
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
@@ -34,6 +36,8 @@
 #include "GUI.h"
 #include "LCD.h"
 #include "LEDS.h"
+#include "MISC.h"
+#include "RTCC.h"
 #include "TIMERS.h"
 
 /******************************************************************************/
@@ -53,6 +57,7 @@ ENUM_SCREEN_SELECT CurrentScreen;
 ENUM_SCREEN_SELECT PreviousScreen;
 ENUM_SCREEN_SELECT PreviousPreviousScreen;
 pFunction p_PreviousScreen;
+pFunction p_CurrentScreen;
 TYPE_SCREEN Screens[MAX_SCREENS] =
 {
 	{
@@ -106,7 +111,8 @@ void Init_GUI(void)
 	CurrentScreen = SCREEN_MAIN;
 	PreviousScreen = SCREEN_MAIN;
 	PreviousPreviousScreen = SCREEN_MAIN;
-	 p_PreviousScreen = GUI_DrawHomeScreen;
+	p_PreviousScreen = GUI_DrawHomeScreen;
+	p_CurrentScreen = GUI_DrawHomeScreen;
 }
 
 /******************************************************************************/
@@ -130,7 +136,7 @@ void GUI_DrawInitialScreen(void)
 	LCD_cmd_text(CENTER_X, CENTER_Y, 31, OPT_CENTER, "Initializing");
 
 	/* rotate screen */
-	LCD_cmd_setrotate(2);
+	LCD_cmd_setrotate(1);
 
 	LCD_cmd(END());
 	LCD_cmd(DISPLAY());
@@ -235,6 +241,10 @@ void GUI_DrawHomeScreen(void)
 	LCD_cmd(COLOR_A(255));
 	LCD_cmd(VERTEX2II(20, 30, 1, 0));
 	LCD_cmd(END());
+
+	/* draw the time */
+	LCD_cmd(COLOR_RGB(0, 255, 255));
+	GUI_DrawTime(350,20, 27);
 
 	LCD_cmd(DISPLAY());
 	LCD_cmd(CMD_SWAP);
@@ -353,7 +363,8 @@ void GUI_DrawNextScreen(unsigned char tag)
 				GUI_CurrentTag = tag;
 				PreviousScreen = CurrentScreen;
 				PreviousPreviousScreen = PreviousScreen;
-				Screens[CurrentScreen].NextScreen.p_NextScreen[i]();
+				p_CurrentScreen = Screens[CurrentScreen].NextScreen.p_NextScreen[i];
+				p_CurrentScreen();
 				if(Screens[CurrentScreen].NextScreen.ScreenName[i] != SCREEN_PREVIOUS)
 				{
 					if(PreviousPreviousScreen != CurrentScreen)
@@ -483,5 +494,35 @@ unsigned char GUI_GetTagTimoutFlag(void)
 	return GUI_TagTimoutFlag;
 }
 
+/******************************************************************************/
+/* GUI_ScreenRefresh
+ *
+ * Refresh the screen in the case of a time update...etc.
+ * 																			  */
+/******************************************************************************/
+void GUI_ScreenRefresh(void)
+{
+	p_CurrentScreen();
+}
+
+/******************************************************************************/
+/* GUI_DrawTime
+ *
+ * Refresh the screen in the case of a time update...etc.
+ * 																			  */
+/******************************************************************************/
+void GUI_DrawTime(unsigned short x, unsigned short y, unsigned short font)
+{
+	RTC_GetTimeDate(&CurrentTimeDate);
+	if(CurrentTimeDate.Time.AM_PM == AM)
+	{
+		sprintf((char*)MISC_Buffer, "%d:%02d:%02d AM", CurrentTimeDate.Time.Hour, CurrentTimeDate.Time.Minute, CurrentTimeDate.Time.Second);
+	}
+	else
+	{
+		sprintf((char*)MISC_Buffer, "%d:%02d:%02d PM", CurrentTimeDate.Time.Hour, CurrentTimeDate.Time.Minute, CurrentTimeDate.Time.Second);
+	}
+	LCD_cmd_text(x, y, font, OPT_CENTER, MISC_Buffer);
+}
 
 /******************************* End of file *********************************/

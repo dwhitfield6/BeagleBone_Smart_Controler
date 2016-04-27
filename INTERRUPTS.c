@@ -35,6 +35,7 @@
 #include "INTERRUPTS.h"
 #include "LEDS.h"
 #include "MISC.h"
+#include "RTCC.h"
 #include "SYSTEM.h"
 #include "TEST.h"
 #include "TIMERS.h"
@@ -169,6 +170,18 @@ void TMR_2_ISR(void)
 	    /* Clear the status of the interrupt flags */
 	    DMTimerIntStatusClear(SOC_DMTIMER_2_REGS, DMTIMER_INT_OVF_IT_FLAG);
 	}
+}
+
+/******************************************************************************/
+/* RTC_ISR
+ *
+ * RTC interrupt service routine.
+ *                                                                            */
+/******************************************************************************/
+void RTC_ISR(void)
+{
+	RTC_GetTimeDate(&CurrentTimeDate);
+	RTC_SetFlag();
 }
 
 /******************************* End of file *********************************/

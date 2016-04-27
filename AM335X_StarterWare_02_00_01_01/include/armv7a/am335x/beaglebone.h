@@ -110,7 +110,6 @@ extern void DMTimer6ModuleClkConfig(void);
 extern void DMTimer7ModuleClkConfig(void);
 extern void DMTimer1msModuleClkConfig(unsigned int clkselect);
 extern void EVMPortMIIModeSelect(void);
-extern void RTCModuleClkConfig(void);
 extern void HSMMCSDModuleClkConfig(void);
 extern void HSMMCSDPinMuxSetup(void);
 extern void I2C0ModuleClkConfig(void);

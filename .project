@@ -80,10 +80,4 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<variableList>
-		<variable>
-			<name>ORIGINAL_PROJECT_ROOT</name>
-			<value>file:/C:/ti/AM335X_StarterWare_02_00_01_01/build/armv7a/cgt_ccs/am335x/evmskAM335x/uart</value>
-		</variable>
-	</variableList>
 </projectDescription>

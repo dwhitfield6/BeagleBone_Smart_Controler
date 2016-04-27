@@ -27,9 +27,18 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* MISC_BUFFER_SIZE
+ *
+ * This is the size of the Misc buffer.
+ *                                                                            */
+/******************************************************************************/
+#define MISC_BUFFER_SIZE 1000
+
+/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 extern unsigned int dummy;
+extern unsigned char MISC_Buffer[MISC_BUFFER_SIZE];
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -38,6 +47,8 @@ void MSC_BufferCopy(void* From, void* To, unsigned short bytes);
 unsigned char MSC_LowercaseChar(unsigned char Input);
 void MSC_DelayUS(unsigned long US);
 double MSC_Round(double input);
+unsigned short MSC_HEXtoBCD(unsigned short input);
+unsigned short MSC_BCDtoHEX(unsigned short input);
 
 #endif
 /******************************* End of file *********************************/

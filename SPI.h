@@ -81,12 +81,12 @@ void Init_SPI_Module1(void);
 void Init_SPI_Module0(void);
 void SPI_INTCConfigure1(void);
 void SPI_1_ISR(void);
-void SPI_WriteByte0(unsigned char data);
-void SPI_WriteByte1(unsigned char data);
-unsigned char SPI_ReadWriteByte0(unsigned char data);
-unsigned char SPI_ReadWriteByte1(unsigned char data);
-void SPI_WriteByteNoRx0(unsigned char data);
-void SPI_WriteByteNoRx1(unsigned char data);
+void SPI_WriteByte0(unsigned char data, unsigned char cs);
+void SPI_WriteByte1(unsigned char data, unsigned char cs);
+unsigned char SPI_ReadWriteByte0(unsigned char data, unsigned char cs);
+unsigned char SPI_ReadWriteByte1(unsigned char data, unsigned char cs);
+void SPI_WriteByteNoRx0(unsigned char data, unsigned char cs);
+void SPI_WriteByteNoRx1(unsigned char data, unsigned char cs);
 
 #endif
 /******************************* End of file *********************************/

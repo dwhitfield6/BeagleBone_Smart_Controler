@@ -45,12 +45,32 @@
 #define SYSTEM_SETTINGS_ADDRESS_START 0
 
 /******************************************************************************/
+/* FRAM_COUNT_TIMEOUT
+ *
+ * This is the number of loops that we wait for the FRAM.
+ *                                                                            */
+/******************************************************************************/
+#define FRAM_COUNT_TIMEOUT 100
+
+/******************************************************************************/
+/* GOOD_TAG
+ *
+ * This is a tag for good FRAM data values.
+ *                                                                            */
+/******************************************************************************/
+#define GOOD_TAG 0x3D
+
+/******************************************************************************/
 /* Structure Declaration                                                      */
 /******************************************************************************/
 typedef struct t_system_settings
 {
+	unsigned char GoodTag;
+
 	/* touch screen calibration */
 	TYPE_TOUCH_CALIBRATION TouchCalibration;
+
+	unsigned long CRC32;
 }TYPE_SYSTEM_SETTINGS;
 
 typedef enum e_optcode
@@ -91,6 +111,8 @@ void FRAM_WriteRead(ENUM_OPCODE optcode, unsigned char* write, unsigned char* re
 					unsigned long bytes, ENUM_FRAM_READ_WRITE type, unsigned char ChipSelect);
 void FRAM_WriteProtect(unsigned char state);
 void FRAM_Hold(unsigned char state);
+unsigned long FRAM_CalculateCRC(TYPE_SYSTEM_SETTINGS* settings);
+void FRAM_LoadDefaultSettings(TYPE_SYSTEM_SETTINGS* settings);
 
 #endif
 /******************************* End of file *********************************/

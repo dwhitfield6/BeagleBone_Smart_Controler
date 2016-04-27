@@ -31,6 +31,7 @@
 #include "LCD.h"
 #include "LEDS.h"
 #include "MISC.h"
+#include "RTCC.h"
 #include "SPI.h"
 #include "SYSTEM.h"
 #include "TEST.h"
@@ -70,6 +71,7 @@ void Init_Modules(void)
 
     GUI_DrawInitialScreenProgress(0);
 	Init_FRAM();
+	Init_RTC();
 	GUI_DrawInitialScreenProgress(5);
 	InitCMD();
 	GUI_DrawInitialScreenProgress(10);
@@ -93,7 +95,6 @@ void Init_Modules(void)
 	GUI_TouchConfig();
 	GUI_DrawInitialScreenProgress(100);
 	GUI_DrawHomeScreen();
-
 }
 
 /******************************* End of file *********************************/

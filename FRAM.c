@@ -42,6 +42,9 @@
 /******************************************************************************/
 TYPE_SYSTEM_SETTINGS CurrentSystemSettings =
 {
+	/* good tag */
+	.GoodTag = 0,
+
 	/* touch screen calibration */
 	.TouchCalibration.Calibrated = FALSE,
 	.TouchCalibration.TransformA = 1.0,
@@ -50,6 +53,9 @@ TYPE_SYSTEM_SETTINGS CurrentSystemSettings =
 	.TouchCalibration.TransformD = 1.0,
 	.TouchCalibration.TransformE = 1.0,
 	.TouchCalibration.TransformF = 1.0,
+
+	/* CRC 32 */
+	.CRC32 = 0L,
 };
 
 
@@ -66,16 +72,54 @@ TYPE_SYSTEM_SETTINGS CurrentSystemSettings =
 void Init_FRAM(void)
 {
 	unsigned char StatusRegister = 0;
+	unsigned long count = 0;
+	unsigned char status = PASS;
+	unsigned long crc;
+
+	FRAM_WriteStatusRegister(0x02); // enable writes and turn off write protect
+	FRAM_WriteEnable();
+	StatusRegister = FRAM_ReadStatusRegister();
 
 	while(!(StatusRegister & 0x02))
 	{
 		FRAM_WriteStatusRegister(0x02); // enable writes and turn off write protect
 		FRAM_WriteEnable();
 		StatusRegister = FRAM_ReadStatusRegister();
+		count++;
+		if(count > FRAM_COUNT_TIMEOUT)
+		{
+			status = FAIL;
+			return;
+		}
 	}
-	FRAM_Hold(FALSE);
-	FRAM_WriteProtect(FALSE);
-	FRAM_LoadSettings(&CurrentSystemSettings);
+
+	if(status)
+	{
+		if(StatusRegister & 0x71)
+		{
+			status = FAIL;
+		}
+	}
+	if(status)
+	{
+		FRAM_Hold(FALSE);
+		FRAM_WriteProtect(FALSE);
+		FRAM_LoadSettings(&CurrentSystemSettings);
+		crc = FRAM_CalculateCRC(&CurrentSystemSettings);
+		if(crc == CurrentSystemSettings.CRC32)
+		{
+			CurrentSystemSettings.GoodTag = GOOD_TAG;
+		}
+		else
+		{
+			FRAM_LoadDefaultSettings(&CurrentSystemSettings);
+			FRAM_SaveSettings(&CurrentSystemSettings);
+		}
+	}
+	else
+	{
+		FRAM_LoadDefaultSettings(&CurrentSystemSettings);
+	}
 }
 
 /******************************************************************************/
@@ -168,21 +212,23 @@ void FRAM_WriteMemory(unsigned long address, unsigned char* write, unsigned long
 
 	FRAM_WriteEnable();
 
+	McSPIChannelEnable(LCD_FRAM_SPI_REGS, FRAM_CS);
 	McSPICSAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
 
 	/* write the 15 bit starting address */
 	temp = (address >> 8) & 0x7F;
 	FRAM_WriteRead(WRITE, (unsigned char*) &temp , &read, 1, FRAM_WRITE, FALSE);
 	temp = address;
-	SPI_ReadWriteByte1((unsigned char)temp);
+	SPI_ReadWriteByte1((unsigned char)temp, FRAM_CS);
 
 	/* write the buffer */
 	for(i=0;i<bytes;i++)
 	{
-		SPI_ReadWriteByte1(*write);
+		SPI_ReadWriteByte1(*write, FRAM_CS);
 		write++;
 	}
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, FRAM_CS);
 }
 
 
@@ -198,22 +244,24 @@ void FRAM_ReadMemory(unsigned long address, unsigned char* read, unsigned long b
 	unsigned char temp;
 	unsigned long i;
 
+	McSPIChannelEnable(LCD_FRAM_SPI_REGS, FRAM_CS);
 	McSPICSAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
 
 	/* write the 15 bit starting address */
 	temp = (address >> 8) & 0x7F;
 	FRAM_WriteRead(READ, &temp , &dummy, 1, FRAM_WRITE, FALSE);
 	temp = address;
-	SPI_ReadWriteByte1(temp);
+	SPI_ReadWriteByte1(temp, FRAM_CS);
 
 	/* read the buffer */
 	for(i=0;i<bytes;i++)
 	{
-		*read = SPI_ReadWriteByte1(0xFF);
+		*read = SPI_ReadWriteByte1(0xFF, FRAM_CS);
 		read++;
 	}
 
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
+	McSPIChannelDisable(LCD_FRAM_SPI_REGS, FRAM_CS);
 }
 
 /******************************************************************************/
@@ -229,12 +277,13 @@ void FRAM_WriteRead(ENUM_OPCODE optcode, unsigned char* write, unsigned char* re
 
 	if(ChipSelect)
 	{
+		McSPIChannelEnable(LCD_FRAM_SPI_REGS, FRAM_CS);
 		McSPICSAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
 	}
-	dummy = SPI_ReadWriteByte1(optcode);
+	dummy = SPI_ReadWriteByte1(optcode, FRAM_CS);
 	for(i=0;i<bytes;i++)
 	{
-		*read = SPI_ReadWriteByte1(*write);
+		*read = SPI_ReadWriteByte1(*write, FRAM_CS);
 		if(type == FRAM_READ)
 		{
 			read++;
@@ -252,6 +301,7 @@ void FRAM_WriteRead(ENUM_OPCODE optcode, unsigned char* write, unsigned char* re
 	if(ChipSelect)
 	{
 		McSPICSDeAssert(LCD_FRAM_SPI_REGS, FRAM_CS);
+		McSPIChannelDisable(LCD_FRAM_SPI_REGS, FRAM_CS);
 	}
 }
 
@@ -289,6 +339,41 @@ void FRAM_Hold(unsigned char state)
 	{
 		GPIOPinWrite(FRAM_HOLD_REGS, FRAM_HOLD_PIN, GPIO_PIN_HIGH);
 	}
+}
+
+/******************************************************************************/
+/* FRAM_CalculateCRC
+ *
+ * Calculates a CRC on the Structure;
+ *                                                                            */
+/******************************************************************************/
+unsigned long FRAM_CalculateCRC(TYPE_SYSTEM_SETTINGS* settings)
+{
+	return 0;
+}
+
+/******************************************************************************/
+/* FRAM_LoadSettings
+ *
+ * Loads the system settings from FRAM.
+ *                                                                            */
+/******************************************************************************/
+void FRAM_LoadDefaultSettings(TYPE_SYSTEM_SETTINGS* settings)
+{
+	/* good tag */
+	settings->GoodTag = GOOD_TAG,
+
+	/* touch screen calibration */
+	settings->TouchCalibration.Calibrated = FALSE,
+	settings->TouchCalibration.TransformA = 1.0,
+	settings->TouchCalibration.TransformB = 1.0,
+	settings->TouchCalibration.TransformC = 1.0,
+	settings->TouchCalibration.TransformD = 1.0,
+	settings->TouchCalibration.TransformE = 1.0,
+	settings->TouchCalibration.TransformF = 1.0,
+
+	/* CRC 32 */
+	settings->CRC32 = FRAM_CalculateCRC(settings);
 }
 
 /******************************* End of file *********************************/
