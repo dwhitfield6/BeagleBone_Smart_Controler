@@ -61,6 +61,7 @@ unsigned short FT_DispPCLKPol = 1;
 unsigned short FT_DispCSpread = 1;
 unsigned short FT_DispDither = 1;
 unsigned char SnapshotBuffer[FULL_SCREEN_SNAPSHOT_SIZE];
+unsigned char BackLightSetting = 128;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -150,7 +151,7 @@ void Init_LCD(void)
 	LCD_wr8(REG_PCLK, FT_DispPCLK);	// Now start clocking data to the LCD panel
 
 	GUI_DrawInitialScreen();
-	for(duty = 0; duty <= 128; duty+=5)
+	for(duty = 0; duty <= BackLightSetting; duty++)
 	{
 		LCD_wr8(REG_PWM_DUTY, duty);									// Turn on backlight - ramp up slowly to full brighness
 		MSC_DelayUS(50);
@@ -487,7 +488,7 @@ unsigned long LCD_rd32(unsigned long ftAddress)
  * This function writes a buffer to the intended address location
  *                                                                            */
 /******************************************************************************/
-void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long bytes)
+void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned char dataskip, unsigned long bytes)
 {
 	unsigned char cTempAddr[3];
 	unsigned char temp = ((ftAddress >> 16) & 0x003FU);
@@ -506,13 +507,29 @@ void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long
 	for(i=0;i<bytes;i++)
 	{
 		SPI_WriteByteNoRx1(*ftData, LCD_CS);
-		ftData++;
+		switch(dataskip)
+		{
+			case 1:
+				ftData++;
+				ftData++;
+				break;
+			case 2:
+				ftData++;
+				ftData++;
+				ftData++;
+				break;
+			case 3:
+				ftData++;
+				ftData++;
+				ftData++;
+				ftData++;
+				break;
+			default:
+				ftData++;
+				break;
+		}
 	}
-	for(i=0;i<1000;i++)
-	{
-		i++;
-		i--;
-	}
+
 	McSPICSDeAssert(LCD_FRAM_SPI_REGS, LCD_CS);
     McSPIChannelDisable(LCD_FRAM_SPI_REGS, LCD_CS);
     HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~(MCSPI_TX_ONLY_MODE & MCSPI_CH1CONF_TRM);

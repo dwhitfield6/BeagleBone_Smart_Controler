@@ -35,12 +35,30 @@
 #define CENTER_Y 136
 
 /******************************************************************************/
-/* RAM_G memory allocation                                                    */
+/* RAM_G memory allocation
+ *
+ * This is what sits in RAM_G. The last address of RAM_G is 1048576.
+ * 																	          */
 /******************************************************************************/
-#define BITMAP_SDCARD_MEMORY_LOCATION RAM_G
-#define BITMAP_VOYANT2_MEMORY_LOCATION 21648	// stride * height of SDCard bitmap
-#define BITMAP_SNAPSHOT_LOCATION 188248			// stride * height of VOYANT 2 bitmap + BITMAP_VOYANT2_MEMORY_LOCATION
-#define FULL_SCREEN_SNAPSHOT_SIZE 768000
+#define BITMAP_CHARLIE_BEACH_RAM_G_LOCATION_START 	RAM_G
+#define BITMAP_CHARLIE_BEACH_RAM_G_LOCATION_END 	261119
+#define BITMAP_CHARLIE_BEACH_RAM_G_SIZE 			261120
+
+#define BITMAP_TV_REMOTE_RAM_G_LOCATION_START 		261120
+#define BITMAP_TV_REMOTE_RAM_G_LOCATION_END 		272319
+#define BITMAP_TV_REMOTE_RAM_G_SIZE 				11200
+
+#define MISC_BUFFER_RAM_G_LOCATION_START 			272320
+#define MISC_BUFFER_RAM_G_LOCATION_END 				1040319
+#define MISC_BUFFER_RAM_G_SIZE 						768000
+
+#define FULL_SCREEN_SNAPSHOT_LOCATION_START 		MISC_BUFFER_RAM_G_LOCATION_START
+#define FULL_SCREEN_SNAPSHOT_LOCATION_END 			MISC_BUFFER_RAM_G_LOCATION_END
+#define FULL_SCREEN_SNAPSHOT_SIZE 					768000
+
+#define AUDIO_BUFFER_RAM_G_LOCATION_START 			MISC_BUFFER_RAM_G_LOCATION_START
+#define AUDIO_BUFFER_RAM_G_LOCATION_END 			(MISC_BUFFER_RAM_G_LOCATION_START + AUDIO_BUFFER_RAM_G_SIZE - 1)
+#define AUDIO_BUFFER_RAM_G_SIZE 					4000
 
 /******************************************************************************/
 /* MACRO function declaration                                                 */
@@ -86,21 +104,22 @@ typedef struct t_bitmap_header
 /******************************************************************************/
 extern unsigned short RAM_CMD_Offset;
 extern unsigned short FT_DispWidth;
-extern unsigned shortFT_DispHeight;
-extern unsigned shortFT_DispHCycle;
-extern unsigned shortFT_DispHOffset;
-extern unsigned shortFT_DispHSync0;
-extern unsigned shortFT_DispHSync1;
-extern unsigned shortFT_DispVCycle;
-extern unsigned shortFT_DispVOffset;
-extern unsigned shortFT_DispVSync0;
-extern unsigned shortFT_DispVSync1;
-extern unsigned shortFT_DispPCLK;
-extern unsigned shortFT_DispSwizzle;
-extern unsigned shortFT_DispPCLKPol;
-extern unsigned shortFT_DispCSpread;
-extern unsigned shortFT_DispDither;
+extern unsigned short FT_DispHeight;
+extern unsigned short FT_DispHCycle;
+extern unsigned short FT_DispHOffset;
+extern unsigned short FT_DispHSync0;
+extern unsigned short FT_DispHSync1;
+extern unsigned short FT_DispVCycle;
+extern unsigned short FT_DispVOffset;
+extern unsigned short FT_DispVSync0;
+extern unsigned short FT_DispVSync1;
+extern unsigned short FT_DispPCLK;
+extern unsigned short FT_DispSwizzle;
+extern unsigned short FT_DispPCLKPol;
+extern unsigned short FT_DispCSpread;
+extern unsigned short FT_DispDither;
 extern unsigned char SnapshotBuffer[FULL_SCREEN_SNAPSHOT_SIZE];
+extern unsigned char BackLightSetting;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -125,7 +144,7 @@ void LCD_wr8s(unsigned long ftAddress, unsigned char* ftData8);
 unsigned char LCD_rd8(unsigned long ftAddress);
 unsigned short LCD_rd16(unsigned long ftAddress);
 unsigned long LCD_rd32(unsigned long ftAddress);
-void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long bytes);
+void LCD_wr_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned char dataskip, unsigned long bytes);
 void LCD_rd_buffer(unsigned long ftAddress, unsigned char* ftData, unsigned long bytes);
 void LCD_cmd(unsigned long command);
 void LCD_host_command(unsigned char MSB, unsigned char Middle, unsigned char LSB);

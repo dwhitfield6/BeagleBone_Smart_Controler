@@ -49,6 +49,7 @@
 /******************************************************************************/
 static unsigned char GUI_CurrentTag = 0;
 static unsigned char GUI_TagTimoutFlag = FALSE;
+static unsigned char GUI_BacklightFlag = 0;
 
 /******************************************************************************/
 /* Global Variable                                                            */
@@ -296,11 +297,11 @@ void GUI_LoadItemToRAMG(ENUM_RAMG_ITEM item)
 	{
 		case CHARLIE_BEACH:
 			header =  (TYPE_BITMAP_HEADER *)&HEADER_CharlieBeach;
-			LCD_wr_buffer(RAM_G, (unsigned char*)BITMAP_CharlieBeach, header->Stride*header->Height); // load image to RAM_G
+			LCD_wr_buffer(BITMAP_CHARLIE_BEACH_RAM_G_LOCATION_START, (unsigned char*)BITMAP_CharlieBeach, 0, header->Stride*header->Height); // load image to RAM_G
 			break;
 		case TV_REMOTE:
 			header =  (TYPE_BITMAP_HEADER *)&HEADER_TVRemote;
-			LCD_wr_buffer(RAM_G + SIZE_BITMAP_CHARLIE_BEACH, (unsigned char*)BITMAP_TVRemote, header->Stride*header->Height); // load image to RAM_G
+			LCD_wr_buffer(RAM_G + SIZE_BITMAP_CHARLIE_BEACH, (unsigned char*)BITMAP_TVRemote, 0, header->Stride*header->Height); // load image to RAM_G
 			break;
 	}
 }
@@ -360,7 +361,7 @@ void GUI_DrawNextScreen(unsigned char tag)
 			{
 	    		LCD_InteruptDisable(INTERRUPT_TAG);
 	    		GUI_StartNewScreenTagTimer();
-				GUI_CurrentTag = tag;
+	    		GUI_SetCurrentTag(tag);
 				PreviousScreen = CurrentScreen;
 				PreviousPreviousScreen = PreviousScreen;
 				p_CurrentScreen = Screens[CurrentScreen].NextScreen.p_NextScreen[i];
@@ -523,6 +524,79 @@ void GUI_DrawTime(unsigned short x, unsigned short y, unsigned short font)
 		sprintf((char*)MISC_Buffer, "%d:%02d:%02d PM", CurrentTimeDate.Time.Hour, CurrentTimeDate.Time.Minute, CurrentTimeDate.Time.Second);
 	}
 	LCD_cmd_text(x, y, font, OPT_CENTER, MISC_Buffer);
+}
+
+/******************************************************************************/
+/* GUI_Backlight
+ *
+ * Controls the Backlight.
+ * 																			  */
+/******************************************************************************/
+void GUI_Backlight(unsigned char state)
+{
+	if(state)
+	{
+		LCD_wr8(REG_PWM_DUTY, BackLightSetting);
+	}
+	else
+	{
+		LCD_wr8(REG_PWM_DUTY, 0);
+	}
+}
+
+/******************************************************************************/
+/* GUI_SetBacklightTimeout
+ *
+ * This sets the Backlight timeout flag indicating turn off the backlight.
+ * 																			  */
+/******************************************************************************/
+void GUI_SetBacklightTimeout(void)
+{
+	GUI_BacklightFlag = TRUE;
+}
+
+/******************************************************************************/
+/* GUI_ClearBacklightTimeout
+ *
+ * This clears the Backlight timeout flag indicating turn off the backlight.
+ * 																			  */
+/******************************************************************************/
+void GUI_ClearBacklightTimeout(void)
+{
+	GUI_BacklightFlag = FALSE;
+}
+
+/******************************************************************************/
+/* GUI_GetBacklightTimeout
+ *
+ * This gets the Backlight timeout flag indicating turn off the backlight.
+ * 																			  */
+/******************************************************************************/
+unsigned char GUI_GetBacklightTimeout(void)
+{
+	return GUI_BacklightFlag;
+}
+
+/******************************************************************************/
+/* GUI_SetCurrentTag
+ *
+ * This sets the current tag value.
+ * 																			  */
+/******************************************************************************/
+void GUI_SetCurrentTag(unsigned char tag)
+{
+	GUI_CurrentTag = tag;
+}
+
+/******************************************************************************/
+/* GUI_GetCurrentTag
+ *
+ * This gets the current tag value.
+ * 																			  */
+/******************************************************************************/
+unsigned char GUI_GetCurrentTag(void)
+{
+	return GUI_CurrentTag;
 }
 
 /******************************* End of file *********************************/

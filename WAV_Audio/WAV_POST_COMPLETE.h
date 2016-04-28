@@ -11,45 +11,26 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to configure and control the internal timers.
+/* Contains WAV audio file for POST complete.
  *                                                                            */
 /******************************************************************************/
+
+#ifndef _WAV_POST_COMPLETE_H_
+#define _WAV_POST_COMPLETE_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
 
-#ifndef _TIMERS_H_
-#define _TIMERS_H_
-
-/******************************************************************************/
-/* Pin Definitions			                                                  */
-/******************************************************************************/
-
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
-#define TIMER_MODULE_INPUT_CLK      (24000000u)
+#define WAV_POST_COMPLETE_SIZE 15548
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-extern unsigned long TMR_NewScreenTagTimer;
-extern unsigned long TMR_AudioPlaybackTimer;
-extern unsigned long TMR_BacklightTimer;
-
-/******************************************************************************/
-/* Function Declarations                                                      */
-/******************************************************************************/
-void Init_Timers(void);
-void Init_Timer2(void);
-unsigned int TMR_CalculateReload(unsigned int timerinput, unsigned int timeroutput);
-void TMR_InterruptConfigure2(void);
-unsigned char TMR_GetNewScreenTagTimerEnabled(void);
-void TMR_SetNewScreenTagTimerEnabled(unsigned char state);
-void TMR_ResetNewScreenTagTimer(void);
-void TMR_ResetAudioPlaybackTimer(void);
-void TMR_ResetBacklightTimer(void);
+extern unsigned char WAV_PostComplete[WAV_POST_COMPLETE_SIZE];
 
 #endif
 /******************************* End of file *********************************/

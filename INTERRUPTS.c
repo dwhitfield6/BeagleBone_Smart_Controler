@@ -29,6 +29,7 @@
 #include "soc_AM335x.h"
 #include "uart_irda_cir.h"
 
+#include "AUDIO.h"
 #include "GPIO.h"
 #include "GUI.h"
 #include "LCD.h"
@@ -166,6 +167,26 @@ void TMR_2_ISR(void)
 			}
 		}
 
+		/* Audio Playback Timer */
+		if(AUD_GetPlayingFlag())
+		{
+			TMR_AudioPlaybackTimer++;
+			if(TMR_AudioPlaybackTimer >= AUD_AudioTimeoutCount)
+			{
+				TMR_ResetAudioPlaybackTimer();
+				AUD_SetTimoutFlag();
+			}
+		}
+
+		/* LCD Backlight Timer */
+		if(TMR_BacklightTimer < GUI_BACKLIGHT_TIMER)
+		{
+			TMR_BacklightTimer++;
+			if(TMR_BacklightTimer == GUI_BACKLIGHT_TIMER)
+			{
+				GUI_SetBacklightTimeout();
+			}
+		}
 
 	    /* Clear the status of the interrupt flags */
 	    DMTimerIntStatusClear(SOC_DMTIMER_2_REGS, DMTIMER_INT_OVF_IT_FLAG);

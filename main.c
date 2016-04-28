@@ -24,6 +24,7 @@
 #include "soc_AM335x.h"
 #include "cache.h"
 
+#include "AUDIO.h"
 #include "CMD.h"
 #include "GUI.h"
 #include "LCD.h"
@@ -31,6 +32,8 @@
 #include "MEMORY.h"
 #include "RTCC.h"
 #include "SYSTEM.h"
+#include "TEST.h"
+#include "TIMERS.h"
 #include "UART.h"
 
 /******************************************************************************/
@@ -71,6 +74,9 @@ void main (void)
 
     while(1)
     {
+    	/* toggle testpoint for timing */
+    	TEST_Togglepoint2();
+
     	/* check for a new UART command */
 		if(CMD_GetNewCommand())
 		{
@@ -98,7 +104,16 @@ void main (void)
 	    		touchY = LCD_rd32(REG_TOUCH_SCREEN_XY);
 	    		touchX = touchY >> 16;
 	    		touchY &= 0x0000FFFF;
-	    		NOP();
+	    		if((touchX < FT_DispWidth) && (touchY < FT_DispHeight))
+	    		{
+	    			if(LCD_rd8(REG_PWM_DUTY) == 0)
+	    			{
+	    				/* the screen is off */
+	    				GUI_StartNewScreenTagTimer();
+		    			GUI_Backlight(ON);
+	    			}
+	    			TMR_ResetBacklightTimer();
+	    		}
 	    	}
 
 	    	/* check for tag flag */
@@ -111,6 +126,14 @@ void main (void)
 			LCD_ClearInterruptFlag();
 			LCD_Interrupt(ON);
 		}
+
+    	/* check for Backlight timeout flag */
+    	if(GUI_GetBacklightTimeout())
+    	{
+    		LCD_InteruptDisable(INTERRUPT_TAG);
+    		GUI_Backlight(OFF);
+    		GUI_ClearBacklightTimeout();
+    	}
 
 		/* check for tag timer timeout */
 		if(GUI_GetTagTimoutFlag())
@@ -126,6 +149,34 @@ void main (void)
 			RTC_ClearFlag();
 		}
 
+		if(AUD_GetPlayingFlag())
+		{
+			/* audio playback is occuring */
+			if(AUD_GetTimoutFlag())
+			{
+				if(!AUD_IsWAVPlaying())
+				{
+					/* WAV file is not playing */
+					if(AUD_GetPlaybackFinishedFlag())
+					{
+						/* the WAV playback completed */
+						AUD_StopWAV();
+						AUD_ClearPlayingFlag();
+					}
+					else
+					{
+						/* audio is not currently playing so start playing */
+						AUD_TransferWAVToRAMG(AUDIO_BYTES_TO_MOVE_RAM_G);
+						LCD_wr8(REG_PLAYBACK_PLAY,1);				// start the audio playback
+					}
+				}
+				else
+				{
+					AUD_TransferWAVToRAMG(AUDIO_BUFFER_RAM_G_SIZE);
+				}
+				AUD_ClearTimoutFlag();
+			}
+		}
     }
 }
 

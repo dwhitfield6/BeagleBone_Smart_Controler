@@ -24,6 +24,7 @@
 #include "interrupt.h"
 #include "soc_AM335x.h"
 
+#include "GUI.h"
 #include "INTERRUPTS.h"
 #include "I2C.h"
 #include "MISC.h"
@@ -42,6 +43,8 @@ static unsigned char TMR_TagTimerEnabled = FALSE;
 /* Global Variable                                                            */
 /******************************************************************************/
 unsigned long TMR_NewScreenTagTimer = 0;
+unsigned long TMR_AudioPlaybackTimer = 0;
+unsigned long TMR_BacklightTimer = GUI_BACKLIGHT_TIMER;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -168,6 +171,28 @@ void TMR_SetNewScreenTagTimerEnabled(unsigned char state)
 void TMR_ResetNewScreenTagTimer(void)
 {
 	TMR_NewScreenTagTimer = 0;
+}
+
+/******************************************************************************/
+/* TMR_ResetNewScreenTagTimer
+ *
+ * This resets the GUI tag timer count.
+ * 																			  */
+/******************************************************************************/
+void TMR_ResetAudioPlaybackTimer(void)
+{
+	TMR_AudioPlaybackTimer = 0;
+}
+
+/******************************************************************************/
+/* TMR_ResetBacklightTimer
+ *
+ * This resets the backlight timer.
+ * 																			  */
+/******************************************************************************/
+void TMR_ResetBacklightTimer(void)
+{
+	TMR_BacklightTimer = 0;
 }
 
 /******************************* End of file *********************************/

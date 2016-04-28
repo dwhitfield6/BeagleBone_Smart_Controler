@@ -28,6 +28,24 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* GUI_NEW_SCREEN_TAG_TIMER
+ *
+ * This is the number of milliseconds to delay between a screen change and
+ *  the next touch activation.
+ *                                                                            */
+/******************************************************************************/
+#define GUI_NEW_SCREEN_TAG_TIMER 200
+
+/******************************************************************************/
+/* GUI_BACKLIGHT_TIMER
+ *
+ * This is the number of milliseconds to wait between touches to turn off
+ *  the screen.
+ *                                                                            */
+/******************************************************************************/
+#define GUI_BACKLIGHT_TIMER 30000
+
+/******************************************************************************/
 /* MAX_BUTTONS_PER_SCREEN
  *
  * This is the maximum buttons (tags) per screen.
@@ -126,6 +144,12 @@ void GUI_ClearTagTimoutFlag(void);
 unsigned char GUI_GetTagTimoutFlag(void);
 void GUI_ScreenRefresh(void);
 void GUI_DrawTime(unsigned short x, unsigned short y, unsigned short font);
+void GUI_Backlight(unsigned char state);
+void GUI_SetBacklightTimeout(void);
+void GUI_ClearBacklightTimeout(void);
+unsigned char GUI_GetBacklightTimeout(void);
+void GUI_SetCurrentTag(unsigned char tag);
+unsigned char GUI_GetCurrentTag(void);
 
 #endif
 /******************************* End of file *********************************/

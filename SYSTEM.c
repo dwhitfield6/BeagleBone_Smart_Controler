@@ -24,6 +24,7 @@
 #include "interrupt.h"
 #include "soc_AM335x.h"
 
+#include "AUDIO.h"
 #include "CMD.h"
 #include "FRAM.h"
 #include "GPIO.h"
@@ -37,6 +38,7 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
+#include "WAV.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -88,6 +90,9 @@ void Init_Modules(void)
 	GUI_DrawInitialScreenProgress(50);
 	GUI_LoadItemToRAMG(TV_REMOTE);
 	GUI_DrawInitialScreenProgress(60);
+	Init_WAV();
+	Init_Audio();
+	GUI_DrawInitialScreenProgress(70);
 	GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);	// clear flag
 	LCD_wr8(REG_INT_EN, 1);											// enable interrupts on FT81x
 	LCD_Interrupt(ON);												// enable interrupts on INT pin
@@ -95,6 +100,7 @@ void Init_Modules(void)
 	GUI_TouchConfig();
 	GUI_DrawInitialScreenProgress(100);
 	GUI_DrawHomeScreen();
+	TMR_ResetBacklightTimer();
 }
 
 /******************************* End of file *********************************/

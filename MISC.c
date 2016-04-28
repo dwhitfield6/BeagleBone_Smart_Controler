@@ -163,4 +163,97 @@ unsigned short MSC_BCDtoHEX(unsigned short input)
     return (temp0 + (temp1 * 10) + (temp2 * 100) + (temp3 * 1000));
 }
 
+/******************************************************************************/
+/* MSC_EndianShort
+ *
+ * This function converts a 2 byte number from big endian to little endian or
+ * vice versa.																  */
+/******************************************************************************/
+unsigned short MSC_EndianShort(unsigned short number)
+{
+    unsigned short temp1, temp2;
+
+    temp1 = (unsigned short) (number & 0x00FF);
+    temp2 = (unsigned short) (number & 0xFF00) >> 8;
+
+    return (temp2 | (temp1 << 8));
+}
+
+/******************************************************************************/
+/* MSC_EndianShortArray
+ *
+ * This function converts an array from big endian to little endian or
+ * vice versa.																  */
+/******************************************************************************/
+unsigned short MSC_EndianShortArray(unsigned char* buffer)
+{
+    unsigned char temp1, temp2;
+
+    temp1 = *buffer;
+    buffer++;
+    temp2 = *buffer;
+
+    return (temp1 | ((unsigned int) temp2 << 8));
+}
+
+/******************************************************************************/
+/* MSC_EndianLong
+ *
+ * This function converts a 4 byte number from big endian to little endian or
+ * vice versa.																  */
+/******************************************************************************/
+unsigned long MSC_EndianLong(unsigned long number)
+{
+    unsigned long temp1, temp2, temp3, temp4;
+
+    temp1 = (number & 0x000000FF);
+    temp2 = (number & 0x0000FF00) >> 8;
+    temp3 = (number & 0x00FF0000) >> 16;
+    temp4 = (number & 0xFF000000) >> 24;
+
+    return ((temp1 << 24) | (temp2 << 16) | (temp3 << 8) | temp4);
+}
+
+/******************************************************************************/
+/* MSC_EndianLongArray
+ *
+ * This function converts an array from big endian to little endian or
+ * vice versa.																  */
+/******************************************************************************/
+unsigned long MSC_EndianLongArray(unsigned char* buffer)
+{
+    unsigned char temp1, temp2, temp3, temp4;
+
+    temp1 = *buffer;
+    buffer++;
+    temp2 = *buffer;
+    buffer++;
+    temp3 = *buffer;
+    buffer++;
+    temp4 = *buffer;
+
+    return ((unsigned long)temp1 | ((unsigned long) temp2 << 8) | ((unsigned long) temp3 << 16) | ((unsigned long) temp4 << 24));
+}
+
+/******************************************************************************/
+/* MSC_ReverseByte
+ *
+ * The function reads the value of 'This' and returns the reverse of the data.*/
+/******************************************************************************/
+unsigned char MSC_ReverseByte(unsigned char This)
+{
+    unsigned char temp=0;
+
+    temp += (This & 0x01) << 7;
+    temp += (This & 0x02) << 5;
+    temp += (This & 0x04) << 3;
+    temp += (This & 0x08) << 1;
+    temp += (This & 0x10) >> 1;
+    temp += (This & 0x20) >> 3;
+    temp += (This & 0x40) >> 5;
+    temp += (This & 0x80) >> 7;
+
+    return temp;
+}
+
 /******************************* End of file *********************************/

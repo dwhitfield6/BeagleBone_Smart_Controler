@@ -49,17 +49,6 @@
 #define DELETE 0x7F
 
 /******************************************************************************/
-/* MACRO function declaration                                                 */
-/******************************************************************************/
-/* Return count in buffer. Basd off linux CIRC_CNT */
-#define CIRCULAR_BUFFER_COUNT(head,tail,size) (((head) - (tail)) & ((size)-1U))
-
-/* Return space available, 0..size-1.  We always leave one free char
- *  as a completely full buffer has head == tail, which is the same as
- *  empty. Based off linux CIRC_SPACE */
-#define CIRCULAR_BUFFER_SPACE(head,tail,size) CIRCULAR_BUFFER_COUNT((tail),((head)+1U),(size))
-
-/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 extern unsigned char UART_TX_buffer[UART_TX_SIZE];
