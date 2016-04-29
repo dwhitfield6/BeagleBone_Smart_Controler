@@ -36,6 +36,7 @@
 void GPIO_3A_ISR(void);
 void UART_0_ISR(void);
 void TMR_2_ISR(void);
+void TMR_3_ISR(void);
 void RTC_ISR(void);
 
 #endif

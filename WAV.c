@@ -71,10 +71,7 @@ void Init_WAV(void)
 	NumberOfWAV = sizeof(WAV_Files) / sizeof(TYPE_WAV);
 	for(i=0; i < NumberOfWAV; i++)
 	{
-		if(WAV_Files[i].Calculated != TRUE)
-		{
-			WAV_CalculateHeader(&WAV_Files[i]);
-		}
+		WAV_CalculateHeader(&WAV_Files[i]);
 	}
 }
 

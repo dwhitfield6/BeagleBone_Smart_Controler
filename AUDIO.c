@@ -65,7 +65,8 @@ unsigned long LastWritePointerAddress = 0;
 /******************************************************************************/
 void Init_Audio(void)
 {
-	AUD_PlayWAV(&WAV_Files[0], 0);
+	AUD_TestAudio();
+	AUD_PlayWAV(&WAV_Files[0], 100);
 }
 
 /******************************************************************************/
@@ -277,7 +278,53 @@ unsigned char AUD_GetTimoutFlag(void)
 /******************************************************************************/
 unsigned char AUD_IsWAVPlaying(void)
 {
-	return (LCD_rd8(REG_PLAYBACK_PLAY));
+	unsigned char temp;
+
+	temp = LCD_rd8(REG_PLAYBACK_PLAY);
+	return temp;
+}
+
+/******************************************************************************/
+/* AUD_TestAudio
+ *
+ * Tests the audio sound effects.
+ *                                                                            */
+/******************************************************************************/
+void AUD_TestAudio(void)
+{
+	AUD_AmpShutdown(FALSE);
+
+	LCD_wr8(REG_VOL_SOUND,5); //set the volume to maximum
+	LCD_wr16(REG_SOUND, (0x6C<< 8) | 0x41); // C8 MIDI note on xylophone
+	LCD_wr8(REG_PLAY, 1); // play the sound
+
+	MSC_DelayUS(10000);
+
+	LCD_wr16(REG_SOUND,0x0);//configure silence as sound to be played
+	LCD_wr8(REG_PLAY,1);//play sound
+	AUD_AmpShutdown(TRUE);
+}
+
+/******************************************************************************/
+/* AUD_AmpShutdown
+ *
+ * Controls the audio amps shutdown pin.
+ *                                                                            */
+/******************************************************************************/
+void AUD_AmpShutdown(unsigned char state)
+{
+	unsigned char temp;
+
+	temp = LCD_rd8(REG_GPIO);	// Read the FT800 GPIO register for a read/modify/write operation
+	if(state)
+	{
+		temp &= ~(0x02);
+	}
+	else
+	{
+		temp |= 0x02;
+	}
+	LCD_wr8(REG_GPIO, temp);		// Enable the DISP signal to the LCD panel
 }
 
 /******************************* End of file *********************************/

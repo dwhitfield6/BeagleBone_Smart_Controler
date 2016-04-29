@@ -19,6 +19,7 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 #include "beaglebone.h"
+#include "dmtimer.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -30,6 +31,7 @@
 #include "LEDS.h"
 #include "MISC.h"
 #include "SYSTEM.h"
+#include "TIMERS.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -91,16 +93,19 @@ unsigned char MSC_LowercaseChar(unsigned char Input)
 /******************************************************************************/
 void MSC_DelayUS(unsigned long US)
 {
-	unsigned long i;
-	unsigned long j;
 
-	for(i=0;i<US;i++)
-	{
-		for(j=0;j<250;j++)
-		{
-			NOP();
-		}
-	}
+	double prescalerD;
+	unsigned long prescalerL;
+
+	prescalerD = MSC_Round(((double)TIMER_MODULE_INPUT_CLK * (double) US) / (16.0 * 1000000.0));
+	prescalerL = (unsigned long) prescalerD;
+	prescalerL = 0xFFFFFFFF - prescalerL;
+
+	DMTimerCounterSet(SOC_DMTIMER_3_REGS,prescalerL);
+	TMR_ClearMISCTimerFlag();
+	DMTimerEnable(SOC_DMTIMER_3_REGS); // start the timer
+
+	while(!TMR_GetMISCTimerFlag());
 }
 
 /******************************************************************************/

@@ -194,6 +194,18 @@ void TMR_2_ISR(void)
 }
 
 /******************************************************************************/
+/* TMR_3_ISR
+ *
+ * Timer 3 Interrupt service routine.
+ *                                                                            */
+/******************************************************************************/
+void TMR_3_ISR(void)
+{
+	DMTimerDisable(SOC_DMTIMER_3_REGS); // start the timer
+	TMR_SetMISCTimerFlag();
+}
+
+/******************************************************************************/
 /* RTC_ISR
  *
  * RTC interrupt service routine.

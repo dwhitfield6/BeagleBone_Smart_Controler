@@ -63,6 +63,8 @@ void AUD_SetTimoutFlag(void);
 void AUD_ClearTimoutFlag(void);
 unsigned char AUD_GetTimoutFlag(void);
 unsigned char AUD_IsWAVPlaying(void);
+void AUD_TestAudio(void);
+void AUD_AmpShutdown(unsigned char state);
 
 #endif
 /******************************* End of file *********************************/

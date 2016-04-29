@@ -91,6 +91,9 @@ void Init_LCD(void)
 	MSC_DelayUS(500);
 	LCD_Reset(FALSE);
 
+	/* power on the touch audio and graphics engine */
+	LCD_wr8(REG_CPURESET, 0);
+
 	RestartFTDI:
 	FailCount = 0;
 
@@ -121,7 +124,7 @@ void Init_LCD(void)
 		}
 	}
 
-	LCD_wr8(REG_PCLK, ZERO);												// Set PCLK to zero - don't clock the LCD until later
+	LCD_wr8(REG_PCLK, ZERO);											// Set PCLK to zero - don't clock the LCD until later
 	LCD_wr8(REG_PWM_DUTY, ZERO);										// Turn off backlight
 
 	/* Configure the McSPI bus clock depending on clock mode. */
@@ -145,8 +148,9 @@ void Init_LCD(void)
 	/* Backlight PWM frequency */
 	LCD_wr16(REG_PWM_HZ, 10000);
 
-	gpio = LCD_rd8(REG_GPIO);	// Read the FT800 GPIO register for a read/modify/write operation
-	gpio = gpio | 0x80;			// set bit 7 of FT800 GPIO register (DISP) - others are inputs
+	LCD_wr8(REG_GPIO_DIR, 0x82);	// set the DISP pin and GPIO 3 to output
+	gpio = LCD_rd8(REG_GPIO);		// Read the FT800 GPIO register for a read/modify/write operation
+	gpio = gpio | 0x80;				// set bit 7 of FT800 GPIO register (DISP) - others are inputs
 	LCD_wr8(REG_GPIO, gpio);		// Enable the DISP signal to the LCD panel
 	LCD_wr8(REG_PCLK, FT_DispPCLK);	// Now start clocking data to the LCD panel
 

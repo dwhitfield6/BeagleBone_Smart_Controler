@@ -38,6 +38,7 @@
 /* Private Variable                                                            */
 /******************************************************************************/
 static unsigned char TMR_TagTimerEnabled = FALSE;
+static unsigned char MISC_DelayFlag = FALSE;
 
 /******************************************************************************/
 /* Global Variable                                                            */
@@ -59,6 +60,7 @@ unsigned long TMR_BacklightTimer = GUI_BACKLIGHT_TIMER;
 void Init_Timers(void)
 {
 	Init_Timer2();
+	Init_Timer3();
 }
 
 /******************************************************************************/
@@ -97,12 +99,41 @@ void Init_Timer2(void)
     TMR_InterruptConfigure2();
 }
 
+/******************************************************************************/
+/* Init_Timer3
+ *
+ * Initialize timer 3.
+ *                                                                            */
+/******************************************************************************/
+void Init_Timer3(void)
+{
+    /* Reset the DMTimer module */
+    HWREG(SOC_DMTIMER_3_REGS + DMTIMER_TIOCP_CFG) |= DMTIMER_TIOCP_CFG_SOFTRESET;
+    while(DMTIMER_TIOCP_CFG_SOFTRESET == (HWREG(SOC_DMTIMER_3_REGS + DMTIMER_TIOCP_CFG) & DMTIMER_TIOCP_CFG_SOFTRESET));
 
+	DMTimer3ModuleClkConfig();
+
+    /* Load the counter with the initial count value */
+    DMTimerCounterSet(SOC_DMTIMER_3_REGS, 0);
+
+    /* Load the load register with the reload count value */
+    DMTimerReloadSet(SOC_DMTIMER_3_REGS, 0);
+
+    DMTimerPreScalerClkEnable(SOC_DMTIMER_3_REGS, DMTIMER_PRESCALER_CLK_DIV_BY_16); // divide the clock by 16
+
+    /* Configure the DMTimer for Auto-reload */
+    DMTimerModeConfigure(SOC_DMTIMER_3_REGS, DMTIMER_ONESHOT_NOCMP_ENABLE);
+
+    /* Enable the DMTimer interrupts */
+    DMTimerIntEnable(SOC_DMTIMER_3_REGS, DMTIMER_INT_OVF_EN_FLAG);
+
+    TMR_InterruptConfigure3();
+}
 
 /******************************************************************************/
-/* TMR_InterruptConfigure2
+/* TMR_CalculateReload
  *
- * Configure the timer 2 interrupt.
+ * Calculates the reload value.
  *                                                                            */
 /******************************************************************************/
 unsigned int TMR_CalculateReload(unsigned int timerinput, unsigned int timeroutput)
@@ -131,6 +162,24 @@ void TMR_InterruptConfigure2(void)
 
     /* Enable the system interrupt */
     IntSystemEnable(SYS_INT_TINT2);
+}
+
+/******************************************************************************/
+/* TMR_InterruptConfigure3
+ *
+ * Configure the tiemr 3 interrupt.
+ *                                                                            */
+/******************************************************************************/
+void TMR_InterruptConfigure3(void)
+{
+    /* Registering DMTimerIsr */
+    IntRegister(SYS_INT_TINT3, TMR_3_ISR);
+
+    /* Set the priority */
+    IntPrioritySet(SYS_INT_TINT3, 1, AINTC_HOSTINT_ROUTE_IRQ);
+
+    /* Enable the system interrupt */
+    IntSystemEnable(SYS_INT_TINT3);
 }
 
 /******************************************************************************/
@@ -193,6 +242,39 @@ void TMR_ResetAudioPlaybackTimer(void)
 void TMR_ResetBacklightTimer(void)
 {
 	TMR_BacklightTimer = 0;
+}
+
+/******************************************************************************/
+/* TMR_SetMISCTimerFlag
+ *
+ * This sets the MCS_DelayUS timer flag.
+ * 																			  */
+/******************************************************************************/
+void TMR_SetMISCTimerFlag(void)
+{
+	MISC_DelayFlag = TRUE;
+}
+
+/******************************************************************************/
+/* TMR_ClearMISCTimerFlag
+ *
+ * This clears the MCS_DelayUS timer flag.
+ * 																			  */
+/******************************************************************************/
+void TMR_ClearMISCTimerFlag(void)
+{
+	MISC_DelayFlag = FALSE;
+}
+
+/******************************************************************************/
+/* TMR_GetMISCTimerFlag
+ *
+ * This gets the MCS_DelayUS timer flag.
+ * 																			  */
+/******************************************************************************/
+unsigned char TMR_GetMISCTimerFlag(void)
+{
+	return MISC_DelayFlag;
 }
 
 /******************************* End of file *********************************/

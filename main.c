@@ -160,19 +160,21 @@ void main (void)
 					if(AUD_GetPlaybackFinishedFlag())
 					{
 						/* the WAV playback completed */
+						AUD_AmpShutdown(TRUE);
 						AUD_StopWAV();
 						AUD_ClearPlayingFlag();
 					}
 					else
 					{
 						/* audio is not currently playing so start playing */
-						AUD_TransferWAVToRAMG(AUDIO_BYTES_TO_MOVE_RAM_G);
+						AUD_TransferWAVToRAMG(AUDIO_BUFFER_RAM_G_SIZE);
+						AUD_AmpShutdown(FALSE);
 						LCD_wr8(REG_PLAYBACK_PLAY,1);				// start the audio playback
 					}
 				}
 				else
 				{
-					AUD_TransferWAVToRAMG(AUDIO_BUFFER_RAM_G_SIZE);
+					AUD_TransferWAVToRAMG(AUDIO_BYTES_TO_MOVE_RAM_G);
 				}
 				AUD_ClearTimoutFlag();
 			}

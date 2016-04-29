@@ -616,85 +616,78 @@ unsigned int DMTimerWritePostedStatusGet(unsigned int baseAdd)
     return (HWREG(baseAdd + DMTIMER_TWPS));
 }
 
+/*
+ * \brief This function will enable the module clock for DMTIMER2 instance.
+ *
+ * \return None.
+ */
 void DMTimer2ModuleClkConfig(void)
 {
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) =
-                             CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) &
-     CM_PER_L3S_CLKSTCTRL_CLKTRCTRL) != CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) =
-                             CM_PER_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) &
-     CM_PER_L3_CLKSTCTRL_CLKTRCTRL) != CM_PER_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_INSTR_CLKCTRL) =
-                             CM_PER_L3_INSTR_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_INSTR_CLKCTRL) &
-                               CM_PER_L3_INSTR_CLKCTRL_MODULEMODE) !=
-                                   CM_PER_L3_INSTR_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) =
-                             CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) &
-        CM_PER_L3_CLKCTRL_MODULEMODE) != CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) =
-                             CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) &
-                              CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL) !=
-                                CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) =
-                             CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-                             CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL) !=
-                               CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKCTRL) =
-                             CM_PER_L4LS_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKCTRL) &
-      CM_PER_L4LS_CLKCTRL_MODULEMODE) != CM_PER_L4LS_CLKCTRL_MODULEMODE_ENABLE);
-
-    /* Select the clock source for the Timer2 instance. */
+    /* Clear CLKSEL field of CM_DPLL_CLKSEL_TIMER2_CLK register. */
     HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER2_CLK) &=
           ~(CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL);
 
+    /* Writing to the CLKSEL field of CM_DPLL_CLKSEL_TIMER2_CLK register. */
     HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER2_CLK) |=
           CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL_CLK_M_OSC;
 
+    /* Waiting for the CLKSEL field to reflect the written value. */
     while((HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER2_CLK) &
            CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL) !=
            CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL_CLK_M_OSC);
 
+    /* Writing to MODULEMODE field of CM_PER_TIMER2_CLKCTRL register. */
     HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) |=
                              CM_PER_TIMER2_CLKCTRL_MODULEMODE_ENABLE;
 
+    /* Waiting for the MODULEMODE field to reflect the written value. */
     while((HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) &
     CM_PER_TIMER2_CLKCTRL_MODULEMODE) != CM_PER_TIMER2_CLKCTRL_MODULEMODE_ENABLE);
 
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) &
-       CM_PER_TIMER2_CLKCTRL_IDLEST) != CM_PER_TIMER2_CLKCTRL_IDLEST_FUNC);
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) &
-            CM_PER_L3S_CLKSTCTRL_CLKACTIVITY_L3S_GCLK));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) &
-            CM_PER_L3_CLKSTCTRL_CLKACTIVITY_L3_GCLK));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) &
-           (CM_PER_OCPWP_L3_CLKSTCTRL_CLKACTIVITY_OCPWP_L3_GCLK |
-            CM_PER_OCPWP_L3_CLKSTCTRL_CLKACTIVITY_OCPWP_L4_GCLK)));
-
+    /*
+    ** Waiting for the CLKACTIVITY_TIMER2_GCLK field of CM_PER_L4LS_CLKSTCTRL
+    ** register to be set.
+    */
     while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
            (CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_L4LS_GCLK |
             CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_TIMER2_GCLK)));
+
+}
+
+/*
+ * \brief This function will enable the module clock for DMTIMER3 instance.
+ *
+ * \return None.
+ */
+void DMTimer3ModuleClkConfig(void)
+{
+    /* Clear CLKSEL field of CM_DPLL_CLKSEL_TIMER3_CLK register. */
+    HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER3_CLK) &=
+          ~(CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL);
+
+    /* Writing to the CLKSEL field of CM_DPLL_CLKSEL_TIMER3_CLK register. */
+    HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER3_CLK) |=
+          CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL_CLK_M_OSC;
+
+    /* Waiting for the CLKSEL field to reflect the written value. */
+    while((HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER3_CLK) &
+           CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL) !=
+           CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL_CLK_M_OSC);
+
+    /* Writing to MODULEMODE field of CM_PER_TIMER3_CLKCTRL register. */
+    HWREG(SOC_CM_PER_REGS + CM_PER_TIMER3_CLKCTRL) |=
+                             CM_PER_TIMER3_CLKCTRL_MODULEMODE_ENABLE;
+
+    /* Waiting for the MODULEMODE field to reflect the written value. */
+    while((HWREG(SOC_CM_PER_REGS + CM_PER_TIMER3_CLKCTRL) &
+    CM_PER_TIMER3_CLKCTRL_MODULEMODE) != CM_PER_TIMER3_CLKCTRL_MODULEMODE_ENABLE);
+
+    /*
+    ** Waiting for the CLKACTIVITY_TIMER3_GCLK field of CM_PER_L4LS_CLKSTCTRL
+    ** register to be set.
+    */
+    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
+           (CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_L4LS_GCLK |
+            CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_TIMER3_GCLK)));
 
 }
