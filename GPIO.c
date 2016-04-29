@@ -124,6 +124,11 @@ void Init_GPIO(void)
 	GPIOModuleEnable(SOC_GPIO_1_REGS);
 	GPIOModuleEnable(SOC_GPIO_2_REGS);
 	GPIOModuleEnable(SOC_GPIO_3_REGS);
+
+	/*~~~~~~~~~~~~~~~~~~~ I2C0 for PMIC ~~~~~~~~~~~~~~~~~~~*/
+    /* set up the pins */
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_I2C0_SCL) = PAD_FS_RXE_PU_PUPDE(0);	// I2C0_SCL	= pin C16
+	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_I2C0_SDA) = PAD_FS_RXE_PU_PUPDE(0);	// I2C0_SDA	= pin C17
 }
 
 /******************************************************************************/

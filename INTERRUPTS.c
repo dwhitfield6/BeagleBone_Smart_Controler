@@ -25,6 +25,7 @@
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
 #include "hw_types.h"
+#include "hsi2c.h"
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 #include "uart_irda_cir.h"
@@ -32,6 +33,7 @@
 #include "AUDIO.h"
 #include "GPIO.h"
 #include "GUI.h"
+#include "I2C.h"
 #include "LCD.h"
 #include "INTERRUPTS.h"
 #include "LEDS.h"
@@ -223,6 +225,86 @@ void RTC_ISR(void)
 {
 	RTC_GetTimeDate(&CurrentTimeDate);
 	RTC_SetFlag();
+}
+
+/******************************************************************************/
+/* I2C_0_ISR
+ *
+ * I2C module 0 interrupt service routine.
+ *                                                                            */
+/******************************************************************************/
+void I2C_0_ISR(void)
+{
+	unsigned int status = 0;
+
+	/* interrupt status */
+	status = I2CMasterIntStatus(SOC_I2C_0_REGS);
+
+	if(status & I2C_INT_RECV_READY)
+	{
+		/* Receive data from data receive register */
+		*I2C_0_Buffers.p_Receive = I2CMasterDataGet(SOC_I2C_0_REGS);
+		I2C_0_Buffers.p_Receive++;
+		I2C_0_Buffers.BytesReceived++;
+
+		/* Clear interrupt flag */
+		I2CMasterIntClearEx(SOC_I2C_0_REGS,  I2C_INT_RECV_READY);
+
+		if(I2C_0_Buffers.BytesReceived == I2C_0_Buffers.ReceiveBytes)
+		{
+			/* Disable the receive ready interrupt */
+			I2CMasterIntDisableEx(SOC_I2C_0_REGS, I2C_INT_RECV_READY);
+			/* Generate a STOP */
+			I2CMasterStop(SOC_I2C_0_REGS);
+		}
+	}
+
+	if (status & I2C_INT_TRANSMIT_READY)
+	{
+		/* Put data to data transmit register of i2c */
+		I2CMasterDataPut(SOC_I2C_0_REGS, *I2C_0_Buffers.p_Transmit);
+		I2C_0_Buffers.p_Transmit++;
+		I2C_0_Buffers.BytesTransmitted++;
+
+		/* Clear Transmit interrupt status */
+		I2CMasterIntClearEx(SOC_I2C_0_REGS, I2C_INT_TRANSMIT_READY);
+
+		if(I2C_0_Buffers.BytesTransmitted == I2C_0_Buffers.TransmitBytes)
+		{
+			/* Disable the transmit ready interrupt */
+			I2CMasterIntDisableEx(SOC_I2C_0_REGS, I2C_INT_TRANSMIT_READY);
+
+			if(!I2C_0_Buffers.ReceiveBytes)
+			{
+				/* Generate a STOP */
+				I2CMasterStop(SOC_I2C_0_REGS);
+			}
+		}
+	}
+
+	if (status & I2C_INT_STOP_CONDITION)
+	{
+		/* Disable transmit data ready and receive data read interupt */
+		I2CMasterIntDisableEx(SOC_I2C_0_REGS, I2C_INT_TRANSMIT_READY | I2C_INT_RECV_READY | I2C_INT_STOP_CONDITION);
+
+		/* Clear interrupt flag */
+		I2CMasterIntClearEx(SOC_I2C_0_REGS,  I2C_INT_STOP_CONDITION);
+
+		I2C_SetFailFlag0();
+	}
+
+	if(status & I2C_INT_NO_ACK)
+	{
+		I2CMasterIntDisableEx(SOC_I2C_0_REGS, I2C_INT_TRANSMIT_READY  | I2C_INT_RECV_READY | I2C_INT_NO_ACK | I2C_INT_STOP_CONDITION);
+
+		/* Generate a STOP */
+		I2CMasterStop(SOC_I2C_0_REGS);
+
+		/* Clear interrupt flag */
+		I2CMasterIntClearEx(SOC_I2C_0_REGS,  I2C_INT_NO_ACK);
+
+		I2C_SetFailFlag0();
+	}
 }
 
 /******************************* End of file *********************************/

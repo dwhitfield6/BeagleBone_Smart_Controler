@@ -271,6 +271,8 @@ extern unsigned int I2CMasterIntRawStatusEx(unsigned int baseAdd, unsigned int i
 extern void I2CContextSave(unsigned int i2cBase, I2CCONTEXT *contextPtr);
 extern void I2CContextRestore(unsigned int i2cBase, I2CCONTEXT *contextPtr);
 
+void I2C0ModuleClkConfig(void);
+
 #ifdef __cplusplus
 }
 #endif

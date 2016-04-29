@@ -23,6 +23,51 @@
 #define _PMIC_H_
 
 /******************************************************************************/
+/* TPS65217 registers                                                         */
+/******************************************************************************/
+typedef enum e_pmic_registers
+{
+	CHIPID  		= 0x00,
+	PPATH  			= 0x01,
+	INT  			= 0x02,
+	CHGCONFIG0  	= 0x03,
+	CHGCONFIG1  	= 0x04,
+	CHGCONFIG2  	= 0x05,
+	CHGCONFIG3  	= 0x06,
+	WLEDCTRL1  		= 0x07,
+	WLEDCTRL2  		= 0x08,
+	MUXCTRL  		= 0x09,
+	STATUS  		= 0x0A,
+	PASSWORD  		= 0x0B,
+	PGOOD  			= 0x0C,
+	DEFPG  			= 0x0D,
+	DEFDCDC1  		= 0x0E,
+	DEFDCDC2  		= 0x0F,
+	DEFDCDC3  		= 0x10,
+	DEFSLEW  		= 0x11,
+	DEFLDO1  		= 0x12,
+	DEFLDO2  		= 0x13,
+	DEFLS1  		= 0x14,
+	DEFLS2  		= 0x15,
+	ENABLE  		= 0x16,
+	DEFUVLO  		= 0x18,
+	SEQ1  			= 0x19,
+	SEQ2  			= 0x1A,
+	SEQ3  			= 0x1B,
+	SEQ4  			= 0x1C,
+	SEQ5  			= 0x1D,
+	SEQ6  			= 0x1E,
+}ENUM_PMIC_ADDRESS;
+
+/******************************************************************************/
+/* I2C_PMIC_ADDRESS
+ *
+ * This is the I2C address for the PMIC.
+ * 							                                                  */
+/******************************************************************************/
+#define I2C_PMIC_ADDRESS 0x24
+
+/******************************************************************************/
 /* Pin Definitions			                                                  */
 /******************************************************************************/
 
@@ -38,6 +83,8 @@
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_PMIC(void);
+unsigned char PMIC_ReadRegister(ENUM_PMIC_ADDRESS reg, unsigned char* data);
+unsigned char PMIC_WriteRegister(ENUM_PMIC_ADDRESS reg, unsigned char* data);
 
 #endif
 /******************************* End of file *********************************/

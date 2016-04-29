@@ -29,9 +29,11 @@
 #include "FRAM.h"
 #include "GPIO.h"
 #include "GUI.h"
+#include "I2C.h"
 #include "LCD.h"
 #include "LEDS.h"
 #include "MISC.h"
+#include "PMIC.h"
 #include "RTCC.h"
 #include "SPI.h"
 #include "SYSTEM.h"
@@ -73,6 +75,8 @@ void Init_Modules(void)
     Init_GUI();
 
     GUI_DrawInitialScreenProgress(0);
+    Init_I2C();
+    Init_PMIC();
 	Init_FRAM();
 	Init_RTC();
 	GUI_DrawInitialScreenProgress(5);
