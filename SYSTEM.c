@@ -63,13 +63,14 @@ void Init_Modules(void)
     /* Initialze ARM interrupt controller */
     IntAINTCInit();
 
+    /* Enabling IRQ in CPSR of ARM processor. */
+    IntMasterIRQEnable();
+
 	Init_GPIO();
+	Init_Timers();
 	Init_SPI();
     Init_LCD();
     Init_GUI();
-
-    /* Enabling IRQ in CPSR of ARM processor. */
-    IntMasterIRQEnable();
 
     GUI_DrawInitialScreenProgress(0);
 	Init_FRAM();
@@ -80,7 +81,6 @@ void Init_Modules(void)
 	Init_UART();
 	GUI_DrawInitialScreenProgress(15);
 	Init_Test();
-	Init_Timers();
 	GUI_DrawInitialScreenProgress(20);
 	Init_LED();
 	GUI_DrawInitialScreenProgress(40);

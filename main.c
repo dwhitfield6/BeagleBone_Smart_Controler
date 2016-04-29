@@ -30,6 +30,7 @@
 #include "LCD.h"
 #include "LEDS.h"
 #include "MEMORY.h"
+#include "MISC.h"
 #include "RTCC.h"
 #include "SYSTEM.h"
 #include "TEST.h"

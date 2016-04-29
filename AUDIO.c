@@ -65,8 +65,7 @@ unsigned long LastWritePointerAddress = 0;
 /******************************************************************************/
 void Init_Audio(void)
 {
-	AUD_TestAudio();
-	AUD_PlayWAV(&WAV_Files[0], 100);
+	AUD_PlayWAV(&WAV_Files[0], 30);
 }
 
 /******************************************************************************/
@@ -294,11 +293,11 @@ void AUD_TestAudio(void)
 {
 	AUD_AmpShutdown(FALSE);
 
-	LCD_wr8(REG_VOL_SOUND,5); //set the volume to maximum
+	LCD_wr8(REG_VOL_SOUND,50); //set the volume to maximum
 	LCD_wr16(REG_SOUND, (0x6C<< 8) | 0x41); // C8 MIDI note on xylophone
 	LCD_wr8(REG_PLAY, 1); // play the sound
 
-	MSC_DelayUS(10000);
+	MSC_DelayUS(100000);
 
 	LCD_wr16(REG_SOUND,0x0);//configure silence as sound to be played
 	LCD_wr8(REG_PLAY,1);//play sound

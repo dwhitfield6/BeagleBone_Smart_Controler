@@ -75,11 +75,12 @@ void Init_Timer2(void)
 
 	InitialTimerCount = TMR_CalculateReload(TIMER_MODULE_INPUT_CLK, 1000);	// 1 milisecond timer
 
+
+	DMTimer2ModuleClkConfig();
+
     /* Reset the DMTimer module */
     HWREG(SOC_DMTIMER_2_REGS + DMTIMER_TIOCP_CFG) |= DMTIMER_TIOCP_CFG_SOFTRESET;
     while(DMTIMER_TIOCP_CFG_SOFTRESET == (HWREG(SOC_DMTIMER_2_REGS + DMTIMER_TIOCP_CFG) & DMTIMER_TIOCP_CFG_SOFTRESET));
-
-	DMTimer2ModuleClkConfig();
 
     /* Load the counter with the initial count value */
     DMTimerCounterSet(SOC_DMTIMER_2_REGS, InitialTimerCount);
@@ -107,11 +108,11 @@ void Init_Timer2(void)
 /******************************************************************************/
 void Init_Timer3(void)
 {
+	DMTimer3ModuleClkConfig();
+
     /* Reset the DMTimer module */
     HWREG(SOC_DMTIMER_3_REGS + DMTIMER_TIOCP_CFG) |= DMTIMER_TIOCP_CFG_SOFTRESET;
     while(DMTIMER_TIOCP_CFG_SOFTRESET == (HWREG(SOC_DMTIMER_3_REGS + DMTIMER_TIOCP_CFG) & DMTIMER_TIOCP_CFG_SOFTRESET));
-
-	DMTimer3ModuleClkConfig();
 
     /* Load the counter with the initial count value */
     DMTimerCounterSet(SOC_DMTIMER_3_REGS, 0);

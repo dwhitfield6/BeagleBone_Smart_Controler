@@ -201,8 +201,16 @@ void TMR_2_ISR(void)
 /******************************************************************************/
 void TMR_3_ISR(void)
 {
-	DMTimerDisable(SOC_DMTIMER_3_REGS); // start the timer
-	TMR_SetMISCTimerFlag();
+	unsigned char status;
+
+	status = DMTimerIntStatusGet(SOC_DMTIMER_3_REGS);
+
+	if(status == DMTIMER_INT_OVF_IT_FLAG)
+	{
+		DMTimerDisable(SOC_DMTIMER_3_REGS); // start the timer
+		TMR_SetMISCTimerFlag();
+		DMTimerIntStatusClear(SOC_DMTIMER_3_REGS, DMTIMER_INT_OVF_IT_FLAG);
+	}
 }
 
 /******************************************************************************/
