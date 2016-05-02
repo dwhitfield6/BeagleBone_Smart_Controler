@@ -92,6 +92,10 @@ void WAV_CalculateHeader(TYPE_WAV* file)
 	file->Valid = FALSE;
 
 	pointer = file->p_File + 44;
+	if(file->BitsPerSample == 16)
+	{
+		file->p_File++;
+	}
 	file->p_Start = pointer;
 
 	file->NumSamples = file->Subchunk2Size / (file->NumChannels * (file->BitsPerSample >> 3));

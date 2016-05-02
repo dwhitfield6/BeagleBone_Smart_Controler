@@ -28,8 +28,10 @@
 #include "hsi2c.h"
 #include "pin_mux.h"
 #include "soc_AM335x.h"
+#include "tsc_adc.h"
 #include "uart_irda_cir.h"
 
+#include "ADC.h"
 #include "AUDIO.h"
 #include "GPIO.h"
 #include "GUI.h"
@@ -38,6 +40,7 @@
 #include "INTERRUPTS.h"
 #include "LEDS.h"
 #include "MISC.h"
+#include "POWER.h"
 #include "RTCC.h"
 #include "SYSTEM.h"
 #include "TEST.h"
@@ -305,6 +308,31 @@ void I2C_0_ISR(void)
 
 		I2C_SetFailFlag0();
 	}
+}
+
+/******************************************************************************/
+/* ADC_0_ISR
+ *
+ * ADC module 0 interrupt service routine.
+ *                                                                            */
+/******************************************************************************/
+void ADC_0_ISR(void)
+{
+	unsigned int status;
+
+    status = TSCADCIntStatus(SOC_ADC_TSC_0_REGS);
+
+    if(status & TSCADC_END_OF_SEQUENCE_INT)
+    {
+         /* Read data from fifo 0 */
+         Voltage.ADCCounts_VDD_5V0 	= TSCADCFIFOADCDataRead(SOC_ADC_TSC_0_REGS, TSCADC_FIFO_0);
+         Voltage.ADCCounts_SYS_5V0 	= TSCADCFIFOADCDataRead(SOC_ADC_TSC_0_REGS, TSCADC_FIFO_0);
+         Voltage.ADCCounts_VBAT 		= TSCADCFIFOADCDataRead(SOC_ADC_TSC_0_REGS, TSCADC_FIFO_0);
+         Voltage.ADCCounts_VDD_3V3 	= TSCADCFIFOADCDataRead(SOC_ADC_TSC_0_REGS, TSCADC_FIFO_0);
+         ADC_SetFinishedFlag();
+    }
+
+    TSCADCIntStatusClear(SOC_ADC_TSC_0_REGS, status);
 }
 
 /******************************* End of file *********************************/

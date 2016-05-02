@@ -12,6 +12,7 @@ C_SRCS += \
 ../AM335X_StarterWare_02_00_01_01/drivers/mcspi.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/mmu.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/rtc.c \
+../AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.c 
 
 OBJS += \
@@ -23,6 +24,7 @@ OBJS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/mcspi.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/mmu.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/rtc.obj \
+./AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.obj 
 
 C_DEPS += \
@@ -34,6 +36,7 @@ C_DEPS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/mcspi.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/mmu.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/rtc.pp \
+./AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.pp 
 
 C_DEPS__QUOTED += \
@@ -45,6 +48,7 @@ C_DEPS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\mcspi.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\mmu.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\rtc.pp" \
+"AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.pp" 
 
 OBJS__QUOTED += \
@@ -56,6 +60,7 @@ OBJS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\mcspi.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\mmu.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\rtc.obj" \
+"AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.obj" 
 
 C_SRCS__QUOTED += \
@@ -67,6 +72,7 @@ C_SRCS__QUOTED += \
 "../AM335X_StarterWare_02_00_01_01/drivers/mcspi.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/mmu.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/rtc.c" \
+"../AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.c" 
 
 

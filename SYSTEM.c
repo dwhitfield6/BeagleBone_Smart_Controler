@@ -24,6 +24,7 @@
 #include "interrupt.h"
 #include "soc_AM335x.h"
 
+#include "ADC.h"
 #include "AUDIO.h"
 #include "CMD.h"
 #include "FRAM.h"
@@ -33,6 +34,7 @@
 #include "LCD.h"
 #include "LEDS.h"
 #include "MISC.h"
+#include "POWER.h"
 #include "PMIC.h"
 #include "RTCC.h"
 #include "SPI.h"
@@ -80,6 +82,8 @@ void Init_Modules(void)
 	Init_FRAM();
 	Init_RTC();
 	GUI_DrawInitialScreenProgress(5);
+	Init_ADC();
+	Init_Power();
 	InitCMD();
 	GUI_DrawInitialScreenProgress(10);
 	Init_UART();

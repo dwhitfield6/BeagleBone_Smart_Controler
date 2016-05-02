@@ -39,6 +39,7 @@ void TMR_2_ISR(void);
 void TMR_3_ISR(void);
 void RTC_ISR(void);
 void I2C_0_ISR(void);
+void ADC_0_ISR(void);
 
 #endif
 /******************************* End of file *********************************/

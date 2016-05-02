@@ -178,6 +178,7 @@ void AUD_TransferWAVToRAMG(unsigned long NumberOfBytes)
 
 	if(CIRCULAR_BUFFER_SPACE_TILL_END(LastWritePointerAddress, AUDIO_BUFFER_RAM_G_LOCATION_END) < SpaceAvailable)
 	{
+
 		LCD_wr_buffer(LastWritePointerAddress, p_CurrentWAVFile->p_Start + (AudioBytesTransferred * p_CurrentWAVFile->BlockAlign), (p_CurrentWAVFile->BlockAlign - 1), CIRCULAR_BUFFER_SPACE_TILL_END(LastWritePointerAddress, AUDIO_BUFFER_RAM_G_LOCATION_END));
 		SpaceAvailable -=  CIRCULAR_BUFFER_SPACE_TILL_END(LastWritePointerAddress, AUDIO_BUFFER_RAM_G_LOCATION_END);
 		AudioBytesTransferred += CIRCULAR_BUFFER_SPACE_TILL_END(LastWritePointerAddress, AUDIO_BUFFER_RAM_G_LOCATION_END);
