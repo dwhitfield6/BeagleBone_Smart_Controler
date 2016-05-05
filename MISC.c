@@ -109,6 +109,21 @@ void MSC_DelayUS(unsigned long US)
 }
 
 /******************************************************************************/
+/* MSC_DelayNOP
+ *
+ * This function waits for the specified number of NOPs.
+ * 																			  */
+/******************************************************************************/
+void MSC_DelayNOP(unsigned long nop)
+{
+	while(nop)
+	{
+		NOP();
+		nop--;
+	}
+}
+
+/******************************************************************************/
 /* MSC_Round
  *
  * This function rounds to the nearest whole number.						  */

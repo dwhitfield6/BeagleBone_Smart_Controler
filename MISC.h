@@ -28,6 +28,22 @@
 #define FULL 1
 #define HALF 0
 
+/*
+** Round-off division value to upper integer. The parameters passed for this
+** macro should be greater than 1.
+*/
+#define DIV_CEIL(a,b)       (((a) + (b) - 1) / (b))
+
+/*  Deprecated function - Compiler message */
+#ifdef __GNUC__
+    #define DEPRECATED(func) func __attribute__ ((deprecated))
+#else
+    #define DEPRECATED(func) func
+#endif
+
+/* WFI intstruction */
+#define wfi()                                   asm("   WFI");
+
 /******************************************************************************/
 /* MACRO function declaration                                                 */
 /******************************************************************************/
@@ -62,6 +78,7 @@ extern unsigned char MISC_Buffer[MISC_BUFFER_SIZE];
 void MSC_BufferCopy(void* From, void* To, unsigned short bytes);
 unsigned char MSC_LowercaseChar(unsigned char Input);
 void MSC_DelayUS(unsigned long US);
+void MSC_DelayNOP(unsigned long nop);
 double MSC_Round(double input);
 unsigned short MSC_HEXtoBCD(unsigned short input);
 unsigned short MSC_BCDtoHEX(unsigned short input);

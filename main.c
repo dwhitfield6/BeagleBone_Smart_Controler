@@ -22,7 +22,6 @@
  * Add IR decoding.
  * Add RF 315MHZ code.
  * Add BMP file creation from screen shot.
- * Fix FRAM.
  *                                                                            */
 /******************************************************************************/
 

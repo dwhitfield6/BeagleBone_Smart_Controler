@@ -25,6 +25,8 @@
 #ifndef __USBDMSC_H__
 #define __USBDMSC_H__
 
+#include "usblib.h"
+
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
@@ -372,6 +374,8 @@ extern void *USBDMSCCompositeInit(unsigned int ulIndex,
 extern void USBDMSCTerm(void *pvInstance);
 extern void USBDMSCMediaChange(void *pvInstance,
                                tUSBDMSCMediaStatus eMediaStatus);
+
+void USB0ModuleClkConfig(void);
 
 //*****************************************************************************
 //

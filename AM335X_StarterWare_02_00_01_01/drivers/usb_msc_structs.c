@@ -2,10 +2,10 @@
 //
 // usb_bulk_structs.c - Data structures defining the mass storage USB device.
 //
+//
 // This is part of revision 6288 of the DK-LM3S9B96 Firmware Package.
 //
 //*****************************************************************************
-
 /*
 * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
 */
@@ -39,6 +39,7 @@
 *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 */
+
 
 #include "hw_types.h"
 #include "usb.h"
@@ -227,7 +228,7 @@ const tUSBDMSCDevice g_sMSCDevice =
         {
             USB_EP_TO_INDEX(USB_EP_1),
             CPDMA_DIR_TX,
-            CPDMA_MODE_SET_TRANSPARENT,
+            CPDMA_MODE_SET_GRNDIS,
         }
 
     };

@@ -2,10 +2,10 @@
 //
 // usb_msc_structs.h - Data structures defining the mass storage USB device.
 //
+//
 // This is part of revision 6288 of the DK-LM3S9B96 Firmware Package.
 //
 //*****************************************************************************
-
 /*
 * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
 */
@@ -40,15 +40,17 @@
 *
 */
 
+
 #ifndef __USB_MSC_STRUCTS_H__
 #define __USB_MSC_STRUCTS_H__
+
 
 //*****************************************************************************
 //
 // The mass storage class device structure.
 //
 //*****************************************************************************
-
+extern const tUSBDMSCDevice g_sMSCDevice;
 
 //*****************************************************************************
 //

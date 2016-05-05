@@ -1,8 +1,7 @@
 /**
- * \file   misc.h
+ * \file  ramdisk.h
  *
- * \brief  This file contains the prototypes of the functions present in
- *         utils/misc.c
+ * \brief RAMDISK macros and APIs
  */
 
 /*
@@ -39,42 +38,11 @@
 *
 */
 
-#ifndef _MISC_H_
-#define _MISC_H_
+/* Function prototypes */
+void disk_read(unsigned int lba, unsigned char *buf, unsigned int len);
+void disk_write(unsigned int lba, unsigned char *buf, unsigned int len);
+void disk_initialize(void);
+void disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int* buffer);
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/****************************************************************************
-**                       MACRO DEFINITIONS
-****************************************************************************/
-
-/*
-** Round-off division value to upper integer. The parameters passed for this
-** macro should be greater than 1.
-*/
-#define DIV_CEIL(a,b)       (((a) + (b) - 1) / (b))
-
-/*  Deprecated function - Compiler message */
-#ifdef __GNUC__
-    #define DEPRECATED(func) func __attribute__ ((deprecated))
-#else
-    #define DEPRECATED(func) func
-#endif
-
-/* WFI intstruction */
-#define wfi()                                   asm("   WFI");
-
-/****************************************************************************
-**                       FUNCTION DECLARATIONS
-****************************************************************************/
-
-extern unsigned short bcdAdd(unsigned char bcd1, unsigned char bcd2);
-extern unsigned int addTime(unsigned int time1, unsigned int time2,
-                            unsigned int *date);
-
-#ifdef __cplusplus
-}
-#endif
-#endif
+#define GET_SECTOR_SIZE 1
+#define GET_SECTOR_COUNT 2

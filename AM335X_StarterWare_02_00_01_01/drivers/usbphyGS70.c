@@ -1,9 +1,9 @@
-//*****************************************************************************
-//
-// usbdmscglue.h - Prototypes for functions supplied for use by the mass storage
-// class device.
-//
-//*****************************************************************************
+/**
+ * \file    UsbphyGS70.c
+ *
+ * \brief   This file contains AM335x USB Phy  related functions.
+ *
+*/
 
 /*
 * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
@@ -39,21 +39,71 @@
 *
 */
 
-#ifndef __USBDMSCGLUE_H__
-#define __USBDMSCGLUE_H__
+#include "hw_types.h"
+#include "soc_AM335x.h"    
+#include "hw_usbphyGS70.h"
+#include "usblib.h"
+#include "hw_usb.h"
+#include "debug.h"
 
 //*****************************************************************************
 //
+// USB instance Object
 //
 //*****************************************************************************
-extern void * USBDMSCStorageOpen(unsigned int ulDrive);
-extern void USBDMSCStorageClose(void * pvDrive);
-extern unsigned int USBDMSCStorageRead(void * pvDrive, unsigned char *pucData,
-                                        unsigned int ulSector,
-                                        unsigned int ulNumBlocks);
-extern unsigned int USBDMSCStorageWrite(void * pvDrive, unsigned char *pucData,
-                                         unsigned int ulSector,
-                                         unsigned int ulNumBlocks);
-unsigned int USBDMSCStorageNumBlocks(void * pvDrive);
+extern tUSBInstanceObject g_USBInstance[];
 
-#endif
+
+/**
+ * \brief This function will switch on the USB Phy  
+ *          
+ *
+ * \param    None
+ *
+ * \return   None
+ *
+  **/
+void UsbPhyOn(unsigned int ulIndex)
+{
+    unsigned int usbphycfg = 0;
+#if defined (am335x_15x15) || defined(am335x) || defined(c6a811x)
+	ASSERT((0==ulIndex)||(1==ulIndex));
+#else
+	ASSERT(0==ulIndex);
+#endif /* defined (am335x_15x15) || ... */
+
+#ifdef USB_MODE_FULLSPEED
+	if (0==ulIndex)
+    	HWREGB(USB0_BASE + USB_O_POWER) &= 0xdf;
+#if defined (am335x_15x15) || defined(am335x) || defined(c6a811x)
+	else
+		HWREGB(USB1_BASE + USB_O_POWER) &= 0xdf;
+#endif /* defined (am335x_15x15) || ... */
+#endif /* USB_MODE_HS_DISABLE  */
+
+    usbphycfg = HWREG(g_USBInstance[ulIndex].uiPHYConfigRegAddr); 
+    usbphycfg &= ~(USBPHY_CM_PWRDN | USBPHY_OTG_PWRDN);
+    usbphycfg |= (USBPHY_OTGVDET_EN | USBPHY_OTGSESSEND_EN);
+
+    HWREG(g_USBInstance[ulIndex].uiPHYConfigRegAddr) = usbphycfg;
+}
+
+
+/**
+ * \brief This function will switch off  the USB Phy  
+ *          
+ *
+ * \param    None
+ *
+ * \return   None
+ *
+  **/
+void UsbPhyOff(unsigned int ulIndex)
+{
+    unsigned int  usbphycfg = 0;
+    
+    usbphycfg = HWREG(g_USBInstance[ulIndex].uiPHYConfigRegAddr); 
+    usbphycfg |= (USBPHY_CM_PWRDN | USBPHY_OTG_PWRDN);
+    HWREG(g_USBInstance[ulIndex].uiPHYConfigRegAddr) = usbphycfg;
+}
+

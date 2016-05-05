@@ -1,9 +1,9 @@
-//*****************************************************************************
-//
-// usbdmscglue.h - Prototypes for functions supplied for use by the mass storage
-// class device.
-//
-//*****************************************************************************
+/**
+ * \file  ramdisk.c
+ *
+ * \brief Basic RAMDISK for USB example application
+ *
+ */
 
 /*
 * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
@@ -39,21 +39,84 @@
 *
 */
 
-#ifndef __USBDMSCGLUE_H__
-#define __USBDMSCGLUE_H__
+#include <string.h>
+#include "ramdisk.h"
+#include "hw_usb.h"
 
-//*****************************************************************************
-//
-//
-//*****************************************************************************
-extern void * USBDMSCStorageOpen(unsigned int ulDrive);
-extern void USBDMSCStorageClose(void * pvDrive);
-extern unsigned int USBDMSCStorageRead(void * pvDrive, unsigned char *pucData,
-                                        unsigned int ulSector,
-                                        unsigned int ulNumBlocks);
-extern unsigned int USBDMSCStorageWrite(void * pvDrive, unsigned char *pucData,
-                                         unsigned int ulSector,
-                                         unsigned int ulNumBlocks);
-unsigned int USBDMSCStorageNumBlocks(void * pvDrive);
+#define RAM_DISK_SIZE (1024 * 1024 * 16)
+#define LBA_SIZE 512
+#define TRANSFER_SIZE 512
 
+#if defined(__IAR_SYSTEMS_ICC__)
+#pragma data_alignment=(SOC_CACHELINE_SIZE_MAX)
+unsigned char ram_disk[RAM_DISK_SIZE];
+#else
+unsigned char ram_disk[RAM_DISK_SIZE]__attribute__((aligned(SOC_CACHELINE_SIZE_MAX)));
 #endif
+
+
+
+void disk_initialize(void)
+{
+    memset(ram_disk, 0,RAM_DISK_SIZE);
+}
+
+void disk_read(unsigned int lba, unsigned char *buf,
+        unsigned int len)
+{
+    int start;
+
+    start = lba * TRANSFER_SIZE;
+    len = len * TRANSFER_SIZE;
+
+    if (start + len <= RAM_DISK_SIZE )
+    {
+        memcpy(buf, &ram_disk[start], len);
+    }
+
+}
+void disk_write(unsigned int lba, unsigned char *buf,
+        unsigned int len)
+{
+    int start;
+
+    start = lba * TRANSFER_SIZE;
+    len = len * TRANSFER_SIZE;
+
+    if (start + len <= RAM_DISK_SIZE )
+    {
+        memcpy(&ram_disk[start], buf, len);
+    }
+}
+
+void disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffer)
+{
+
+    switch(command)
+    {
+
+        case GET_SECTOR_COUNT:
+        {
+           *buffer = (RAM_DISK_SIZE /LBA_SIZE);
+
+            break;
+        }
+        case GET_SECTOR_SIZE:
+        {
+           *buffer = LBA_SIZE;
+
+            break;
+        }
+        default:
+        {
+            buffer = 0;
+            break;
+        }
+
+    }
+
+
+
+}
+
+
