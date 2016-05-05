@@ -47,15 +47,15 @@ TYPE_SYSTEM_SETTINGS CurrentSystemSettings =
 
 	/* touch screen calibration */
 	.TouchCalibration.Calibrated = FALSE,
-	.TouchCalibration.TransformA = 1.0,
-	.TouchCalibration.TransformB = 1.0,
-	.TouchCalibration.TransformC = 1.0,
-	.TouchCalibration.TransformD = 1.0,
-	.TouchCalibration.TransformE = 1.0,
-	.TouchCalibration.TransformF = 1.0,
+	.TouchCalibration.TransformA = 0,
+	.TouchCalibration.TransformB = 0,
+	.TouchCalibration.TransformC = 0,
+	.TouchCalibration.TransformD = 0,
+	.TouchCalibration.TransformE = 0,
+	.TouchCalibration.TransformF = 0,
 
 	/* CRC 32 */
-	.CRC32 = 0L,
+	.CRC16 = 0L,
 };
 
 
@@ -76,11 +76,14 @@ void Init_FRAM(void)
 	unsigned char status = PASS;
 	unsigned long crc;
 
-	FRAM_WriteStatusRegister(0x02); // enable writes and turn off write protect
+	FRAM_Hold(FALSE);
+	FRAM_WriteProtect(FALSE);
+
+	FRAM_WriteStatusRegister(0x82); // enable writes and turn off write protect
 	FRAM_WriteEnable();
 	StatusRegister = FRAM_ReadStatusRegister();
 
-	while(!(StatusRegister & 0x02))
+	while((StatusRegister & 0x71) || (!(StatusRegister & 0x02)))
 	{
 		FRAM_WriteStatusRegister(0x02); // enable writes and turn off write protect
 		FRAM_WriteEnable();
@@ -95,18 +98,9 @@ void Init_FRAM(void)
 
 	if(status)
 	{
-		if(StatusRegister & 0x71)
-		{
-			status = FAIL;
-		}
-	}
-	if(status)
-	{
-		FRAM_Hold(FALSE);
-		FRAM_WriteProtect(FALSE);
 		FRAM_LoadSettings(&CurrentSystemSettings);
 		crc = FRAM_CalculateCRC(&CurrentSystemSettings);
-		if(crc == CurrentSystemSettings.CRC32)
+		if(crc == CurrentSystemSettings.CRC16)
 		{
 			CurrentSystemSettings.GoodTag = GOOD_TAG;
 		}
@@ -141,6 +135,7 @@ void FRAM_LoadSettings(TYPE_SYSTEM_SETTINGS* settings)
 /******************************************************************************/
 void FRAM_SaveSettings(TYPE_SYSTEM_SETTINGS* settings)
 {
+	settings->CRC16 = FRAM_CalculateCRC(settings);
 	FRAM_WriteMemory(SYSTEM_SETTINGS_ADDRESS_START, (unsigned char*)settings, sizeof(TYPE_SYSTEM_SETTINGS));
 }
 
@@ -344,12 +339,13 @@ void FRAM_Hold(unsigned char state)
 /******************************************************************************/
 /* FRAM_CalculateCRC
  *
- * Calculates a CRC on the Structure;
+ * Calculates a CRC on the Structure. Checked with:
+ *  http://depa.usst.edu.cn/chenjq/www2/software/crc/CRC_Javascript/CRCcalculation.htm
  *                                                                            */
 /******************************************************************************/
 unsigned long FRAM_CalculateCRC(TYPE_SYSTEM_SETTINGS* settings)
 {
-	return 0;
+	return MISC_Calculate_CRC16((unsigned char*) settings, sizeof(TYPE_SYSTEM_SETTINGS) - 2);
 }
 
 /******************************************************************************/
@@ -372,8 +368,37 @@ void FRAM_LoadDefaultSettings(TYPE_SYSTEM_SETTINGS* settings)
 	settings->TouchCalibration.TransformE = 1.0,
 	settings->TouchCalibration.TransformF = 1.0,
 
-	/* CRC 32 */
-	settings->CRC32 = FRAM_CalculateCRC(settings);
+	/* CRC */
+	settings->CRC16 = FRAM_CalculateCRC(settings);
+}
+
+/******************************************************************************/
+/* FRAM_Test
+ *
+ * Tests the FRAM
+ *                                                                            */
+/******************************************************************************/
+unsigned char FRAM_Test(void)
+{
+	unsigned char temp;
+	unsigned short i;
+	unsigned short fail = 0;
+
+	for(i=0;i<32768;i++)
+	{
+		FRAM_WriteMemory(i, (unsigned char*) &i, 1);
+		FRAM_ReadMemory(i, (unsigned char*) &temp, 1);
+		if(temp != ((unsigned char) i))
+		{
+			fail++;
+		}
+	}
+
+	if(fail)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /******************************* End of file *********************************/

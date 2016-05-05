@@ -106,12 +106,12 @@ typedef enum e_tv_screen_tags
 typedef struct t_touch_calibration
 {
 	unsigned char Calibrated;
-	double TransformA;
-	double TransformB;
-	double TransformC;
-	double TransformD;
-	double TransformE;
-	double TransformF;
+	unsigned long TransformA;
+	unsigned long TransformB;
+	unsigned long TransformC;
+	unsigned long TransformD;
+	unsigned long TransformE;
+	unsigned long TransformF;
 }TYPE_TOUCH_CALIBRATION;
 
 /******************************************************************************/

@@ -26,6 +26,7 @@
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 
+#include "INTERRUPTS.h"
 #include "MISC.h"
 #include "SPI.h"
 
@@ -85,6 +86,7 @@ void Init_SPI_Module1(void)
 
 	/* Chip select time control */
 	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= (MCSPI_CH0CONF_TCS0_3P5 << MCSPI_CH0CONF_TCS0_SHIFT); // 3h = 3.5 clock cycles
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(FRAM_CS)) |= (MCSPI_CH0CONF_TCS0_3P5 << MCSPI_CH0CONF_TCS0_SHIFT); // 3h = 3.5 clock cycles
 
     /* Set the Initial SPI delay for first transfer */
     HWREG(LCD_FRAM_SPI_REGS + MCSPI_MODULCTRL) |= (MCSPI_MODULCTRL_INITDLY_32CLKDLY << MCSPI_MODULCTRL_INITDLY_SHIFT);
@@ -94,25 +96,34 @@ void Init_SPI_Module1(void)
 
 	/* D1 for reception */
 	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= MCSPI_CH0CONF_IS; // 1h = Data line 1 (SPIDAT[1]) selected for reception.
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(FRAM_CS)) |= MCSPI_CH0CONF_IS; // 1h = Data line 1 (SPIDAT[1]) selected for reception.
 
 	/* D0 for Transmission */
 	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) |= MCSPI_CH0CONF_DPE1; // 1h = No transmission on data line 1 (SPIDAT[1])
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(FRAM_CS)) |= MCSPI_CH0CONF_DPE1; // 1h = No transmission on data line 1 (SPIDAT[1])
+
 	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(LCD_CS)) &= ~MCSPI_CH0CONF_DPE0; // 0h = Data line 0 (SPIDAT[0]) selected for transmission
+	HWREG(LCD_FRAM_SPI_REGS + MCSPI_CHCONF(FRAM_CS)) &= ~MCSPI_CH0CONF_DPE0; // 0h = Data line 0 (SPIDAT[0]) selected for transmission
 
 	/* Configure the McSPI bus clock depending on clock mode. */
 	McSPIClkConfig(LCD_FRAM_SPI_REGS, 48000000, 100000, LCD_CS, MCSPI_CLK_MODE_0);
+	McSPIClkConfig(LCD_FRAM_SPI_REGS, 48000000, 4000000, FRAM_CS, MCSPI_CLK_MODE_0);
 
 	/* Configure the word length.*/
 	McSPIWordLengthSet(LCD_FRAM_SPI_REGS, MCSPI_WORD_LENGTH(8), LCD_CS);
+	McSPIWordLengthSet(LCD_FRAM_SPI_REGS, MCSPI_WORD_LENGTH(8), FRAM_CS);
 
 	/* Set polarity of SPIEN to low.*/
 	McSPICSPolarityConfig(LCD_FRAM_SPI_REGS, MCSPI_CS_POL_LOW, LCD_CS);
+	McSPICSPolarityConfig(LCD_FRAM_SPI_REGS, MCSPI_CS_POL_LOW, FRAM_CS);
 
     /* Enable the transmitter FIFO of McSPI peripheral.*/
     McSPITxFIFOConfig(LCD_FRAM_SPI_REGS, MCSPI_TX_FIFO_DISABLE, LCD_CS);
+    McSPITxFIFOConfig(LCD_FRAM_SPI_REGS, MCSPI_TX_FIFO_DISABLE, FRAM_CS);
 
     /* Enable the receiver FIFO of McSPI peripheral.*/
     McSPIRxFIFOConfig(LCD_FRAM_SPI_REGS, MCSPI_RX_FIFO_DISABLE, LCD_CS);
+    McSPIRxFIFOConfig(LCD_FRAM_SPI_REGS, MCSPI_RX_FIFO_DISABLE, FRAM_CS);
 }
 
 /******************************************************************************/
@@ -189,17 +200,6 @@ void SPI_INTCConfigure1(void)
 
     /* Enable system interrupt in AINTC */
     IntSystemEnable(SYS_INT_SPI1INT);
-}
-
-/******************************************************************************/
-/* SPI_1_ISR
- *
- * SPI module 1 Interrupt service routine.
- *                                                                            */
-/******************************************************************************/
-void SPI_1_ISR(void)
-{
-
 }
 
 /******************************************************************************/

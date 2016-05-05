@@ -25,6 +25,8 @@
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
+#define FULL 1
+#define HALF 0
 
 /******************************************************************************/
 /* MACRO function declaration                                                 */
@@ -68,6 +70,8 @@ unsigned short MSC_EndianShortArray(unsigned char* buffer);
 unsigned long MSC_EndianLong(unsigned long number);
 unsigned long MSC_EndianLongArray(unsigned char* buffer);
 unsigned char MSC_ReverseByte(unsigned char This);
+unsigned short MISC_CRC_CRC16 (unsigned short data, unsigned short previous, unsigned char size);
+unsigned short MISC_Calculate_CRC16(unsigned char* buffer, unsigned short bytes);
 
 #endif
 /******************************* End of file *********************************/

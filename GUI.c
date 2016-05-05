@@ -406,11 +406,11 @@ void GUI_LoadTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
 	if(calibration->Calibrated)
 	{
 		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformA);
-		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformB);
-		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformC);
-		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformD);
-		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformE);
-		LCD_wr32(REG_TOUCH_TRANSFORM_A, (unsigned int)calibration->TransformF);
+		LCD_wr32(REG_TOUCH_TRANSFORM_B, (unsigned int)calibration->TransformB);
+		LCD_wr32(REG_TOUCH_TRANSFORM_C, (unsigned int)calibration->TransformC);
+		LCD_wr32(REG_TOUCH_TRANSFORM_D, (unsigned int)calibration->TransformD);
+		LCD_wr32(REG_TOUCH_TRANSFORM_E, (unsigned int)calibration->TransformE);
+		LCD_wr32(REG_TOUCH_TRANSFORM_F, (unsigned int)calibration->TransformF);
 	}
 }
 
@@ -422,6 +422,8 @@ void GUI_LoadTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
 /******************************************************************************/
 void GUI_CreateTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
 {
+	unsigned long temp;
+
 	RAM_CMD_Offset = LCD_rd16(REG_CMD_WRITE);
 
 	LCD_cmd(CMD_DLSTART);
@@ -438,12 +440,24 @@ void GUI_CreateTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
 	LCD_WaitCoprocessorDone();
 
 	calibration->Calibrated = TRUE;
-	calibration->TransformA = LCD_rd32(REG_TOUCH_TRANSFORM_A);
-	calibration->TransformB = LCD_rd32(REG_TOUCH_TRANSFORM_B);
-	calibration->TransformC = LCD_rd32(REG_TOUCH_TRANSFORM_C);
-	calibration->TransformD = LCD_rd32(REG_TOUCH_TRANSFORM_D);
-	calibration->TransformE = LCD_rd32(REG_TOUCH_TRANSFORM_E);
-	calibration->TransformF = LCD_rd32(REG_TOUCH_TRANSFORM_F);
+	temp = LCD_rd32(REG_TOUCH_TRANSFORM_A);
+	calibration->TransformA = temp;
+
+	temp = LCD_rd32(REG_TOUCH_TRANSFORM_B);
+	calibration->TransformB = temp;
+
+	temp = LCD_rd32(REG_TOUCH_TRANSFORM_C);
+	calibration->TransformC = temp;
+
+	temp = LCD_rd32(REG_TOUCH_TRANSFORM_D);
+	calibration->TransformD = temp;
+
+	temp = LCD_rd32(REG_TOUCH_TRANSFORM_E);
+	calibration->TransformE = temp;
+
+	temp = LCD_rd32(REG_TOUCH_TRANSFORM_F);
+	calibration->TransformF = temp;
+
 }
 
 /******************************************************************************/

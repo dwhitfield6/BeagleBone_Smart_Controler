@@ -194,6 +194,7 @@ extern void GPIODebounceTimeConfig(unsigned int baseAdd,
 extern unsigned int GPIORevisionInfoGet(unsigned int baseAdd);
 extern void gpioContextSave(unsigned int baseAdd, GPIOCONTEXT *contextPtr);
 extern void gpioContextRestore(unsigned int baseAdd, GPIOCONTEXT *contextPtr);
+void GpioPinMuxSetup(unsigned int offsetAddr, unsigned int padConfValue);
 
 
 #ifdef __cplusplus

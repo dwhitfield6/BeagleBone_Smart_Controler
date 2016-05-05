@@ -375,6 +375,7 @@ extern void RTCAlarm2TimeSet(unsigned int baseAddr, unsigned int alarmTime);
 extern void RTCAlarm2CalendarSet(unsigned int baseAddr, unsigned int calVal);
 extern unsigned int RTCAlarm2IntStatusGet(unsigned int baseAdd);
 void RTCModuleClkConfig(void);
+unsigned int RtcVersionGet(void);
 
 /*****************************************************************************
 **              Prototypes of Miscellaneous and related functions

@@ -261,4 +261,90 @@ unsigned char MSC_ReverseByte(unsigned char This)
     return temp;
 }
 
+/******************************************************************************/
+/* MISC_CRC_CRC16
+ *
+ * The function calcualtes a single CRC-16-CCITT.                             */
+/******************************************************************************/
+unsigned short MISC_CRC_CRC16 (unsigned short data, unsigned short previous, unsigned char size)
+{
+	short i;
+	unsigned long long Polynomial = (0x80000000 | (0x1021U << 15));
+	unsigned long long temp = (unsigned long long) previous << 16;
+	unsigned long long Shift = 0x8000000000000000;
+	temp += data;
+	temp <<= 32;
+	Polynomial <<= 32;
+
+	/* calculate CRC */
+	if(size == FULL)
+	{
+		for(i=63;i >= 48;i--)
+		{
+			if(temp & Shift)
+			{
+				temp ^= Polynomial >> (63 - i);
+			}
+			Shift >>= 1;
+		}
+		temp >>= 32;
+	}
+	else
+	{
+		for(i=63;i >= 56;i--)
+		{
+			if(temp & Shift)
+			{
+				temp ^= Polynomial >> (63 - i);
+			}
+			Shift >>= 1;
+		}
+		temp >>= 40;
+	}
+
+	return (unsigned short) temp;
+}
+
+/******************************************************************************/
+/* MISC_Calculate_CRC16
+ *
+ * The function calcualtes a full CRC-16-CCITT on a buffer of arbitrary size. */
+/******************************************************************************/
+unsigned short MISC_Calculate_CRC16(unsigned char* buffer, unsigned short bytes)
+{
+	unsigned long TempNewData;
+	unsigned long TempOldData = 0;
+	unsigned long i;
+
+	if(bytes >= 2)
+	{
+		TempNewData = ((unsigned long)*buffer) << 8;
+		buffer++;
+		TempNewData += *buffer;
+		buffer++;
+
+		TempOldData = MISC_CRC_CRC16(TempNewData, 0, FULL);
+
+		for(i=2; i<(bytes - 2);i+=2)
+		{
+			TempNewData = ((unsigned long)*buffer) << 8;
+			buffer++;
+			TempNewData += *buffer;
+			buffer++;
+
+			TempOldData = MISC_CRC_CRC16(TempNewData, TempOldData, FULL);
+		}
+	}
+	if(bytes % 2)
+	{
+		/* Odd number of bytes */
+		TempNewData = *buffer;
+		TempNewData <<= 8;
+		buffer++;
+		TempOldData = MISC_CRC_CRC16(TempNewData, TempOldData, HALF);
+	}
+	TempOldData = MISC_CRC_CRC16(0, TempOldData, FULL);
+	return TempOldData;
+}
+
 /******************************* End of file *********************************/

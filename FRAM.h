@@ -63,14 +63,14 @@
 /******************************************************************************/
 /* Structure Declaration                                                      */
 /******************************************************************************/
-typedef struct t_system_settings
+typedef struct __attribute__((packed)) t_system_settings
 {
 	unsigned char GoodTag;
 
 	/* touch screen calibration */
 	TYPE_TOUCH_CALIBRATION TouchCalibration;
 
-	unsigned long CRC32;
+	unsigned short CRC16;
 }TYPE_SYSTEM_SETTINGS;
 
 typedef enum e_optcode
@@ -113,6 +113,7 @@ void FRAM_WriteProtect(unsigned char state);
 void FRAM_Hold(unsigned char state);
 unsigned long FRAM_CalculateCRC(TYPE_SYSTEM_SETTINGS* settings);
 void FRAM_LoadDefaultSettings(TYPE_SYSTEM_SETTINGS* settings);
+unsigned char FRAM_Test(void);
 
 #endif
 /******************************* End of file *********************************/
