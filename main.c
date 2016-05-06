@@ -14,7 +14,6 @@
 /* TODOs
  * ---------------------------------------------------------------------------
  * Fix WAV playing.
- * Add USB MSC.
  * Add SD card code.
  * Add EMMC code.
  * Add FAT32 library and fix it up.
@@ -51,6 +50,7 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
+#include "USB.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -163,6 +163,12 @@ void main (void)
 		{
 			GUI_ScreenRefresh();
 			RTC_ClearFlag();
+		}
+
+		if(USB_GetUSBStatusFlag0())
+		{
+			GUI_ScreenRefresh();
+			USB_ClearUSBStatusFlag0();
 		}
 
 		if(AUD_GetPlayingFlag())

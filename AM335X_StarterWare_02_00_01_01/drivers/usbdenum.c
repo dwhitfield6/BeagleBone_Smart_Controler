@@ -26,7 +26,7 @@
 #include "hw_usb.h"
 #include "hw_types.h"
 #include "debug.h"
-#include "usb.h"
+#include "usbd.h"
 #include "usblib.h"
 #include "usbdevice.h"
 #include "usbdevicepriv.h"
@@ -35,6 +35,7 @@
 #include "interrupt.h"
 
 #include "MISC.h"
+#include "USB.h"
 
 //*****************************************************************************
 //
@@ -2997,6 +2998,7 @@ USBDeviceIntHandlerInternal(unsigned int ulIndex, unsigned int ulStatus,
     //
     if(ulStatus & USB_INTCTRL_RESET)
     {
+    	USB_SetUSBStatus0(USB_CONNECT);
         USBDeviceEnumResetHandler(&g_psUSBDevice[ulIndex]);
     }
 
@@ -3025,6 +3027,20 @@ USBDeviceIntHandlerInternal(unsigned int ulIndex, unsigned int ulStatus,
         if(psInfo->sCallbacks.pfnResumeHandler)
         {
             psInfo->sCallbacks.pfnResumeHandler(pvInstance);
+        }
+    }
+
+    //
+    // USB device was connected.
+    //
+    if(ulStatus & USB_INTCTRL_CONNECT)
+    {
+        //
+        // Call the DisconnectHandler() if it was specified.
+        //
+        if(psInfo->sCallbacks.pfnConnectHandler)
+        {
+            psInfo->sCallbacks.pfnConnectHandler(pvInstance);
         }
     }
 

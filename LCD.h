@@ -40,6 +40,9 @@
  * This is what sits in RAM_G. The last address of RAM_G is 1048576.
  * 																	          */
 /******************************************************************************/
+#define RAM_G_LOCATION_START 	0
+#define RAM_G_LOCATION_END		1048575
+
 #define BITMAP_CHARLIE_BEACH_RAM_G_LOCATION_START 	RAM_G
 #define BITMAP_CHARLIE_BEACH_RAM_G_LOCATION_END 	261119
 #define BITMAP_CHARLIE_BEACH_RAM_G_SIZE 			261120
@@ -48,7 +51,12 @@
 #define BITMAP_TV_REMOTE_RAM_G_LOCATION_END 		272319
 #define BITMAP_TV_REMOTE_RAM_G_SIZE 				11200
 
-#define MISC_BUFFER_RAM_G_LOCATION_START 			272320
+#define BITMAP_USB_SYMBOL_RAM_G_LOCATION_START 		272320
+#define BITMAP_USB_SYMBOL_RAM_G_LOCATION_END 		272407
+#define BITMAP_USB_SYMBOL_RAM_G_SIZE 				88
+
+/* must recalculate the values below */
+#define MISC_BUFFER_RAM_G_LOCATION_START 			272448
 #define MISC_BUFFER_RAM_G_LOCATION_END 				1040319
 #define MISC_BUFFER_RAM_G_SIZE 						768000
 

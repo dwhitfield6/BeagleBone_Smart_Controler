@@ -15,8 +15,8 @@
  *                                                                            */
 /******************************************************************************/
 
-#ifndef _USB_H_
-#define _USB_H_
+#ifndef ___USB_H__
+#define ___USB_H__
 
 /******************************************************************************/
 /* Files to Include                                                           */
@@ -25,66 +25,44 @@
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
-#define FLAG_UPDATE_STATUS      1
- //*****************************************************************************
- //
- // The number of ticks to wait before falling back to the idle state.  Since
- // the tick rate is 100Hz this is approximately 3 seconds.
- //
- //*****************************************************************************
-#define USBMSC_ACTIVITY_TIMEOUT 30
 
- //*****************************************************************************
- //
- // DMA Configuration.
- //
- //*****************************************************************************
- #define NUMBER_OF_ENDPOINTS     2 //Total number of send points(RX +TX) used in this USB configuration
- #define USB_MSC_BUFER_SIZE      512
+/******************************************************************************/
+/* Structure Declaration                                                      */
+/******************************************************************************/
+typedef enum e_msc_states
+{
+	MSC_DEV_DISCONNECTED,
+	MSC_DEV_CONNECTED,
+	MSC_DEV_IDLE,
+	MSC_DEV_READ,
+	MSC_DEV_WRITE,
+}ENUM_MSC_STATES;
 
- //*****************************************************************************
- //
- // This enumeration holds the various states that the device can be in during
- // normal operation.
- //
- //*****************************************************************************
- volatile enum
- {
-     //
-     // Unconfigured.
-     //
-     MSC_DEV_DISCONNECTED,
-
-     //
-     // Connected but not yet fully enumerated.
-     //
-     MSC_DEV_CONNECTED,
-
-     //
-     // Connected and fully enumerated but not currently handling a command.
-     //
-     MSC_DEV_IDLE,
-
-     //
-     // Currently reading the SD card.
-     //
-     MSC_DEV_READ,
-
-     //
-     // Currently writing the SD card.
-     //
-     MSC_DEV_WRITE,
- }
- g_eMSCState;
+typedef enum e_msc_status
+{
+	USB_DISCONNECT,
+	USB_CONNECT,
+}ENUM_USB_STATUS;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+extern ENUM_MSC_STATES g_eMSCState;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
- void Init_USB(void);
+void Init_USB(void);
+void Init_USB0(void);
+void USB_InterruptConfigure0(void);
+unsigned int USB_DMSCEventCallback0(void *pvCBData, unsigned int ulEvent, unsigned int ulMsgParam, void *pvMsgData);
+void USB_SetMSCState0(ENUM_MSC_STATES state);
+ENUM_MSC_STATES USB_GetMSCState0(void);
+void USB_SetUSBStatus0(ENUM_USB_STATUS state);
+ENUM_USB_STATUS USB_GetUSBStatus0(void);
+void USB_SetUSBStatusFlag0(void);
+void USB_ClearUSBStatusFlag0(void);
+unsigned char USB_GetUSBStatusFlag0(void);
 
 #endif
 /******************************* End of file *********************************/

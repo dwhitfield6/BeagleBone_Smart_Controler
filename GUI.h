@@ -68,6 +68,7 @@ typedef enum e_ramg_item
 {
 	CHARLIE_BEACH 	= 0,
 	TV_REMOTE 		= 1,
+	USB_SYMBOL 		= 2,
 }ENUM_RAMG_ITEM;
 
 typedef enum e_screen_selection

@@ -25,11 +25,15 @@
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
 #include "hw_types.h"
+#include "hw_usbOtg_AM335x.h"
 #include "hsi2c.h"
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 #include "tsc_adc.h"
 #include "uart_irda_cir.h"
+#include "usblib.h"
+#include "usbdevicepriv.h"
+#include "usblibpriv.h"
 
 #include "ADC.h"
 #include "AUDIO.h"
@@ -344,6 +348,37 @@ void ADC_0_ISR(void)
 void SPI_1_ISR(void)
 {
 
+}
+
+/******************************************************************************/
+/* USB_0_ISR
+ *
+ * USB module 0 Interrupt service routine.
+ *                                                                            */
+/******************************************************************************/
+void USB_0_ISR(void)
+{
+    unsigned int ulStatus = 0;
+    unsigned int epStatus = 0;
+    extern tUSBInstanceObject g_USBInstance[];
+
+    /* Get the controller interrupt status. */
+    ulStatus = HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_1);
+
+    /* Get the EP interrupt status. */
+    epStatus = HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_0);
+
+    /* Clear the controller interrupt status. */
+    HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_1) = ulStatus;
+
+    /* Clear the EP interrupt status. */
+    HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_0) = epStatus;
+
+    /* Call the Interrupt Handler. */
+    USBDeviceIntHandlerInternal(0, ulStatus, &epStatus);
+
+    /* End of Interrupts. */
+    HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_EOI) = 0;
 }
 
 /******************************* End of file *********************************/

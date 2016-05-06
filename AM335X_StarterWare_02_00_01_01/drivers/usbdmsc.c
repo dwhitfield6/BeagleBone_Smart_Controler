@@ -30,7 +30,7 @@
 #include "hw_types.h"
 #include "debug.h"
 #include "interrupt.h"
-#include "usb.h"
+#include "usbd.h"
 #include "cppi41dma.h"
 #include "usblib.h"
 #include "usbmsc.h"
@@ -43,6 +43,7 @@
 #include "soc_AM335x.h"
 
 #include "MISC.h"
+#include "USB.h"
 
 //*****************************************************************************
 //
@@ -326,6 +327,7 @@ const tConfigHeader * const g_pMSCConfigDescriptors[] =
 //
 //*****************************************************************************
 static void HandleDisconnect(void *pvInstance);
+static void HandleConnect(void *pvInstance);
 static void ConfigChangeHandler(void *pvInstance, unsigned int ulValue, 
                                                 unsigned int ulIndex);
 static void HandleEndpoints(void *pvInstance, unsigned int ulStatus, 
@@ -442,6 +444,11 @@ tDeviceInfo g_sMSCDeviceInfo =
 
         //
         // ResumeHandler
+        //
+        0,
+
+        //
+        // ConnectHandler
         //
         0,
 
@@ -1055,6 +1062,18 @@ HandleDevice(void *pvInstance, unsigned int ulRequest, void *pvRequestData)
 //
 //*****************************************************************************
 static void
+HandleConnect(void *pvInstance)
+{
+	USB_SetUSBStatus0(USB_CONNECT);
+}
+
+//*****************************************************************************
+//
+// This function is called by the USB device stack whenever the device is
+// disconnected from the host.
+//
+//*****************************************************************************
+static void
 HandleDisconnect(void *pvInstance)
 {
     const tUSBDMSCDevice *psDevice;
@@ -1092,7 +1111,7 @@ HandleDisconnect(void *pvInstance)
         //
         psDevice->pfnEventCallback(pvInstance, USB_EVENT_DISCONNECTED, 0, 0);
     }
-    //UARTprintf("------------------------------------------------------------\n");
+    USB_SetUSBStatus0(USB_DISCONNECT);
 }
 
 //*****************************************************************************

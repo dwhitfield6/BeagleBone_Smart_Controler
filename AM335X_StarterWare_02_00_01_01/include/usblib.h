@@ -1012,6 +1012,11 @@ typedef struct
     //
     //! This callback is made when the device is disconnected from the USB bus.
     //
+    tUSBIntHandler pfnConnectHandler;
+
+    //
+    //! This callback is made when the device is disconnected from the USB bus.
+    //
     tUSBIntHandler pfnDisconnectHandler;
 
     //

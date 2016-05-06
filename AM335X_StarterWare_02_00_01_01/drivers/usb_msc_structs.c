@@ -69,10 +69,12 @@ const unsigned char g_pLangDescriptor[] =
 //*****************************************************************************
 const unsigned char g_pManufacturerString[] =
 {
-    (17 + 1) * 2,
+    (25 + 1) * 2,
     USB_DTYPE_STRING,
-    'T', 0, 'e', 0, 'x', 0, 'a', 0, 's', 0, ' ', 0, 'I', 0, 'n', 0, 's', 0,
-    't', 0, 'r', 0, 'u', 0, 'm', 0, 'e', 0, 'n', 0, 't', 0, 's', 0,
+    'C', 0, 'h', 0, 'a', 0, 'r', 0, ' ', 0, 'a', 0, 'n', 0, 'd', 0, ' ', 0,
+    'M', 0, 'a', 0, 'r', 0, ' ', 0, 'C', 0, 'i', 0, 'r', 0, 'c', 0, 'u', 0,
+	'i', 0, 't', 0, 's', 0, ' ', 0, 'L', 0, 'L', 0, 'C', 0,
+
 };
 
 //*****************************************************************************
@@ -98,7 +100,7 @@ const unsigned char g_pSerialNumberString[] =
 {
     (8 + 1) * 2,
     USB_DTYPE_STRING,
-    '1', 0, '2', 0, '3', 0, '4', 0, '5', 0, '6', 0, '7', 0, '8', 0
+    '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0, '0', 0
 };
 
 //*****************************************************************************
@@ -177,7 +179,7 @@ const tUSBDMSCDevice g_sMSCDevice =
     //
     // Vendor Information.
     //
-    "TI      ",
+    "CMC LLC ",
 
     //
     // Product Identification.
@@ -199,7 +201,7 @@ const tUSBDMSCDevice g_sMSCDevice =
         USBDMSCStorageWrite,
         USBDMSCStorageNumBlocks
     },
-    USBDMSCEventCallback,
+	USB_DMSCEventCallback0,
     &g_sMSCInstance
 };
 

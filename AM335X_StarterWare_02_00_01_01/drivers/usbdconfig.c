@@ -27,7 +27,7 @@
 #include "hw_usb.h"
 #include "hw_types.h"
 #include "debug.h"
-#include "usb.h"
+#include "usbd.h"
 #include "usblib.h"
 #include "usbdevice.h"
 

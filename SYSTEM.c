@@ -100,6 +100,7 @@ void Init_Modules(void)
 	GUI_DrawInitialScreenProgress(50);
 	GUI_LoadItemToRAMG(TV_REMOTE);
 	GUI_DrawInitialScreenProgress(60);
+	GUI_LoadItemToRAMG(USB_SYMBOL);
 	Init_WAV();
 	Init_Audio();
 	GUI_DrawInitialScreenProgress(70);

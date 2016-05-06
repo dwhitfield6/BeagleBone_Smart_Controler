@@ -57,9 +57,7 @@ extern const tUSBDMSCDevice g_sMSCDevice;
 // The externally provided mass storage class event call back function.
 //
 //*****************************************************************************
-extern unsigned int USBDMSCEventCallback(void *pvCBData, unsigned int ulEvent,
-                                       unsigned int ulMsgParam,
-                                       void *pvMsgData);
+extern unsigned int USB_DMSCEventCallback0(void *pvCBData, unsigned int ulEvent, unsigned int ulMsgParam, void *pvMsgData);
 
 
 #endif

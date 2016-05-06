@@ -18,6 +18,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "beaglebone.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -29,8 +30,8 @@
 #include "usbdmsc.h"
 #include "usb_msc_structs.h"
 
-#include "beaglebone.h"
 #include "GPIO.h"
+#include "INTERRUPTS.h"
 #include "LEDS.h"
 #include "USB.h"
 
@@ -39,15 +40,19 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* Private Variable                                                           */
+/******************************************************************************/
+static ENUM_MSC_STATES USB0_MSCState;
+static ENUM_USB_STATUS USB0_Status;
+static unsigned char USBChangeStatusFlag0 = FALSE;
+
+/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-static unsigned int g_ulFlags;
-//static unsigned int g_ulIdleTimeout;
-unsigned int g_bufferIndex = 0;
+
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void USBInterruptEnable(void);
 
 /******************************************************************************/
 /* Init_USB
@@ -57,23 +62,37 @@ void USBInterruptEnable(void);
 /******************************************************************************/
 void Init_USB(void)
 {
+	Init_USB0();
+}
+
+/******************************************************************************/
+/* Init_USB0
+ *
+ * Initializes USB module 0.
+ *                                                                            */
+/******************************************************************************/
+void Init_USB0(void)
+{
+	/* initialize the USB0 clock */
     USB0ModuleClkConfig();
 
-    USBInterruptEnable();
-    g_ulFlags = 0;
-    g_eMSCState = MSC_DEV_IDLE;
+    USB_InterruptConfigure0();
+
+    USB_SetMSCState0(MSC_DEV_IDLE);
+    USB_SetUSBStatus0(USB_DISCONNECT);
     USBDMSCInit(0, (tUSBDMSCDevice *)&g_sMSCDevice);
 }
 
-//*****************************************************************************
-//
-// Sets up the AINTC Interrupt
-//
-//*****************************************************************************
-static void USB0AINTCConfigure(void)
+/******************************************************************************/
+/* USB_InterruptConfigure0
+ *
+ * Sets up USB module 0 interrupts.
+ *                                                                            */
+/******************************************************************************/
+void USB_InterruptConfigure0(void)
 {
     /* Registering the Interrupt Service Routine(ISR). */
-    IntRegister(SYS_INT_USB0, USB0DeviceIntHandler);
+    IntRegister(SYS_INT_USB0, USB_0_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
     IntPrioritySet(SYS_INT_USB0, 0, AINTC_HOSTINT_ROUTE_IRQ);
@@ -82,137 +101,38 @@ static void USB0AINTCConfigure(void)
     IntSystemEnable(SYS_INT_USB0);
 }
 
-//*****************************************************************************
-//
-// Handles bulk driver notifications related to the receive channel (data from
-// the USB host).
-//
-// \param pvCBData is the client-supplied callback pointer for this channel.
-// \param ulEvent identifies the event we are being notified about.
-// \param ulMsgValue is an event-specific value.
-// \param pvMsgData is an event-specific pointer.
-//
-// This function is called by the bulk driver to notify us of any events
-// related to operation of the receive data channel (the OUT channel carrying
-// data from the USB host).
-//
-// \return The return value is event-specific.
-//
-//*****************************************************************************
-unsigned int
-RxHandler(void *pvCBData, unsigned int ulEvent,
-               unsigned int ulMsgValue, void *pvMsgData)
+/******************************************************************************/
+/* USB_DMSCEventCallback0
+ *
+ * This function is the call back notification function provided to the USB
+ *  library's mass storage class.
+ *                                                                            */
+/******************************************************************************/
+unsigned int USB_DMSCEventCallback0(void *pvCBData, unsigned int ulEvent, unsigned int ulMsgParam, void *pvMsgData)
 {
-    return(0);
-}
-
-//*****************************************************************************
-//
-// Handles bulk driver notifications related to the transmit channel (data to
-// the USB host).
-//
-// \param pvCBData is the client-supplied callback pointer for this channel.
-// \param ulEvent identifies the event we are being notified about.
-// \param ulMsgValue is an event-specific value.
-// \param pvMsgData is an event-specific pointer.
-//
-// This function is called by the bulk driver to notify us of any events
-// related to operation of the transmit data channel (the IN channel carrying
-// data to the USB host).
-//
-// \return The return value is event-specific.
-//
-//*****************************************************************************
-unsigned int
-TxHandler(void *pvCBData, unsigned int ulEvent, unsigned int ulMsgValue,
-          void *pvMsgData)
-{
-    return(0);
-}
-
-static void CPDMAAINTCConfigure(void)
-{
-
-    /* Registering the Interrupt Service Routine(ISR). */
-    IntRegister(SYS_INT_USBSSINT, USB0DeviceIntHandler);
-
-    /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_USBSSINT, 0, AINTC_HOSTINT_ROUTE_IRQ);
-
-    /* Enabling the system interrupt in AINTC. */
-    IntSystemEnable(SYS_INT_USBSSINT);
-}
-
-void USBInterruptEnable(void)
-{
-    /* Configuring AINTC to receive USB interrupts. */
-    USB0AINTCConfigure();
-
-    CPDMAAINTCConfigure();
-}
-
-//*****************************************************************************
-//
-// This function is the call back notification function provided to the USB
-// library's mass storage class.
-//
-//*****************************************************************************
-unsigned int
-USBDMSCEventCallback(void *pvCBData, unsigned int ulEvent,
-                     unsigned int ulMsgParam, void *pvMsgData)
-{
-    //
-    // Reset the time out every time an event occurs.
-    //
-   // g_ulIdleTimeout = USBMSC_ACTIVITY_TIMEOUT;
-
     switch(ulEvent)
     {
-        //
-        // Writing to the device.
-        //
+        /* Writing to the device. */
         case USBD_MSC_EVENT_WRITING:
         {
-            //
-            // Only update if this is a change.
-            //
-            if(g_eMSCState != MSC_DEV_WRITE)
+            /* Only update if this is a change. */
+            if(USB_GetMSCState0() != MSC_DEV_WRITE)
             {
-                //
-                // Go to the write state.
-                //
-                g_eMSCState = MSC_DEV_WRITE;
-
-                //
-                // Cause the main loop to update the screen.
-                //
-                g_ulFlags |= FLAG_UPDATE_STATUS;
+                /* Go to the write state. */
+            	USB_SetMSCState0(MSC_DEV_WRITE);
             }
-
             break;
         }
 
-        //
-        // Reading from the device.
-        //
+        /* Reading from the device. */
         case USBD_MSC_EVENT_READING:
         {
-            //
-            // Only update if this is a change.
-            //
-            if(g_eMSCState != MSC_DEV_READ)
+            /* Only update if this is a change. */
+            if(USB_GetMSCState0() != MSC_DEV_READ)
             {
-                //
-                // Go to the read state.
-                //
-                g_eMSCState = MSC_DEV_READ;
-
-                //
-                // Cause the main loop to update the screen.
-                //
-                g_ulFlags |= FLAG_UPDATE_STATUS;
+                /* Go to the write state. */
+            	USB_SetMSCState0(MSC_DEV_READ);
             }
-
             break;
         }
         case USBD_MSC_EVENT_IDLE:
@@ -223,6 +143,87 @@ USBDMSCEventCallback(void *pvCBData, unsigned int ulEvent,
     }
 
     return(0);
+}
+
+/******************************************************************************/
+/* USB_SetMSCState0
+ *
+ * Sets the USB 0 MSC state.
+ *                                                                            */
+/******************************************************************************/
+void USB_SetMSCState0(ENUM_MSC_STATES state)
+{
+	USB0_MSCState = state;
+}
+
+/******************************************************************************/
+/* USB_GetMSCState0
+ *
+ * Gets the USB 0 MSC state.
+ *                                                                            */
+/******************************************************************************/
+ENUM_MSC_STATES USB_GetMSCState0(void)
+{
+	return USB0_MSCState;
+}
+
+/******************************************************************************/
+/* USB_SetUSBStatus0
+ *
+ * Sets the USB 0 status.
+ *                                                                            */
+/******************************************************************************/
+void USB_SetUSBStatus0(ENUM_USB_STATUS state)
+{
+	if(state != USB_GetUSBStatus0())
+	{
+		USB0_Status = state;
+		USB_SetUSBStatusFlag0();
+	}
+}
+
+/******************************************************************************/
+/* USB_GetUSBStatus0
+ *
+ * Gets the USB 0 status.
+ *                                                                            */
+/******************************************************************************/
+ENUM_USB_STATUS USB_GetUSBStatus0(void)
+{
+	return USB0_Status;
+}
+
+/******************************************************************************/
+/* USB_SetUSBStatusFlag0
+ *
+ * Sets the USB 0 change status flag.
+ *                                                                            */
+/******************************************************************************/
+void USB_SetUSBStatusFlag0(void)
+{
+	USBChangeStatusFlag0 = TRUE;
+}
+
+/******************************************************************************/
+/* USB_ClearUSBStatusFlag0
+ *
+ * Clears the USB 0 change status flag.
+ *                                                                            */
+/******************************************************************************/
+void USB_ClearUSBStatusFlag0(void)
+{
+	USBChangeStatusFlag0 = FALSE;
+}
+
+/******************************************************************************/
+/* USB_GetUSBStatusFlag0
+ *
+ * Gets the USB 0 change status flag.
+ *                                                                            */
+/******************************************************************************/
+unsigned char USB_GetUSBStatusFlag0(void)
+{
+	return USBChangeStatusFlag0;
 }
 
 /******************************* End of file *********************************/
