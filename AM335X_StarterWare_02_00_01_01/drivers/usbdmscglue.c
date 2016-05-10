@@ -143,8 +143,8 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
 	ASSERT(pvDrive != 0);
 
 
-    //result = disk_read(0, pucData, ulSector, ulNumBlocks);
-    RAM_disk_read(ulSector, pucData, ulNumBlocks);
+    result = disk_read(0, pucData, ulSector, ulNumBlocks);
+    //RAM_disk_read(ulSector, pucData, ulNumBlocks);
 
        return(ulNumBlocks * 512);
 }
@@ -176,8 +176,8 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
 
     ASSERT(pvDrive != 0);
 
-    //result = disk_write(0, pucData, ulSector, ulNumBlocks);
-    RAM_disk_write(ulSector, pucData, ulNumBlocks);
+    result = disk_write(0, pucData, ulSector, ulNumBlocks);
+    //RAM_disk_write(ulSector, pucData, ulNumBlocks);
 
     return(ulNumBlocks * 512);
 }
@@ -199,17 +199,13 @@ unsigned long
 USBDMSCStorageNumBlocks(void * pvDrive)
 {
     unsigned long ulSectorCount = 0;
+
     //
     // Read the number of sectors.
     //
-    //ulSectorCount = sdCard.nBlks;
-    ulSectorCount = 256;
-    if(!ulSectorCount)
-    {
-    	ulSectorCount = 2;
-    }
+    ulSectorCount = sdCard.nBlks;
 
-    RAM_disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
+    //RAM_disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
 
     return(ulSectorCount);
 }

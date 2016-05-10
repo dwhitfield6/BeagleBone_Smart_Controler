@@ -27,6 +27,22 @@
 /******************************************************************************/
 
 /******************************************************************************/
+/* Interrupt Priorities                                                       */
+/******************************************************************************/
+#define ADC_INTERRUPT_PRIORITY 				8
+#define I2C_INTERRUPT_PRIORITY 				7
+#define LCD_INTERRUPT_PRIORITY 				6
+#define RTC_INTERRUPT_PRIORITY 				5
+#define DMA_COMPLETE_INTERRUPT_PRIORITY 	2
+#define DMA_ERROR_INTERRUPT_PRIORITY 		2
+#define SD_INTERRUPT_PRIORITY 				2
+#define SPI_INTERRUPT_PRIORITY 				4
+#define TIMER_2_INTERRUPT_PRIORITY			1
+#define TIMER_3_INTERRUPT_PRIORITY 			0
+#define UART_INTERRUPT_PRIORITY 			9
+#define USB_INTERRUPT_PRIORITY 				3
+
+/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 

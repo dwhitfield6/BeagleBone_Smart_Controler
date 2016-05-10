@@ -48,6 +48,8 @@ typedef enum e_msc_status
 /* Global Variable                                                            */
 /******************************************************************************/
 extern ENUM_MSC_STATES g_eMSCState;
+extern unsigned int ulStatus;
+extern unsigned int epStatus;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -63,6 +65,9 @@ ENUM_USB_STATUS USB_GetUSBStatus0(void);
 void USB_SetUSBStatusFlag0(void);
 void USB_ClearUSBStatusFlag0(void);
 unsigned char USB_GetUSBStatusFlag0(void);
+void USB_SetUSBMSCFlag0(void);
+void USB_ClearUSBMSCFlag0(void);
+unsigned char USB_GetUSBMSCFlag0(void);
 
 #endif
 /******************************* End of file *********************************/

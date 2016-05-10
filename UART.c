@@ -272,7 +272,7 @@ void UART_InterruptConfigure0(void)
     IntRegister(SYS_INT_UART0INT, UART_0_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_UART0INT, 10, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_UART0INT, UART_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_UART0INT);

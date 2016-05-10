@@ -73,9 +73,8 @@ typedef char TCHAR;
 
 
 
-/* File system object structure (FATFS) */
-
-typedef struct {
+/* File system object structure (FATFS) ...must be evenly divisible by 64!... */
+typedef struct __attribute__((packed)) {
 	BYTE	fs_type;		/* File system type (0:N/A) */
 	BYTE	drv;			/* Physical drive number */
 	BYTE	n_fats;			/* Number of FATs (1 or 2) */
@@ -112,6 +111,7 @@ typedef struct {
 	DWORD	dirbase;		/* Root directory base sector/cluster */
 	DWORD	database;		/* Data base sector */
 	DWORD	winsect;		/* Current sector appearing in the win[] */
+	BYTE    pad1[17];
 	BYTE	win[_MAX_SS];	/* Disk access window for Directory, FAT (and file data at tiny cfg) */
 } FATFS;
 
@@ -130,15 +130,16 @@ typedef DWORD FSIZE_t;
 
 
 
-/* Object ID and allocation information (_FDID) */
+/* Object ID and allocation information (_FDID) must be divisible by */
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	FATFS*	fs;			/* Pointer to the owner file system object */
 	WORD	id;			/* Owner file system mount ID */
 	BYTE	attr;		/* Object attribute */
 	BYTE	stat;		/* Object chain status (b1-0: =0:not contiguous, =2:contiguous (no data on FAT), =3:got flagmented, b2:sub-directory stretched) */
 	DWORD	sclust;		/* Object start cluster (0:no cluster or root directory) */
 	FSIZE_t	objsize;	/* Object size (valid when sclust != 0) */
+	BYTE    pad2[48];
 #if _FS_EXFAT
 	DWORD	n_cont;		/* Size of coutiguous part, clusters - 1 (valid when stat == 3) */
 	DWORD	c_scl;		/* Containing directory start cluster (valid when sclust != 0) */
@@ -154,7 +155,7 @@ typedef struct {
 
 /* File object structure (FIL) */
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	_FDID	obj;			/* Object identifier */
 	BYTE	flag;			/* File status flags */
 	BYTE	err;			/* Abort flag (error code) */
@@ -168,6 +169,7 @@ typedef struct {
 #if _USE_FASTSEEK
 	DWORD*	cltbl;			/* Pointer to the cluster link map table (Nulled on file open) */
 #endif
+	BYTE    pad3[42];
 #if !_FS_TINY
 	BYTE	buf[_MAX_SS];	/* File private data read/write window */
 #endif
@@ -177,7 +179,7 @@ typedef struct {
 
 /* Directory object structure (DIR) */
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	_FDID	obj;			/* Object identifier */
 	DWORD	dptr;			/* Current read/write offset */
 	DWORD	clust;			/* Current cluster */
@@ -188,6 +190,7 @@ typedef struct {
 	DWORD	blk_ofs;		/* Offset of current entry block being processed (0xFFFFFFFF:Invalid) */
 	WCHAR*	lfn;			/* Pointer to the LFN working buffer */
 #endif
+	BYTE    pad4[36];
 #if _USE_FIND
 	const TCHAR* pat;		/* Pointer to the name matching pattern */
 #endif
@@ -197,7 +200,7 @@ typedef struct {
 
 /* File information structure (FILINFO) */
 
-typedef struct {
+typedef struct __attribute__((packed)) {
 	FSIZE_t	fsize;			/* File size */
 	WORD	fdate;			/* Modified date */
 	WORD	ftime;			/* Modified time */
@@ -208,6 +211,7 @@ typedef struct {
 #else
 	TCHAR	fname[13];		/* File name */
 #endif
+	BYTE    pad5[42];
 } FILINFO;
 
 

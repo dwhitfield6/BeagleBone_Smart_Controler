@@ -24,6 +24,7 @@
 #include "diskio.h"
 #include "edma.h"
 #include "edma_event.h"
+#include "ff.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -37,6 +38,7 @@
 #include "soc_AM335x.h"
 
 #include "GPIO.h"
+#include "INTERRUPTS.h"
 #include "LEDS.h"
 #include "SD.h"
 
@@ -94,6 +96,15 @@ static FATFS g_sFatFs;
 /******************************************************************************/
 void Init_SD(void)
 {
+	unsigned long temp;
+
+	/* check the sizes of each structure to make sure it is divisible by 64 */
+	temp = sizeof(FATFS);
+	temp = sizeof(_FDID);
+	temp = sizeof(FIL);
+	temp = sizeof(DIR);
+	temp = sizeof(FILINFO);
+
     /* Configure the EDMA clocks. */
     EDMAModuleClkConfig();
 
@@ -241,12 +252,13 @@ DRESULT disk_ioctl ( BYTE drv, BYTE ctrl, void *buff)
 
 DWORD get_fattime (void)
 {
-    return    ((2007UL-1980) << 25) // Year = 2007
-            | (6UL << 21)           // Month = June
-            | (5UL << 16)           // Day = 5
-            | (11U << 11)           // Hour = 11
-            | (38U << 5)            // Min = 38
-            | (0U >> 1)             // Sec = 0
+
+    return    ((CurrentTimeDate.Date.Year-1980) << 25) // Year = 2007
+            | (CurrentTimeDate.Date.Month << 21)           // Month = June
+            | (CurrentTimeDate.Date.Day << 16)           // Day = 5
+            | (CurrentTimeDate.Time.Hour << 11)           // Hour = 11
+            | (CurrentTimeDate.Time.Minute << 5)            // Min = 38
+            | (CurrentTimeDate.Time.Second >> 1)             // Sec = 0
             ;
 }
 
@@ -611,13 +623,13 @@ void EDMA3AINTCConfigure(void)
     IntRegister(EDMA_COMPLTN_INT_NUM, Edma3CompletionIsr);
 
     /* Setting the priority for EDMA3CC completion interrupt in AINTC. */
-    IntPrioritySet(EDMA_COMPLTN_INT_NUM, 0, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(EDMA_COMPLTN_INT_NUM, DMA_COMPLETE_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Registering EDMA3 Channel Controller Error Interrupt. */
     IntRegister(EDMA_ERROR_INT_NUM, Edma3CCErrorIsr);
 
     /* Setting the priority for EDMA3CC Error interrupt in AINTC. */
-    IntPrioritySet(EDMA_ERROR_INT_NUM, 0, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(EDMA_ERROR_INT_NUM, DMA_ERROR_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the EDMA3CC completion interrupt in AINTC. */
     IntSystemEnable(EDMA_COMPLTN_INT_NUM);
@@ -629,7 +641,7 @@ void EDMA3AINTCConfigure(void)
     IntRegister(MMCSD_INT_NUM, HSMMCSDIsr);
 
     /* Setting the priority for EDMA3CC completion interrupt in AINTC. */
-    IntPrioritySet(MMCSD_INT_NUM, 0, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(MMCSD_INT_NUM, SD_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the HSMMC interrupt in AINTC. */
     IntSystemEnable(MMCSD_INT_NUM);

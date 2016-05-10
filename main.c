@@ -32,12 +32,14 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "cache.h"
 #include "FT_Gpu.h"
 #include "hw_control_AM335x.h"
 #include "hs_mmcsdlib.h"
 #include "hw_types.h"
+#include "interrupt.h"
 #include "soc_AM335x.h"
-#include "cache.h"
+#include "usblibpriv.h"
 
 #include "AUDIO.h"
 #include "CMD.h"
@@ -86,7 +88,7 @@ void main (void)
 	MMU_ConfigAndEnable();
 
     /* Enable all levels of Cache. */
-    //CacheEnable(CACHE_ALL);
+    CacheEnable(CACHE_ALL);
 
     /* Initiate modules */
     Init_Modules();
@@ -213,48 +215,46 @@ void main (void)
 			}
 		}
 
-		while(1)
+		if((HSMMCSDCardPresent(&ctrlInfo)) == 1)
 		{
-			if((HSMMCSDCardPresent(&ctrlInfo)) == 1)
+			if(initFlg)
 			{
-				if(initFlg)
-				{
-					HSMMCSDFsMount(0, &sdCard);
-					result = f_open (&fileWrite, "file.txt", FA_WRITE | FA_CREATE_ALWAYS);
-					result = f_write (&fileWrite, data1, 256, &byteswritten);
-					result = f_close (&fileWrite);
-					initFlg = 0;
-					Init_USB();
-				}
+				HSMMCSDFsMount(0, &sdCard);
+				result = f_mkdir("/folder1");
+				result = f_mkdir("/folder1/folder2");
+				result = f_open (&fileWrite, "/folder1/folder2/file.txt", FA_WRITE | FA_CREATE_ALWAYS);
+				result = f_write (&fileWrite, data1, 256, &byteswritten);
+				result = f_close (&fileWrite);
+				initFlg = 0;
+				Init_USB();
 			}
-			else
+		}
+		else
+		{
+
+			i = (i + 1) & 0xFFF;
+
+			if(i == 1)
 			{
-
-				i = (i + 1) & 0xFFF;
-
-				if(i == 1)
-				{
-					 //ConsoleUtilsPrintf("Please insert the card \n\r");
-				}
-
-				if(initFlg != 1)
-				{
-					 /* Reinitialize all the state variables */
-					 callbackOccured = 0;
-					 xferCompFlag = 0;
-					 dataTimeout = 0;
-					 cmdCompFlag = 0;
-					 cmdTimeout = 0;
-
-					 /* Initialize the MMCSD controller */
-					 MMCSDCtrlInit(&ctrlInfo);
-
-					 MMCSDIntEnable(&ctrlInfo);
-				}
-
-				initFlg = 1;
+				 //ConsoleUtilsPrintf("Please insert the card \n\r");
 			}
-			MSC_DelayUS(100);
+
+			if(initFlg != 1)
+			{
+				 /* Reinitialize all the state variables */
+				 callbackOccured = 0;
+				 xferCompFlag = 0;
+				 dataTimeout = 0;
+				 cmdCompFlag = 0;
+				 cmdTimeout = 0;
+
+				 /* Initialize the MMCSD controller */
+				 MMCSDCtrlInit(&ctrlInfo);
+
+				 MMCSDIntEnable(&ctrlInfo);
+			}
+
+			initFlg = 1;
 		}
     }
 }

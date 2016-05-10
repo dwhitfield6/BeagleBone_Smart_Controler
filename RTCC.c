@@ -112,7 +112,7 @@ void RTC_InterruptConfigure(void)
     IntRegister(SYS_INT_RTCINT, RTC_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_RTCINT, 2, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_RTCINT, RTC_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_RTCINT);

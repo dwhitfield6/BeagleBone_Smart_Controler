@@ -196,7 +196,7 @@ void SPI_INTCConfigure1(void)
     IntRegister(SYS_INT_SPI1INT, SPI_1_ISR);
 
     /* Set Interrupt Priority */
-    IntPrioritySet(SYS_INT_SPI1INT, 5, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_SPI1INT, SPI_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enable system interrupt in AINTC */
     IntSystemEnable(SYS_INT_SPI1INT);

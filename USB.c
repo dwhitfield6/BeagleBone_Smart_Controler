@@ -45,10 +45,13 @@
 static ENUM_MSC_STATES USB0_MSCState;
 static ENUM_USB_STATUS USB0_Status;
 static unsigned char USBChangeStatusFlag0 = FALSE;
+static unsigned char USBMSCFlag0 = FALSE;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+unsigned int ulStatus = 0;
+unsigned int epStatus = 0;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -95,7 +98,7 @@ void USB_InterruptConfigure0(void)
     IntRegister(SYS_INT_USB0, USB_0_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_USB0, 0, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_USB0, USB_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_USB0);
@@ -224,6 +227,39 @@ void USB_ClearUSBStatusFlag0(void)
 unsigned char USB_GetUSBStatusFlag0(void)
 {
 	return USBChangeStatusFlag0;
+}
+
+/******************************************************************************/
+/* USB_SetUSBMSCFlag0
+ *
+ * Sets the USB 0 MSC flag.
+ *                                                                            */
+/******************************************************************************/
+void USB_SetUSBMSCFlag0(void)
+{
+	USBMSCFlag0 = TRUE;
+}
+
+/******************************************************************************/
+/* USB_ClearUSBMSCFlag0
+ *
+ * Clears the USB 0 MSC flag.
+ *                                                                            */
+/******************************************************************************/
+void USB_ClearUSBMSCFlag0(void)
+{
+	USBMSCFlag0 = FALSE;
+}
+
+/******************************************************************************/
+/* USB_GetUSBMSCFlag0
+ *
+ * Gets the USB 0 MSC flag.
+ *                                                                            */
+/******************************************************************************/
+unsigned char USB_GetUSBMSCFlag0(void)
+{
+	return USBMSCFlag0;
 }
 
 /******************************* End of file *********************************/

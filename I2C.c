@@ -98,7 +98,7 @@ void I2C_InterruptConfigure0(void)
     IntRegister(SYS_INT_I2C0INT, I2C_0_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_I2C0INT, 15, AINTC_HOSTINT_ROUTE_IRQ );
+    IntPrioritySet(SYS_INT_I2C0INT, I2C_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ );
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_I2C0INT);

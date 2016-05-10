@@ -181,7 +181,7 @@ void LCD_InterruptConfigure(void)
     IntRegister(SYS_INT_GPIOINT3A, GPIO_3A_ISR);
 
     /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_GPIOINT3A, 6, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_GPIOINT3A, LCD_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_GPIOINT3A);

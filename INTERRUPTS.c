@@ -27,6 +27,7 @@
 #include "hw_types.h"
 #include "hw_usbOtg_AM335x.h"
 #include "hsi2c.h"
+#include "interrupt.h"
 #include "pin_mux.h"
 #include "soc_AM335x.h"
 #include "tsc_adc.h"
@@ -50,6 +51,7 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
+#include "USB.h"
 
 /******************************************************************************/
 /* Interrupt Service Routines                                                 */
@@ -358,8 +360,6 @@ void SPI_1_ISR(void)
 /******************************************************************************/
 void USB_0_ISR(void)
 {
-    unsigned int ulStatus = 0;
-    unsigned int epStatus = 0;
     extern tUSBInstanceObject g_USBInstance[];
 
     /* Get the controller interrupt status. */
@@ -374,7 +374,6 @@ void USB_0_ISR(void)
     /* Clear the EP interrupt status. */
     HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_0) = epStatus;
 
-    /* Call the Interrupt Handler. */
     USBDeviceIntHandlerInternal(0, ulStatus, &epStatus);
 
     /* End of Interrupts. */

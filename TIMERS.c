@@ -149,7 +149,7 @@ unsigned int TMR_CalculateReload(unsigned int timerinput, unsigned int timeroutp
 /******************************************************************************/
 /* TMR_InterruptConfigure2
  *
- * Configure the tiemr 2 interrupt.
+ * Configure the timer 2 interrupt.
  *                                                                            */
 /******************************************************************************/
 void TMR_InterruptConfigure2(void)
@@ -159,7 +159,7 @@ void TMR_InterruptConfigure2(void)
     IntRegister(SYS_INT_TINT2, TMR_2_ISR);
 
     /* Set the priority */
-    IntPrioritySet(SYS_INT_TINT2, 2, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_TINT2, TIMER_2_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enable the system interrupt */
     IntSystemEnable(SYS_INT_TINT2);
@@ -177,7 +177,7 @@ void TMR_InterruptConfigure3(void)
     IntRegister(SYS_INT_TINT3, TMR_3_ISR);
 
     /* Set the priority */
-    IntPrioritySet(SYS_INT_TINT3, 1, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_TINT3, TIMER_3_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enable the system interrupt */
     IntSystemEnable(SYS_INT_TINT3);
