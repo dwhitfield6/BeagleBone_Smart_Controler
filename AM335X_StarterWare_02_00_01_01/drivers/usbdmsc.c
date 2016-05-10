@@ -327,7 +327,6 @@ const tConfigHeader * const g_pMSCConfigDescriptors[] =
 //
 //*****************************************************************************
 static void HandleDisconnect(void *pvInstance);
-static void HandleConnect(void *pvInstance);
 static void ConfigChangeHandler(void *pvInstance, unsigned int ulValue, 
                                                 unsigned int ulIndex);
 static void HandleEndpoints(void *pvInstance, unsigned int ulStatus, 
@@ -1062,18 +1061,6 @@ HandleDevice(void *pvInstance, unsigned int ulRequest, void *pvRequestData)
 //
 //*****************************************************************************
 static void
-HandleConnect(void *pvInstance)
-{
-	USB_SetUSBStatus0(USB_CONNECT);
-}
-
-//*****************************************************************************
-//
-// This function is called by the USB device stack whenever the device is
-// disconnected from the host.
-//
-//*****************************************************************************
-static void
 HandleDisconnect(void *pvInstance)
 {
     const tUSBDMSCDevice *psDevice;
@@ -1569,7 +1556,7 @@ USBDSCSIInquiry(const tUSBDMSCDevice *psDevice, unsigned int ulIndex)
 static void
 USBDSCSIReadCapacities(const tUSBDMSCDevice *psDevice, unsigned int ulIndex)
 {
-    unsigned int ulBlocks;
+    unsigned long ulBlocks;
     tMSCInstance *psInst;
 
 #ifdef DMA_MODE
@@ -1678,7 +1665,7 @@ USBDSCSIReadCapacities(const tUSBDMSCDevice *psDevice, unsigned int ulIndex)
 static void
 USBDSCSIReadCapacity(const tUSBDMSCDevice *psDevice, unsigned int ulIndex)
 {
-    unsigned int ulBlocks;
+    unsigned long ulBlocks;
     tMSCInstance *psInst;
 #ifdef DMA_MODE
     unsigned char *cmdBuffer;

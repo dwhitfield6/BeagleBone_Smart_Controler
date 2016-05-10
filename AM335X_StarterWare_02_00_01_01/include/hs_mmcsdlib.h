@@ -42,6 +42,8 @@
 #ifndef __MMCSD_LIB_H__
 #define __MMCSD_LIB_H__
 
+#include "mmcsd_proto.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

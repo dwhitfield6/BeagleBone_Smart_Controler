@@ -6,7 +6,9 @@
 C_SRCS += \
 ../AM335X_StarterWare_02_00_01_01/drivers/cache.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c \
+../AM335X_StarterWare_02_00_01_01/drivers/edma.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c \
+../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/hsi2c.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/interrupt.c \
@@ -33,7 +35,9 @@ C_SRCS += \
 OBJS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.obj \
+./AM335X_StarterWare_02_00_01_01/drivers/edma.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.obj \
+./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/hsi2c.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/interrupt.obj \
@@ -60,7 +64,9 @@ OBJS += \
 C_DEPS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.pp \
+./AM335X_StarterWare_02_00_01_01/drivers/edma.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.pp \
+./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/hsi2c.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/interrupt.pp \
@@ -87,7 +93,9 @@ C_DEPS += \
 C_DEPS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.pp" \
+"AM335X_StarterWare_02_00_01_01\drivers\edma.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.pp" \
+"AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\hsi2c.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\interrupt.pp" \
@@ -114,7 +122,9 @@ C_DEPS__QUOTED += \
 OBJS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.obj" \
+"AM335X_StarterWare_02_00_01_01\drivers\edma.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" \
+"AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\hsi2c.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\interrupt.obj" \
@@ -141,7 +151,9 @@ OBJS__QUOTED += \
 C_SRCS__QUOTED += \
 "../AM335X_StarterWare_02_00_01_01/drivers/cache.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c" \
+"../AM335X_StarterWare_02_00_01_01/drivers/edma.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c" \
+"../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/hsi2c.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/interrupt.c" \

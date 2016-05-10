@@ -37,6 +37,7 @@
 #include "POWER.h"
 #include "PMIC.h"
 #include "RTCC.h"
+#include "SD.h"
 #include "SPI.h"
 #include "SYSTEM.h"
 #include "TEST.h"
@@ -90,7 +91,7 @@ void Init_Modules(void)
 	Init_UART();
 	GUI_DrawInitialScreenProgress(15);
 	Init_Test();
-	Init_USB();
+	Init_SD();
 	GUI_DrawInitialScreenProgress(20);
 	Init_LED();
 	GUI_DrawInitialScreenProgress(40);

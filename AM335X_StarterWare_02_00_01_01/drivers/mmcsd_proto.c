@@ -45,6 +45,7 @@
 #include "uartStdio.h"
 #include "cache.h"
 #include <stdint.h>
+#include "SD.h"
 
 #define DATA_RESPONSE_WIDTH       (SOC_CACHELINE_SIZE)
 
@@ -64,9 +65,6 @@ static unsigned char dataBuffer[DATA_RESPONSE_WIDTH]
 #else
 #error "Unsupported compiler\n\r"
 #endif
-
-/* SD card info structure */
-mmcsdCardInfo sdCard;
 
 /**
  * \brief   This function sends the command to MMCSD.

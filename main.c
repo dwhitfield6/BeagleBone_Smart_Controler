@@ -34,6 +34,7 @@
 /******************************************************************************/
 #include "FT_Gpu.h"
 #include "hw_control_AM335x.h"
+#include "hs_mmcsdlib.h"
 #include "hw_types.h"
 #include "soc_AM335x.h"
 #include "cache.h"
@@ -46,6 +47,7 @@
 #include "MEMORY.h"
 #include "MISC.h"
 #include "RTCC.h"
+#include "SD.h"
 #include "SYSTEM.h"
 #include "TEST.h"
 #include "TIMERS.h"
@@ -59,12 +61,21 @@
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+#pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
+static FIL fileWrite;
 
 /******************************************************************************/
 /* Main Program                                                               */
 /******************************************************************************/
 void main (void)
 {
+	volatile unsigned int initFlg = 1;
+	volatile unsigned int i = 0;
+	unsigned char result;
+    unsigned int byteswritten = 0;
+    unsigned char data1[256] = "David was here for testing.";
+
+
 	unsigned char flags;
 	unsigned char tags;
 	unsigned char mask;
@@ -75,7 +86,7 @@ void main (void)
 	MMU_ConfigAndEnable();
 
     /* Enable all levels of Cache. */
-    CacheEnable(CACHE_ALL);
+    //CacheEnable(CACHE_ALL);
 
     /* Initiate modules */
     Init_Modules();
@@ -200,6 +211,50 @@ void main (void)
 				}
 				AUD_ClearTimoutFlag();
 			}
+		}
+
+		while(1)
+		{
+			if((HSMMCSDCardPresent(&ctrlInfo)) == 1)
+			{
+				if(initFlg)
+				{
+					HSMMCSDFsMount(0, &sdCard);
+					result = f_open (&fileWrite, "file.txt", FA_WRITE | FA_CREATE_ALWAYS);
+					result = f_write (&fileWrite, data1, 256, &byteswritten);
+					result = f_close (&fileWrite);
+					initFlg = 0;
+					Init_USB();
+				}
+			}
+			else
+			{
+
+				i = (i + 1) & 0xFFF;
+
+				if(i == 1)
+				{
+					 //ConsoleUtilsPrintf("Please insert the card \n\r");
+				}
+
+				if(initFlg != 1)
+				{
+					 /* Reinitialize all the state variables */
+					 callbackOccured = 0;
+					 xferCompFlag = 0;
+					 dataTimeout = 0;
+					 cmdCompFlag = 0;
+					 cmdTimeout = 0;
+
+					 /* Initialize the MMCSD controller */
+					 MMCSDCtrlInit(&ctrlInfo);
+
+					 MMCSDIntEnable(&ctrlInfo);
+				}
+
+				initFlg = 1;
+			}
+			MSC_DelayUS(100);
 		}
     }
 }

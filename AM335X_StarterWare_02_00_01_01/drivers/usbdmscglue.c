@@ -4,6 +4,7 @@
 // class.
 //
 //*****************************************************************************
+
 /*
 * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
 */
@@ -38,7 +39,6 @@
 *
 */
 
-
 #include "hw_types.h"
 #include "debug.h"
 #include "interrupt.h"
@@ -47,7 +47,11 @@
 #include "usbdevice.h"
 #include "usbdmsc.h"
 #include "usb_msc_structs.h"
+#include "diskio.h"
+#include "mmcsd_proto.h"
 #include "ramdisk.h"
+
+#include "SD.h"
 
 #define SDCARD_PRESENT          0x00000001
 #define SDCARD_IN_USE           0x00000002
@@ -89,7 +93,7 @@ USBDMSCStorageOpen(unsigned int ulDrive)
 
 //*****************************************************************************
 //
-// This function close the drive number in use by the mass storage class device.
+// This function closes the drive number in use by the mass storage class device.
 //
 // /param pvDrive is the pointer that was returned from a call to
 // USBDMSCStorageOpen().
@@ -111,11 +115,7 @@ USBDMSCStorageClose(void * pvDrive)
     // Clear all flags.
     //
     g_sDriveInformation.ulFlags = 0;
-
-    //
-    // Turn off the power to the card.
-    //
- }
+}
 
 //*****************************************************************************
 //
@@ -139,12 +139,14 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
                                  unsigned int ulSector,
                                  unsigned int ulNumBlocks)
 {
-    ASSERT(pvDrive != 0);
+	unsigned char result;
+	ASSERT(pvDrive != 0);
 
 
-    disk_read(ulSector, pucData, ulNumBlocks);
+    //result = disk_read(0, pucData, ulSector, ulNumBlocks);
+    RAM_disk_read(ulSector, pucData, ulNumBlocks);
 
-    return(ulNumBlocks * 512);
+       return(ulNumBlocks * 512);
 }
 
 //*****************************************************************************
@@ -170,9 +172,12 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
                                   unsigned int ulSector,
                                   unsigned int ulNumBlocks)
 {
+	unsigned char result;
+
     ASSERT(pvDrive != 0);
 
-    disk_write(ulSector, pucData, ulNumBlocks);
+    //result = disk_write(0, pucData, ulSector, ulNumBlocks);
+    RAM_disk_write(ulSector, pucData, ulNumBlocks);
 
     return(ulNumBlocks * 512);
 }
@@ -190,15 +195,21 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
 // /return Returns the number of blocks that are present in a device.
 //
 //*****************************************************************************
-unsigned int
+unsigned long
 USBDMSCStorageNumBlocks(void * pvDrive)
 {
-    unsigned int ulSectorCount = 0;
-
+    unsigned long ulSectorCount = 0;
     //
     // Read the number of sectors.
     //
-    disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
+    //ulSectorCount = sdCard.nBlks;
+    ulSectorCount = 256;
+    if(!ulSectorCount)
+    {
+    	ulSectorCount = 2;
+    }
+
+    RAM_disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
 
     return(ulSectorCount);
 }

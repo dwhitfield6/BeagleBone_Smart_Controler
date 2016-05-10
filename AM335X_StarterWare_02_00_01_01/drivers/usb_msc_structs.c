@@ -230,7 +230,7 @@ const tUSBDMSCDevice g_sMSCDevice =
         {
             USB_EP_TO_INDEX(USB_EP_1),
             CPDMA_DIR_TX,
-            CPDMA_MODE_SET_GRNDIS,
+            CPDMA_MODE_SET_TRANSPARENT,
         }
 
     };

@@ -41,9 +41,14 @@
 
 #include <string.h>
 #include "ramdisk.h"
+#include "soc_AM335x.h"
+#include "dmtimer.h"
+#include "delay.h"
 #include "hw_usb.h"
+#include "diskio.h"
 
-#define RAM_DISK_SIZE (1024 * 1024 * 16)
+
+#define RAM_DISK_SIZE (1024 * 1024 * 1)
 #define LBA_SIZE 512
 #define TRANSFER_SIZE 512
 
@@ -56,12 +61,12 @@ unsigned char ram_disk[RAM_DISK_SIZE]__attribute__((aligned(SOC_CACHELINE_SIZE_M
 
 
 
-void disk_initialize(void)
+void RAM_disk_initialize(void)
 {
     memset(ram_disk, 0,RAM_DISK_SIZE);
 }
 
-void disk_read(unsigned int lba, unsigned char *buf,
+void RAM_disk_read(unsigned int lba, unsigned char *buf,
         unsigned int len)
 {
     int start;
@@ -75,7 +80,7 @@ void disk_read(unsigned int lba, unsigned char *buf,
     }
 
 }
-void disk_write(unsigned int lba, unsigned char *buf,
+void RAM_disk_write(unsigned int lba, unsigned char *buf,
         unsigned int len)
 {
     int start;
@@ -89,7 +94,7 @@ void disk_write(unsigned int lba, unsigned char *buf,
     }
 }
 
-void disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffer)
+void RAM_disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffer)
 {
 
     switch(command)

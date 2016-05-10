@@ -98,7 +98,7 @@ unsigned int HSMMCSDControllerInit(mmcsdCtrlInfo *ctrl)
 
     if (status != 0)
     {
-        UARTPuts("HS MMC/SD Reset failed\n\r", -1);
+        //UARTPuts("HS MMC/SD Reset failed\n\r", -1); //TODO
     }
 
     /* Lines Reset */
@@ -121,14 +121,14 @@ unsigned int HSMMCSDControllerInit(mmcsdCtrlInfo *ctrl)
 
     if (status != 0)
     {
-        UARTPuts("HS MMC/SD Power on failed\n\r", -1);
+        // UARTPuts("HS MMC/SD Power on failed\n\r", -1); // TODO
     }
 
     /* Set the initialization frequency */
     status = HSMMCSDBusFreqSet(ctrl->memBase, ctrl->ipClk, ctrl->opClk, 0);
     if (status != 0)
     {
-        UARTPuts("HS MMC/SD Bus Frequency set failed\n\r", -1);
+        //UARTPuts("HS MMC/SD Bus Frequency set failed\n\r", -1); // TODO
     }
 
     HSMMCSDInitStreamSend(ctrl->memBase);

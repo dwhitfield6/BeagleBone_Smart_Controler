@@ -549,7 +549,7 @@ USBDCDInit(unsigned int ulIndex, tDeviceInfo *psDevice)
         //
         // Wait about 100mS.
         //
-        MSC_DelayNOP(10000);
+        MSC_DelayNOP(100);
 
 
         //
