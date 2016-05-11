@@ -50,6 +50,35 @@ void Init_PMIC(void)
 
 	PMIC_ReadRegister(CHIPID, &temp);
 	PMIC_ReadRegister(PPATH, &temp);
+
+	/* set VDD_MPU and VDD_CORE to 1.400 so we can clock at turbo */
+	PMIC_ReadRegister(DEFDCDC2, &temp);
+	if(temp != 0x14)
+	{
+		temp = DEFDCDC2 ^ PROTECTION_PASSWORD;
+		PMIC_WriteRegister(PASSWORD, &temp); // 1. Write the address of the destination register, XORed with the protection password (0x7Dh)
+		temp = 0x14;
+		PMIC_WriteRegister(DEFDCDC2, &temp); // 2. Write to the password protected register
+		temp = DEFDCDC2 ^ PROTECTION_PASSWORD;
+		PMIC_WriteRegister(PASSWORD, &temp); // 3. Write the address of the destination register, XORed with the protection password (0x7Dh)
+		temp = 0x14;
+		PMIC_WriteRegister(DEFDCDC2, &temp); // 4. Write to the password protected register
+		PMIC_ReadRegister(DEFDCDC2, &temp);
+	}
+
+	PMIC_ReadRegister(DEFDCDC3, &temp);
+	if(temp != 0x14)
+	{
+		temp = DEFDCDC3 ^ PROTECTION_PASSWORD;
+		PMIC_WriteRegister(PASSWORD, &temp); // 1. Write the address of the destination register, XORed with the protection password (0x7Dh)
+		temp = 0x14;
+		PMIC_WriteRegister(DEFDCDC3, &temp); // 2. Write to the password protected register
+		temp = DEFDCDC3 ^ PROTECTION_PASSWORD;
+		PMIC_WriteRegister(PASSWORD, &temp); // 3. Write the address of the destination register, XORed with the protection password (0x7Dh)
+		temp = 0x14;
+		PMIC_WriteRegister(DEFDCDC3, &temp); // 4. Write to the password protected register
+		PMIC_ReadRegister(DEFDCDC3, &temp);
+	}
 }
 
 /******************************************************************************/

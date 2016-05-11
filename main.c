@@ -232,7 +232,7 @@ void main (void)
 				USB_InterruptEnable0(OFF);
 				Result = f_mkdir("/System_Data");
 				Result = f_mkdir("/System_Data/System_Log");
-				Result = f_open (&fileWrite, "/System_Data/System_Log/Log.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
+				Result = f_open (&fileWrite, "/System_Data/System_Log/Log3.txt", FA_WRITE | FA_CREATE_NEW);
 				Result = f_write (&fileWrite, FileDataBuffer, temp, &BytesWritten);
 				Result = f_close (&fileWrite);
 				USB_InterruptEnable0(ON);
