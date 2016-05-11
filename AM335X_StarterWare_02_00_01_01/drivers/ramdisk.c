@@ -66,7 +66,7 @@ void RAM_disk_initialize(void)
     memset(ram_disk, 0,RAM_DISK_SIZE);
 }
 
-void RAM_disk_read(unsigned int lba, unsigned char *buf,
+void RAM_SD_DiskRead(unsigned int lba, unsigned char *buf,
         unsigned int len)
 {
     int start;

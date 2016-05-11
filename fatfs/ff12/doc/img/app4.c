@@ -139,8 +139,8 @@ int test_diskio (
             return 7;
         }
         memset(pbuff, 0, sz_sect);
-        printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)pbuff, lba);
-        dr = disk_read(pdrv, pbuff, lba, 1);
+        printf(" SD_DiskRead(%u, 0x%X, %lu, 1)", pdrv, (UINT)pbuff, lba);
+        dr = SD_DiskRead(pdrv, pbuff, lba, 1);
         if (dr == RES_OK) {
             printf(" - ok.\n");
         } else {
@@ -178,8 +178,8 @@ int test_diskio (
             return 12;
         }
         memset(pbuff, 0, sz_sect * ns);
-        printf(" disk_read(%u, 0x%X, %lu, %u)", pdrv, (UINT)pbuff, lba, ns);
-        dr = disk_read(pdrv, pbuff, lba, ns);
+        printf(" SD_DiskRead(%u, 0x%X, %lu, %u)", pdrv, (UINT)pbuff, lba, ns);
+        dr = SD_DiskRead(pdrv, pbuff, lba, ns);
         if (dr == RES_OK) {
             printf(" - ok.\n");
         } else {
@@ -216,8 +216,8 @@ int test_diskio (
             return 16;
         }
         memset(pbuff+5, 0, sz_sect);
-        printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+5), lba);
-        dr = disk_read(pdrv, pbuff+5, lba, 1);
+        printf(" SD_DiskRead(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+5), lba);
+        dr = SD_DiskRead(pdrv, pbuff+5, lba, 1);
         if (dr == RES_OK) {
             printf(" - ok.\n");
         } else {
@@ -263,16 +263,16 @@ int test_diskio (
                 return 21;
             }
             memset(pbuff, 0, sz_sect * 2);
-            printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)pbuff, lba);
-            dr = disk_read(pdrv, pbuff, lba, 1);
+            printf(" SD_DiskRead(%u, 0x%X, %lu, 1)", pdrv, (UINT)pbuff, lba);
+            dr = SD_DiskRead(pdrv, pbuff, lba, 1);
             if (dr == RES_OK) {
                 printf(" - ok.\n");
             } else {
                 printf(" - failed.\n");
                 return 22;
             }
-            printf(" disk_read(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+sz_sect), lba2);
-            dr = disk_read(pdrv, pbuff+sz_sect, lba2, 1);
+            printf(" SD_DiskRead(%u, 0x%X, %lu, 1)", pdrv, (UINT)(pbuff+sz_sect), lba2);
+            dr = SD_DiskRead(pdrv, pbuff+sz_sect, lba2, 1);
             if (dr == RES_OK) {
                 printf(" - ok.\n");
             } else {

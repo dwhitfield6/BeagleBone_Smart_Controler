@@ -20,12 +20,14 @@
 /******************************************************************************/
 #include "beaglebone.h"
 #include "dmtimer.h"
+#include "edma.h"
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
 #include "hw_types.h"
 #include "hw_usbOtg_AM335x.h"
+#include "hs_mmcsd.h"
 #include "hsi2c.h"
 #include "interrupt.h"
 #include "pin_mux.h"
@@ -47,6 +49,7 @@
 #include "MISC.h"
 #include "POWER.h"
 #include "RTCC.h"
+#include "SD.h"
 #include "SYSTEM.h"
 #include "TEST.h"
 #include "TIMERS.h"
@@ -378,6 +381,203 @@ void USB_0_ISR(void)
 
     /* End of Interrupts. */
     HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_EOI) = 0;
+}
+
+/******************************************************************************/
+/* SD_DMA_ISR_EDMA3Complete
+ *
+ * DMA ISR for SD card complete.
+ *                                                                            */
+/******************************************************************************/
+void SD_DMA_ISR_EDMA3Complete(void)
+{
+    volatile unsigned int pendingIrqs;
+    volatile unsigned int isIPR = 0;
+
+    unsigned int indexl;
+    unsigned int Cnt = 0;
+
+    indexl = 1;
+
+    isIPR = EDMA3GetIntrStatus(EDMA_INST_BASE);
+
+    if(isIPR)
+    {
+        while ((Cnt < EDMA3CC_COMPL_HANDLER_RETRY_COUNT)&& (indexl != 0u))
+        {
+            indexl = 0u;
+            pendingIrqs = EDMA3GetIntrStatus(EDMA_INST_BASE);
+
+            while (pendingIrqs)
+            {
+                if((pendingIrqs & 1u) == TRUE)
+                {
+                    /**
+                    * If the user has not given any callback function
+                    * while requesting the TCC, its TCC specific bit
+                    * in the IPR register will NOT be cleared.
+                    */
+                    /* here write to ICR to clear the corresponding IPR bits */
+
+                    EDMA3ClrIntr(EDMA_INST_BASE, indexl);
+
+                    if (cb_Fxn[indexl] != NULL)
+                    {
+                        (*cb_Fxn[indexl])(indexl, EDMA3_XFER_COMPLETE);
+                    }
+                }
+                ++indexl;
+                pendingIrqs >>= 1u;
+            }
+            Cnt++;
+        }
+    }
+}
+
+/******************************************************************************/
+/* SD_DMA_ISR_EDMA3Error
+ *
+ * DMA ISR for SD card error.
+ *                                                                            */
+/******************************************************************************/
+void SD_DMA_ISR_EDMA3Error(void)
+{
+    volatile unsigned int pendingIrqs;
+    volatile unsigned int evtqueNum = 0;  /* Event Queue Num */
+    volatile unsigned int isIPRH = 0;
+    volatile unsigned int isIPR = 0;
+    volatile unsigned int Cnt = 0u;
+    volatile unsigned int index;
+
+    pendingIrqs = 0u;
+    index = 1u;
+
+    isIPR  = EDMA3GetIntrStatus(EDMA_INST_BASE);
+    isIPRH = EDMA3IntrStatusHighGet(EDMA_INST_BASE);
+
+    if((isIPR | isIPRH ) || (EDMA3QdmaGetErrIntrStatus(EDMA_INST_BASE) != 0)
+        || (EDMA3GetCCErrStatus(EDMA_INST_BASE) != 0))
+    {
+        /* Loop for EDMA3CC_ERR_HANDLER_RETRY_COUNT number of time,
+         * breaks when no pending interrupt is found
+         */
+        while ((Cnt < EDMA3CC_ERR_HANDLER_RETRY_COUNT)
+                    && (index != 0u))
+        {
+            index = 0u;
+
+            if(isIPR)
+            {
+                   pendingIrqs = EDMA3GetErrIntrStatus(EDMA_INST_BASE);
+            }
+            else
+            {
+                   pendingIrqs = EDMA3ErrIntrHighStatusGet(EDMA_INST_BASE);
+            }
+
+            while (pendingIrqs)
+            {
+                   /*Process all the pending interrupts*/
+                   if(TRUE == (pendingIrqs & 1u))
+                   {
+                      /* Write to EMCR to clear the corresponding EMR bits.
+                       */
+                        /*Clear any SER*/
+
+                        if(isIPR)
+                        {
+                             EDMA3ClrMissEvt(EDMA_INST_BASE, index);
+                        }
+                        else
+                        {
+                             EDMA3ClrMissEvt(EDMA_INST_BASE, index + 32);
+                        }
+                   }
+                   ++index;
+                   pendingIrqs >>= 1u;
+            }
+            index = 0u;
+            pendingIrqs = EDMA3QdmaGetErrIntrStatus(EDMA_INST_BASE);
+            while (pendingIrqs)
+            {
+                /*Process all the pending interrupts*/
+                if(TRUE == (pendingIrqs & 1u))
+                {
+                    /* Here write to QEMCR to clear the corresponding QEMR bits*/
+                    /*Clear any QSER*/
+                    EDMA3QdmaClrMissEvt(EDMA_INST_BASE, index);
+                }
+                ++index;
+                pendingIrqs >>= 1u;
+            }
+            index = 0u;
+
+
+            pendingIrqs = EDMA3GetCCErrStatus(EDMA_INST_BASE);
+            if (pendingIrqs != 0u)
+            {
+            /* Process all the pending CC error interrupts. */
+            /* Queue threshold error for different event queues.*/
+            for (evtqueNum = 0u; evtqueNum < SOC_EDMA3_NUM_EVQUE; evtqueNum++)
+                {
+                if((pendingIrqs & (1u << evtqueNum)) != 0u)
+                {
+                        /* Clear the error interrupt. */
+                        EDMA3ClrCCErr(EDMA_INST_BASE, (1u << evtqueNum));
+                    }
+                }
+
+            /* Transfer completion code error. */
+            if ((pendingIrqs & (1 << EDMA3CC_CCERR_TCCERR_SHIFT)) != 0u)
+            {
+                EDMA3ClrCCErr(EDMA_INST_BASE,
+                                      (0x01u << EDMA3CC_CCERR_TCCERR_SHIFT));
+            }
+                ++index;
+            }
+            Cnt++;
+        }
+    }
+}
+
+/******************************************************************************/
+/* SD_0_ISR
+ *
+ * Interrupt service routine for MMC0 aka SD card.
+ *                                                                            */
+/******************************************************************************/
+void SD_0_ISR(void)
+{
+    volatile unsigned int status = 0;
+
+    status = HSMMCSDIntrStatusGet(ctrlInfo.memBase, 0xFFFFFFFF);
+
+    HSMMCSDIntrStatusClear(ctrlInfo.memBase, status);
+
+    if (status & HS_MMCSD_STAT_CMDCOMP)
+    {
+        cmdCompFlag = 1;
+    }
+
+    if (status & HS_MMCSD_STAT_ERR)
+    {
+        errFlag = status & 0xFFFF0000;
+
+        if (status & HS_MMCSD_STAT_CMDTIMEOUT)
+        {
+            cmdTimeout = 1;
+        }
+
+        if (status & HS_MMCSD_STAT_DATATIMEOUT)
+        {
+            dataTimeout = 1;
+        }
+    }
+
+    if (status & HS_MMCSD_STAT_TRNFCOMP)
+    {
+        xferCompFlag = 1;
+    }
 }
 
 /******************************* End of file *********************************/

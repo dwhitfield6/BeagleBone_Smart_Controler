@@ -139,14 +139,8 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
                                  unsigned int ulSector,
                                  unsigned int ulNumBlocks)
 {
-	unsigned char result;
-	ASSERT(pvDrive != 0);
-
-
-    result = disk_read(0, pucData, ulSector, ulNumBlocks);
-    //RAM_disk_read(ulSector, pucData, ulNumBlocks);
-
-       return(ulNumBlocks * 512);
+	SD_DiskRead(0, pucData, ulSector, ulNumBlocks);
+	return(ulNumBlocks * 512);
 }
 
 //*****************************************************************************
@@ -172,13 +166,7 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
                                   unsigned int ulSector,
                                   unsigned int ulNumBlocks)
 {
-	unsigned char result;
-
-    ASSERT(pvDrive != 0);
-
-    result = disk_write(0, pucData, ulSector, ulNumBlocks);
-    //RAM_disk_write(ulSector, pucData, ulNumBlocks);
-
+	SD_DiskWrite(0, pucData, ulSector, ulNumBlocks);
     return(ulNumBlocks * 512);
 }
 

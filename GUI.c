@@ -30,6 +30,7 @@
 #include "soc_AM335x.h"
 
 #include "BITMAP_CHARLIE_BEACH.h"
+#include "BITMAP_SD_Card_SYMBOL.h"
 #include "BITMAP_TV_REMOTE.h"
 #include "BITMAP_USB_SYMBOL.h"
 #include "FRAM.h"
@@ -39,6 +40,7 @@
 #include "LEDS.h"
 #include "MISC.h"
 #include "RTCC.h"
+#include "SD.h"
 #include "TIMERS.h"
 #include "USB.h"
 
@@ -248,7 +250,7 @@ void GUI_DrawHomeScreen(void)
 	/* draw the time */
 	LCD_cmd(COLOR_RGB(255, 132, 21));
 	LCD_cmd(COLOR_A(255));
-	GUI_DrawTime(370,10, 28);
+	GUI_DrawTime(330,10, 28);
 
 	/* draw the USB status */
 	if(USB_GetUSBStatus0() == USB_CONNECT)
@@ -264,6 +266,23 @@ void GUI_DrawHomeScreen(void)
 		LCD_cmd(BITMAP_SIZE(BILINEAR, BORDER, BORDER, header->Width, header->Height));
 		LCD_cmd(BITMAP_SIZE_H((header->Width >> 9), (header->Height >> 9)));		// for widths larger than 512 and heights larger than 512
 		LCD_cmd(VERTEX2II(446, 2, 2, 0));
+		LCD_cmd(END());
+	}
+
+	/* draw the SD card status */
+	if(SD_GetCardStatus() == CARD_PRESENT)
+	{
+		header = &HEADER_SD_Card_Symbol;
+		LCD_cmd( COLOR_RGB(0, 0, 0) );
+		LCD_cmd(COLOR_A(255));
+		LCD_cmd(BITMAP_HANDLE(3));
+		LCD_cmd(BEGIN(BITMAPS));
+		LCD_cmd(BITMAP_SOURCE(BITMAP_SD_CARD_SYMBOL_RAM_G_LOCATION_START));
+		LCD_cmd(BITMAP_LAYOUT(header->Format, header->Stride, header->Height));
+		LCD_cmd(BITMAP_LAYOUT_H((header->Stride >> 10), (header->Height >> 9))); 	// for linestrides larger than 1023 and heights larger than 512
+		LCD_cmd(BITMAP_SIZE(BILINEAR, BORDER, BORDER, header->Width, header->Height));
+		LCD_cmd(BITMAP_SIZE_H((header->Width >> 9), (header->Height >> 9)));		// for widths larger than 512 and heights larger than 512
+		LCD_cmd(VERTEX2II(390, 2, 3, 0));
 		LCD_cmd(END());
 	}
 
@@ -326,6 +345,10 @@ void GUI_LoadItemToRAMG(ENUM_RAMG_ITEM item)
 		case USB_SYMBOL:
 			header =  (TYPE_BITMAP_HEADER *)&HEADER_USB_Symbol;
 			LCD_wr_buffer(BITMAP_USB_SYMBOL_RAM_G_LOCATION_START, (unsigned char*)BITMAP_USB_Symbol, 0, header->Stride*header->Height); // load image to RAM_G
+			break;
+		case SD_CARD_SYMBOL:
+			header =  (TYPE_BITMAP_HEADER *)&HEADER_SD_Card_Symbol;
+			LCD_wr_buffer(BITMAP_SD_CARD_SYMBOL_RAM_G_LOCATION_START, (unsigned char*)BITMAP_SD_Card_Symbol, 0, header->Stride*header->Height); // load image to RAM_G
 			break;
 	}
 }

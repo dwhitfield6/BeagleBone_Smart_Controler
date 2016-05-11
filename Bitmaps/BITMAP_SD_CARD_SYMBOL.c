@@ -11,56 +11,89 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains the ISRs.
+/* Contains Bitmap of SD card symbol. at the beach. See SD_Card.rawh
  *                                                                            */
 /******************************************************************************/
-
-#ifndef _INTERRUPTS_H_
-#define _INTERRUPTS_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "FT_Gpu.h"
+#include "gpio_v2.h"
+#include "hw_cm_per.h"
+#include "hw_cm_wkup.h"
+#include "hw_types.h"
+#include "pin_mux.h"
+#include "soc_AM335x.h"
+
+#include "BITMAP_SD_CARD_SYMBOL.h"
+#include "LCD.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
 
 /******************************************************************************/
-/* Interrupt Priorities                                                       */
-/******************************************************************************/
-#define ADC_INTERRUPT_PRIORITY 				8
-#define I2C_INTERRUPT_PRIORITY 				7
-#define LCD_INTERRUPT_PRIORITY 				6
-#define RTC_INTERRUPT_PRIORITY 				5
-#define DMA_COMPLETE_INTERRUPT_PRIORITY 	2
-#define DMA_ERROR_INTERRUPT_PRIORITY 		2
-#define SD_INTERRUPT_PRIORITY 				2
-#define SPI_INTERRUPT_PRIORITY 				4
-#define TIMER_2_INTERRUPT_PRIORITY			1
-#define TIMER_3_INTERRUPT_PRIORITY 			0
-#define UART_INTERRUPT_PRIORITY 			9
-#define USB_INTERRUPT_PRIORITY 				3
-
-/******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+const TYPE_BITMAP_HEADER HEADER_SD_Card_Symbol =
+{
+	L1,	48,	32,	6,	SIZE_BITMAP_SD_CARD_SYMBOL
+};
 
-/******************************************************************************/
-/* ISR Declarations                                                           */
-/******************************************************************************/
-void GPIO_3A_ISR(void);
-void UART_0_ISR(void);
-void TMR_2_ISR(void);
-void TMR_3_ISR(void);
-void RTC_ISR(void);
-void I2C_0_ISR(void);
-void ADC_0_ISR(void);
-void SPI_1_ISR(void);
-void USB_0_ISR(void);
-void SD_DMA_ISR_EDMA3Complete(void);
-void SD_DMA_ISR_EDMA3Error(void);
-void SD_0_ISR(void);
+const unsigned char BITMAP_SD_Card_Symbol[SIZE_BITMAP_SD_CARD_SYMBOL] =
+{
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		7,255,255,255,
+		255,240,15,255,
+		255,255,255,248,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,252,
+		31,255,255,255,
+		255,252,31,255,
+		255,255,255,248,
+		31,255,255,255,
+		255,240,31,255,
+		255,252,0,0,
+		31,255,224,248,
+		0,0,15,255,
+		192,240,0,0,
+		7,255,128,224,
+		0,0,0,0,
+		0,0,0,0,
+};
 
-#endif
 /******************************* End of file *********************************/

@@ -42,8 +42,8 @@
 /******************************************************************************/
 /* Private Variable                                                           */
 /******************************************************************************/
-static ENUM_MSC_STATES USB0_MSCState;
-static ENUM_USB_STATUS USB0_Status;
+static ENUM_MSC_STATES USB0_MSCState = MSC_DEV_IDLE;
+static ENUM_USB_STATUS USB0_Status = USB_DISCONNECT;
 static unsigned char USBChangeStatusFlag0 = FALSE;
 static unsigned char USBMSCFlag0 = FALSE;
 
@@ -65,7 +65,7 @@ unsigned int epStatus = 0;
 /******************************************************************************/
 void Init_USB(void)
 {
-	Init_USB0();
+
 }
 
 /******************************************************************************/
@@ -102,6 +102,24 @@ void USB_InterruptConfigure0(void)
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_USB0);
+}
+
+/******************************************************************************/
+/* USB_InterruptEnable0
+ *
+ * Controls the USB 0 interupts.
+ *                                                                            */
+/******************************************************************************/
+void USB_InterruptEnable0(unsigned char state)
+{
+	if(state)
+	{
+		IntSystemEnable(SYS_INT_USB0);
+	}
+	else
+	{
+		IntSystemDisable(SYS_INT_USB0);
+	}
 }
 
 /******************************************************************************/

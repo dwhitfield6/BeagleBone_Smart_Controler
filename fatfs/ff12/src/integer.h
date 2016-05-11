@@ -15,7 +15,7 @@ typedef unsigned __int64 QWORD;
 #else			/* Embedded platform */
 
 /* These types MUST be 16-bit or 32-bit */
-typedef unsigned int	UINT;
+typedef unsigned long	UINT;
 
 /* This type MUST be 8-bit */
 typedef unsigned char	BYTE;
