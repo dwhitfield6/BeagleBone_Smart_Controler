@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.6                      
 ******************************************************************************
->> Linked Wed May 11 14:10:37 2016
+>> Linked Wed May 11 16:56:33 2016
 
 OUTPUT FILE NAME:   <BeagleBone_Smart_Controler.out>
 ENTRY POINT SYMBOL: "Entry"  address: 80000000
@@ -11,21 +11,21 @@ MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  DDR_MEM               80000000   07ffffff  00071f7f  07f8e080  RWIX
+  DDR_MEM               80000000   07ffffff  0007219f  07f8de60  RWIX
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-80000000    80000000    00066e64   00066e64    r-x
+80000000    80000000    00067074   00067074    r-x
   80000000    80000000    000000d0   000000d0    r-x .text:Entry
   800000d0    800000d0    00043114   00043114    r-- .const
-  800431e4    800431e4    00023c80   00023c80    r-x .text
-80068000    80068000    00006c6c   00000000    rw-
-  80068000    80068000    00006c6c   00000000    rw- .bss
-8006ec70    8006ec70    000044a7   000044a7    rw-
-  8006ec70    8006ec70    000044a7   000044a7    rw- .data
+  800431e4    800431e4    00023e90   00023e90    r-x .text
+80068000    80068000    00006c7c   00000000    rw-
+  80068000    80068000    00006c7c   00000000    rw- .bss
+8006ec80    8006ec80    000044a7   000044a7    rw-
+  8006ec80    8006ec80    000044a7   000044a7    rw- .data
 87fffff0    87fffff0    00000008   00000000    rw-
   87fffff0    87fffff0    00000008   00000000    rw- .stack
 
@@ -75,7 +75,7 @@ section   page    origin      length       input sections
                   800431cc    0000000c     BITMAP_TV_REMOTE.obj (.const)
                   800431d8    0000000c     BITMAP_USB_SYMBOL.obj (.const)
 
-.text      0    800431e4    00023c80     
+.text      0    800431e4    00023e90     
                   800431e4    00005388     ff.obj (.text)
                   8004856c    00003724     usbdmsc.obj (.text)
                   8004bc90    00002a68     LCD.obj (.text)
@@ -118,55 +118,56 @@ section   page    origin      length       input sections
                   800646e4    00000214     rtsv7A8_A_le_n_eabi.lib : fd_add32.obj (.text)
                   800648f8    00000204     TEST.obj (.text)
                   80064afc    000001d8     CMD.obj (.text)
-                  80064cd4    000001cc     USB.obj (.text)
-                  80064ea0    000001a8     rtsv7A8_A_le_n_eabi.lib : xdscale.obj (.text)
-                  80065048    00000198     PMIC.obj (.text)
-                  800651e0    00000190     rtsv7A8_A_le_n_eabi.lib : fd_div32.obj (.text)
-                  80065370    00000180                             : memcpy32.obj (.text)
-                  800654f0    00000178     POWER.obj (.text)
-                  80065668    00000170     SYSTEM.obj (.text)
-                  800657d8    00000170     mmu.obj (.text)
-                  80065948    00000160     rtsv7A8_A_le_n_eabi.lib : xdnorm.obj (.text)
-                  80065aa8    00000144     usbtick.obj (.text)
-                  80065bec    00000130     cache.obj (.text)
-                  80065d1c    00000128     rtsv7A8_A_le_n_eabi.lib : fd_mul32.obj (.text)
-                  80065e44    00000114                             : i_div32.obj (.text)
-                  80065f58    0000010c     system.lib : exceptionhandler.obj (.text)
-                  80066064    000000f0     rtsv7A8_A_le_n_eabi.lib : u_div32.obj (.text)
-                  80066154    000000e4     usbdmscglue.obj (.text)
-                  80066238    000000e0     rtsv7A8_A_le_n_eabi.lib : fd_cmp32.obj (.text:__aeabi_cdcmple)
-                  80066318    000000e0                             : fd_cmp32.obj (.text:__aeabi_cdrcmple)
-                  800663f8    000000c8     usbphyGS70.obj (.text)
-                  800664c0    000000b8     rtsv7A8_A_le_n_eabi.lib : xdunscal.obj (.text)
-                  80066578    000000b0                             : memset32.obj (.text)
-                  80066628    000000a8     MEMORY.obj (.text)
-                  800666d0    000000a8     rtsv7A8_A_le_n_eabi.lib : sprintf.obj (.text)
-                  80066778    000000a4                             : autoinit.obj (.text)
-                  8006681c    00000084                             : atoi.obj (.text)
-                  800668a0    00000084                             : cpy_tbl.obj (.text)
-                  80066924    00000080                             : ltoa.obj (.text)
-                  800669a4    00000078                             : ldexp.obj (.text)
-                  80066a1c    00000064                             : signal.obj (.text)
-                  80066a80    00000060     system.lib : cpu.obj (.text)
-                  80066ae0    0000005c     rtsv7A8_A_le_n_eabi.lib : fd_toi32.obj (.text)
-                  80066b3c    0000005c                             : fd_tou32.obj (.text)
-                  80066b98    00000058                             : feraiseexcept.obj (.text)
-                  80066bf0    0000004c                             : raise.obj (.text)
-                  80066c3c    00000044                             : xferaise.obj (.text)
-                  80066c80    00000044     system.lib : startup.obj (.text)
-                  80066cc4    0000003c     rtsv7A8_A_le_n_eabi.lib : i_tofd32.obj (.text)
-                  80066d00    00000038                             : xdclass.obj (.text)
-                  80066d38    00000034                             : u_tofd32.obj (.text)
-                  80066d6c    00000030                             : frexp.obj (.text)
-                  80066d9c    0000002c                             : memccpy.obj (.text)
-                  80066dc8    00000028                             : strchr.obj (.text)
-                  80066df0    00000024                             : _lock.obj (.text)
-                  80066e14    00000024                             : ll_lsr32.obj (.text)
-                  80066e38    0000001c                             : strlen.obj (.text)
-                  80066e54    0000000c     system.lib : cpu.obj (.text:CPUIntStatus)
-                  80066e60    00000004     rtsv7A8_A_le_n_eabi.lib : i_div0.obj (.text)
+                  80064cd4    000001d4     EEPROM.obj (.text)
+                  80064ea8    000001d0     PMIC.obj (.text)
+                  80065078    000001cc     USB.obj (.text)
+                  80065244    000001a8     rtsv7A8_A_le_n_eabi.lib : xdscale.obj (.text)
+                  800653ec    00000190                             : fd_div32.obj (.text)
+                  8006557c    00000180                             : memcpy32.obj (.text)
+                  800656fc    00000178     POWER.obj (.text)
+                  80065874    00000174     SYSTEM.obj (.text)
+                  800659e8    00000170     mmu.obj (.text)
+                  80065b58    00000160     rtsv7A8_A_le_n_eabi.lib : xdnorm.obj (.text)
+                  80065cb8    00000144     usbtick.obj (.text)
+                  80065dfc    00000130     cache.obj (.text)
+                  80065f2c    00000128     rtsv7A8_A_le_n_eabi.lib : fd_mul32.obj (.text)
+                  80066054    00000114                             : i_div32.obj (.text)
+                  80066168    0000010c     system.lib : exceptionhandler.obj (.text)
+                  80066274    000000f0     rtsv7A8_A_le_n_eabi.lib : u_div32.obj (.text)
+                  80066364    000000e4     usbdmscglue.obj (.text)
+                  80066448    000000e0     rtsv7A8_A_le_n_eabi.lib : fd_cmp32.obj (.text:__aeabi_cdcmple)
+                  80066528    000000e0                             : fd_cmp32.obj (.text:__aeabi_cdrcmple)
+                  80066608    000000c8     usbphyGS70.obj (.text)
+                  800666d0    000000b8     rtsv7A8_A_le_n_eabi.lib : xdunscal.obj (.text)
+                  80066788    000000b0                             : memset32.obj (.text)
+                  80066838    000000a8     MEMORY.obj (.text)
+                  800668e0    000000a8     rtsv7A8_A_le_n_eabi.lib : sprintf.obj (.text)
+                  80066988    000000a4                             : autoinit.obj (.text)
+                  80066a2c    00000084                             : atoi.obj (.text)
+                  80066ab0    00000084                             : cpy_tbl.obj (.text)
+                  80066b34    00000080                             : ltoa.obj (.text)
+                  80066bb4    00000078                             : ldexp.obj (.text)
+                  80066c2c    00000064                             : signal.obj (.text)
+                  80066c90    00000060     system.lib : cpu.obj (.text)
+                  80066cf0    0000005c     rtsv7A8_A_le_n_eabi.lib : fd_toi32.obj (.text)
+                  80066d4c    0000005c                             : fd_tou32.obj (.text)
+                  80066da8    00000058                             : feraiseexcept.obj (.text)
+                  80066e00    0000004c                             : raise.obj (.text)
+                  80066e4c    00000044                             : xferaise.obj (.text)
+                  80066e90    00000044     system.lib : startup.obj (.text)
+                  80066ed4    0000003c     rtsv7A8_A_le_n_eabi.lib : i_tofd32.obj (.text)
+                  80066f10    00000038                             : xdclass.obj (.text)
+                  80066f48    00000034                             : u_tofd32.obj (.text)
+                  80066f7c    00000030                             : frexp.obj (.text)
+                  80066fac    0000002c                             : memccpy.obj (.text)
+                  80066fd8    00000028                             : strchr.obj (.text)
+                  80067000    00000024                             : _lock.obj (.text)
+                  80067024    00000024                             : ll_lsr32.obj (.text)
+                  80067048    0000001c                             : strlen.obj (.text)
+                  80067064    0000000c     system.lib : cpu.obj (.text:CPUIntStatus)
+                  80067070    00000004     rtsv7A8_A_le_n_eabi.lib : i_div0.obj (.text)
 
-.bss       0    80068000    00006c6c     UNINITIALIZED
+.bss       0    80068000    00006c7c     UNINITIALIZED
                   80068000    00004000     MEMORY.obj (.bss:pageTable)
                   8006c000    00000830     usb_msc_structs.obj (.bss:g_sMSCInstance)
                   8006c830    000007d0     UART.obj (.bss:UART_RX_buffer)
@@ -191,52 +192,53 @@ section   page    origin      length       input sections
                   8006eb80    00000040     usbdmsc.obj (.bss:g_pucCommand)
                   8006ebc0    00000040     usbdenum.obj (.bss:g_pucDataBufferIn)
                   8006ec00    00000018     (.common:fat_devices)
-                  8006ec18    00000010     (.common:I2C_0_Buffers)
-                  8006ec28    0000000c     (.common:Command_String)
-                  8006ec34    0000000c     (.common:g_pfTickHandlers)
-                  8006ec40    0000000c     (.common:g_pvTickInstance)
-                  8006ec4c    0000000a     (.common:CurrentTimeDate)
-                  8006ec56    00000002     (.common:Fsid)
-                  8006ec58    00000004     (.common:p_CurrentScreen)
-                  8006ec5c    00000004     (.common:p_CurrentWAVFile)
-                  8006ec60    00000004     (.common:p_PreviousScreen)
-                  8006ec64    00000004     (.common:regionId)
-                  8006ec68    00000001     (.common:CurrentScreen)
-                  8006ec69    00000001     (.common:PreviousPreviousScreen)
-                  8006ec6a    00000001     (.common:PreviousScreen)
-                  8006ec6b    00000001     (.common:Result)
+                  8006ec18    00000010     (.common:EEPROM_Contents)
+                  8006ec28    00000010     (.common:I2C_0_Buffers)
+                  8006ec38    0000000c     (.common:Command_String)
+                  8006ec44    0000000c     (.common:g_pfTickHandlers)
+                  8006ec50    0000000c     (.common:g_pvTickInstance)
+                  8006ec5c    0000000a     (.common:CurrentTimeDate)
+                  8006ec66    00000002     (.common:Fsid)
+                  8006ec68    00000004     (.common:p_CurrentScreen)
+                  8006ec6c    00000004     (.common:p_CurrentWAVFile)
+                  8006ec70    00000004     (.common:p_PreviousScreen)
+                  8006ec74    00000004     (.common:regionId)
+                  8006ec78    00000001     (.common:CurrentScreen)
+                  8006ec79    00000001     (.common:PreviousPreviousScreen)
+                  8006ec7a    00000001     (.common:PreviousScreen)
+                  8006ec7b    00000001     (.common:Result)
 
 .TI.noinit 
 *          0    80068000    00000000     UNINITIALIZED
 
-.data      0    8006ec70    000044a7     
-                  8006ec70    00003cbc     WAV_POST_COMPLETE.obj (.data:WAV_PostComplete)
-                  8007292c    00000500     GUI.obj (.data:Screens)
-                  80072e2c    000000b0     rtsv7A8_A_le_n_eabi.lib : signal.obj (.data:sigtable)
-                  80072edc    00000004                             : errno.obj (.data)
-                  80072ee0    00000080                             : xvalues.obj (.data)
-                  80072f60    00000062     WAV.obj (.data:WAV_Files)
-                  80072fc2    00000002     CMD.obj (.data)
-                  80072fc4    0000004c     usbdmsc.obj (.data:g_sMSCDeviceInfo)
-                  80073010    00000030     usbdmsc.obj (.data)
-                  80073040    00000028     SD.obj (.data)
-                  80073068    00000023     LCD.obj (.data)
-                  8007308b    0000001f     FRAM.obj (.data)
-                  800730aa    00000001     ADC.obj (.data)
-                  800730ab    00000001     I2C.obj (.data)
-                  800730ac    00000010     AUDIO.obj (.data)
-                  800730bc    00000010     TIMERS.obj (.data)
-                  800730cc    0000000c     RTCC.obj (.data)
-                  800730d8    0000000c     UART.obj (.data)
-                  800730e4    0000000c     USB.obj (.data)
-                  800730f0    0000000c     usbtick.obj (.data)
-                  800730fc    00000008     rtsv7A8_A_le_n_eabi.lib : _lock.obj (.data)
-                  80073104    00000008                             : feraiseexcept.obj (.data)
-                  8007310c    00000008     usbdenum.obj (.data)
-                  80073114    00000003     GUI.obj (.data)
+.data      0    8006ec80    000044a7     
+                  8006ec80    00003cbc     WAV_POST_COMPLETE.obj (.data:WAV_PostComplete)
+                  8007293c    00000500     GUI.obj (.data:Screens)
+                  80072e3c    000000b0     rtsv7A8_A_le_n_eabi.lib : signal.obj (.data:sigtable)
+                  80072eec    00000004                             : errno.obj (.data)
+                  80072ef0    00000080                             : xvalues.obj (.data)
+                  80072f70    00000062     WAV.obj (.data:WAV_Files)
+                  80072fd2    00000002     CMD.obj (.data)
+                  80072fd4    0000004c     usbdmsc.obj (.data:g_sMSCDeviceInfo)
+                  80073020    00000030     usbdmsc.obj (.data)
+                  80073050    00000028     SD.obj (.data)
+                  80073078    00000023     LCD.obj (.data)
+                  8007309b    0000001f     FRAM.obj (.data)
+                  800730ba    00000001     ADC.obj (.data)
+                  800730bb    00000001     I2C.obj (.data)
+                  800730bc    00000010     AUDIO.obj (.data)
+                  800730cc    00000010     TIMERS.obj (.data)
+                  800730dc    0000000c     RTCC.obj (.data)
+                  800730e8    0000000c     UART.obj (.data)
+                  800730f4    0000000c     USB.obj (.data)
+                  80073100    0000000c     usbtick.obj (.data)
+                  8007310c    00000008     rtsv7A8_A_le_n_eabi.lib : _lock.obj (.data)
+                  80073114    00000008                             : feraiseexcept.obj (.data)
+                  8007311c    00000008     usbdenum.obj (.data)
+                  80073124    00000003     GUI.obj (.data)
 
 .TI.persistent 
-*          0    8006ec70    00000000     UNINITIALIZED
+*          0    8006ec80    00000000     UNINITIALIZED
 
 .stack     0    87fffff0    00000008     UNINITIALIZED
                   87fffff0    00000008     --HOLE--
@@ -248,7 +250,7 @@ callee name               trampoline name
    callee addr  tramp addr   call addr  call info
 --------------  -----------  ---------  ----------------
 __TI_auto_init            $Tramp$AA$S$$__TI_auto_init
-   80066778     800000c8     800000a0   system.lib : init.obj (.text:Entry)
+   80066988     800000c8     800000a0   system.lib : init.obj (.text:Entry)
 
 [1 trampolines]
 [1 trampoline calls]
@@ -265,7 +267,7 @@ address   name
 80063eb0  ADC_ReadChannels                     
 80063f2c  ADC_SetFinishedFlag                  
 800613e8  AUD_AmpShutdown                      
-800730b4  AUD_AudioTimeoutCount                
+800730c4  AUD_AudioTimeoutCount                
 80061320  AUD_ClearPlaybackFinishedFlag        
 80061090  AUD_ClearPlayingFlag                 
 80061358  AUD_ClearTimoutFlag                  
@@ -280,13 +282,13 @@ address   name
 80061054  AUD_StopWAV                          
 8006138c  AUD_TestAudio                        
 800610ac  AUD_TransferWAVToRAMG                
-8006604c  AbortHandler                         
-800730b0  AudioBytesTransferred                
+8006625c  AbortHandler                         
+800730c0  AudioBytesTransferred                
 800000d0  BITMAP_CharlieBeach                  
 80042c84  BITMAP_SD_Card_Symbol                
 8003fcd0  BITMAP_TVRemote                      
 80042f04  BITMAP_USB_Symbol                    
-8007308a  BackLightSetting                     
+8007309a  BackLightSetting                     
 8006dfb8  BytesWritten                         
 80064b0c  CMD_CheckMatch                       
 80064c98  CMD_ClearNewCommand                  
@@ -320,29 +322,29 @@ address   name
 80062148  CP15Ttb0Set                          
 800621fc  CP15TtbCtlTtb0Config                 
 8006218c  CP15VectorBaseAddrSet                
-80066adc  CPUAbortHandler                      
-80066e54  CPUIntStatus                         
-80066ad4  CPUSwitchToPrivilegedMode            
-80066ac0  CPUSwitchToUserMode                  
-80066ab0  CPUfiqd                              
-80066aa0  CPUfiqe                              
-80066a90  CPUirqd                              
-80066a80  CPUirqe                              
-80065cb0  CacheDataCleanAll                    
-80065cc8  CacheDataCleanBuff                   
-80065ca4  CacheDataCleanInvalidateAll          
-80065d00  CacheDataCleanInvalidateBuff         
-80065cbc  CacheDataInvalidateAll               
-80065ce4  CacheDataInvalidateBuff              
-80065bec  CacheDisable                         
-80065c30  CacheEnable                          
-80065c7c  CacheInstInvalidateAll               
-80065c88  CacheInstInvalidateBuff              
-8006ec28  Command_String                       
+80066cec  CPUAbortHandler                      
+80067064  CPUIntStatus                         
+80066ce4  CPUSwitchToPrivilegedMode            
+80066cd0  CPUSwitchToUserMode                  
+80066cc0  CPUfiqd                              
+80066cb0  CPUfiqe                              
+80066ca0  CPUirqd                              
+80066c90  CPUirqe                              
+80065ec0  CacheDataCleanAll                    
+80065ed8  CacheDataCleanBuff                   
+80065eb4  CacheDataCleanInvalidateAll          
+80065f10  CacheDataCleanInvalidateBuff         
+80065ecc  CacheDataInvalidateAll               
+80065ef4  CacheDataInvalidateBuff              
+80065dfc  CacheDisable                         
+80065e40  CacheEnable                          
+80065e8c  CacheInstInvalidateAll               
+80065e98  CacheInstInvalidateBuff              
+8006ec38  Command_String                       
 80043194  Commands                             
-8006ec68  CurrentScreen                        
-8007308b  CurrentSystemSettings                
-8006ec4c  CurrentTimeDate                      
+8006ec78  CurrentScreen                        
+8007309b  CurrentSystemSettings                
+8006ec5c  CurrentTimeDate                      
 8005fd84  DMTimer2ModuleClkConfig              
 8005fdf0  DMTimer3ModuleClkConfig              
 8005fa28  DMTimerCompareGet                    
@@ -371,7 +373,7 @@ address   name
 8005fb50  DMTimerResetConfigure                
 8005fb00  DMTimerTriggerSet                    
 8005fd6c  DMTimerWritePostedStatusGet          
-800730ce  DefaultTimeDate                      
+800730de  DefaultTimeDate                      
 8005552c  EDMA3CCErrorEvaluate                 
 80054474  EDMA3ChannelToParamMap               
 80055398  EDMA3ClearErrorBits                  
@@ -416,8 +418,13 @@ address   name
 80054564  EDMA3UnmapChToEvtQ                   
 800559d0  EDMAModuleClkConfig                  
 800559c8  EDMAVersionGet                       
+8006ec18  EEPROM_Contents                      
+80064cec  EEPROM_ReadAddress                   
+80064db0  EEPROM_ReadBuffer                    
+80064d48  EEPROM_WriteAddress                  
+80064e28  EEPROM_WriteBuffer                   
 80000000  Entry                                
-80066048  FIQHandler                           
+80066258  FIQHandler                           
 800603f8  FRAM_CalculateCRC                    
 800603bc  FRAM_Hold                            
 80060410  FRAM_LoadDefaultSettings             
@@ -432,21 +439,21 @@ address   name
 80060380  FRAM_WriteProtect                    
 8006028c  FRAM_WriteRead                       
 80060030  FRAM_WriteStatusRegister             
-80073086  FT_DispCSpread                       
-80073088  FT_DispDither                        
-80073070  FT_DispHCycle                        
-80073072  FT_DispHOffset                       
-80073074  FT_DispHSync0                        
-80073076  FT_DispHSync1                        
-8007306e  FT_DispHeight                        
-80073080  FT_DispPCLK                          
-80073084  FT_DispPCLKPol                       
-80073082  FT_DispSwizzle                       
-80073078  FT_DispVCycle                        
-8007307a  FT_DispVOffset                       
-8007307c  FT_DispVSync0                        
-8007307e  FT_DispVSync1                        
-8007306c  FT_DispWidth                         
+80073096  FT_DispCSpread                       
+80073098  FT_DispDither                        
+80073080  FT_DispHCycle                        
+80073082  FT_DispHOffset                       
+80073084  FT_DispHSync0                        
+80073086  FT_DispHSync1                        
+8007307e  FT_DispHeight                        
+80073090  FT_DispPCLK                          
+80073094  FT_DispPCLKPol                       
+80073092  FT_DispSwizzle                       
+80073088  FT_DispVCycle                        
+8007308a  FT_DispVOffset                       
+8007308c  FT_DispVSync0                        
+8007308e  FT_DispVSync1                        
+8007307c  FT_DispWidth                         
 8006d7d0  FileDataBuffer                       
 8005b920  GPIOAutoIdleModeControl              
 8005b9ec  GPIODebounceFuncControl              
@@ -587,17 +594,18 @@ address   name
 8005c474  I2CSystemStatusGet                   
 8005c3e8  I2CWakeUpDisable                     
 8005c35c  I2CWakeUpEnable                      
-8006ec18  I2C_0_Buffers                        
+8006ec28  I2C_0_Buffers                        
 8005df08  I2C_0_ISR                            
 800641b0  I2C_ClearFailFlag0                   
 800641c0  I2C_GetFailFlag0                     
-80063fc0  I2C_InterruptConfigure0              
-80063fec  I2C_SendReceiveData0                 
+80063fb4  I2C_InterruptConfigure0              
+80063fe0  I2C_SendReceiveData0                 
 800641a0  I2C_SetFailFlag0                     
-80065f9c  IRQHandler                           
+800661ac  IRQHandler                           
 80064afc  InitCMD                              
 80063cd0  Init_ADC                             
 80060f88  Init_Audio                           
+80064cd4  Init_EEPROM                          
 8005fe70  Init_FRAM                            
 8006192c  Init_GPIO                            
 80059378  Init_GUI                             
@@ -605,9 +613,9 @@ address   name
 80063f78  Init_I2C_Module0                     
 8004bc90  Init_LCD                             
 80063758  Init_LED                             
-80065668  Init_Modules                         
-80065048  Init_PMIC                            
-800654f0  Init_Power                           
+80065874  Init_Modules                         
+80064ea8  Init_PMIC                            
+800656fc  Init_Power                           
 80063134  Init_RTC                             
 8005c65c  Init_SD                              
 80060a78  Init_SPI                             
@@ -618,8 +626,8 @@ address   name
 80064504  Init_Timer3                          
 8006447c  Init_Timers                          
 8006148c  Init_UART                            
-80064cd4  Init_USB                             
-80064cd8  Init_USB0                            
+80065078  Init_USB                             
+8006507c  Init_USB0                            
 80063470  Init_WAV                             
 800626c0  IntAINTCInit                         
 800627f8  IntActiveIrqNumGet                   
@@ -651,9 +659,9 @@ address   name
 8006279c  IntSystemDisable                     
 80062768  IntSystemEnable                      
 800626a0  IntUnRegister                        
-80065b1c  InternalUSBRegisterTickHandler       
-80065b54  InternalUSBStartOfFrameTick          
-80065aa8  InternalUSBTickInit                  
+80065d2c  InternalUSBRegisterTickHandler       
+80065d64  InternalUSBStartOfFrameTick          
+80065cb8  InternalUSBTickInit                  
 8004e6d4  LCD_ClearInterruptFlag               
 8004e6e4  LCD_GetInterruptFlag                 
 8004c870  LCD_IncrementWriteOffset             
@@ -739,7 +747,7 @@ address   name
 8004c44c  LCD_wr8s                             
 8004c500  LCD_wr_buffer                        
 8006375c  LED_Show                             
-800730b8  LastWritePointerAddress              
+800730c8  LastWritePointerAddress              
 8006dbd0  MISC_Buffer                          
 8005eb24  MISC_CRC_CRC16                       
 8005ed48  MISC_Calculate_CRC16                 
@@ -758,10 +766,10 @@ address   name
 8005a4cc  MMCSDStopCmdSend                     
 8005a31c  MMCSDTranSpeedSet                    
 8005acac  MMCSDWriteCmdSend                    
-8006592c  MMUEnable                            
-800657d8  MMUInit                              
-80065838  MMUMemRegionMap                      
-80066628  MMU_ConfigAndEnable                  
+80065b3c  MMUEnable                            
+800659e8  MMUInit                              
+80065a48  MMUMemRegionMap                      
+80066838  MMU_ConfigAndEnable                  
 8005e840  MSC_BCDtoHEX                         
 8005e5e0  MSC_BufferCopy                       
 8005e720  MSC_DelayNOP                         
@@ -810,13 +818,13 @@ address   name
 80058c04  McSPITxFIFOConfig                    
 80058dd4  McSPIWordCountSet                    
 80058694  McSPIWordLengthSet                   
-80072fc3  NumCommand                           
-80065150  PMIC_ReadRegister                    
-80065190  PMIC_WriteRegister                   
-800654fc  PWR_ReadVoltages                     
-8006ec69  PreviousPreviousScreen               
-8006ec6a  PreviousScreen                       
-8007306a  RAM_CMD_Offset                       
+80072fd3  NumCommand                           
+80064fc8  PMIC_ReadRegister                    
+80065018  PMIC_WriteRegister                   
+80065708  PWR_ReadVoltages                     
+8006ec79  PreviousPreviousScreen               
+8006ec7a  PreviousScreen                       
+8007307a  RAM_CMD_Offset                       
 80056d00  RTC32KClkClockControl                
 80056c9c  RTC32KClkSourceSelect                
 80057040  RTCAlarm2CalendarSet                 
@@ -913,7 +921,7 @@ address   name
 800633bc  RTC_ModuleClkConfig                  
 800631d0  RTC_SetFlag                          
 800631fc  RTC_SetTimeDate                      
-8006ec6b  Result                               
+8006ec7b  Result                               
 800570a0  RtcVersionGet                        
 8005e4a8  SD_0_ISR                             
 8005d014  SD_ClearCardActionFlag               
@@ -945,7 +953,7 @@ address   name
 8005d004  SD_SetCardActionFlag                 
 8005d030  SD_SetCardStatus                     
 8005d058  SD_SetInitialized                    
-80073048  SD_callbackOccured                   
+80073058  SD_callbackOccured                   
 UNDEFED   SHT$$INIT_ARRAY$$Base                
 UNDEFED   SHT$$INIT_ARRAY$$Limit               
 8005e0fc  SPI_1_ISR                            
@@ -956,8 +964,8 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 80060dcc  SPI_WriteByte1                       
 80060ee0  SPI_WriteByteNoRx0                   
 80060f14  SPI_WriteByteNoRx1                   
-80065f74  SVC_Handler                          
-8007292c  Screens                              
+80066184  SVC_Handler                          
+8007293c  Screens                              
 80064948  TEST_Setpoint1                       
 80064984  TEST_Setpoint2                       
 800649c0  TEST_Setpoint3                       
@@ -966,15 +974,15 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 80064a9c  TEST_Togglepoint3                    
 8005ddd8  TMR_2_ISR                            
 8005debc  TMR_3_ISR                            
-800730c4  TMR_AudioPlaybackTimer               
-800730c8  TMR_BacklightTimer                   
+800730d4  TMR_AudioPlaybackTimer               
+800730d8  TMR_BacklightTimer                   
 80064570  TMR_CalculateReload                  
 80064698  TMR_ClearMISCTimerFlag               
 800646a8  TMR_GetMISCTimerFlag                 
 80064614  TMR_GetNewScreenTagTimerEnabled      
 800645bc  TMR_InterruptConfigure2              
 800645e8  TMR_InterruptConfigure3              
-800730c0  TMR_NewScreenTagTimer                
+800730d0  TMR_NewScreenTagTimer                
 80064668  TMR_ResetAudioPlaybackTimer          
 80064678  TMR_ResetBacklightTimer              
 80064658  TMR_ResetNewScreenTagTimer           
@@ -1126,10 +1134,10 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 80061524  UART_PrintChar                       
 80061584  UART_PrintString                     
 8006c830  UART_RX_buffer                       
-800730d8  UART_RX_place                        
-800730dc  UART_TX_add                          
+800730e8  UART_RX_place                        
+800730ec  UART_TX_add                          
 8006d000  UART_TX_buffer                       
-800730e0  UART_TX_remove                       
+800730f0  UART_TX_remove                       
 8004bbac  USB0ModuleClkConfig                  
 8004bc28  USBClearInt                          
 8004bb90  USBClearOtgIntr                      
@@ -1150,11 +1158,11 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 80048bc4  USBDMSCCompositeInit                 
 80048b90  USBDMSCInit                          
 8004856c  USBDMSCMediaChange                   
-80066174  USBDMSCStorageClose                  
-80066208  USBDMSCStorageNumBlocks              
-80066154  USBDMSCStorageOpen                   
-80066190  USBDMSCStorageRead                   
-800661cc  USBDMSCStorageWrite                  
+80066384  USBDMSCStorageClose                  
+80066418  USBDMSCStorageNumBlocks              
+80066364  USBDMSCStorageOpen                   
+800663a0  USBDMSCStorageRead                   
+800663dc  USBDMSCStorageWrite                  
 80048ed4  USBDMSCTerm                          
 80049b70  USBDSCSICommand                      
 80062e80  USBDescGet                           
@@ -1235,101 +1243,101 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 8004b504  USBRxChAbort                         
 8004bba4  USBVersionGet                        
 8005e100  USB_0_ISR                            
-80064e6c  USB_ClearUSBMSCFlag0                 
-80064e40  USB_ClearUSBStatusFlag0              
-80064d5c  USB_DMSCEventCallback0               
-80064dec  USB_GetMSCState0                     
-80064e7c  USB_GetUSBMSCFlag0                   
-80064e24  USB_GetUSBStatus0                    
-80064e50  USB_GetUSBStatusFlag0                
-80064d04  USB_InterruptConfigure0              
-80064d30  USB_InterruptEnable0                 
-80064dd0  USB_SetMSCState0                     
-80064e5c  USB_SetUSBMSCFlag0                   
-80064df8  USB_SetUSBStatus0                    
-80064e30  USB_SetUSBStatusFlag0                
-8006604c  UndefInstHandler                     
-80066460  UsbPhyOff                            
-800663f8  UsbPhyOn                             
+80065210  USB_ClearUSBMSCFlag0                 
+800651e4  USB_ClearUSBStatusFlag0              
+80065100  USB_DMSCEventCallback0               
+80065190  USB_GetMSCState0                     
+80065220  USB_GetUSBMSCFlag0                   
+800651c8  USB_GetUSBStatus0                    
+800651f4  USB_GetUSBStatusFlag0                
+800650a8  USB_InterruptConfigure0              
+800650d4  USB_InterruptEnable0                 
+80065174  USB_SetMSCState0                     
+80065200  USB_SetUSBMSCFlag0                   
+8006519c  USB_SetUSBStatus0                    
+800651d4  USB_SetUSBStatusFlag0                
+8006625c  UndefInstHandler                     
+80066670  UsbPhyOff                            
+80066608  UsbPhyOn                             
 8006eac8  Voltage                              
 800634c8  WAV_CalculateHeader                  
-80072f60  WAV_Files                            
-8006ec70  WAV_PostComplete                     
-80066d00  _Dclass                              
-80072ee0  _Denorm                              
-80065948  _Dnorm                               
-80064ea0  _Dscale                              
-800664c0  _Dunscale                            
-80072ef0  _Eps                                 
-80072edc  _Errno                               
-80073104  _Fenv                                
-80066c3c  _Feraise                             
-80072f00  _Hugeval                             
-80072f10  _Inf                                 
-80072f20  _Nan                                 
-80072f40  _Rteps                               
-80072f30  _Snan                                
-80073108  _Tls_setup__Fenv                     
-80072f50  _Xbig                                
-80072f58  _Zero                                
+80072f70  WAV_Files                            
+8006ec80  WAV_PostComplete                     
+80066f10  _Dclass                              
+80072ef0  _Denorm                              
+80065b58  _Dnorm                               
+80065244  _Dscale                              
+800666d0  _Dunscale                            
+80072f00  _Eps                                 
+80072eec  _Errno                               
+80073114  _Fenv                                
+80066e4c  _Feraise                             
+80072f10  _Hugeval                             
+80072f20  _Inf                                 
+80072f30  _Nan                                 
+80072f50  _Rteps                               
+80072f40  _Snan                                
+80073118  _Tls_setup__Fenv                     
+80072f60  _Xbig                                
+80072f68  _Zero                                
 87fffff8  __STACK_END                          
 00000008  __STACK_SIZE                         
 UNDEFED   __TI_CINIT_Base                      
 UNDEFED   __TI_CINIT_Limit                     
 UNDEFED   __TI_Handler_Table_Base              
 UNDEFED   __TI_Handler_Table_Limit             
-80066778  __TI_auto_init                       
+80066988  __TI_auto_init                       
 80053be4  __TI_printfi                         
 80000000  __TI_static_base__                   
-80066238  __aeabi_cdcmpeq                      
-80066238  __aeabi_cdcmple                      
-80066318  __aeabi_cdrcmple                     
-80066ae0  __aeabi_d2iz                         
-80066b3c  __aeabi_d2uiz                        
+80066448  __aeabi_cdcmpeq                      
+80066448  __aeabi_cdcmple                      
+80066528  __aeabi_cdrcmple                     
+80066cf0  __aeabi_d2iz                         
+80066d4c  __aeabi_d2uiz                        
 800646f0  __aeabi_dadd                         
-800651e0  __aeabi_ddiv                         
-80065d1c  __aeabi_dmul                         
+800653ec  __aeabi_ddiv                         
+80065f2c  __aeabi_dmul                         
 800646e4  __aeabi_dsub                         
-80066cc4  __aeabi_i2d                          
-80065e44  __aeabi_idiv                         
-80066e60  __aeabi_idiv0                        
-80065e44  __aeabi_idivmod                      
-80066e14  __aeabi_llsr                         
-80066578  __aeabi_memclr                       
-80066578  __aeabi_memclr4                      
-80066578  __aeabi_memclr8                      
-80065370  __aeabi_memcpy                       
-80065370  __aeabi_memcpy4                      
-80065370  __aeabi_memcpy8                      
-8006657c  __aeabi_memset                       
-8006657c  __aeabi_memset4                      
-8006657c  __aeabi_memset8                      
-80066d38  __aeabi_ui2d                         
-80066064  __aeabi_uidiv                        
-80066064  __aeabi_uidivmod                     
+80066ed4  __aeabi_i2d                          
+80066054  __aeabi_idiv                         
+80067070  __aeabi_idiv0                        
+80066054  __aeabi_idivmod                      
+80067024  __aeabi_llsr                         
+80066788  __aeabi_memclr                       
+80066788  __aeabi_memclr4                      
+80066788  __aeabi_memclr8                      
+8006557c  __aeabi_memcpy                       
+8006557c  __aeabi_memcpy4                      
+8006557c  __aeabi_memcpy8                      
+8006678c  __aeabi_memset                       
+8006678c  __aeabi_memset4                      
+8006678c  __aeabi_memset8                      
+80066f48  __aeabi_ui2d                         
+80066274  __aeabi_uidiv                        
+80066274  __aeabi_uidivmod                     
 80063a18  __aeabi_uldivmod                     
 ffffffff  __binit__                            
 ffffffff  __c_args__                           
 87fffff0  __stack                              
 80042a82  _ctypes_                             
-800730fc  _lock                                
-80066e08  _nop                                 
-80066dfc  _register_lock                       
-80066df0  _register_unlock                     
-80073100  _unlock                              
-8006681c  atoi                                 
+8007310c  _lock                                
+80067018  _nop                                 
+8006700c  _register_lock                       
+80067000  _register_unlock                     
+80073110  _unlock                              
+80066a2c  atoi                                 
 ffffffff  binit                                
-8006ec6c  bss_end                              
+8006ec7c  bss_end                              
 80068000  bss_start                            
 8006e880  cb_Fxn                               
-80073054  cmdCompFlag                          
-80073058  cmdTimeout                           
-800668a0  copy_in                              
+80073064  cmdCompFlag                          
+80073068  cmdTimeout                           
+80066ab0  copy_in                              
 8006ea28  ctrlInfo                             
-80073050  dataTimeout                          
+80073060  dataTimeout                          
 8006eb38  dummy                                
-800730ec  epStatus                             
-8007305c  errFlag                              
+800730fc  epStatus                             
+8007306c  errFlag                              
 80047380  f_close                              
 80047920  f_closedir                           
 80047ac4  f_getfree                            
@@ -1347,16 +1355,16 @@ ffffffff  binit
 80047ed4  f_unlink                             
 80046d88  f_write                              
 8006ec00  fat_devices                          
-80066b98  feraiseexcept                        
+80066da8  feraiseexcept                        
 800641fc  ff_convert                           
 800642c0  ff_wtoupper                          
 8006e680  fnRAMVectors                         
-80066d6c  frexp                                
-8007302a  gDMAflag                             
+80066f7c  frexp                                
+8007303a  gDMAflag                             
 8006eb08  g_USBInstance                        
-800730f0  g_bUSBTimerInitialized               
-80073014  g_bytesRead                          
-80073018  g_bytesWritten                       
+80073100  g_bUSBTimerInitialized               
+80073024  g_bytesRead                          
+80073028  g_bytesWritten                       
 80043098  g_pConfigString                      
 800430f1  g_pDataInterfaceString               
 8004317c  g_pLangDescriptor                    
@@ -1366,46 +1374,46 @@ ffffffff  binit
 80043119  g_pProductString                     
 80043180  g_pSerialNumberString                
 80043164  g_pStringDescriptors                 
-8006ec34  g_pfTickHandlers                     
-80073038  g_psMSCSections                      
+8006ec44  g_pfTickHandlers                     
+80073048  g_psMSCSections                      
 8006e980  g_psUSBDevice                        
 8006eb80  g_pucCommand                         
-8006ec40  g_pvTickInstance                     
-80073064  g_sCState                            
+8006ec50  g_pvTickInstance                     
+80073074  g_sCState                            
 8006eb3c  g_sDriveInformation                  
 80043154  g_sMSCConfigHeader                   
 80043144  g_sMSCConfigSection                  
 80042fb0  g_sMSCDevice                         
-80072fc4  g_sMSCDeviceInfo                     
+80072fd4  g_sMSCDeviceInfo                     
 8006c000  g_sMSCInstance                       
 8004314c  g_sMSCInterfaceSection               
-80073060  g_sPState                            
+80073070  g_sPState                            
 80042e8c  g_sUSBDefaultFIFOConfig              
-800730f4  g_ulCurrentUSBTick                   
-800730f8  g_ulUSBSOFCount                      
+80073104  g_ulCurrentUSBTick                   
+80073108  g_ulUSBSOFCount                      
 8005babc  gpioContextRestore                   
 8005ba78  gpioContextSave                      
-80073010  intStatus                            
-800669a4  ldexp                                
-80066924  ltoa                                 
+80073020  intStatus                            
+80066bb4  ldexp                                
+80066b34  ltoa                                 
 8006224c  main                                 
-80066d9c  memccpy                              
-80065370  memcpy                               
-80066588  memset                               
-8006ec58  p_CurrentScreen                      
-8006ec5c  p_CurrentWAVFile                     
-8006ec60  p_PreviousScreen                     
-80066bf0  raise                                
-8006ec64  regionId                             
-80073044  sdBlkSize                            
+80066fac  memccpy                              
+8006557c  memcpy                               
+80066798  memset                               
+8006ec68  p_CurrentScreen                      
+8006ec6c  p_CurrentWAVFile                     
+8006ec70  p_PreviousScreen                     
+80066e00  raise                                
+8006ec74  regionId                             
+80073054  sdBlkSize                            
 8006ea78  sdCard                               
-80066a1c  signal                               
-800666d0  sprintf                              
-80066cac  start_boot                           
-80066dc8  strchr                               
-80066e38  strlen                               
-800730e8  ulStatus                             
-8007304c  xferCompFlag                         
+80066c2c  signal                               
+800668e0  sprintf                              
+80066ebc  start_boot                           
+80066fd8  strchr                               
+80067048  strlen                               
+800730f8  ulStatus                             
+8007305c  xferCompFlag                         
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -2309,8 +2317,8 @@ address   name
 80063f4c  ADC_GetFinishedFlag                  
 80063f6c  Init_I2C                             
 80063f78  Init_I2C_Module0                     
-80063fc0  I2C_InterruptConfigure0              
-80063fec  I2C_SendReceiveData0                 
+80063fb4  I2C_InterruptConfigure0              
+80063fe0  I2C_SendReceiveData0                 
 800641a0  I2C_SetFailFlag0                     
 800641b0  I2C_ClearFailFlag0                   
 800641c0  I2C_GetFailFlag0                     
@@ -2345,112 +2353,117 @@ address   name
 80064c88  CMD_SetNewCommand                    
 80064c98  CMD_ClearNewCommand                  
 80064ca8  CMD_GetNewCommand                    
-80064cd4  Init_USB                             
-80064cd8  Init_USB0                            
-80064d04  USB_InterruptConfigure0              
-80064d30  USB_InterruptEnable0                 
-80064d5c  USB_DMSCEventCallback0               
-80064dd0  USB_SetMSCState0                     
-80064dec  USB_GetMSCState0                     
-80064df8  USB_SetUSBStatus0                    
-80064e24  USB_GetUSBStatus0                    
-80064e30  USB_SetUSBStatusFlag0                
-80064e40  USB_ClearUSBStatusFlag0              
-80064e50  USB_GetUSBStatusFlag0                
-80064e5c  USB_SetUSBMSCFlag0                   
-80064e6c  USB_ClearUSBMSCFlag0                 
-80064e7c  USB_GetUSBMSCFlag0                   
-80064ea0  _Dscale                              
-80065048  Init_PMIC                            
-80065150  PMIC_ReadRegister                    
-80065190  PMIC_WriteRegister                   
-800651e0  __aeabi_ddiv                         
-80065370  __aeabi_memcpy                       
-80065370  __aeabi_memcpy4                      
-80065370  __aeabi_memcpy8                      
-80065370  memcpy                               
-800654f0  Init_Power                           
-800654fc  PWR_ReadVoltages                     
-80065668  Init_Modules                         
-800657d8  MMUInit                              
-80065838  MMUMemRegionMap                      
-8006592c  MMUEnable                            
-80065948  _Dnorm                               
-80065aa8  InternalUSBTickInit                  
-80065b1c  InternalUSBRegisterTickHandler       
-80065b54  InternalUSBStartOfFrameTick          
-80065bec  CacheDisable                         
-80065c30  CacheEnable                          
-80065c7c  CacheInstInvalidateAll               
-80065c88  CacheInstInvalidateBuff              
-80065ca4  CacheDataCleanInvalidateAll          
-80065cb0  CacheDataCleanAll                    
-80065cbc  CacheDataInvalidateAll               
-80065cc8  CacheDataCleanBuff                   
-80065ce4  CacheDataInvalidateBuff              
-80065d00  CacheDataCleanInvalidateBuff         
-80065d1c  __aeabi_dmul                         
-80065e44  __aeabi_idiv                         
-80065e44  __aeabi_idivmod                      
-80065f74  SVC_Handler                          
-80065f9c  IRQHandler                           
-80066048  FIQHandler                           
-8006604c  AbortHandler                         
-8006604c  UndefInstHandler                     
-80066064  __aeabi_uidiv                        
-80066064  __aeabi_uidivmod                     
-80066154  USBDMSCStorageOpen                   
-80066174  USBDMSCStorageClose                  
-80066190  USBDMSCStorageRead                   
-800661cc  USBDMSCStorageWrite                  
-80066208  USBDMSCStorageNumBlocks              
-80066238  __aeabi_cdcmpeq                      
-80066238  __aeabi_cdcmple                      
-80066318  __aeabi_cdrcmple                     
-800663f8  UsbPhyOn                             
-80066460  UsbPhyOff                            
-800664c0  _Dunscale                            
-80066578  __aeabi_memclr                       
-80066578  __aeabi_memclr4                      
-80066578  __aeabi_memclr8                      
-8006657c  __aeabi_memset                       
-8006657c  __aeabi_memset4                      
-8006657c  __aeabi_memset8                      
-80066588  memset                               
-80066628  MMU_ConfigAndEnable                  
-800666d0  sprintf                              
-80066778  __TI_auto_init                       
-8006681c  atoi                                 
-800668a0  copy_in                              
-80066924  ltoa                                 
-800669a4  ldexp                                
-80066a1c  signal                               
-80066a80  CPUirqe                              
-80066a90  CPUirqd                              
-80066aa0  CPUfiqe                              
-80066ab0  CPUfiqd                              
-80066ac0  CPUSwitchToUserMode                  
-80066ad4  CPUSwitchToPrivilegedMode            
-80066adc  CPUAbortHandler                      
-80066ae0  __aeabi_d2iz                         
-80066b3c  __aeabi_d2uiz                        
-80066b98  feraiseexcept                        
-80066bf0  raise                                
-80066c3c  _Feraise                             
-80066cac  start_boot                           
-80066cc4  __aeabi_i2d                          
-80066d00  _Dclass                              
-80066d38  __aeabi_ui2d                         
-80066d6c  frexp                                
-80066d9c  memccpy                              
-80066dc8  strchr                               
-80066df0  _register_unlock                     
-80066dfc  _register_lock                       
-80066e08  _nop                                 
-80066e14  __aeabi_llsr                         
-80066e38  strlen                               
-80066e54  CPUIntStatus                         
-80066e60  __aeabi_idiv0                        
+80064cd4  Init_EEPROM                          
+80064cec  EEPROM_ReadAddress                   
+80064d48  EEPROM_WriteAddress                  
+80064db0  EEPROM_ReadBuffer                    
+80064e28  EEPROM_WriteBuffer                   
+80064ea8  Init_PMIC                            
+80064fc8  PMIC_ReadRegister                    
+80065018  PMIC_WriteRegister                   
+80065078  Init_USB                             
+8006507c  Init_USB0                            
+800650a8  USB_InterruptConfigure0              
+800650d4  USB_InterruptEnable0                 
+80065100  USB_DMSCEventCallback0               
+80065174  USB_SetMSCState0                     
+80065190  USB_GetMSCState0                     
+8006519c  USB_SetUSBStatus0                    
+800651c8  USB_GetUSBStatus0                    
+800651d4  USB_SetUSBStatusFlag0                
+800651e4  USB_ClearUSBStatusFlag0              
+800651f4  USB_GetUSBStatusFlag0                
+80065200  USB_SetUSBMSCFlag0                   
+80065210  USB_ClearUSBMSCFlag0                 
+80065220  USB_GetUSBMSCFlag0                   
+80065244  _Dscale                              
+800653ec  __aeabi_ddiv                         
+8006557c  __aeabi_memcpy                       
+8006557c  __aeabi_memcpy4                      
+8006557c  __aeabi_memcpy8                      
+8006557c  memcpy                               
+800656fc  Init_Power                           
+80065708  PWR_ReadVoltages                     
+80065874  Init_Modules                         
+800659e8  MMUInit                              
+80065a48  MMUMemRegionMap                      
+80065b3c  MMUEnable                            
+80065b58  _Dnorm                               
+80065cb8  InternalUSBTickInit                  
+80065d2c  InternalUSBRegisterTickHandler       
+80065d64  InternalUSBStartOfFrameTick          
+80065dfc  CacheDisable                         
+80065e40  CacheEnable                          
+80065e8c  CacheInstInvalidateAll               
+80065e98  CacheInstInvalidateBuff              
+80065eb4  CacheDataCleanInvalidateAll          
+80065ec0  CacheDataCleanAll                    
+80065ecc  CacheDataInvalidateAll               
+80065ed8  CacheDataCleanBuff                   
+80065ef4  CacheDataInvalidateBuff              
+80065f10  CacheDataCleanInvalidateBuff         
+80065f2c  __aeabi_dmul                         
+80066054  __aeabi_idiv                         
+80066054  __aeabi_idivmod                      
+80066184  SVC_Handler                          
+800661ac  IRQHandler                           
+80066258  FIQHandler                           
+8006625c  AbortHandler                         
+8006625c  UndefInstHandler                     
+80066274  __aeabi_uidiv                        
+80066274  __aeabi_uidivmod                     
+80066364  USBDMSCStorageOpen                   
+80066384  USBDMSCStorageClose                  
+800663a0  USBDMSCStorageRead                   
+800663dc  USBDMSCStorageWrite                  
+80066418  USBDMSCStorageNumBlocks              
+80066448  __aeabi_cdcmpeq                      
+80066448  __aeabi_cdcmple                      
+80066528  __aeabi_cdrcmple                     
+80066608  UsbPhyOn                             
+80066670  UsbPhyOff                            
+800666d0  _Dunscale                            
+80066788  __aeabi_memclr                       
+80066788  __aeabi_memclr4                      
+80066788  __aeabi_memclr8                      
+8006678c  __aeabi_memset                       
+8006678c  __aeabi_memset4                      
+8006678c  __aeabi_memset8                      
+80066798  memset                               
+80066838  MMU_ConfigAndEnable                  
+800668e0  sprintf                              
+80066988  __TI_auto_init                       
+80066a2c  atoi                                 
+80066ab0  copy_in                              
+80066b34  ltoa                                 
+80066bb4  ldexp                                
+80066c2c  signal                               
+80066c90  CPUirqe                              
+80066ca0  CPUirqd                              
+80066cb0  CPUfiqe                              
+80066cc0  CPUfiqd                              
+80066cd0  CPUSwitchToUserMode                  
+80066ce4  CPUSwitchToPrivilegedMode            
+80066cec  CPUAbortHandler                      
+80066cf0  __aeabi_d2iz                         
+80066d4c  __aeabi_d2uiz                        
+80066da8  feraiseexcept                        
+80066e00  raise                                
+80066e4c  _Feraise                             
+80066ebc  start_boot                           
+80066ed4  __aeabi_i2d                          
+80066f10  _Dclass                              
+80066f48  __aeabi_ui2d                         
+80066f7c  frexp                                
+80066fac  memccpy                              
+80066fd8  strchr                               
+80067000  _register_unlock                     
+8006700c  _register_lock                       
+80067018  _nop                                 
+80067024  __aeabi_llsr                         
+80067048  strlen                               
+80067064  CPUIntStatus                         
+80067070  __aeabi_idiv0                        
 80068000  bss_start                            
 8006c000  g_sMSCInstance                       
 8006c830  UART_RX_buffer                       
@@ -2469,86 +2482,87 @@ address   name
 8006eb3c  g_sDriveInformation                  
 8006eb80  g_pucCommand                         
 8006ec00  fat_devices                          
-8006ec18  I2C_0_Buffers                        
-8006ec28  Command_String                       
-8006ec34  g_pfTickHandlers                     
-8006ec40  g_pvTickInstance                     
-8006ec4c  CurrentTimeDate                      
-8006ec58  p_CurrentScreen                      
-8006ec5c  p_CurrentWAVFile                     
-8006ec60  p_PreviousScreen                     
-8006ec64  regionId                             
-8006ec68  CurrentScreen                        
-8006ec69  PreviousPreviousScreen               
-8006ec6a  PreviousScreen                       
-8006ec6b  Result                               
-8006ec6c  bss_end                              
-8006ec70  WAV_PostComplete                     
-8007292c  Screens                              
-80072edc  _Errno                               
-80072ee0  _Denorm                              
-80072ef0  _Eps                                 
-80072f00  _Hugeval                             
-80072f10  _Inf                                 
-80072f20  _Nan                                 
-80072f30  _Snan                                
-80072f40  _Rteps                               
-80072f50  _Xbig                                
-80072f58  _Zero                                
-80072f60  WAV_Files                            
-80072fc3  NumCommand                           
-80072fc4  g_sMSCDeviceInfo                     
-80073010  intStatus                            
-80073014  g_bytesRead                          
-80073018  g_bytesWritten                       
-8007302a  gDMAflag                             
-80073038  g_psMSCSections                      
-80073044  sdBlkSize                            
-80073048  SD_callbackOccured                   
-8007304c  xferCompFlag                         
-80073050  dataTimeout                          
-80073054  cmdCompFlag                          
-80073058  cmdTimeout                           
-8007305c  errFlag                              
-80073060  g_sPState                            
-80073064  g_sCState                            
-8007306a  RAM_CMD_Offset                       
-8007306c  FT_DispWidth                         
-8007306e  FT_DispHeight                        
-80073070  FT_DispHCycle                        
-80073072  FT_DispHOffset                       
-80073074  FT_DispHSync0                        
-80073076  FT_DispHSync1                        
-80073078  FT_DispVCycle                        
-8007307a  FT_DispVOffset                       
-8007307c  FT_DispVSync0                        
-8007307e  FT_DispVSync1                        
-80073080  FT_DispPCLK                          
-80073082  FT_DispSwizzle                       
-80073084  FT_DispPCLKPol                       
-80073086  FT_DispCSpread                       
-80073088  FT_DispDither                        
-8007308a  BackLightSetting                     
-8007308b  CurrentSystemSettings                
-800730b0  AudioBytesTransferred                
-800730b4  AUD_AudioTimeoutCount                
-800730b8  LastWritePointerAddress              
-800730c0  TMR_NewScreenTagTimer                
-800730c4  TMR_AudioPlaybackTimer               
-800730c8  TMR_BacklightTimer                   
-800730ce  DefaultTimeDate                      
-800730d8  UART_RX_place                        
-800730dc  UART_TX_add                          
-800730e0  UART_TX_remove                       
-800730e8  ulStatus                             
-800730ec  epStatus                             
-800730f0  g_bUSBTimerInitialized               
-800730f4  g_ulCurrentUSBTick                   
-800730f8  g_ulUSBSOFCount                      
-800730fc  _lock                                
-80073100  _unlock                              
-80073104  _Fenv                                
-80073108  _Tls_setup__Fenv                     
+8006ec18  EEPROM_Contents                      
+8006ec28  I2C_0_Buffers                        
+8006ec38  Command_String                       
+8006ec44  g_pfTickHandlers                     
+8006ec50  g_pvTickInstance                     
+8006ec5c  CurrentTimeDate                      
+8006ec68  p_CurrentScreen                      
+8006ec6c  p_CurrentWAVFile                     
+8006ec70  p_PreviousScreen                     
+8006ec74  regionId                             
+8006ec78  CurrentScreen                        
+8006ec79  PreviousPreviousScreen               
+8006ec7a  PreviousScreen                       
+8006ec7b  Result                               
+8006ec7c  bss_end                              
+8006ec80  WAV_PostComplete                     
+8007293c  Screens                              
+80072eec  _Errno                               
+80072ef0  _Denorm                              
+80072f00  _Eps                                 
+80072f10  _Hugeval                             
+80072f20  _Inf                                 
+80072f30  _Nan                                 
+80072f40  _Snan                                
+80072f50  _Rteps                               
+80072f60  _Xbig                                
+80072f68  _Zero                                
+80072f70  WAV_Files                            
+80072fd3  NumCommand                           
+80072fd4  g_sMSCDeviceInfo                     
+80073020  intStatus                            
+80073024  g_bytesRead                          
+80073028  g_bytesWritten                       
+8007303a  gDMAflag                             
+80073048  g_psMSCSections                      
+80073054  sdBlkSize                            
+80073058  SD_callbackOccured                   
+8007305c  xferCompFlag                         
+80073060  dataTimeout                          
+80073064  cmdCompFlag                          
+80073068  cmdTimeout                           
+8007306c  errFlag                              
+80073070  g_sPState                            
+80073074  g_sCState                            
+8007307a  RAM_CMD_Offset                       
+8007307c  FT_DispWidth                         
+8007307e  FT_DispHeight                        
+80073080  FT_DispHCycle                        
+80073082  FT_DispHOffset                       
+80073084  FT_DispHSync0                        
+80073086  FT_DispHSync1                        
+80073088  FT_DispVCycle                        
+8007308a  FT_DispVOffset                       
+8007308c  FT_DispVSync0                        
+8007308e  FT_DispVSync1                        
+80073090  FT_DispPCLK                          
+80073092  FT_DispSwizzle                       
+80073094  FT_DispPCLKPol                       
+80073096  FT_DispCSpread                       
+80073098  FT_DispDither                        
+8007309a  BackLightSetting                     
+8007309b  CurrentSystemSettings                
+800730c0  AudioBytesTransferred                
+800730c4  AUD_AudioTimeoutCount                
+800730c8  LastWritePointerAddress              
+800730d0  TMR_NewScreenTagTimer                
+800730d4  TMR_AudioPlaybackTimer               
+800730d8  TMR_BacklightTimer                   
+800730de  DefaultTimeDate                      
+800730e8  UART_RX_place                        
+800730ec  UART_TX_add                          
+800730f0  UART_TX_remove                       
+800730f8  ulStatus                             
+800730fc  epStatus                             
+80073100  g_bUSBTimerInitialized               
+80073104  g_ulCurrentUSBTick                   
+80073108  g_ulUSBSOFCount                      
+8007310c  _lock                                
+80073110  _unlock                              
+80073114  _Fenv                                
+80073118  _Tls_setup__Fenv                     
 87fffff0  __stack                              
 87fffff8  __STACK_END                          
 ffffffff  __binit__                            
@@ -2561,4 +2575,4 @@ UNDEFED   __TI_CINIT_Limit
 UNDEFED   __TI_Handler_Table_Base              
 UNDEFED   __TI_Handler_Table_Limit             
 
-[1148 symbols]
+[1154 symbols]

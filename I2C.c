@@ -76,9 +76,6 @@ void Init_I2C_Module0(void)
     /* Configure I2C bus frequency. */
     I2CMasterInitExpClk(SOC_I2C_0_REGS, I2C_SYS_CLK_48MHZ, I2C_INTERNAL_CLK_12MHZ, 200000);
 
-    /* Set I2C slave address. */
-    I2CMasterSlaveAddrSet(SOC_I2C_0_REGS, I2C_PMIC_ADDRESS);
-
     /* Bring I2C out of reset. */
     I2CMasterEnable(SOC_I2C_0_REGS);
 
@@ -110,7 +107,7 @@ void I2C_InterruptConfigure0(void)
  * Reads data from I2C0 bus.
  *                                                                            */
 /******************************************************************************/
-unsigned char I2C_SendReceiveData0(unsigned char* write, unsigned char BytesToWrite, unsigned char* read, unsigned char BytesToRead)
+unsigned char I2C_SendReceiveData0(unsigned char address, unsigned char* write, unsigned char BytesToWrite, unsigned char* read, unsigned char BytesToRead)
 {
 	I2C_0_Buffers.p_Transmit = write;
 	I2C_0_Buffers.BytesTransmitted = 0;
@@ -118,6 +115,9 @@ unsigned char I2C_SendReceiveData0(unsigned char* write, unsigned char BytesToWr
 	I2C_0_Buffers.p_Receive = read;
 	I2C_0_Buffers.BytesReceived = 0;
 	I2C_0_Buffers.ReceiveBytes = BytesToRead;
+
+    /* Set I2C slave address. */
+    I2CMasterSlaveAddrSet(SOC_I2C_0_REGS, address);
 
 	I2CSetDataCount(SOC_I2C_0_REGS, I2C_0_Buffers.TransmitBytes);
 

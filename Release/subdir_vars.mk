@@ -8,6 +8,7 @@ C_SRCS += \
 ../AUDIO.c \
 ../BMP.c \
 ../CMD.c \
+../EEPROM.c \
 ../EMMC.c \
 ../FRAM.c \
 ../GPIO.c \
@@ -39,6 +40,7 @@ OBJS += \
 ./AUDIO.obj \
 ./BMP.obj \
 ./CMD.obj \
+./EEPROM.obj \
 ./EMMC.obj \
 ./FRAM.obj \
 ./GPIO.obj \
@@ -70,6 +72,7 @@ C_DEPS += \
 ./AUDIO.pp \
 ./BMP.pp \
 ./CMD.pp \
+./EEPROM.pp \
 ./EMMC.pp \
 ./FRAM.pp \
 ./GPIO.pp \
@@ -101,6 +104,7 @@ C_DEPS__QUOTED += \
 "AUDIO.pp" \
 "BMP.pp" \
 "CMD.pp" \
+"EEPROM.pp" \
 "EMMC.pp" \
 "FRAM.pp" \
 "GPIO.pp" \
@@ -132,6 +136,7 @@ OBJS__QUOTED += \
 "AUDIO.obj" \
 "BMP.obj" \
 "CMD.obj" \
+"EEPROM.obj" \
 "EMMC.obj" \
 "FRAM.obj" \
 "GPIO.obj" \
@@ -163,6 +168,7 @@ C_SRCS__QUOTED += \
 "../AUDIO.c" \
 "../BMP.c" \
 "../CMD.c" \
+"../EEPROM.c" \
 "../EMMC.c" \
 "../FRAM.c" \
 "../GPIO.c" \

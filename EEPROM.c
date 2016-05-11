@@ -11,20 +11,27 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to configure and control the PMIC (TPS65217C).
+/* Contains functions to comunicate with the onboard EEPROM (24LC32A).
  *                                                                            */
 /******************************************************************************/
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include <string.h>
+
+#include "beaglebone.h"
 #include "gpio_v2.h"
+#include "hw_cm_per.h"
+#include "hw_cm_wkup.h"
 #include "hw_types.h"
+#include "pin_mux.h"
 #include "soc_AM335x.h"
 
+#include "EEPROM.h"
+#include "GPIO.h"
 #include "I2C.h"
 #include "MISC.h"
-#include "PMIC.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -33,69 +40,36 @@
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+unsigned char EEPROM_Contents[16];
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
 
 /******************************************************************************/
-/* Init_PMIC
+/* Init_EEPROM
  *
- * Initializes the PMIC registers.
+ * Initializes the EEPROM.
  *                                                                            */
 /******************************************************************************/
-void Init_PMIC(void)
+void Init_EEPROM(void)
 {
-	unsigned char temp;
-
-	PMIC_ReadRegister(CHIPID, &temp);
-
-	PMIC_ReadRegister(PPATH, &temp);
-	temp |= 0x0D;
-	PMIC_WriteRegister(PPATH, &temp);
-
-	/* set VDD_MPU and VDD_CORE to 1.400 so we can clock at turbo */
-	PMIC_ReadRegister(DEFDCDC2, &temp);
-	if(temp != 0x14)
-	{
-		temp = DEFDCDC2 ^ PROTECTION_PASSWORD;
-		PMIC_WriteRegister(PASSWORD, &temp); // 1. Write the address of the destination register, XORed with the protection password (0x7Dh)
-		temp = 0x14;
-		PMIC_WriteRegister(DEFDCDC2, &temp); // 2. Write to the password protected register
-		temp = DEFDCDC2 ^ PROTECTION_PASSWORD;
-		PMIC_WriteRegister(PASSWORD, &temp); // 3. Write the address of the destination register, XORed with the protection password (0x7Dh)
-		temp = 0x14;
-		PMIC_WriteRegister(DEFDCDC2, &temp); // 4. Write to the password protected register
-		PMIC_ReadRegister(DEFDCDC2, &temp);
-	}
-
-	PMIC_ReadRegister(DEFDCDC3, &temp);
-	if(temp != 0x14)
-	{
-		temp = DEFDCDC3 ^ PROTECTION_PASSWORD;
-		PMIC_WriteRegister(PASSWORD, &temp); // 1. Write the address of the destination register, XORed with the protection password (0x7Dh)
-		temp = 0x14;
-		PMIC_WriteRegister(DEFDCDC3, &temp); // 2. Write to the password protected register
-		temp = DEFDCDC3 ^ PROTECTION_PASSWORD;
-		PMIC_WriteRegister(PASSWORD, &temp); // 3. Write the address of the destination register, XORed with the protection password (0x7Dh)
-		temp = 0x14;
-		PMIC_WriteRegister(DEFDCDC3, &temp); // 4. Write to the password protected register
-		PMIC_ReadRegister(DEFDCDC3, &temp);
-	}
+	EEPROM_ReadBuffer(0, EEPROM_Contents, sizeof(EEPROM_Contents));
 }
 
 /******************************************************************************/
-/* PMIC_ReadRegister
+/* EEPROM_ReadAddress
  *
- * The function reads a byte from the PMIC at the register.
+ * The function reads a byte from the EEPROM address.
  * 																			  */
 /******************************************************************************/
-unsigned char PMIC_ReadRegister(ENUM_PMIC_ADDRESS reg, unsigned char* data)
+unsigned char EEPROM_ReadAddress(unsigned short address, unsigned char* data)
 {
-	unsigned char write[1];
+	unsigned char write[2];
 
-	write[0] = reg;
-	if(I2C_SendReceiveData0(I2C_PMIC_ADDRESS, write, 1, data, 1))
+	write[0] = address >> 8;
+	write[1] = (unsigned char) address;
+	if(I2C_SendReceiveData0(I2C_EEPROM_ADDRESS, write, 2, data, 1))
 	{
 		return TRUE;
 	}
@@ -103,22 +77,67 @@ unsigned char PMIC_ReadRegister(ENUM_PMIC_ADDRESS reg, unsigned char* data)
 }
 
 /******************************************************************************/
-/* PMIC_WriteRegister
+/* EEPROM_WriteAddress
  *
- * The function writes a byte to the PMIC at the register.
+ * The function writes a byte from the EEPROM address.
  * 																			  */
 /******************************************************************************/
-unsigned char PMIC_WriteRegister(ENUM_PMIC_ADDRESS reg, unsigned char* data)
+unsigned char EEPROM_WriteAddress(unsigned short address, unsigned char* data)
 {
-	unsigned char write[1];
+	unsigned char write[3];
 
-	write[0] = reg;
-	write[1] = *data;
-	if(I2C_SendReceiveData0(I2C_PMIC_ADDRESS, write, 2, (unsigned char *) &dummy, 0))
+	write[0] = address >> 8;
+	write[1] = (unsigned char) address;
+	write[2] = *data;
+	if(I2C_SendReceiveData0(I2C_EEPROM_ADDRESS, write, 3, (unsigned char *) &dummy, 0))
 	{
 		return TRUE;
 	}
 	return FALSE;
+}
+
+/******************************************************************************/
+/* EEPROM_ReadBuffer
+ *
+ * The function reads a buffer from the EEPROM address.
+ * 																			  */
+/******************************************************************************/
+unsigned char EEPROM_ReadBuffer(unsigned short address, unsigned char* data, unsigned short bytes)
+{
+	unsigned short temp_address = address;
+	while(bytes)
+	{
+		if(!EEPROM_ReadAddress(temp_address, data))
+		{
+			return FAIL;
+		}
+		temp_address++;
+		data++;
+		bytes--;
+	}
+	return PASS;
+}
+
+/******************************************************************************/
+/* EEPROM_WriteBuffer
+ *
+ * The function writes a buffer to the EEPROM address.
+ * 																			  */
+/******************************************************************************/
+unsigned char EEPROM_WriteBuffer(unsigned short address, unsigned char* data, unsigned short bytes)
+{
+	unsigned short temp_address = address;
+	while(bytes)
+	{
+		if(!EEPROM_WriteAddress(temp_address, data))
+		{
+			return FAIL;
+		}
+		temp_address++;
+		data++;
+		bytes--;
+	}
+	return PASS;
 }
 
 /******************************* End of file *********************************/

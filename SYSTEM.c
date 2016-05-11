@@ -27,6 +27,7 @@
 #include "ADC.h"
 #include "AUDIO.h"
 #include "CMD.h"
+#include "EEPROM.h"
 #include "FRAM.h"
 #include "GPIO.h"
 #include "GUI.h"
@@ -101,6 +102,7 @@ void Init_Modules(void)
 	GUI_DrawInitialScreenProgress(50);
 	Init_Test();
 	GUI_DrawInitialScreenProgress(55);
+	Init_EEPROM();
 
 	/* load bitmaps and other items to RAM_G */
 	GUI_LoadItemToRAMG(SD_CARD_SYMBOL);

@@ -31,6 +31,13 @@ CMD.obj: ../CMD.c $(GEN_OPTS) $(GEN_HDRS)
 	@echo 'Finished building: $<'
 	@echo ' '
 
+EEPROM.obj: ../EEPROM.c $(GEN_OPTS) $(GEN_HDRS)
+	@echo 'Building file: $<'
+	@echo 'Invoking: ARM Compiler'
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6/bin/armcl" -mv7A8 --code_state=32 --abi=eabi -me -Ooff --fp_mode=relaxed --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include" --include_path="C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6/include" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/hw" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a/am335x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/FT81x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/fatfs/ff12/src" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/WAV_Audio" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Bitmaps" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler" -g --define=_INLINE --define=am335x --diag_warning=225 --preproc_with_compile --preproc_dependency="EEPROM.pp" $(GEN_OPTS__FLAG) "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
 EMMC.obj: ../EMMC.c $(GEN_OPTS) $(GEN_HDRS)
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Compiler'

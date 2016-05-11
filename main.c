@@ -14,9 +14,7 @@
 /* TODOs
  * ---------------------------------------------------------------------------
  * Fix WAV playing.
- * Add SD card code.
  * Add EMMC code.
- * Add FAT32 library and fix it up.
  * Add PWM (for IR).
  * Add IR decoding.
  * Add RF 315MHZ code.

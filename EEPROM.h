@@ -11,55 +11,45 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to configure and control the I2C bus.
+/* Contains functions to comunicate with the onboard EEPROM (24LC32A).
+ *
+ * Note**** the WP pin is pulled high (disabling write) so TP4 must be pulled
+ *  low externally to burn a new serial number.
  *                                                                            */
 /******************************************************************************/
+
+#ifndef _EEPROM_H_
+#define _EEPROM_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
 
-#ifndef __I2C_H_
-#define __I2C_H_
-
 /******************************************************************************/
-/* Structure Declaration                                                      */
+/* I2C_EEPROM_ADDRESS
+ *
+ * This is the I2C address for the EEPROM.
+ * 							                                                  */
 /******************************************************************************/
-typedef struct t_i2c_data
-{
-	unsigned char* p_Receive;
-	unsigned char ReceiveBytes;
-	unsigned char BytesReceived;
-	unsigned char* p_Transmit;
-	unsigned char TransmitBytes;
-	unsigned char BytesTransmitted;
-}TYPE_I2C_DATA;
-
-/******************************************************************************/
-/* Pin Definitions			                                                  */
-/******************************************************************************/
+#define I2C_EEPROM_ADDRESS 0x50
 
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
-#define I2C_SYS_CLK_48MHZ             (48000000u)
-#define I2C_INTERNAL_CLK_12MHZ        (12000000u)
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-extern TYPE_I2C_DATA I2C_0_Buffers;
+extern unsigned char EEPROM_Contents[16];
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_I2C(void);
-void Init_I2C_Module0(void);
-void I2C_InterruptConfigure0(void);
-unsigned char I2C_SendReceiveData0(unsigned char address, unsigned char* write, unsigned char BytesToWrite, unsigned char* read, unsigned char BytesToRead);
-void I2C_SetFailFlag0(void);
-void I2C_ClearFailFlag0(void);
-unsigned char I2C_GetFailFlag0(void);
+void Init_EEPROM(void);
+unsigned char EEPROM_ReadAddress(unsigned short address, unsigned char* data);
+unsigned char EEPROM_WriteAddress(unsigned short address, unsigned char* data);
+unsigned char EEPROM_ReadBuffer(unsigned short address, unsigned char* data, unsigned short bytes);
+unsigned char EEPROM_WriteBuffer(unsigned short address, unsigned char* data, unsigned short bytes);
 
 #endif
 /******************************* End of file *********************************/
