@@ -32,6 +32,8 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include <string.h>
+
 #include "cache.h"
 #include "FT_Gpu.h"
 #include "hw_control_AM335x.h"
@@ -71,13 +73,6 @@ static FIL fileWrite;
 /******************************************************************************/
 void main (void)
 {
-	volatile unsigned int initFlg = 1;
-	volatile unsigned int i = 0;
-	unsigned char result;
-    unsigned int byteswritten = 0;
-    unsigned char data1[256] = "David was here for testing.";
-
-
 	unsigned char flags;
 	unsigned char tags;
 	unsigned char mask;
@@ -103,6 +98,8 @@ void main (void)
 
     while(1)
     {
+    	unsigned long temp = 0;
+
     	/* toggle testpoint for timing */
     	TEST_Togglepoint2();
 
@@ -215,46 +212,40 @@ void main (void)
 			}
 		}
 
-		if((HSMMCSDCardPresent(&ctrlInfo)) == 1)
+		/* check for SD card activity */
+		if(((SD_IsCardInserted()) && (SD_GetCardStatus() == CARD_NOTPRESENT)) || (!(SD_IsCardInserted()) && (SD_GetCardStatus() == CARD_PRESENT)))
 		{
-			if(initFlg)
-			{
-				HSMMCSDFsMount(0, &sdCard);
-				result = f_mkdir("/folder1");
-				result = f_mkdir("/folder1/folder2");
-				result = f_open (&fileWrite, "/folder1/folder2/file.txt", FA_WRITE | FA_CREATE_ALWAYS);
-				result = f_write (&fileWrite, data1, 256, &byteswritten);
-				result = f_close (&fileWrite);
-				initFlg = 0;
-				Init_USB();
-			}
+			/* check for card activity */
+			SD_SetCardActionFlag();
 		}
-		else
+
+		/* check for card Action needed */
+		if(SD_GetCardActionFlag())
 		{
-
-			i = (i + 1) & 0xFFF;
-
-			if(i == 1)
+			/* there was a card removed or inserted */
+			if(SD_IsCardInserted())
 			{
-				 //ConsoleUtilsPrintf("Please insert the card \n\r");
+				Init_USB0();
+				sprintf(FileDataBuffer, "Data log: \r\n");
+				temp = strlen(FileDataBuffer);
+				SD_HSMMCSDFsMount(0, &sdCard);
+				USB_InterruptEnable0(OFF);
+				Result = f_mkdir("/System_Data");
+				Result = f_mkdir("/System_Data/System_Log");
+				Result = f_open (&fileWrite, "/System_Data/System_Log/Log.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
+				Result = f_write (&fileWrite, FileDataBuffer, temp, &BytesWritten);
+				Result = f_close (&fileWrite);
+				USB_InterruptEnable0(ON);
+				SD_SetCardStatus(CARD_PRESENT);
+				GUI_ScreenRefresh();
 			}
-
-			if(initFlg != 1)
+			else
 			{
-				 /* Reinitialize all the state variables */
-				 callbackOccured = 0;
-				 xferCompFlag = 0;
-				 dataTimeout = 0;
-				 cmdCompFlag = 0;
-				 cmdTimeout = 0;
-
-				 /* Initialize the MMCSD controller */
-				 MMCSDCtrlInit(&ctrlInfo);
-
-				 MMCSDIntEnable(&ctrlInfo);
+				SD_SetCardStatus(CARD_NOTPRESENT);
+				GUI_ScreenRefresh();
+				SD_ReInitialize();
 			}
-
-			initFlg = 1;
+			SD_ClearCardActionFlag();
 		}
     }
 }

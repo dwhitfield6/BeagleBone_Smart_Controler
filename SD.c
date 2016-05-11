@@ -40,6 +40,7 @@
 #include "GPIO.h"
 #include "INTERRUPTS.h"
 #include "LEDS.h"
+#include "RTCC.h"
 #include "SD.h"
 
 /******************************************************************************/
@@ -49,27 +50,15 @@
 /******************************************************************************/
 /* Private Variable                                                           */
 /******************************************************************************/
-/* EDMA callback function array */
-static void (*cb_Fxn[EDMA3_NUM_TCC]) (unsigned int tcc, unsigned int status);
-
-/*****************************************************************************
-This buffer holds the full path to the current working directory.  Initially
-it is root ("/").
-******************************************************************************/
-static char g_cCwdBuf[PATH_BUF_SIZE] = "/";
-static char g_cCmdBuf[512];
-
-/*****************************************************************************
-A temporary data buffer used for write file paths
-******************************************************************************/
-static char g_cWrBuf[PATH_BUF_SIZE] = "/";
-
+static unsigned char SD_CardActionFlag = FALSE;
+static ENUM_SD_CARD_STATE SD_CardState = CARD_NOTPRESENT;
+static unsigned char SD_CardInitialized = FALSE;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 volatile unsigned int sdBlkSize = HSMMCSD_BLK_SIZE;
-volatile unsigned int callbackOccured = 0;
+volatile unsigned int SD_callbackOccured = 0;
 volatile unsigned int xferCompFlag = 0;
 volatile unsigned int dataTimeout = 0;
 volatile unsigned int cmdCompFlag = 0;
@@ -77,12 +66,18 @@ volatile unsigned int cmdTimeout = 0;
 volatile unsigned int errFlag = 0;
 mmcsdCtrlInfo  ctrlInfo;
 mmcsdCardInfo sdCard;
-fatDevice fat_devices[DRIVE_NUM_MAX];
+TYPE_FAT_DEVICE fat_devices[DRIVE_NUM_MAX];
 volatile unsigned int g_sPState = 0;
 volatile unsigned int g_sCState = 0;
 
 #pragma DATA_ALIGN(g_sFatFs, SOC_CACHELINE_SIZE);
 static FATFS g_sFatFs;
+
+void (*cb_Fxn[EDMA3_NUM_TCC]) (unsigned int tcc, unsigned int status);
+char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
+unsigned long BytesWritten;
+unsigned long BytesRead;
+FRESULT Result;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -96,20 +91,11 @@ static FATFS g_sFatFs;
 /******************************************************************************/
 void Init_SD(void)
 {
-	unsigned long temp;
-
-	/* check the sizes of each structure to make sure it is divisible by 64 */
-	temp = sizeof(FATFS);
-	temp = sizeof(_FDID);
-	temp = sizeof(FIL);
-	temp = sizeof(DIR);
-	temp = sizeof(FILINFO);
-
     /* Configure the EDMA clocks. */
     EDMAModuleClkConfig();
 
     /* Configure EDMA to service the HSMMCSD events. */
-    HSMMCSDEdmaInit();
+    SD_DMA_HSMMCSD();
 
     /* Perform pin-mux for HSMMCSD pins. */
     HSMMCSDPinMuxSetup();
@@ -118,27 +104,60 @@ void Init_SD(void)
     HSMMCSDModuleClkConfig();
 
     /* Basic controller initializations */
-    HSMMCSDControllerSetup();
+    SD_HSMMCSDControllerSetup();
 
     /* Initialize the MMCSD controller */
     MMCSDCtrlInit(&ctrlInfo);
 
     MMCSDIntEnable(&ctrlInfo);
+
+    SD_SetCardActionFlag();
 }
 
-/*-----------------------------------------------------------------------*/
-/* Initialize Disk Drive                                                 */
-/*-----------------------------------------------------------------------*/
+/******************************************************************************/
+/* SD_IsCardInserted
+ *
+ * Returns TRUE if there is an SD card inserted.
+ *                                                                            */
+/******************************************************************************/
+unsigned char SD_IsCardInserted(void)
+{
+	if((HSMMCSDCardPresent(&ctrlInfo)) == 1)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
 
-DSTATUS disk_initialize(BYTE bValue)
+/******************************************************************************/
+/* SD_ReInitialize
+ *
+ * Re-Initializes all SD card variables.
+ *                                                                            */
+/******************************************************************************/
+void SD_ReInitialize(void)
+{
+	SD_callbackOccured = 0;
+	SD_ClearInitialized();
+	xferCompFlag = 0;
+	dataTimeout = 0;
+	cmdCompFlag = 0;
+	cmdTimeout = 0;
+
+	/* Initialize the MMCSD controller */
+	MMCSDCtrlInit(&ctrlInfo);
+	MMCSDIntEnable(&ctrlInfo);
+}
+
+/******************************************************************************/
+/* SD_DiskInitialize
+ *
+ * Initializes the SD disk
+ *                                                                            */
+/******************************************************************************/
+unsigned char SD_DiskInitialize(unsigned char bValue)
 {
 	unsigned int status;
-
-	if (DRIVE_NUM_MAX <= bValue)
-	{
-		return STA_NODISK;
-	}
-
 
 	if ((DRIVE_NUM_MMCSD == bValue) && (fat_devices[bValue].initDone != 1))
 	{
@@ -155,29 +174,6 @@ DSTATUS disk_initialize(BYTE bValue)
 		}
 		else
 		{
-#define DEBUG 0
-#if DEBUG
-			if (card->cardType == MMCSD_CARD_SD)
-			{
-				UARTPuts("\r\nSD Card ", 9U);
-				UARTPuts("version : ",11U);
-				UARTPutNum(card->sd_ver);
-
-				if (card->highCap)
-				{
-					UARTPuts(", High Capacity", 20U);
-				}
-
-				if (card->tranSpeed == SD_TRANSPEED_50MBPS)
-				{
-					UARTPuts(", High Speed", 15U);
-				}
-			}
-			else if (card->cardType == MMCSD_CARD_MMC)
-			{
-				UARTPuts("\r\nMMC Card ", 10U);
-			}
-#endif
 			/* Set bus width */
 			if (card->cardType == MMCSD_CARD_SD)
 			{
@@ -190,15 +186,27 @@ DSTATUS disk_initialize(BYTE bValue)
 
 		fat_devices[bValue].initDone = 1;
 	}
-
 	return 0;
 }
 
-/*-----------------------------------------------------------------------*/
-/* This function reads sector(s) from the disk drive                     */
-/*-----------------------------------------------------------------------*/
+/******************************************************************************/
+/* SD_DiskStatus
+ *
+ * Returns the disk status.
+ *                                                                            */
+/******************************************************************************/
+unsigned char SD_DiskStatus (unsigned char drv)
+{
+	return 0;
+}
 
-DRESULT disk_read(BYTE drv, BYTE* buff, DWORD sector, BYTE count)
+/******************************************************************************/
+/* SD_DiskRead
+ *
+ * Reads sectors from the SD card.
+ *                                                                            */
+/******************************************************************************/
+ENUM_DISK_RESULT SD_DiskRead(unsigned char drv, unsigned char* buff, unsigned long sector, unsigned char count)
 {
 	if (drv == DRIVE_NUM_MMCSD)
 	{
@@ -210,16 +218,16 @@ DRESULT disk_read(BYTE drv, BYTE* buff, DWORD sector, BYTE count)
         	return RES_OK;
 		}
     }
-
     return RES_ERROR;
 }
 
-
-
-/*-----------------------------------------------------------------------*/
-/* This function writes sector(s) to the disk drive                     */
-/*-----------------------------------------------------------------------*/
-DRESULT disk_write (BYTE ucDrive, const BYTE* buff, DWORD sector, BYTE count)
+/******************************************************************************/
+/* SD_DiskWrite
+ *
+ * Writes sectors from the SD card.
+ *                                                                            */
+/******************************************************************************/
+ENUM_DISK_RESULT SD_DiskWrite (unsigned char ucDrive, const unsigned char* buff, unsigned long sector, unsigned char count)
 {
 	if (ucDrive == DRIVE_NUM_MMCSD)
 	{
@@ -234,44 +242,53 @@ DRESULT disk_write (BYTE ucDrive, const BYTE* buff, DWORD sector, BYTE count)
     return RES_ERROR;
 }
 
-/*-----------------------------------------------------------------------*/
-/* Miscellaneous Functions                                               */
-/*-----------------------------------------------------------------------*/
-
-DRESULT disk_ioctl ( BYTE drv, BYTE ctrl, void *buff)
+/******************************************************************************/
+/* SD_DiskIOCTL
+ *
+ * Checks the SD card control register.
+ *                                                                            */
+/******************************************************************************/
+ENUM_DISK_RESULT SD_DiskIOCTL(unsigned char drv, unsigned char ctrl, void *buff)
 {
 	return RES_OK;
 }
 
-/*---------------------------------------------------------*/
-/* User Provided Timer Function for FatFs module           */
-/*---------------------------------------------------------*/
-/* This is a real time clock service to be called from     */
-/* FatFs module. Any valid time must be returned even if   */
-/* the system does not support a real time clock.          */
-
-DWORD get_fattime (void)
+/******************************************************************************/
+/* SD_GetFatTime
+ *
+ * Returns the FAT structured RTC time.
+ *                                                                            */
+/******************************************************************************/
+unsigned long SD_GetFatTime(void)
 {
+	unsigned long temp = 0;
 
-    return    ((CurrentTimeDate.Date.Year-1980) << 25) // Year = 2007
-            | (CurrentTimeDate.Date.Month << 21)           // Month = June
-            | (CurrentTimeDate.Date.Day << 16)           // Day = 5
-            | (CurrentTimeDate.Time.Hour << 11)           // Hour = 11
-            | (CurrentTimeDate.Time.Minute << 5)            // Min = 38
-            | (CurrentTimeDate.Time.Second >> 1)             // Sec = 0
-            ;
+	temp = (CurrentTimeDate.Date.Year-1980) << 25;
+	temp |= CurrentTimeDate.Date.Month << 21;
+	temp |= CurrentTimeDate.Date.Day << 16;
+	temp |= CurrentTimeDate.Time.Hour << 11;
+	temp |= CurrentTimeDate.Time.Minute << 5;
+	temp |= CurrentTimeDate.Time.Second >> 1;
+	return temp;
 }
 
-
-/*
- * Check command status
- */
-
-unsigned int HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl)
+/******************************************************************************/
+/* SD_HSMMCSDCmdStatusGet
+ *
+ * Checks the command status.
+ *                                                                            */
+/******************************************************************************/
+unsigned int SD_HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl)
 {
     unsigned int status = 0;
 
-    while ((cmdCompFlag == 0) && (cmdTimeout == 0));
+    while ((cmdCompFlag == 0) && (cmdTimeout == 0))
+    {
+    	if((!SD_IsCardInserted()) || (!SD_IsInitialized()))
+    	{
+    		break;
+    	}
+    }
 
     if (cmdCompFlag)
     {
@@ -288,12 +305,24 @@ unsigned int HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl)
     return status;
 }
 
-unsigned int HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl)
+/******************************************************************************/
+/* SD_HSMMCSDXferStatusGet
+ *
+ * Gets the SD transfer status.
+ *                                                                            */
+/******************************************************************************/
+unsigned int SD_HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl)
 {
     unsigned int status = 0;
     volatile unsigned int timeOut = 0xFFFF;
 
-    while ((xferCompFlag == 0) && (dataTimeout == 0));
+    while ((xferCompFlag == 0) && (dataTimeout == 0))
+    {
+    	if((!SD_IsCardInserted()) || (!SD_IsInitialized()))
+    	{
+    		break;
+    	}
+    }
 
     if (xferCompFlag)
     {
@@ -310,8 +339,8 @@ unsigned int HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl)
     /* Also, poll for the callback */
     if (HWREG(ctrl->memBase + MMCHS_CMD) & MMCHS_CMD_DP)
     {
-        while(callbackOccured == 0 && ((timeOut--) != 0));
-        callbackOccured = 0;
+        while(SD_callbackOccured == 0 && ((timeOut--) != 0));
+        SD_callbackOccured = 0;
 
         if(timeOut == 0)
         {
@@ -324,7 +353,13 @@ unsigned int HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl)
     return status;
 }
 
-void HSMMCSDRxDmaConfig(void *ptr, unsigned int blkSize, unsigned int nblks)
+/******************************************************************************/
+/* SD_HSMMCSDRxDmaConfig
+ *
+ * Configures the DMA for SD card receive.
+ *                                                                            */
+/******************************************************************************/
+void SD_HSMMCSDRxDmaConfig(void *ptr, unsigned int blkSize, unsigned int nblks)
 {
     EDMA3CCPaRAMEntry paramSet;
 
@@ -363,7 +398,13 @@ void HSMMCSDRxDmaConfig(void *ptr, unsigned int blkSize, unsigned int nblks)
     EDMA3EnableTransfer(EDMA_INST_BASE, MMCSD_RX_EDMA_CHAN, EDMA3_TRIG_MODE_EVENT);
 }
 
-void HSMMCSDTxDmaConfig(void *ptr, unsigned int blkSize, unsigned int blks)
+/******************************************************************************/
+/* SD_HSMMCSDTxDmaConfig
+ *
+ * Configures the DMA for SD card transmit.
+ *                                                                            */
+/******************************************************************************/
+void SD_HSMMCSDTxDmaConfig(void *ptr, unsigned int blkSize, unsigned int blks)
 {
     EDMA3CCPaRAMEntry paramSet;
 
@@ -402,231 +443,58 @@ void HSMMCSDTxDmaConfig(void *ptr, unsigned int blkSize, unsigned int blks)
     EDMA3EnableTransfer(EDMA_INST_BASE, MMCSD_TX_EDMA_CHAN, EDMA3_TRIG_MODE_EVENT);
 }
 
-void HSMMCSDXferSetup(mmcsdCtrlInfo *ctrl, unsigned char rwFlag, void *ptr, unsigned int blkSize, unsigned int nBlks)
+/******************************************************************************/
+/* SD_HSMMCSDXferSetup
+ *
+ * Configures the DMA for SD card for transmit and receive.
+ *                                                                            */
+/******************************************************************************/
+void SD_HSMMCSDXferSetup(mmcsdCtrlInfo *ctrl, unsigned char rwFlag, void *ptr, unsigned int blkSize, unsigned int nBlks)
 {
-    callbackOccured = 0;
+	SD_callbackOccured = 0;
     xferCompFlag = 0;
 
     if (rwFlag == 1)
     {
-        HSMMCSDRxDmaConfig(ptr, blkSize, nBlks);
+    	SD_HSMMCSDRxDmaConfig(ptr, blkSize, nBlks);
     }
     else
     {
-        HSMMCSDTxDmaConfig(ptr, blkSize, nBlks);
+        SD_HSMMCSDTxDmaConfig(ptr, blkSize, nBlks);
     }
 
     ctrl->dmaEnable = 1;
     HSMMCSDBlkLenSet(ctrl->memBase, blkSize);
 }
 
-
-/*
-** This function is used as a callback from EDMA3 Completion Handler.
-*/
-void callback(unsigned int tccNum, unsigned int status)
+/******************************************************************************/
+/* SD_DMA_Callback
+ *
+ * Function is used as a callback from EDMA3 Completion Handler.
+ *                                                                            */
+/******************************************************************************/
+void SD_DMA_Callback(unsigned int tccNum, unsigned int status)
 {
-    callbackOccured = 1;
+    SD_callbackOccured = 1;
     EDMA3DisableTransfer(EDMA_INST_BASE, tccNum, EDMA3_TRIG_MODE_EVENT);
 }
 
-void Edma3CompletionIsr(void)
+/******************************************************************************/
+/* SD_DMA_ConfigureInterrupt
+ *
+ * Configures SD card interrupts.
+ *                                                                            */
+/******************************************************************************/
+void SD_DMA_ConfigureInterrupt(void)
 {
-    volatile unsigned int pendingIrqs;
-    volatile unsigned int isIPR = 0;
-
-    unsigned int indexl;
-    unsigned int Cnt = 0;
-
-    indexl = 1;
-
-    isIPR = EDMA3GetIntrStatus(EDMA_INST_BASE);
-
-    if(isIPR)
-    {
-        while ((Cnt < EDMA3CC_COMPL_HANDLER_RETRY_COUNT)&& (indexl != 0u))
-        {
-            indexl = 0u;
-            pendingIrqs = EDMA3GetIntrStatus(EDMA_INST_BASE);
-
-            while (pendingIrqs)
-            {
-                if((pendingIrqs & 1u) == TRUE)
-                {
-                    /**
-                    * If the user has not given any callback function
-                    * while requesting the TCC, its TCC specific bit
-                    * in the IPR register will NOT be cleared.
-                    */
-                    /* here write to ICR to clear the corresponding IPR bits */
-
-                    EDMA3ClrIntr(EDMA_INST_BASE, indexl);
-
-                    if (cb_Fxn[indexl] != NULL)
-                    {
-                        (*cb_Fxn[indexl])(indexl, EDMA3_XFER_COMPLETE);
-                    }
-                }
-                ++indexl;
-                pendingIrqs >>= 1u;
-            }
-            Cnt++;
-        }
-    }
-}
-
-void Edma3CCErrorIsr(void)
-{
-    volatile unsigned int pendingIrqs;
-    volatile unsigned int evtqueNum = 0;  /* Event Queue Num */
-    volatile unsigned int isIPRH = 0;
-    volatile unsigned int isIPR = 0;
-    volatile unsigned int Cnt = 0u;
-    volatile unsigned int index;
-
-    pendingIrqs = 0u;
-    index = 1u;
-
-    isIPR  = EDMA3GetIntrStatus(EDMA_INST_BASE);
-    isIPRH = EDMA3IntrStatusHighGet(EDMA_INST_BASE);
-
-    if((isIPR | isIPRH ) || (EDMA3QdmaGetErrIntrStatus(EDMA_INST_BASE) != 0)
-        || (EDMA3GetCCErrStatus(EDMA_INST_BASE) != 0))
-    {
-        /* Loop for EDMA3CC_ERR_HANDLER_RETRY_COUNT number of time,
-         * breaks when no pending interrupt is found
-         */
-        while ((Cnt < EDMA3CC_ERR_HANDLER_RETRY_COUNT)
-                    && (index != 0u))
-        {
-            index = 0u;
-
-            if(isIPR)
-            {
-                   pendingIrqs = EDMA3GetErrIntrStatus(EDMA_INST_BASE);
-            }
-            else
-            {
-                   pendingIrqs = EDMA3ErrIntrHighStatusGet(EDMA_INST_BASE);
-            }
-
-            while (pendingIrqs)
-            {
-                   /*Process all the pending interrupts*/
-                   if(TRUE == (pendingIrqs & 1u))
-                   {
-                      /* Write to EMCR to clear the corresponding EMR bits.
-                       */
-                        /*Clear any SER*/
-
-                        if(isIPR)
-                        {
-                             EDMA3ClrMissEvt(EDMA_INST_BASE, index);
-                        }
-                        else
-                        {
-                             EDMA3ClrMissEvt(EDMA_INST_BASE, index + 32);
-                        }
-                   }
-                   ++index;
-                   pendingIrqs >>= 1u;
-            }
-            index = 0u;
-            pendingIrqs = EDMA3QdmaGetErrIntrStatus(EDMA_INST_BASE);
-            while (pendingIrqs)
-            {
-                /*Process all the pending interrupts*/
-                if(TRUE == (pendingIrqs & 1u))
-                {
-                    /* Here write to QEMCR to clear the corresponding QEMR bits*/
-                    /*Clear any QSER*/
-                    EDMA3QdmaClrMissEvt(EDMA_INST_BASE, index);
-                }
-                ++index;
-                pendingIrqs >>= 1u;
-            }
-            index = 0u;
-
-
-            pendingIrqs = EDMA3GetCCErrStatus(EDMA_INST_BASE);
-            if (pendingIrqs != 0u)
-            {
-            /* Process all the pending CC error interrupts. */
-            /* Queue threshold error for different event queues.*/
-            for (evtqueNum = 0u; evtqueNum < SOC_EDMA3_NUM_EVQUE; evtqueNum++)
-                {
-                if((pendingIrqs & (1u << evtqueNum)) != 0u)
-                {
-                        /* Clear the error interrupt. */
-                        EDMA3ClrCCErr(EDMA_INST_BASE, (1u << evtqueNum));
-                    }
-                }
-
-            /* Transfer completion code error. */
-            if ((pendingIrqs & (1 << EDMA3CC_CCERR_TCCERR_SHIFT)) != 0u)
-            {
-                EDMA3ClrCCErr(EDMA_INST_BASE,
-                                      (0x01u << EDMA3CC_CCERR_TCCERR_SHIFT));
-            }
-                ++index;
-            }
-            Cnt++;
-        }
-    }
-
-}
-
-void HSMMCSDIsr(void)
-{
-    volatile unsigned int status = 0;
-
-    status = HSMMCSDIntrStatusGet(ctrlInfo.memBase, 0xFFFFFFFF);
-
-    HSMMCSDIntrStatusClear(ctrlInfo.memBase, status);
-
-    if (status & HS_MMCSD_STAT_CMDCOMP)
-    {
-        cmdCompFlag = 1;
-    }
-
-    if (status & HS_MMCSD_STAT_ERR)
-    {
-        errFlag = status & 0xFFFF0000;
-
-        if (status & HS_MMCSD_STAT_CMDTIMEOUT)
-        {
-            cmdTimeout = 1;
-        }
-
-        if (status & HS_MMCSD_STAT_DATATIMEOUT)
-        {
-            dataTimeout = 1;
-        }
-    }
-
-    if (status & HS_MMCSD_STAT_TRNFCOMP)
-    {
-        xferCompFlag = 1;
-    }
-}
-
-
-/*
-** This function configures the AINTC to receive EDMA3 interrupts.
-*/
-void EDMA3AINTCConfigure(void)
-{
-    /* Initializing the ARM Interrupt Controller. */
-    IntAINTCInit();
-
     /* Registering EDMA3 Channel Controller transfer completion interrupt.  */
-    IntRegister(EDMA_COMPLTN_INT_NUM, Edma3CompletionIsr);
+    IntRegister(EDMA_COMPLTN_INT_NUM, SD_DMA_ISR_EDMA3Complete);
 
     /* Setting the priority for EDMA3CC completion interrupt in AINTC. */
     IntPrioritySet(EDMA_COMPLTN_INT_NUM, DMA_COMPLETE_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Registering EDMA3 Channel Controller Error Interrupt. */
-    IntRegister(EDMA_ERROR_INT_NUM, Edma3CCErrorIsr);
+    IntRegister(EDMA_ERROR_INT_NUM, SD_DMA_ISR_EDMA3Error);
 
     /* Setting the priority for EDMA3CC Error interrupt in AINTC. */
     IntPrioritySet(EDMA_ERROR_INT_NUM, DMA_ERROR_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
@@ -638,7 +506,7 @@ void EDMA3AINTCConfigure(void)
     IntSystemEnable(EDMA_ERROR_INT_NUM);
 
     /* Registering HSMMC Interrupt handler */
-    IntRegister(MMCSD_INT_NUM, HSMMCSDIsr);
+    IntRegister(MMCSD_INT_NUM, SD_0_ISR);
 
     /* Setting the priority for EDMA3CC completion interrupt in AINTC. */
     IntPrioritySet(MMCSD_INT_NUM, SD_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
@@ -646,28 +514,33 @@ void EDMA3AINTCConfigure(void)
     /* Enabling the HSMMC interrupt in AINTC. */
     IntSystemEnable(MMCSD_INT_NUM);
 
-    /* Enabling IRQ in CPSR of ARM processor. */
-    IntMasterIRQEnable();
 }
 
-
-/*
-** Powering up, initializing and registering interrupts for EDMA.
-*/
-
-void EDMA3Initialize(void)
+/******************************************************************************/
+/* SD_DMA_Init
+ *
+ * Initializes the DMA for the SD card.
+ *                                                                            */
+/******************************************************************************/
+void SD_DMA_Init(void)
 {
     /* Initialization of EDMA3 */
     EDMA3Init(EDMA_INST_BASE, EVT_QUEUE_NUM);
 
     /* Configuring the AINTC to receive EDMA3 interrupts. */
-    EDMA3AINTCConfigure();
+    SD_DMA_ConfigureInterrupt();
 }
 
-void HSMMCSDEdmaInit(void)
+/******************************************************************************/
+/* SD_DMA_HSMMCSD
+ *
+ * Initializes the DMA for the SD card.
+ *                                                                            */
+/******************************************************************************/
+void SD_DMA_HSMMCSD(void)
 {
     /* Initializing the EDMA. */
-    EDMA3Initialize();
+	SD_DMA_Init();
 
     /* Request DMA Channel and TCC for MMCSD Transmit*/
     EDMA3RequestChannel(EDMA_INST_BASE, EDMA3_CHANNEL_TYPE_DMA,
@@ -675,7 +548,7 @@ void HSMMCSDEdmaInit(void)
                         EVT_QUEUE_NUM);
 
     /* Registering Callback Function for TX*/
-    cb_Fxn[MMCSD_TX_EDMA_CHAN] = &callback;
+    cb_Fxn[MMCSD_TX_EDMA_CHAN] = &SD_DMA_Callback;
 
     /* Request DMA Channel and TCC for MMCSD Receive */
     EDMA3RequestChannel(EDMA_INST_BASE, EDMA3_CHANNEL_TYPE_DMA,
@@ -683,19 +556,22 @@ void HSMMCSDEdmaInit(void)
                         EVT_QUEUE_NUM);
 
     /* Registering Callback Function for RX*/
-    cb_Fxn[MMCSD_RX_EDMA_CHAN] = &callback;
+    cb_Fxn[MMCSD_RX_EDMA_CHAN] = &SD_DMA_Callback;
 }
 
-/*
-** Initialize the MMCSD controller structure for use
-*/
-void HSMMCSDControllerSetup(void)
+/******************************************************************************/
+/* SD_HSMMCSDControllerSetup
+ *
+ * Sets up the variables for SD card interface.
+ *                                                                            */
+/******************************************************************************/
+void SD_HSMMCSDControllerSetup(void)
 {
     ctrlInfo.memBase = MMCSD_INST_BASE;
     ctrlInfo.ctrlInit = HSMMCSDControllerInit;
-    ctrlInfo.xferSetup = HSMMCSDXferSetup;
-    ctrlInfo.cmdStatusGet = HSMMCSDCmdStatusGet;
-    ctrlInfo.xferStatusGet = HSMMCSDXferStatusGet;
+    ctrlInfo.xferSetup = SD_HSMMCSDXferSetup;
+    ctrlInfo.cmdStatusGet = SD_HSMMCSDCmdStatusGet;
+    ctrlInfo.xferStatusGet = SD_HSMMCSDXferStatusGet;
     /* Use the funciton HSMMCSDCDPinStatusGet() to use the card presence
        using the controller.
     */
@@ -715,32 +591,114 @@ void HSMMCSDControllerSetup(void)
     ctrlInfo.cdPinNum = HSMMCSD_CARD_DETECT_PINNUM;
     sdCard.ctrl = &ctrlInfo;
 
-    callbackOccured = 0;
+    SD_callbackOccured = 0;
     xferCompFlag = 0;
     dataTimeout = 0;
     cmdCompFlag = 0;
     cmdTimeout = 0;
 }
 
-void HSMMCSDFsMount(unsigned int driveNum, void *ptr)
+/******************************************************************************/
+/* SD_HSMMCSDFsMount
+ *
+ * Mounts the SD card file system.
+ *                                                                            */
+/******************************************************************************/
+void SD_HSMMCSDFsMount(unsigned int driveNum, void *ptr)
 {
-    strcpy(g_cCwdBuf, "/");
-    strcpy(g_cCmdBuf, "\0");
-    g_sPState = 0;
-    g_sCState = 0;
+	SD_SetInitialized();
     f_mount(&g_sFatFs, "", driveNum); // f_mount(driveNum, &g_sFatFs);
     fat_devices[driveNum].dev = ptr;
     fat_devices[driveNum].fs = &g_sFatFs;
     fat_devices[driveNum].initDone = 0;
 }
 
-/*-----------------------------------------------------------------------*/
-/* Returns the current status of a drive                                 */
-/*-----------------------------------------------------------------------*/
-
-DSTATUS disk_status (BYTE drv)
+/******************************************************************************/
+/* SD_SetCardActionFlag
+ *
+ * Sets the flag which states that a card was removed or inserted.
+ *                                                                            */
+/******************************************************************************/
+void SD_SetCardActionFlag(void)
 {
-	return 0;
+	SD_CardActionFlag = TRUE;
+}
+
+/******************************************************************************/
+/* SD_ClearCardActionFlag
+ *
+ * Clears the flag which states that a card was removed or inserted.
+ *                                                                            */
+/******************************************************************************/
+void SD_ClearCardActionFlag(void)
+{
+	SD_CardActionFlag = FALSE;
+}
+
+/******************************************************************************/
+/* SD_GetCardActionFlag
+ *
+ * Gets the flag which states that a card was removed or inserted.
+ *                                                                            */
+/******************************************************************************/
+unsigned char SD_GetCardActionFlag(void)
+{
+	return SD_CardActionFlag;
+}
+
+/******************************************************************************/
+/* SD_SetCardStatus
+ *
+ * Sets the SD card state.
+ *                                                                            */
+/******************************************************************************/
+void SD_SetCardStatus(ENUM_SD_CARD_STATE state)
+{
+	SD_CardState = state;
+}
+
+/******************************************************************************/
+/* SD_GetCardStatus
+ *
+ * Gets the SD card state.
+ *                                                                            */
+/******************************************************************************/
+ENUM_SD_CARD_STATE SD_GetCardStatus(void)
+{
+	return SD_CardState;
+}
+
+/******************************************************************************/
+/* SD_SetInitialized
+ *
+ * Sets the SD initization flag.
+ *                                                                            */
+/******************************************************************************/
+void SD_SetInitialized(void)
+{
+	SD_CardInitialized = TRUE;
+}
+
+/******************************************************************************/
+/* SD_ClearInitialized
+ *
+ * Clears the SD initization flag.
+ *                                                                            */
+/******************************************************************************/
+void SD_ClearInitialized(void)
+{
+	SD_CardInitialized = FALSE;
+}
+
+/******************************************************************************/
+/* SD_GetCardStatus
+ *
+ * Gets the SD card state.
+ *                                                                            */
+/******************************************************************************/
+unsigned char SD_IsInitialized(void)
+{
+	return SD_CardInitialized;
 }
 
 /******************************* End of file *********************************/
