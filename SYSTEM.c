@@ -22,12 +22,14 @@
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
 #include "interrupt.h"
+#include "ramdisk.h"
 #include "soc_AM335x.h"
 
 #include "ADC.h"
 #include "AUDIO.h"
 #include "CMD.h"
 #include "EEPROM.h"
+#include "EMMC.h"
 #include "FRAM.h"
 #include "GPIO.h"
 #include "GUI.h"
@@ -98,7 +100,11 @@ void Init_Modules(void)
 	GUI_DrawInitialScreenProgress(40);
 	Init_UART();
 	GUI_DrawInitialScreenProgress(45);
+#ifdef USE_SD_CARD
 	Init_SD();
+#endif
+	GUI_DrawInitialScreenProgress(47);
+	Init_EMMC();
 	GUI_DrawInitialScreenProgress(50);
 	Init_Test();
 	GUI_DrawInitialScreenProgress(55);
@@ -127,6 +133,11 @@ void Init_Modules(void)
 	GUI_DrawInitialScreenProgress(100);
 	GUI_DrawHomeScreen();
 	TMR_ResetBacklightTimer();
+
+#ifdef USE_RAM_DISK
+	RAM_disk_initialize();
+	Init_USB0();
+#endif
 }
 
 /******************************* End of file *********************************/

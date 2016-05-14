@@ -38,6 +38,7 @@
 #include <delay.h>
 #include <perf.h>
 
+#include "USB.h"
 //*****************************************************************************
 //
 //! \addtogroup msc_device_class_api

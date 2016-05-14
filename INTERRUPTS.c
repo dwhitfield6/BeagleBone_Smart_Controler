@@ -364,23 +364,42 @@ void SPI_1_ISR(void)
 void USB_0_ISR(void)
 {
     extern tUSBInstanceObject g_USBInstance[];
-
-    /* Get the controller interrupt status. */
+    unsigned int epStatus = 0;
+    unsigned int ulStatus = 0;
+    //
+    // Get the controller interrupt status.
+    //
     ulStatus = HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_1);
-
-    /* Get the EP interrupt status. */
+    //
+    // Get the EP interrupt status.
+    //
     epStatus = HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_0);
-
-    /* Clear the controller interrupt status. */
+    //
+    // Clear the controller interrupt status.
+    //
     HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_1) = ulStatus;
-
-    /* Clear the EP interrupt status. */
+    //
+    // Clear the EP interrupt status.
+    //
     HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_STATUS_0) = epStatus;
 
+#ifdef DMA_MODE
+    HWREG(USBSS_BASE + USBSS_IRQ_STATUS) =
+        HWREG(USBSS_BASE + USBSS_IRQ_STATUS);
+#endif
+    //
+    //Call the Interrupt Handler.
+    //
     USBDeviceIntHandlerInternal(0, ulStatus, &epStatus);
-
-    /* End of Interrupts. */
+    //
+    //End of Interrupts.
+    //
     HWREG(g_USBInstance[0].uiSubBaseAddr + USB_0_IRQ_EOI) = 0;
+
+#ifdef DMA_MODE
+    HWREG(USBSS_BASE + USBSS_IRQ_EOI) = 0;
+#endif
+
 }
 
 /******************************************************************************/

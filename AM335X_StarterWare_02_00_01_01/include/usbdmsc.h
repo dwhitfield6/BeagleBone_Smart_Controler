@@ -40,6 +40,14 @@ extern "C"
 
 //*****************************************************************************
 //
+// DMA Configuration.
+//
+//*****************************************************************************
+#define NUMBER_OF_ENDPOINTS     2 //Total number of send points(RX +TX) used in this USB configuration
+#define USB_MSC_BUFER_SIZE      512
+
+//*****************************************************************************
+//
 //! \addtogroup msc_device_class_api
 //! @{
 //

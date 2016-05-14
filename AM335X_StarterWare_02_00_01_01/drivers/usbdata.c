@@ -31,6 +31,8 @@
 // Flag to indicate whether or not we have been initialized.
 //
 //*****************************************************************************
+#pragma DATA_ALIGN(g_USBInstance, 64);
+#pragma DATA_SECTION(g_USBInstance, ".l3_memory");
 tUSBInstanceObject g_USBInstance[USB_NUM_INSTANCE];
 
 tUSBPerfInfo g_USBPerfInfo[5000];

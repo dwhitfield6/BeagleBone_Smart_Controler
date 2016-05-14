@@ -50,6 +50,8 @@
 #include "usb_msc_structs.h"
 #include "usbdmscglue.h"
 #include "cppi41dma.h"
+
+#include "USB.h"
 //*****************************************************************************
 //
 // The languages supported by this device.
@@ -162,9 +164,13 @@ const unsigned char * const g_pStringDescriptors[] =
 // function and the callback data set to our bulk instance structure.
 //
 //*****************************************************************************
+#pragma DATA_ALIGN(g_sMSCInstance, 64);
+#pragma DATA_SECTION(g_sMSCInstance, ".l3_memory");
 tMSCInstance g_sMSCInstance;
 
-const tUSBDMSCDevice g_sMSCDevice =
+#pragma DATA_ALIGN(g_sMSCDevice, 64);
+#pragma DATA_SECTION(g_sMSCDevice, ".l3_memory");
+tUSBDMSCDevice g_sMSCDevice =
 {
     //
     // Vendor ID.

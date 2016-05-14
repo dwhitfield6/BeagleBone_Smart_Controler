@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../AM335X_StarterWare_02_00_01_01/drivers/cache.c \
+../AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/edma.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c \
@@ -34,6 +35,7 @@ C_SRCS += \
 
 OBJS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.obj \
+./AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/edma.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.obj \
@@ -63,6 +65,7 @@ OBJS += \
 
 C_DEPS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.pp \
+./AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/edma.pp \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.pp \
@@ -92,6 +95,7 @@ C_DEPS += \
 
 C_DEPS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.pp" \
+"AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\edma.pp" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.pp" \
@@ -121,6 +125,7 @@ C_DEPS__QUOTED += \
 
 OBJS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" \
+"AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\edma.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" \
@@ -150,6 +155,7 @@ OBJS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../AM335X_StarterWare_02_00_01_01/drivers/cache.c" \
+"../AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/edma.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c" \

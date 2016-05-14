@@ -19,6 +19,7 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 #include "beaglebone.h"
+#include "cppi41dma.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -46,12 +47,12 @@ static ENUM_MSC_STATES USB0_MSCState = MSC_DEV_IDLE;
 static ENUM_USB_STATUS USB0_Status = USB_DISCONNECT;
 static unsigned char USBChangeStatusFlag0 = FALSE;
 static unsigned char USBMSCFlag0 = FALSE;
+static unsigned int g_bufferIndex = 0;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-unsigned int ulStatus = 0;
-unsigned int epStatus = 0;
+unsigned char *USBdataBuffer;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -84,6 +85,18 @@ void Init_USB0(void)
     USB_SetMSCState0(MSC_DEV_IDLE);
     USB_SetUSBStatus0(USB_DISCONNECT);
     USBDMSCInit(0, (tUSBDMSCDevice *)&g_sMSCDevice);
+
+#ifdef DMA_MODE
+    Cppi41DmaInit(0, epInfo, NUMBER_OF_ENDPOINTS);
+
+    for(;g_bufferIndex < NUM_OF_RX_BDs; g_bufferIndex++)
+    {
+    	USBdataBuffer = (unsigned char *)cppiDmaAllocBuffer();
+        doDmaRxTransfer(0, USB_MSC_BUFER_SIZE, USBdataBuffer,
+                            g_sMSCDevice.psPrivateData->ucOUTEndpoint);
+    }
+#endif
+
 }
 
 /******************************************************************************/
@@ -102,6 +115,15 @@ void USB_InterruptConfigure0(void)
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_USB0);
+
+    /* Registering the Interrupt Service Routine(ISR). */
+    IntRegister(SYS_INT_USBSSINT, USB_0_ISR);
+
+    /* Setting the priority for the system interrupt in AINTC. */
+    IntPrioritySet(SYS_INT_USBSSINT, USB_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
+
+    /* Enabling the system interrupt in AINTC. */
+    IntSystemEnable(SYS_INT_USBSSINT);
 }
 
 /******************************************************************************/

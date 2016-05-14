@@ -32,6 +32,7 @@
 #include "usbdevicepriv.h"
 #include "usblibpriv.h"
 
+#include "USB.h"
 //*****************************************************************************
 //
 //! \addtogroup device_api

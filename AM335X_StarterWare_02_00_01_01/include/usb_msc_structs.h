@@ -50,7 +50,7 @@
 // The mass storage class device structure.
 //
 //*****************************************************************************
-extern const tUSBDMSCDevice g_sMSCDevice;
+extern tUSBDMSCDevice g_sMSCDevice;
 
 //*****************************************************************************
 //

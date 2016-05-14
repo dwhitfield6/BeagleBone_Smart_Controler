@@ -131,6 +131,27 @@ unsigned short gDMAflag =0;
 //
 //*****************************************************************************
 
+/* Amount to shift the RX interrupt sources by in the flags used in the
+ * interrupt calls. */
+#ifndef DEPRECATED
+#define USB_INT_RX_SHIFT        8
+#endif
+#define USB_INTEP_RX_SHIFT      16
+
+/* Amount to shift the status interrupt sources by in the flags used in the
+ * interrupt calls. */
+#ifndef DEPRECATED
+#define USB_INT_STATUS_SHIFT    24
+#endif
+
+/* Amount to shift the RX endpoint status sources by in the flags used in the
+ * calls. */
+#define USB_RX_EPSTATUS_SHIFT   16
+
+/* Converts from an endpoint specifier to the offset of the endpoint's
+ * control/status registers. */
+#define EP_OFFSET(Endpoint)     (Endpoint - 0x10)
+
 //
 // No command in process.
 //
@@ -2423,91 +2444,6 @@ USBDSCSICommand(const tUSBDMSCDevice *psDevice, tMSCCBW *pSCSICBW,
     }
     return(ulRetCode);
 }
-
-/**
- * \file  usb.c
- *
- * \brief Driver for the USB Interface.
- */
-
-/*
-* Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
-*/
-/*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*/
-
-/**
- * \addtogroup usb_api
- * @{
- */
-
-/* Debug Macros */
-#include "debug.h"
-
-/* HW Macros and Peripheral Defines */
-#include "hw_types.h"
-#include "hw_usb.h"
-// Must be added to PREDEFINES
-#define DMA_MODE 1
-
-#ifdef DMA_MODE
-#include "cppi41dma.h"
-#endif
-
-/* Driver APIs */
-#include "usb.h"
-#include "interrupt.h"
-#include "delay.h"
-
-/* Amount to shift the RX interrupt sources by in the flags used in the
- * interrupt calls. */
-#ifndef DEPRECATED
-#define USB_INT_RX_SHIFT        8
-#endif
-#define USB_INTEP_RX_SHIFT      16
-
-/* Amount to shift the status interrupt sources by in the flags used in the
- * interrupt calls. */
-#ifndef DEPRECATED
-#define USB_INT_STATUS_SHIFT    24
-#endif
-
-/* Amount to shift the RX endpoint status sources by in the flags used in the
- * calls. */
-#define USB_RX_EPSTATUS_SHIFT   16
-
-/* Converts from an endpoint specifier to the offset of the endpoint's
- * control/status registers. */
-#define EP_OFFSET(Endpoint)     (Endpoint - 0x10)
-
 
 /**
  * Sets one of the indexed registers.
@@ -5131,7 +5067,7 @@ USBHostAutoReqClear(unsigned int ulBase, unsigned int ulEndpoint)
     /* Clear the request for an IN transaction. */
     HWREGB(ulBase + ulRegister) &= ~USB_RXCSRH1_AUTORQ;
 }
-#ifdef DMA_MODE
+
 /**
  *
  * This is used to stop further requests during teardown process.
@@ -5203,159 +5139,6 @@ USBRxChAbort(unsigned int ulBase, unsigned int ulEndpoint)
 
 }
 
-/**
- *
- * This function is used to disable the DMA channel.
- *
- * \param ulBase specifies the USB module base address.
- * \param ulEndpoint is the endpoint to access.
- *
- *
- *
- *
- * \note This function can be called in host or device mode.
- *
- * \return None.
- */
-void
-USBDmaTxChDisable(unsigned int ulBase, unsigned int ulEndpoint)
-{
-    unsigned int ulRegister;
-    short tx_csr = 0x00;
-
-	/* Check the arguments. */
-    ASSERT((ulBase == USB0_BASE)||(ulBase == USB1_BASE));
-    ASSERT((ulEndpoint == USB_EP_0) || (ulEndpoint == USB_EP_1) ||
-           (ulEndpoint == USB_EP_2) || (ulEndpoint == USB_EP_3) ||
-           (ulEndpoint == USB_EP_4) || (ulEndpoint == USB_EP_5) ||
-           (ulEndpoint == USB_EP_6) || (ulEndpoint == USB_EP_7) ||
-           (ulEndpoint == USB_EP_8) || (ulEndpoint == USB_EP_9) ||
-           (ulEndpoint == USB_EP_10) || (ulEndpoint == USB_EP_11) ||
-           (ulEndpoint == USB_EP_12) || (ulEndpoint == USB_EP_13) ||
-           (ulEndpoint == USB_EP_14) || (ulEndpoint == USB_EP_15));
-
-	/* Disable DMAEN in TxCSR */
-	ulRegister = USB_O_TXCSRL1 + EP_OFFSET(ulEndpoint);
-    tx_csr = HWREGH(ulBase + ulRegister);
-	tx_csr &= ~MUSB_TXCSR_DMAENAB;
-	HWREGH(ulBase + ulRegister) = tx_csr;
-
-}
-
-/**
- *
- * This function is used to disable the DMA channel.
- *
- * \param ulBase specifies the USB module base address.
- * \param ulEndpoint is the endpoint to access.
- *
- *
- *
- *
- * \note This function can be called in host or device mode.
- *
- * \return None.
- */
-void
-USBDmaTxChTeardown(unsigned int ulBase, unsigned int ulEndpoint)
-{
-
-	unsigned int ulRegister;
-    short tx_csr = 0x00;
-
-    /* Check the arguments. */
-    ASSERT((ulBase == USB0_BASE)||(ulBase == USB1_BASE));
-
-    ulRegister = USB_O_TXCSRL1 + EP_OFFSET(ulEndpoint);
-    tx_csr = HWREGH(ulBase + ulRegister);
-	tx_csr |= MUSB_TXCSR_FLUSHFIFO;
-	HWREGH(ulBase + ulRegister) = tx_csr;
-
-    if (ulBase == USB0_BASE)
-    {
-        ulBase = USB_0_OTGBASE;
-    }
-    else
-    {
-         ulBase = USB_1_OTGBASE;
-    }
-    ASSERT((ulEndpoint == USB_EP_0) || (ulEndpoint == USB_EP_1) ||
-           (ulEndpoint == USB_EP_2) || (ulEndpoint == USB_EP_3) ||
-           (ulEndpoint == USB_EP_4) || (ulEndpoint == USB_EP_5) ||
-           (ulEndpoint == USB_EP_6) || (ulEndpoint == USB_EP_7) ||
-           (ulEndpoint == USB_EP_8) || (ulEndpoint == USB_EP_9) ||
-           (ulEndpoint == USB_EP_10) || (ulEndpoint == USB_EP_11) ||
-           (ulEndpoint == USB_EP_12) || (ulEndpoint == USB_EP_13) ||
-           (ulEndpoint == USB_EP_14) || (ulEndpoint == USB_EP_15));
-
-	/* Initiate CPPI Tx FIFO teardown in USBnTDOWN - module register */
-    HWREG(ulBase + USB_0_TEARDOWN) =
-				USB_TX_TDOWN_MASK( USB_EP_TO_INDEX(ulEndpoint));
-}
-
-/**
- *
- * This is used to stop further requests during teardown process.
- *
- * \param ulBase specifies the USB module base address.
- * \param ulEndpoint is the endpoint to access.
- *
- * This function will clear autoreq bit, which when set, will autorequest
- * for packet when FIFOs are empty.
- *
- * \note This function can be called in host or device mode.
- *
- * \return None.
- */
-void
-USBHostTxFifoFlush(unsigned int ulBase, unsigned int ulEndpoint)
-{
-    unsigned int ulRegister;
-    short tx_csr = 0x00;
-
-	/* Check the arguments. */
-    ASSERT((ulBase == USB0_BASE)||(ulBase == USB1_BASE));
-    ASSERT((ulEndpoint == USB_EP_0) || (ulEndpoint == USB_EP_1) ||
-           (ulEndpoint == USB_EP_2) || (ulEndpoint == USB_EP_3) ||
-           (ulEndpoint == USB_EP_4) || (ulEndpoint == USB_EP_5) ||
-           (ulEndpoint == USB_EP_6) || (ulEndpoint == USB_EP_7) ||
-           (ulEndpoint == USB_EP_8) || (ulEndpoint == USB_EP_9) ||
-           (ulEndpoint == USB_EP_10) || (ulEndpoint == USB_EP_11) ||
-           (ulEndpoint == USB_EP_12) || (ulEndpoint == USB_EP_13) ||
-           (ulEndpoint == USB_EP_14) || (ulEndpoint == USB_EP_15));
-
-	/* Initiate CPPI Tx FIFO teardown in USBnTDOWN - module register */
-	if (ulBase == USB0_BASE)
-    {
-        HWREG(USB_0_OTGBASE + USB_0_TEARDOWN) |=
-				USB_TX_TDOWN_MASK(USB_EP_TO_INDEX(ulEndpoint));
-    }
-    else
-    {
-        HWREG(USB_1_OTGBASE + USB_0_TEARDOWN) |=
-				USB_TX_TDOWN_MASK(USB_EP_TO_INDEX(ulEndpoint));
-    }
-
-	/* Disable DMAEN in TxCSR */
-	ulRegister = USB_O_TXCSRL1 + EP_OFFSET(ulEndpoint);
-    tx_csr = HWREGH(ulBase + ulRegister);
-
-	/* Flush FIFO of the endpoint */
-	tx_csr = HWREGH(ulBase + ulRegister);
-
-	if (tx_csr & MUSB_TXCSR_TXPKTRDY)
-	{
-		tx_csr |= MUSB_TXCSR_FLUSHFIFO;
-        /* */
-        tx_csr |= MUSB_TXCSR_H_WZC_BITS;
-        /* Flush the FIFO twice - incase it is Double buffered*/
-        HWREGH(ulBase + ulRegister) = tx_csr;
-        HWREGH(ulBase + ulRegister) = tx_csr;
-	}
-
-}
-
-#endif
 /**
  * Issues a request for a status IN transaction on endpoint zero.
  *
@@ -6063,6 +5846,158 @@ void USBModuleClkDisable(unsigned int ulIndex, unsigned int ulBase)
                              CM_PER_USB0_CLKCTRL_MODULEMODE_DISABLE;
 }
 
+
+/**
+ *
+ * This function is used to disable the DMA channel.
+ *
+ * \param ulBase specifies the USB module base address.
+ * \param ulEndpoint is the endpoint to access.
+ *
+ *
+ *
+ *
+ * \note This function can be called in host or device mode.
+ *
+ * \return None.
+ */
+void
+USBDmaTxChDisable(unsigned int ulBase, unsigned int ulEndpoint)
+{
+    unsigned int ulRegister;
+    short tx_csr = 0x00;
+
+	/* Check the arguments. */
+    ASSERT((ulBase == USB0_BASE)||(ulBase == USB1_BASE));
+    ASSERT((ulEndpoint == USB_EP_0) || (ulEndpoint == USB_EP_1) ||
+           (ulEndpoint == USB_EP_2) || (ulEndpoint == USB_EP_3) ||
+           (ulEndpoint == USB_EP_4) || (ulEndpoint == USB_EP_5) ||
+           (ulEndpoint == USB_EP_6) || (ulEndpoint == USB_EP_7) ||
+           (ulEndpoint == USB_EP_8) || (ulEndpoint == USB_EP_9) ||
+           (ulEndpoint == USB_EP_10) || (ulEndpoint == USB_EP_11) ||
+           (ulEndpoint == USB_EP_12) || (ulEndpoint == USB_EP_13) ||
+           (ulEndpoint == USB_EP_14) || (ulEndpoint == USB_EP_15));
+
+	/* Disable DMAEN in TxCSR */
+	ulRegister = USB_O_TXCSRL1 + EP_OFFSET(ulEndpoint);
+    tx_csr = HWREGH(ulBase + ulRegister);
+	tx_csr &= ~MUSB_TXCSR_DMAENAB;
+	HWREGH(ulBase + ulRegister) = tx_csr;
+
+}
+
+/**
+ *
+ * This function is used to disable the DMA channel.
+ *
+ * \param ulBase specifies the USB module base address.
+ * \param ulEndpoint is the endpoint to access.
+ *
+ *
+ *
+ *
+ * \note This function can be called in host or device mode.
+ *
+ * \return None.
+ */
+void
+USBDmaTxChTeardown(unsigned int ulBase, unsigned int ulEndpoint)
+{
+
+	unsigned int ulRegister;
+    short tx_csr = 0x00;
+
+    /* Check the arguments. */
+    ASSERT((ulBase == USB0_BASE)||(ulBase == USB1_BASE));
+
+    ulRegister = USB_O_TXCSRL1 + EP_OFFSET(ulEndpoint);
+    tx_csr = HWREGH(ulBase + ulRegister);
+	tx_csr |= MUSB_TXCSR_FLUSHFIFO;
+	HWREGH(ulBase + ulRegister) = tx_csr;
+
+    if (ulBase == USB0_BASE)
+    {
+        ulBase = USB_0_OTGBASE;
+    }
+    else
+    {
+         ulBase = USB_1_OTGBASE;
+    }
+    ASSERT((ulEndpoint == USB_EP_0) || (ulEndpoint == USB_EP_1) ||
+           (ulEndpoint == USB_EP_2) || (ulEndpoint == USB_EP_3) ||
+           (ulEndpoint == USB_EP_4) || (ulEndpoint == USB_EP_5) ||
+           (ulEndpoint == USB_EP_6) || (ulEndpoint == USB_EP_7) ||
+           (ulEndpoint == USB_EP_8) || (ulEndpoint == USB_EP_9) ||
+           (ulEndpoint == USB_EP_10) || (ulEndpoint == USB_EP_11) ||
+           (ulEndpoint == USB_EP_12) || (ulEndpoint == USB_EP_13) ||
+           (ulEndpoint == USB_EP_14) || (ulEndpoint == USB_EP_15));
+
+	/* Initiate CPPI Tx FIFO teardown in USBnTDOWN - module register */
+    HWREG(ulBase + USB_0_TEARDOWN) =
+				USB_TX_TDOWN_MASK( USB_EP_TO_INDEX(ulEndpoint));
+}
+
+/**
+ *
+ * This is used to stop further requests during teardown process.
+ *
+ * \param ulBase specifies the USB module base address.
+ * \param ulEndpoint is the endpoint to access.
+ *
+ * This function will clear autoreq bit, which when set, will autorequest
+ * for packet when FIFOs are empty.
+ *
+ * \note This function can be called in host or device mode.
+ *
+ * \return None.
+ */
+void
+USBHostTxFifoFlush(unsigned int ulBase, unsigned int ulEndpoint)
+{
+    unsigned int ulRegister;
+    short tx_csr = 0x00;
+
+	/* Check the arguments. */
+    ASSERT((ulBase == USB0_BASE)||(ulBase == USB1_BASE));
+    ASSERT((ulEndpoint == USB_EP_0) || (ulEndpoint == USB_EP_1) ||
+           (ulEndpoint == USB_EP_2) || (ulEndpoint == USB_EP_3) ||
+           (ulEndpoint == USB_EP_4) || (ulEndpoint == USB_EP_5) ||
+           (ulEndpoint == USB_EP_6) || (ulEndpoint == USB_EP_7) ||
+           (ulEndpoint == USB_EP_8) || (ulEndpoint == USB_EP_9) ||
+           (ulEndpoint == USB_EP_10) || (ulEndpoint == USB_EP_11) ||
+           (ulEndpoint == USB_EP_12) || (ulEndpoint == USB_EP_13) ||
+           (ulEndpoint == USB_EP_14) || (ulEndpoint == USB_EP_15));
+
+	/* Initiate CPPI Tx FIFO teardown in USBnTDOWN - module register */
+	if (ulBase == USB0_BASE)
+    {
+        HWREG(USB_0_OTGBASE + USB_0_TEARDOWN) |=
+				USB_TX_TDOWN_MASK(USB_EP_TO_INDEX(ulEndpoint));
+    }
+    else
+    {
+        HWREG(USB_1_OTGBASE + USB_0_TEARDOWN) |=
+				USB_TX_TDOWN_MASK(USB_EP_TO_INDEX(ulEndpoint));
+    }
+
+	/* Disable DMAEN in TxCSR */
+	ulRegister = USB_O_TXCSRL1 + EP_OFFSET(ulEndpoint);
+    tx_csr = HWREGH(ulBase + ulRegister);
+
+	/* Flush FIFO of the endpoint */
+	tx_csr = HWREGH(ulBase + ulRegister);
+
+	if (tx_csr & MUSB_TXCSR_TXPKTRDY)
+	{
+		tx_csr |= MUSB_TXCSR_FLUSHFIFO;
+        /* */
+        tx_csr |= MUSB_TXCSR_H_WZC_BITS;
+        /* Flush the FIFO twice - incase it is Double buffered*/
+        HWREGH(ulBase + ulRegister) = tx_csr;
+        HWREGH(ulBase + ulRegister) = tx_csr;
+	}
+
+}
 
 /* Close the Doxygen group. */
 /** @} */

@@ -68,7 +68,9 @@
 
 MEMORY
 {
-        DDR_MEM        : org = 0x80000000  len = 0x7FFFFFF           /* RAM */
+        DDR_MEM        : org = 0x80000000  len = 0x7FFFFFF          /* DDR */
+        SRAM_MEM       : org = 0x402F0400  len = 0xFBFF           	/* SRAM */
+        L3_SRAM_MEM    : org = 0x40300000  len = 0xFFFF           	/* L3_SRAM */
 }
 
 /* SPECIFY THE SECTIONS ALLOCATION INTO MEMORY */
@@ -85,5 +87,7 @@ SECTIONS
                     RUN_END(bss_end)
     .const   : load > DDR_MEM              /* GLOBAL CONSTANTS              */
     .stack   : load > 0x87FFFFF0           /* SOFTWARE SYSTEM STACK         */
+
+	.l3_memory: load > L3_SRAM_MEM
 }
 

@@ -239,9 +239,13 @@ void HSMMCSDBusWidthConfig(mmcsdCtrlInfo *ctrl, unsigned int busWidth)
     {
            HSMMCSDBusWidthSet(ctrl->memBase, HS_MMCSD_BUS_WIDTH_1BIT);
     }
-    else
+    else if(busWidth == SD_BUS_WIDTH_4BIT)
     {
            HSMMCSDBusWidthSet(ctrl->memBase, HS_MMCSD_BUS_WIDTH_4BIT);
+    }
+    else
+    {
+    	HSMMCSDBusWidthSet(ctrl->memBase, HS_MMCSD_BUS_WIDTH_8BIT);
     }
 }
 /**

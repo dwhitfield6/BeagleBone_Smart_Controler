@@ -47,8 +47,14 @@
 #include "hw_usb.h"
 #include "diskio.h"
 
+#include "USB.h"
 
-#define RAM_DISK_SIZE (1024 * 1024 * 1)
+#ifdef USE_RAM_DISK
+#define RAM_DISK_SIZE (1024 * 1024 * 32)
+#else
+#define RAM_DISK_SIZE (0)
+#endif
+
 #define LBA_SIZE 512
 #define TRANSFER_SIZE 512
 
@@ -66,7 +72,7 @@ void RAM_disk_initialize(void)
     memset(ram_disk, 0,RAM_DISK_SIZE);
 }
 
-void RAM_SD_DiskRead(unsigned int lba, unsigned char *buf,
+void RAM_disk_read(unsigned int lba, unsigned char *buf,
         unsigned int len)
 {
     int start;
@@ -94,7 +100,7 @@ void RAM_disk_write(unsigned int lba, unsigned char *buf,
     }
 }
 
-void RAM_disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffer)
+void RAM_disk_ioctl (unsigned int drive, unsigned int  command,  unsigned long *buffer)
 {
 
     switch(command)

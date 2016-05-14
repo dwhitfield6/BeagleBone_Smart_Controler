@@ -35,6 +35,7 @@
 #include "cppi41dma.h"
 #include <string.h>
 
+#include "USB.h"
 
 #ifdef DMA_MODE
 unsigned char *rxBuffer;

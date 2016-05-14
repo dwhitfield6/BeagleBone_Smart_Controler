@@ -71,7 +71,8 @@ volatile unsigned int g_sPState = 0;
 volatile unsigned int g_sCState = 0;
 
 #pragma DATA_ALIGN(g_sFatFs, SOC_CACHELINE_SIZE);
-static FATFS g_sFatFs;
+#pragma DATA_SECTION(g_sFatFs, ".l3_memory");
+static FATFS g_sFatFs ;
 
 void (*cb_Fxn[EDMA3_NUM_TCC]) (unsigned int tcc, unsigned int status);
 char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
@@ -572,9 +573,6 @@ void SD_HSMMCSDControllerSetup(void)
     ctrlInfo.xferSetup = SD_HSMMCSDXferSetup;
     ctrlInfo.cmdStatusGet = SD_HSMMCSDCmdStatusGet;
     ctrlInfo.xferStatusGet = SD_HSMMCSDXferStatusGet;
-    /* Use the funciton HSMMCSDCDPinStatusGet() to use the card presence
-       using the controller.
-    */
     ctrlInfo.cardPresent = HSMMCSDCardPresent;
     ctrlInfo.cmdSend = HSMMCSDCmdSend;
     ctrlInfo.busWidthConfig = HSMMCSDBusWidthConfig;
