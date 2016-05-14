@@ -14,11 +14,12 @@
 /* TODOs
  * ---------------------------------------------------------------------------
  * Fix WAV playing.
- * Add EMMC code.
  * Add PWM (for IR).
  * Add IR decoding.
  * Add RF 315MHZ code.
  * Add BMP file creation from screen shot.
+ * Fix USB MSC with DMA_MODE set. This increases the performance alot.
+ * Fix EMMC.
  *                                                                            */
 /******************************************************************************/
 
@@ -96,8 +97,6 @@ void main (void)
 
     while(1)
     {
-    	unsigned long temp = 0;
-
     	/* toggle testpoint for timing */
     	TEST_Togglepoint2();
 
@@ -210,6 +209,7 @@ void main (void)
 			}
 		}
 
+#ifdef USE_SD_CARD
 		/* check for SD card activity */
 		if(((SD_IsCardInserted()) && (SD_GetCardStatus() == CARD_NOTPRESENT)) || (!(SD_IsCardInserted()) && (SD_GetCardStatus() == CARD_PRESENT)))
 		{
@@ -223,15 +223,16 @@ void main (void)
 			/* there was a card removed or inserted */
 			if(SD_IsCardInserted())
 			{
+#ifndef USE_RAM_DISK
 				Init_USB0();
+#endif
 				sprintf(FileDataBuffer, "Data log: \r\n");
-				temp = strlen(FileDataBuffer);
 				SD_HSMMCSDFsMount(0, &sdCard);
 				USB_InterruptEnable0(OFF);
 				Result = f_mkdir("/System_Data");
 				Result = f_mkdir("/System_Data/System_Log");
 				Result = f_open (&fileWrite, "/System_Data/System_Log/Log3.txt", FA_WRITE | FA_CREATE_NEW);
-				Result = f_write (&fileWrite, FileDataBuffer, temp, &BytesWritten);
+				Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
 				Result = f_close (&fileWrite);
 				USB_InterruptEnable0(ON);
 				SD_SetCardStatus(CARD_PRESENT);
@@ -245,6 +246,7 @@ void main (void)
 			}
 			SD_ClearCardActionFlag();
 		}
+#endif
     }
 }
 
