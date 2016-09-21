@@ -7,7 +7,6 @@ C_SRCS += \
 ../AM335X_StarterWare_02_00_01_01/drivers/cache.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c \
-../AM335X_StarterWare_02_00_01_01/drivers/edma.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.c \
@@ -16,7 +15,6 @@ C_SRCS += \
 ../AM335X_StarterWare_02_00_01_01/drivers/mcspi.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/mmcsd_proto.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/mmu.c \
-../AM335X_StarterWare_02_00_01_01/drivers/ramdisk.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/rtc.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.c \
 ../AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.c \
@@ -37,7 +35,6 @@ OBJS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.obj \
-./AM335X_StarterWare_02_00_01_01/drivers/edma.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.obj \
@@ -46,7 +43,6 @@ OBJS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/mcspi.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/mmcsd_proto.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/mmu.obj \
-./AM335X_StarterWare_02_00_01_01/drivers/ramdisk.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/rtc.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.obj \
 ./AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.obj \
@@ -67,7 +63,6 @@ C_DEPS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/cache.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.d \
-./AM335X_StarterWare_02_00_01_01/drivers/edma.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.d \
@@ -76,7 +71,6 @@ C_DEPS += \
 ./AM335X_StarterWare_02_00_01_01/drivers/mcspi.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/mmcsd_proto.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/mmu.d \
-./AM335X_StarterWare_02_00_01_01/drivers/ramdisk.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/rtc.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.d \
 ./AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.d \
@@ -97,7 +91,6 @@ C_DEPS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.d" \
-"AM335X_StarterWare_02_00_01_01\drivers\edma.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.d" \
@@ -106,7 +99,6 @@ C_DEPS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\mcspi.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\mmcsd_proto.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\mmu.d" \
-"AM335X_StarterWare_02_00_01_01\drivers\ramdisk.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\rtc.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.d" \
 "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.d" \
@@ -127,7 +119,6 @@ OBJS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.obj" \
-"AM335X_StarterWare_02_00_01_01\drivers\edma.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.obj" \
@@ -136,7 +127,6 @@ OBJS__QUOTED += \
 "AM335X_StarterWare_02_00_01_01\drivers\mcspi.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\mmcsd_proto.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\mmu.obj" \
-"AM335X_StarterWare_02_00_01_01\drivers\ramdisk.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\rtc.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.obj" \
 "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.obj" \
@@ -157,7 +147,6 @@ C_SRCS__QUOTED += \
 "../AM335X_StarterWare_02_00_01_01/drivers/cache.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/dmtimer.c" \
-"../AM335X_StarterWare_02_00_01_01/drivers/edma.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsd.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/hs_mmcsdlib.c" \
@@ -166,7 +155,6 @@ C_SRCS__QUOTED += \
 "../AM335X_StarterWare_02_00_01_01/drivers/mcspi.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/mmcsd_proto.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/mmu.c" \
-"../AM335X_StarterWare_02_00_01_01/drivers/ramdisk.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/rtc.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/tsc_adc.c" \
 "../AM335X_StarterWare_02_00_01_01/drivers/uart_irda_cir.c" \

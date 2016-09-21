@@ -24,13 +24,6 @@ AM335X_StarterWare_02_00_01_01/drivers/dmtimer.obj: ../AM335X_StarterWare_02_00_
 	@echo 'Finished building: $<'
 	@echo ' '
 
-AM335X_StarterWare_02_00_01_01/drivers/edma.obj: ../AM335X_StarterWare_02_00_01_01/drivers/edma.c $(GEN_OPTS) $(GEN_HDRS)
-	@echo 'Building file: $<'
-	@echo 'Invoking: ARM Compiler'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7A8 --code_state=32 --abi=eabi -me -Ooff --opt_for_speed=2 --fp_mode=relaxed --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include" --include_path="C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/hw" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a/am335x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/FT81x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/fatfs/ff12/src" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/WAV_Audio" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Bitmaps" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler" -g --define=am335x_15x15 --define=am335x --diag_warning=225 --single_inline --opt_for_cache --preproc_with_compile --preproc_dependency="AM335X_StarterWare_02_00_01_01/drivers/edma.d" --obj_directory="AM335X_StarterWare_02_00_01_01/drivers" $(GEN_OPTS__FLAG) "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
-
 AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.obj: ../AM335X_StarterWare_02_00_01_01/drivers/gpio_v2.c $(GEN_OPTS) $(GEN_HDRS)
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Compiler'
@@ -84,13 +77,6 @@ AM335X_StarterWare_02_00_01_01/drivers/mmu.obj: ../AM335X_StarterWare_02_00_01_0
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Compiler'
 	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7A8 --code_state=32 --abi=eabi -me -Ooff --opt_for_speed=2 --fp_mode=relaxed --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include" --include_path="C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/hw" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a/am335x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/FT81x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/fatfs/ff12/src" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/WAV_Audio" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Bitmaps" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler" -g --define=am335x_15x15 --define=am335x --diag_warning=225 --single_inline --opt_for_cache --preproc_with_compile --preproc_dependency="AM335X_StarterWare_02_00_01_01/drivers/mmu.d" --obj_directory="AM335X_StarterWare_02_00_01_01/drivers" $(GEN_OPTS__FLAG) "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
-
-AM335X_StarterWare_02_00_01_01/drivers/ramdisk.obj: ../AM335X_StarterWare_02_00_01_01/drivers/ramdisk.c $(GEN_OPTS) $(GEN_HDRS)
-	@echo 'Building file: $<'
-	@echo 'Invoking: ARM Compiler'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7A8 --code_state=32 --abi=eabi -me -Ooff --opt_for_speed=2 --fp_mode=relaxed --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include" --include_path="C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/hw" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/include/armv7a/am335x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/FT81x" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/fatfs/ff12/src" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/WAV_Audio" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Bitmaps" --include_path="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler" -g --define=am335x_15x15 --define=am335x --diag_warning=225 --single_inline --opt_for_cache --preproc_with_compile --preproc_dependency="AM335X_StarterWare_02_00_01_01/drivers/ramdisk.d" --obj_directory="AM335X_StarterWare_02_00_01_01/drivers" $(GEN_OPTS__FLAG) "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

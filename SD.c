@@ -84,11 +84,6 @@ void Init_SD(void)
     /* Enable module clock for HSMMCSD. */
     HSMMCSDModuleClkConfig();
 
-    /* Initialize the MMCSD controller */
-    SD_SetUpController(SOC_MMCHS_0_REGS);
-
-    SD_CardInit();
-
     SD_SetCardActionFlag();
 }
 
@@ -409,6 +404,12 @@ unsigned char SD_IsInitialized(void)
 	return SD_CardInitialized;
 }
 
+/******************************************************************************/
+/* SD_CardInit
+ *
+ * Initializes the SD card.
+ *                                                                            */
+/******************************************************************************/
 unsigned int SD_CardInit(void)
 {
 	unsigned int response[4];
@@ -418,7 +419,7 @@ unsigned int SD_CardInit(void)
 	unsigned char CID[16];
 	unsigned int retry = 0xFFFF;
 	unsigned int RCA;
-	unsigned char CSD[16];
+	unsigned int CSD[4];
 	unsigned int TransSpeed;
 	unsigned int BlockLength;
 	unsigned int Size;
