@@ -755,3 +755,9 @@ unsigned int MMCSDReadCmdSend(mmcsdCtrlInfo *ctrl, void *ptr, unsigned int block
 
     return 1;
 }
+
+/* SD Commands enumeration */
+unsigned int SD_CMD(unsigned int x)
+{
+	return x;
+}

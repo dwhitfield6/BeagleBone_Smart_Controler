@@ -104,7 +104,7 @@ void Init_Modules(void)
 	Init_SD();
 #endif
 	GUI_DrawInitialScreenProgress(47);
-	Init_EMMC();
+	//Init_EMMC();
 	GUI_DrawInitialScreenProgress(50);
 	Init_Test();
 	GUI_DrawInitialScreenProgress(55);

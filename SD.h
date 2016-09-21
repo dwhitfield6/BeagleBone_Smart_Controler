@@ -73,6 +73,20 @@ typedef enum e_sd_card_state
 	CARD_PRESENT,
 }ENUM_SD_CARD_STATE;
 
+typedef enum e_sd_response
+{
+	SD_RESPONSE_48BITS	= 0x0000,
+	SD_RESPONSE_NONE 	= 0x0001,
+	SD_RESPONSE_STOP 	= 0x0002,
+	SD_RESPONSE_FS 		= 0x0004,
+	SD_RESPONSE_ABORT 	= 0x0008,
+	SD_RESPONSE_BUSY 	= 0x0010,
+	SD_RESPONSE_136BITS	= 0x0020,
+	SD_RESPONSE_DATA 	= 0x0040,
+	SD_RESPONSE_READ 	= 0x0080,
+	SD_RESPONSE_WRITE 	= 0x0100,
+}ENUM_SD_RESPONSE;
+
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
@@ -96,6 +110,7 @@ extern FRESULT Result;
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_SD(void);
+unsigned int SD_SetUpController(unsigned int baseAddr);
 unsigned char SD_IsCardInserted(void);
 void SD_ReInitialize(void);
 unsigned char SD_DiskInitialize(unsigned char bValue);
@@ -113,7 +128,6 @@ void SD_DMA_Callback(unsigned int tccNum, unsigned int status);
 void SD_DMA_ConfigureInterrupt(void);
 void SD_DMA_Init(void);
 void SD_DMA_HSMMCSD(void);
-void SD_HSMMCSDControllerSetup(void);
 void SD_HSMMCSDFsMount(unsigned int driveNum, void *ptr);
 void SD_SetCardActionFlag(void);
 void SD_ClearCardActionFlag(void);

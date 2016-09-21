@@ -32,6 +32,7 @@
 #include "hs_mmcsd.h"
 #include "hs_mmcsdlib.h"
 #include "hw_types.h"
+#include "hw_hs_mmcsd.h"
 #include "interrupt.h"
 #include "mmcsd_proto.h"
 #include "pin_mux.h"
@@ -42,6 +43,7 @@
 #include "LEDS.h"
 #include "RTCC.h"
 #include "SD.h"
+#include "UART.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -57,28 +59,12 @@ static unsigned char SD_CardInitialized = FALSE;
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-volatile unsigned int sdBlkSize = HSMMCSD_BLK_SIZE;
-volatile unsigned int SD_callbackOccured = 0;
-volatile unsigned int xferCompFlag = 0;
-volatile unsigned int dataTimeout = 0;
-volatile unsigned int cmdCompFlag = 0;
-volatile unsigned int cmdTimeout = 0;
-volatile unsigned int errFlag = 0;
-mmcsdCtrlInfo  ctrlInfo;
-mmcsdCardInfo sdCard;
-TYPE_FAT_DEVICE fat_devices[DRIVE_NUM_MAX];
-volatile unsigned int g_sPState = 0;
-volatile unsigned int g_sCState = 0;
-
 #pragma DATA_ALIGN(g_sFatFs, SOC_CACHELINE_SIZE);
 #pragma DATA_SECTION(g_sFatFs, ".l3_memory");
 static FATFS g_sFatFs ;
 
-void (*cb_Fxn[EDMA3_NUM_TCC]) (unsigned int tcc, unsigned int status);
-char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
-unsigned long BytesWritten;
-unsigned long BytesRead;
-FRESULT Result;
+TYPE_FAT_DEVICE fat_devices[DRIVE_NUM_MAX];
+mmcsdCardInfo sdCard;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -92,27 +78,112 @@ FRESULT Result;
 /******************************************************************************/
 void Init_SD(void)
 {
-    /* Configure the EDMA clocks. */
-    EDMAModuleClkConfig();
-
-    /* Configure EDMA to service the HSMMCSD events. */
-    SD_DMA_HSMMCSD();
-
     /* Perform pin-mux for HSMMCSD pins. */
     HSMMCSDPinMuxSetup();
 
     /* Enable module clock for HSMMCSD. */
     HSMMCSDModuleClkConfig();
 
-    /* Basic controller initializations */
-    SD_HSMMCSDControllerSetup();
-
     /* Initialize the MMCSD controller */
-    MMCSDCtrlInit(&ctrlInfo);
+    SD_SetUpController(SOC_MMCHS_0_REGS);
 
-    MMCSDIntEnable(&ctrlInfo);
+    SD_CardInit();
 
     SD_SetCardActionFlag();
+}
+
+/******************************************************************************/
+/* SD_HSMMCSDControllerSetup
+ *
+ * Sets up the variables for SD card interface.
+ *                                                                            */
+/******************************************************************************/
+void SD_HSMMCSDControllerSetup(void)
+{
+	/*
+    ctrlInfo.memBase = MMCSD_INST_BASE;
+    ctrlInfo.ctrlInit = HSMMCSDControllerInit;
+    ctrlInfo.xferSetup = SD_HSMMCSDXferSetup;
+    ctrlInfo.cmdStatusGet = SD_HSMMCSDCmdStatusGet;
+    ctrlInfo.xferStatusGet = SD_HSMMCSDXferStatusGet;
+    ctrlInfo.cardPresent = HSMMCSDCardPresent;
+    ctrlInfo.cmdSend = HSMMCSDCmdSend;
+    ctrlInfo.busWidthConfig = HSMMCSDBusWidthConfig;
+    ctrlInfo.busFreqConfig = HSMMCSDBusFreqConfig;
+    ctrlInfo.intrMask = (HS_MMCSD_INTR_CMDCOMP | HS_MMCSD_INTR_CMDTIMEOUT |
+                            HS_MMCSD_INTR_DATATIMEOUT | HS_MMCSD_INTR_TRNFCOMP);
+    ctrlInfo.intrEnable = HSMMCSDIntEnable;
+    ctrlInfo.busWidth = (SD_BUS_WIDTH_1BIT | SD_BUS_WIDTH_4BIT);
+    ctrlInfo.highspeed = 1;
+    ctrlInfo.ocr = (SD_OCR_VDD_3P0_3P1 | SD_OCR_VDD_3P1_3P2);
+    ctrlInfo.card = &sdCard;
+    ctrlInfo.ipClk = HSMMCSD_IN_FREQ;
+    ctrlInfo.opClk = HSMMCSD_INIT_FREQ;
+    ctrlInfo.cdPinNum = HSMMCSD_CARD_DETECT_PINNUM;
+    sdCard.ctrl = &ctrlInfo;
+
+    SD_callbackOccured = 0;
+    xferCompFlag = 0;
+    dataTimeout = 0;
+    cmdCompFlag = 0;
+    cmdTimeout = 0;
+    */
+}
+
+/******************************************************************************/
+/* SD_SetUpController
+ *
+ * Sets up the SD card controller
+ *                                                                            */
+/******************************************************************************/
+unsigned int SD_SetUpController(unsigned int baseAddr)
+{
+    int status = 0;
+
+    /*Refer to the MMC Host and Bus configuration steps in TRM */
+    /* controller Reset */
+    status = HSMMCSDSoftReset(baseAddr);
+
+    if (status != 0)
+    {
+    	UART_PrintString("HS MMC/SD Reset failed\n\r");
+    }
+
+    /* Lines Reset */
+    HSMMCSDLinesReset(baseAddr, HS_MMCSD_ALL_RESET);
+
+    /* Set supported voltage list */
+    HSMMCSDSupportedVoltSet(baseAddr, HS_MMCSD_SUPPORT_VOLT_1P8 |
+                                                HS_MMCSD_SUPPORT_VOLT_3P0);
+
+    HSMMCSDSystemConfig(baseAddr, HS_MMCSD_AUTOIDLE_ENABLE);
+
+    /* Set the bus width */
+    HSMMCSDBusWidthSet(baseAddr, HS_MMCSD_BUS_WIDTH_1BIT );
+
+    /* Set the bus voltage */
+    HSMMCSDBusVoltSet(baseAddr, HS_MMCSD_BUS_VOLT_3P0);
+
+    /* Bus power on */
+    status = HSMMCSDBusPower(baseAddr, HS_MMCSD_BUS_POWER_ON);
+
+    if (status != 0)
+    {
+    	UART_PrintString("HS MMC/SD Power on failed\n\r");
+    }
+
+    /* Set the initialization frequency */
+    status = HSMMCSDBusFreqSet(baseAddr, 96000000, 400000, 0);
+    if (status != 0)
+    {
+    	UART_PrintString("HS MMC/SD Bus Frequency set failed\n\r");
+    }
+
+    status = HSMMCSDInitStreamSend(baseAddr);
+
+    status = (status == 0) ? 1 : 0;
+
+    return status;
 }
 
 /******************************************************************************/
@@ -123,7 +194,7 @@ void Init_SD(void)
 /******************************************************************************/
 unsigned char SD_IsCardInserted(void)
 {
-	if((HSMMCSDCardPresent(&ctrlInfo)) == 1)
+	if(HSMMCSDIsCardInserted(SOC_MMCHS_0_REGS) == 1)
 	{
 		return TRUE;
 	}
@@ -138,16 +209,7 @@ unsigned char SD_IsCardInserted(void)
 /******************************************************************************/
 void SD_ReInitialize(void)
 {
-	SD_callbackOccured = 0;
-	SD_ClearInitialized();
-	xferCompFlag = 0;
-	dataTimeout = 0;
-	cmdCompFlag = 0;
-	cmdTimeout = 0;
 
-	/* Initialize the MMCSD controller */
-	MMCSDCtrlInit(&ctrlInfo);
-	MMCSDIntEnable(&ctrlInfo);
 }
 
 /******************************************************************************/
@@ -158,36 +220,7 @@ void SD_ReInitialize(void)
 /******************************************************************************/
 unsigned char SD_DiskInitialize(unsigned char bValue)
 {
-	unsigned int status;
 
-	if ((DRIVE_NUM_MMCSD == bValue) && (fat_devices[bValue].initDone != 1))
-	{
-		mmcsdCardInfo *card = (mmcsdCardInfo *) fat_devices[bValue].dev;
-
-		/* SD Card init */
-		status = MMCSDCardInit(card->ctrl);
-
-		if (status == 0)
-		{
-			//UARTPuts("\r\nCard Init Failed \r\n", -1);
-
-			return STA_NOINIT;
-		}
-		else
-		{
-			/* Set bus width */
-			if (card->cardType == MMCSD_CARD_SD)
-			{
-				MMCSDBusWidthSet(card->ctrl);
-			}
-
-			/* Transfer speed */
-			MMCSDTranSpeedSet(card->ctrl);
-		}
-
-		fat_devices[bValue].initDone = 1;
-	}
-	return 0;
 }
 
 /******************************************************************************/
@@ -271,329 +304,6 @@ unsigned long SD_GetFatTime(void)
 	temp |= CurrentTimeDate.Time.Minute << 5;
 	temp |= CurrentTimeDate.Time.Second >> 1;
 	return temp;
-}
-
-/******************************************************************************/
-/* SD_HSMMCSDCmdStatusGet
- *
- * Checks the command status.
- *                                                                            */
-/******************************************************************************/
-unsigned int SD_HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl)
-{
-    unsigned int status = 0;
-
-    while ((cmdCompFlag == 0) && (cmdTimeout == 0))
-    {
-    	if((!SD_IsCardInserted()) || (!SD_IsInitialized()))
-    	{
-    		break;
-    	}
-    }
-
-    if (cmdCompFlag)
-    {
-        status = 1;
-        cmdCompFlag = 0;
-    }
-
-    if (cmdTimeout)
-    {
-        status = 0;
-        cmdTimeout = 0;
-    }
-
-    return status;
-}
-
-/******************************************************************************/
-/* SD_HSMMCSDXferStatusGet
- *
- * Gets the SD transfer status.
- *                                                                            */
-/******************************************************************************/
-unsigned int SD_HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl)
-{
-    unsigned int status = 0;
-    volatile unsigned int timeOut = 0xFFFF;
-
-    while ((xferCompFlag == 0) && (dataTimeout == 0))
-    {
-    	if((!SD_IsCardInserted()) || (!SD_IsInitialized()))
-    	{
-    		break;
-    	}
-    }
-
-    if (xferCompFlag)
-    {
-        status = 1;
-        xferCompFlag = 0;
-    }
-
-    if (dataTimeout)
-    {
-        status = 0;
-        dataTimeout = 0;
-    }
-
-    /* Also, poll for the callback */
-    if (HWREG(ctrl->memBase + MMCHS_CMD) & MMCHS_CMD_DP)
-    {
-        while(SD_callbackOccured == 0 && ((timeOut--) != 0));
-        SD_callbackOccured = 0;
-
-        if(timeOut == 0)
-        {
-            status = 0;
-        }
-    }
-
-    ctrlInfo.dmaEnable = 0;
-
-    return status;
-}
-
-/******************************************************************************/
-/* SD_HSMMCSDRxDmaConfig
- *
- * Configures the DMA for SD card receive.
- *                                                                            */
-/******************************************************************************/
-void SD_HSMMCSDRxDmaConfig(void *ptr, unsigned int blkSize, unsigned int nblks)
-{
-    EDMA3CCPaRAMEntry paramSet;
-
-    paramSet.srcAddr    = ctrlInfo.memBase + MMCHS_DATA;
-    paramSet.destAddr   = (unsigned int)ptr;
-    paramSet.srcBIdx    = 0;
-    paramSet.srcCIdx    = 0;
-    paramSet.destBIdx   = 4;
-    paramSet.destCIdx   = (unsigned short)blkSize;
-    paramSet.aCnt       = 0x4;
-    paramSet.bCnt       = (unsigned short)blkSize/4;
-    paramSet.cCnt       = (unsigned short)nblks;
-    paramSet.bCntReload = 0x0;
-    paramSet.linkAddr   = 0xffff;
-    paramSet.opt        = 0;
-
-    /* Set OPT */
-    paramSet.opt |= ((MMCSD_RX_EDMA_CHAN << EDMA3CC_OPT_TCC_SHIFT) & EDMA3CC_OPT_TCC);
-
-    /* 1. Transmission complition interrupt enable */
-    paramSet.opt |= (1 << EDMA3CC_OPT_TCINTEN_SHIFT);
-
-    /* 2. Read FIFO : SRC Constant addr mode */
-    paramSet.opt |= (1 << 0);
-
-    /* 3. SRC FIFO width is 32 bit */
-    paramSet.opt |= (2 << 8);
-
-    /* 4.  AB-Sync mode */
-    paramSet.opt |= (1 << 2);
-
-    /* configure PaRAM Set */
-    EDMA3SetPaRAM(EDMA_INST_BASE, MMCSD_RX_EDMA_CHAN, &paramSet);
-
-    /* Enable the transfer */
-    EDMA3EnableTransfer(EDMA_INST_BASE, MMCSD_RX_EDMA_CHAN, EDMA3_TRIG_MODE_EVENT);
-}
-
-/******************************************************************************/
-/* SD_HSMMCSDTxDmaConfig
- *
- * Configures the DMA for SD card transmit.
- *                                                                            */
-/******************************************************************************/
-void SD_HSMMCSDTxDmaConfig(void *ptr, unsigned int blkSize, unsigned int blks)
-{
-    EDMA3CCPaRAMEntry paramSet;
-
-    paramSet.srcAddr    = (unsigned int)ptr;
-    paramSet.destAddr   = ctrlInfo.memBase + MMCHS_DATA;
-    paramSet.srcBIdx    = 4;
-    paramSet.srcCIdx    = blkSize;
-    paramSet.destBIdx   = 0;
-    paramSet.destCIdx   = 0;
-    paramSet.aCnt       = 0x4;
-    paramSet.bCnt       = (unsigned short)blkSize/4;
-    paramSet.cCnt       = (unsigned short)blks;
-    paramSet.bCntReload = 0x0;
-    paramSet.linkAddr   = 0xffff;
-    paramSet.opt        = 0;
-
-    /* Set OPT */
-    paramSet.opt |= ((MMCSD_TX_EDMA_CHAN << EDMA3CC_OPT_TCC_SHIFT) & EDMA3CC_OPT_TCC);
-
-    /* 1. Transmission complition interrupt enable */
-    paramSet.opt |= (1 << EDMA3CC_OPT_TCINTEN_SHIFT);
-
-    /* 2. Read FIFO : DST Constant addr mode */
-    paramSet.opt |= (1 << 1);
-
-    /* 3. DST FIFO width is 32 bit */
-    paramSet.opt |= (2 << 8);
-
-    /* 4.  AB-Sync mode */
-    paramSet.opt |= (1 << 2);
-
-    /* configure PaRAM Set */
-    EDMA3SetPaRAM(EDMA_INST_BASE, MMCSD_TX_EDMA_CHAN, &paramSet);
-
-    /* Enable the transfer */
-    EDMA3EnableTransfer(EDMA_INST_BASE, MMCSD_TX_EDMA_CHAN, EDMA3_TRIG_MODE_EVENT);
-}
-
-/******************************************************************************/
-/* SD_HSMMCSDXferSetup
- *
- * Configures the DMA for SD card for transmit and receive.
- *                                                                            */
-/******************************************************************************/
-void SD_HSMMCSDXferSetup(mmcsdCtrlInfo *ctrl, unsigned char rwFlag, void *ptr, unsigned int blkSize, unsigned int nBlks)
-{
-	SD_callbackOccured = 0;
-    xferCompFlag = 0;
-
-    if (rwFlag == 1)
-    {
-    	SD_HSMMCSDRxDmaConfig(ptr, blkSize, nBlks);
-    }
-    else
-    {
-        SD_HSMMCSDTxDmaConfig(ptr, blkSize, nBlks);
-    }
-
-    ctrl->dmaEnable = 1;
-    HSMMCSDBlkLenSet(ctrl->memBase, blkSize);
-}
-
-/******************************************************************************/
-/* SD_DMA_Callback
- *
- * Function is used as a callback from EDMA3 Completion Handler.
- *                                                                            */
-/******************************************************************************/
-void SD_DMA_Callback(unsigned int tccNum, unsigned int status)
-{
-    SD_callbackOccured = 1;
-    EDMA3DisableTransfer(EDMA_INST_BASE, tccNum, EDMA3_TRIG_MODE_EVENT);
-}
-
-/******************************************************************************/
-/* SD_DMA_ConfigureInterrupt
- *
- * Configures SD card interrupts.
- *                                                                            */
-/******************************************************************************/
-void SD_DMA_ConfigureInterrupt(void)
-{
-    /* Registering EDMA3 Channel Controller transfer completion interrupt.  */
-    IntRegister(EDMA_COMPLTN_INT_NUM, SD_DMA_ISR_EDMA3Complete);
-
-    /* Setting the priority for EDMA3CC completion interrupt in AINTC. */
-    IntPrioritySet(EDMA_COMPLTN_INT_NUM, DMA_COMPLETE_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
-
-    /* Registering EDMA3 Channel Controller Error Interrupt. */
-    IntRegister(EDMA_ERROR_INT_NUM, SD_DMA_ISR_EDMA3Error);
-
-    /* Setting the priority for EDMA3CC Error interrupt in AINTC. */
-    IntPrioritySet(EDMA_ERROR_INT_NUM, DMA_ERROR_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
-
-    /* Enabling the EDMA3CC completion interrupt in AINTC. */
-    IntSystemEnable(EDMA_COMPLTN_INT_NUM);
-
-    /* Enabling the EDMA3CC Error interrupt in AINTC. */
-    IntSystemEnable(EDMA_ERROR_INT_NUM);
-
-    /* Registering HSMMC Interrupt handler */
-    IntRegister(MMCSD_INT_NUM, SD_0_ISR);
-
-    /* Setting the priority for EDMA3CC completion interrupt in AINTC. */
-    IntPrioritySet(MMCSD_INT_NUM, SD_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
-
-    /* Enabling the HSMMC interrupt in AINTC. */
-    IntSystemEnable(MMCSD_INT_NUM);
-
-}
-
-/******************************************************************************/
-/* SD_DMA_Init
- *
- * Initializes the DMA for the SD card.
- *                                                                            */
-/******************************************************************************/
-void SD_DMA_Init(void)
-{
-    /* Initialization of EDMA3 */
-    EDMA3Init(EDMA_INST_BASE, EVT_QUEUE_NUM);
-
-    /* Configuring the AINTC to receive EDMA3 interrupts. */
-    SD_DMA_ConfigureInterrupt();
-}
-
-/******************************************************************************/
-/* SD_DMA_HSMMCSD
- *
- * Initializes the DMA for the SD card.
- *                                                                            */
-/******************************************************************************/
-void SD_DMA_HSMMCSD(void)
-{
-    /* Initializing the EDMA. */
-	SD_DMA_Init();
-
-    /* Request DMA Channel and TCC for MMCSD Transmit*/
-    EDMA3RequestChannel(EDMA_INST_BASE, EDMA3_CHANNEL_TYPE_DMA,
-                        MMCSD_TX_EDMA_CHAN, MMCSD_TX_EDMA_CHAN,
-                        EVT_QUEUE_NUM);
-
-    /* Registering Callback Function for TX*/
-    cb_Fxn[MMCSD_TX_EDMA_CHAN] = &SD_DMA_Callback;
-
-    /* Request DMA Channel and TCC for MMCSD Receive */
-    EDMA3RequestChannel(EDMA_INST_BASE, EDMA3_CHANNEL_TYPE_DMA,
-                        MMCSD_RX_EDMA_CHAN, MMCSD_RX_EDMA_CHAN,
-                        EVT_QUEUE_NUM);
-
-    /* Registering Callback Function for RX*/
-    cb_Fxn[MMCSD_RX_EDMA_CHAN] = &SD_DMA_Callback;
-}
-
-/******************************************************************************/
-/* SD_HSMMCSDControllerSetup
- *
- * Sets up the variables for SD card interface.
- *                                                                            */
-/******************************************************************************/
-void SD_HSMMCSDControllerSetup(void)
-{
-    ctrlInfo.memBase = MMCSD_INST_BASE;
-    ctrlInfo.ctrlInit = HSMMCSDControllerInit;
-    ctrlInfo.xferSetup = SD_HSMMCSDXferSetup;
-    ctrlInfo.cmdStatusGet = SD_HSMMCSDCmdStatusGet;
-    ctrlInfo.xferStatusGet = SD_HSMMCSDXferStatusGet;
-    ctrlInfo.cardPresent = HSMMCSDCardPresent;
-    ctrlInfo.cmdSend = HSMMCSDCmdSend;
-    ctrlInfo.busWidthConfig = HSMMCSDBusWidthConfig;
-    ctrlInfo.busFreqConfig = HSMMCSDBusFreqConfig;
-    ctrlInfo.intrMask = (HS_MMCSD_INTR_CMDCOMP | HS_MMCSD_INTR_CMDTIMEOUT |
-                            HS_MMCSD_INTR_DATATIMEOUT | HS_MMCSD_INTR_TRNFCOMP);
-    ctrlInfo.intrEnable = HSMMCSDIntEnable;
-    ctrlInfo.busWidth = (SD_BUS_WIDTH_1BIT | SD_BUS_WIDTH_4BIT);
-    ctrlInfo.highspeed = 1;
-    ctrlInfo.ocr = (SD_OCR_VDD_3P0_3P1 | SD_OCR_VDD_3P1_3P2);
-    ctrlInfo.card = &sdCard;
-    ctrlInfo.ipClk = HSMMCSD_IN_FREQ;
-    ctrlInfo.opClk = HSMMCSD_INIT_FREQ;
-    ctrlInfo.cdPinNum = HSMMCSD_CARD_DETECT_PINNUM;
-    sdCard.ctrl = &ctrlInfo;
-
-    SD_callbackOccured = 0;
-    xferCompFlag = 0;
-    dataTimeout = 0;
-    cmdCompFlag = 0;
-    cmdTimeout = 0;
 }
 
 /******************************************************************************/
@@ -698,5 +408,292 @@ unsigned char SD_IsInitialized(void)
 {
 	return SD_CardInitialized;
 }
+
+unsigned int SD_CardInit(void)
+{
+	unsigned int response[4];
+	unsigned char status = 0;
+	unsigned int OCR;
+	unsigned int HighCap;
+	unsigned char CID[16];
+	unsigned int retry = 0xFFFF;
+	unsigned int RCA;
+	unsigned char CSD[16];
+	unsigned int TransSpeed;
+	unsigned int BlockLength;
+	unsigned int Size;
+	unsigned int NumberBlocks;
+
+	/* CMD0 - reset card */
+	status = SD_SendCommand(SOC_MMCHS_0_REGS, 0, 0, SD_RESPONSE_NONE, &response);
+
+	if (status == 0)
+	{
+		return 0;
+	}
+
+	/* ACMD55 - find out if SD or MMC */
+	status = SD_SendAppCommand(SOC_MMCHS_0_REGS, 55, 0, SD_RESPONSE_48BITS, response);
+
+	if (status == 1)
+	/* SD Card */
+	{
+		//ctrl->card->cardType = MMCSD_CARD_SD;
+
+		/* CMD0 - reset card */
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 0, 0, SD_RESPONSE_NONE, response);
+
+		if (status == 0)
+		{
+			return 0;
+		}
+
+		/* CMD8 - send oper voltage */
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 8, SD_CHECK_PATTERN | SD_VOLT_2P7_3P6, SD_RESPONSE_48BITS, response);
+
+		if (status == 0)
+		{
+			/* If the cmd fails, it can be due to version < 2.0, since
+			 * we are currently supporting high voltage cards only
+			 */
+		}
+
+		/* Go ahead and send ACMD41, with host capabilities */
+		status = SD_SendAppCommand(SOC_MMCHS_0_REGS, 41, SD_OCR_HIGH_CAPACITY | SD_OCR_VDD_WILDCARD, SD_RESPONSE_48BITS, &response);
+
+		if (status == 0)
+		{
+			return 0;
+		}
+
+		/* Poll until we get the card status (BIT31 of OCR) is powered up */
+		do
+		{
+				status = SD_SendAppCommand(SOC_MMCHS_0_REGS, 41, SD_OCR_HIGH_CAPACITY | SD_OCR_VDD_WILDCARD, SD_RESPONSE_48BITS, &response);
+		}
+		while (!(response[0] & ((unsigned int)BIT(31))) && retry--);
+
+		if (retry == 0)
+		{
+			/* No point in continuing */
+			return 0;
+		}
+
+		OCR = response[0];
+
+		HighCap = (OCR & SD_OCR_HIGH_CAPACITY) ? 1 : 0;
+
+		/* Send CMD2, to get the card identification register */
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 2, 0, SD_RESPONSE_136BITS, response);
+
+		memcpy(CID, response, 16);
+
+		if (status == 0)
+		{
+			return 0;
+		}
+
+		/* Send CMD3, to get the card relative address */
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 3, 0, SD_RESPONSE_48BITS, response);
+
+		RCA = SD_RCA_ADDR(response[0]);
+
+		if (status == 0)
+		{
+			return 0;
+		}
+
+        /* Send CMD9, to get the card specific data */
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 9, RCA << 16, SD_RESPONSE_136BITS, response);
+
+        memcpy(CSD, response, 16);
+
+        if (status == 0)
+        {
+            return 0;
+        }
+
+        if ((CSD[3] & 0xC0000000) >> 30)
+        {
+            TransSpeed = SD_CSD1_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
+            BlockLength = 1 << (SD_CSD1_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
+            Size = SD_CSD1_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]);
+            NumberBlocks = Size / BlockLength;
+        }
+        else
+        {
+        	TransSpeed = SD_CSD0_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
+			BlockLength = 1 << (SD_CSD0_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
+			Size = SD_CSD0_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]);
+			NumberBlocks = Size / BlockLength;
+        }
+
+        /* Set data block length to 512 (for byte addressing cards) */
+        if(!(HighCap))
+        {
+        	status = SD_SendCommand(SOC_MMCHS_0_REGS, 16, 512, SD_RESPONSE_NONE, response);
+
+            if (status == 0)
+            {
+                return 0;
+            }
+            else
+            {
+            	BlockLength = 512;
+            }
+        }
+
+        /* Select the card */
+        status = SD_SendCommand(SOC_MMCHS_0_REGS, 7, RCA << 16, SD_RESPONSE_BUSY, response);
+
+        if (status == 0)
+        {
+            return 0;
+        }
+#if 0
+        /*
+         * Send ACMD51, to get the SD Configuration register details.
+         * Note, this needs data transfer (on data lines).
+         */
+        status = SD_SendCommand(SOC_MMCHS_0_REGS, 55, RCA << 16, SD_RESPONSE_48BITS, response);
+
+        if (status == 0)
+        {
+            return 0;
+        }
+
+        ctrl->xferSetup(ctrl, 1, dataBuffer, 8, 1);
+
+        cmd.idx = SD_CMD(51);
+        cmd.flags = SD_CMDRSP_READ | SD_CMDRSP_DATA;
+        cmd.arg = card->rca << 16;
+        cmd.nblks = 1;
+        cmd.data = (signed char*)dataBuffer;
+
+        status = MMCSDCmdSend(ctrl,&cmd);
+        if (status == 0)
+        {
+            return 0;
+        }
+
+        status = ctrl->xferStatusGet(ctrl);
+
+        if (status == 0)
+        {
+            return 0;
+        }
+
+        /* Invalidate the data cache. */
+        card->raw_scr[0] = (dataBuffer[3] << 24) | (dataBuffer[2] << 16) | \
+		                   (dataBuffer[1] << 8) | (dataBuffer[0]);
+        card->raw_scr[1] = (dataBuffer[7] << 24) | (dataBuffer[6] << 16) | \
+                                   (dataBuffer[5] << 8) | (dataBuffer[4]);
+
+        card->sd_ver = SD_CARD_VERSION(card);
+        card->busWidth = SD_CARD_BUSWIDTH(card);
+#endif
+    }
+    else
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
+unsigned char SD_SendCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, ENUM_SD_RESPONSE type, unsigned int* response)
+{
+		unsigned int cmdType = HS_MMCSD_CMD_TYPE_NORMAL;
+	    unsigned int dataPresent;
+	    unsigned int status = 0;
+	    unsigned int rspType;
+	    unsigned int cmdDir;
+	    unsigned int nblks;
+	    unsigned int cmd;
+
+	    if (type & SD_RESPONSE_STOP)
+	    {
+	        cmdType = HS_MMCSD_CMD_TYPE_SUSPEND;
+	    }
+	    else if (type & SD_RESPONSE_FS)
+	    {
+	        cmdType = HS_MMCSD_CMD_TYPE_FUNCSEL;
+	    }
+	    else if (type & SD_RESPONSE_ABORT)
+	    {
+	        cmdType = HS_MMCSD_CMD_TYPE_ABORT;
+	    }
+
+	    cmdDir = (type & SD_RESPONSE_READ) ? \
+	              HS_MMCSD_CMD_DIR_READ : HS_MMCSD_CMD_DIR_WRITE;
+
+	    dataPresent = (type & SD_RESPONSE_DATA) ? 1 : 0;
+	    nblks = (dataPresent == 1) ? 1 : 0;
+
+	    if (type & SD_RESPONSE_NONE)
+	    {
+	        rspType = HS_MMCSD_NO_RESPONSE;
+	    }
+	    else if (type & SD_RESPONSE_136BITS)
+	    {
+	        rspType = HS_MMCSD_136BITS_RESPONSE;
+	    }
+	    else if (type & SD_RESPONSE_BUSY)
+	    {
+	        rspType = HS_MMCSD_48BITS_BUSY_RESPONSE;
+	    }
+	    else
+	    {
+	        rspType = HS_MMCSD_48BITS_RESPONSE;
+	    }
+
+	    cmd = HS_MMCSD_CMD(command, cmdType, rspType, cmdDir);
+
+	    if (dataPresent)
+	    {
+	        HSMMCSDIntrStatusClear(baseAddr, HS_MMCSD_STAT_TRNFCOMP);
+
+	        HSMMCSDDataTimeoutSet(baseAddr, HS_MMCSD_DATA_TIMEOUT(27));
+	    }
+
+	    /* enable command event flags */
+	    HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_CTO_SIGEN);
+	    HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_CC_SIGEN);
+
+	    /* clear timeout */
+	    HSMMCSDIntrStatusClear(baseAddr, MMCHS_STAT_CTO);
+
+	    /* clear command complete */
+	    HSMMCSDIntrStatusClear(baseAddr, MMCHS_STAT_CC);
+
+	    HSMMCSDCommandSend(baseAddr, cmd, argument, (void*)dataPresent, nblks, 0);
+
+	    while((!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CTO)) && (!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CC)) && (!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CREM)));
+
+	    if(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CC)
+	    {
+	    	status = 1;
+	    }
+
+	    if (status == 1)
+	    {
+	        HSMMCSDResponseGet(baseAddr, response);
+	    }
+
+	    return status;
+}
+
+unsigned char SD_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, ENUM_SD_RESPONSE type, unsigned int* response)
+{
+	if(SD_SendCommand(baseAddr, 55, 0, SD_RESPONSE_48BITS, response))
+	{
+		if(SD_SendCommand(baseAddr, command, argument, type, response))
+		{
+			return PASS;
+		}
+	}
+	return FAIL;
+}
+
 
 /******************************* End of file *********************************/

@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6
+CG_TOOL_ROOT := C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -40,13 +40,6 @@ ORDERED_OBJS += \
 "./USB.obj" \
 "./WAV.obj" \
 "./main.obj" \
-"./fatfs/ff12/src/option/ccsbcs.obj" \
-"./fatfs/ff12/src/ff.obj" \
-"./WAV_Audio/WAV_POST_COMPLETE.obj" \
-"./Bitmaps/BITMAP_CHARLIE_BEACH.obj" \
-"./Bitmaps/BITMAP_SD_CARD_SYMBOL.obj" \
-"./Bitmaps/BITMAP_TV_REMOTE.obj" \
-"./Bitmaps/BITMAP_USB_SYMBOL.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/cache.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/cppi41dma.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/dmtimer.obj" \
@@ -75,10 +68,17 @@ ORDERED_OBJS += \
 "./AM335X_StarterWare_02_00_01_01/drivers/usbphyGS70.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/usbtick.obj" \
 "./AM335X_StarterWare_02_00_01_01/drivers/ustdlib.obj" \
+"./Bitmaps/BITMAP_CHARLIE_BEACH.obj" \
+"./Bitmaps/BITMAP_SD_CARD_SYMBOL.obj" \
+"./Bitmaps/BITMAP_TV_REMOTE.obj" \
+"./Bitmaps/BITMAP_USB_SYMBOL.obj" \
+"./WAV_Audio/WAV_POST_COMPLETE.obj" \
+"./fatfs/ff12/src/ff.obj" \
+"./fatfs/ff12/src/option/ccsbcs.obj" \
 "../LinkerCommand/BeagleBone_Smart_Controler.cmd" \
 $(GEN_CMDS__FLAG) \
--l"C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\AM335X_StarterWare_02_00_01_01\binary\armv7a\cgt_ccs\am335x\system_config\Release\system.lib" \
--l"libc.a" \
+-l"C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/binary/armv7a/cgt_ccs/am335x/system_config/Release/system.lib" \
+-llibc.a \
 
 -include ../makefile.init
 
@@ -88,21 +88,21 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
--include fatfs/ff12/src/option/subdir_vars.mk
--include fatfs/ff12/src/subdir_vars.mk
--include WAV_Audio/subdir_vars.mk
--include LinkerCommand/subdir_vars.mk
--include FT81x/subdir_vars.mk
--include Bitmaps/subdir_vars.mk
 -include AM335X_StarterWare_02_00_01_01/drivers/subdir_vars.mk
+-include Bitmaps/subdir_vars.mk
+-include FT81x/subdir_vars.mk
+-include LinkerCommand/subdir_vars.mk
+-include WAV_Audio/subdir_vars.mk
+-include fatfs/ff12/src/subdir_vars.mk
+-include fatfs/ff12/src/option/subdir_vars.mk
 -include subdir_rules.mk
--include fatfs/ff12/src/option/subdir_rules.mk
--include fatfs/ff12/src/subdir_rules.mk
--include WAV_Audio/subdir_rules.mk
--include LinkerCommand/subdir_rules.mk
--include FT81x/subdir_rules.mk
--include Bitmaps/subdir_rules.mk
 -include AM335X_StarterWare_02_00_01_01/drivers/subdir_rules.mk
+-include Bitmaps/subdir_rules.mk
+-include FT81x/subdir_rules.mk
+-include LinkerCommand/subdir_rules.mk
+-include WAV_Audio/subdir_rules.mk
+-include fatfs/ff12/src/subdir_rules.mk
+-include fatfs/ff12/src/option/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -123,6 +123,9 @@ ifneq ($(strip $(ASM_DEPS)),)
 endif
 ifneq ($(strip $(CC_DEPS)),)
 -include $(CC_DEPS)
+endif
+ifneq ($(strip $(SV7A_DEPS)),)
+-include $(SV7A_DEPS)
 endif
 ifneq ($(strip $(S55_DEPS)),)
 -include $(S55_DEPS)
@@ -215,23 +218,24 @@ all: BeagleBone_Smart_Controler.out
 BeagleBone_Smart_Controler.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(A_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6/bin/armcl" -mv7A8 --code_state=32 --abi=eabi -me -Ooff --fp_mode=relaxed --opt_for_speed=2 -g --define=am335x_15x15 --define=am335x --diag_warning=225 --opt_for_cache --single_inline -z -m"BeagleBone_Smart_Controler.map" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6/include" --reread_libs --warn_sections --xml_link_info="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Release/BeagleBone_Smart_Controler_linkInfo.xml" --ram_model -o "BeagleBone_Smart_Controler.out" $(ORDERED_OBJS) $(A_SRCS)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7A8 --code_state=32 --abi=eabi -me -Ooff --opt_for_speed=2 --fp_mode=relaxed -g --define=am335x_15x15 --define=am335x --diag_warning=225 --single_inline --opt_for_cache -z -m"BeagleBone_Smart_Controler.map" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --warn_sections --xml_link_info="C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Release/BeagleBone_Smart_Controler_linkInfo.xml" --ram_model -o "BeagleBone_Smart_Controler.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 BeagleBone_Smart_Controler.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.6/bin/armhex"  -o "BeagleBone_Smart_Controler.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armhex"  -o "BeagleBone_Smart_Controler.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "ADC.pp" "AUDIO.pp" "BMP.pp" "CMD.pp" "EEPROM.pp" "EMMC.pp" "FRAM.pp" "GPIO.pp" "GUI.pp" "I2C.pp" "INTERRUPTS.pp" "IR.pp" "LCD.pp" "LEDS.pp" "MEMORY.pp" "MISC.pp" "PMIC.pp" "POWER.pp" "PWM.pp" "RF.pp" "RTCC.pp" "SD.pp" "SPI.pp" "SYSTEM.pp" "TEST.pp" "TIMERS.pp" "UART.pp" "USB.pp" "WAV.pp" "main.pp" "fatfs\ff12\src\option\ccsbcs.pp" "fatfs\ff12\src\ff.pp" "WAV_Audio\WAV_POST_COMPLETE.pp" "Bitmaps\BITMAP_CHARLIE_BEACH.pp" "Bitmaps\BITMAP_SD_CARD_SYMBOL.pp" "Bitmaps\BITMAP_TV_REMOTE.pp" "Bitmaps\BITMAP_USB_SYMBOL.pp" "AM335X_StarterWare_02_00_01_01\drivers\cache.pp" "AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.pp" "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.pp" "AM335X_StarterWare_02_00_01_01\drivers\edma.pp" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.pp" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.pp" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.pp" "AM335X_StarterWare_02_00_01_01\drivers\hsi2c.pp" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.pp" "AM335X_StarterWare_02_00_01_01\drivers\mcspi.pp" 
-	-$(RM) "AM335X_StarterWare_02_00_01_01\drivers\mmcsd_proto.pp" "AM335X_StarterWare_02_00_01_01\drivers\mmu.pp" "AM335X_StarterWare_02_00_01_01\drivers\ramdisk.pp" "AM335X_StarterWare_02_00_01_01\drivers\rtc.pp" "AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.pp" "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.pp" "AM335X_StarterWare_02_00_01_01\drivers\usb_msc_structs.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdata.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdcdesc.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdconfig.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdenum.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdesc.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdhandler.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdmsc.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbdmscglue.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbphyGS70.pp" "AM335X_StarterWare_02_00_01_01\drivers\usbtick.pp" "AM335X_StarterWare_02_00_01_01\drivers\ustdlib.pp" 
-	-$(RM) "ADC.obj" "AUDIO.obj" "BMP.obj" "CMD.obj" "EEPROM.obj" "EMMC.obj" "FRAM.obj" "GPIO.obj" "GUI.obj" "I2C.obj" "INTERRUPTS.obj" "IR.obj" "LCD.obj" "LEDS.obj" "MEMORY.obj" "MISC.obj" "PMIC.obj" "POWER.obj" "PWM.obj" "RF.obj" "RTCC.obj" "SD.obj" "SPI.obj" "SYSTEM.obj" "TEST.obj" "TIMERS.obj" "UART.obj" "USB.obj" "WAV.obj" "main.obj" "fatfs\ff12\src\option\ccsbcs.obj" "fatfs\ff12\src\ff.obj" "WAV_Audio\WAV_POST_COMPLETE.obj" "Bitmaps\BITMAP_CHARLIE_BEACH.obj" "Bitmaps\BITMAP_SD_CARD_SYMBOL.obj" "Bitmaps\BITMAP_TV_REMOTE.obj" "Bitmaps\BITMAP_USB_SYMBOL.obj" "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" "AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.obj" "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.obj" "AM335X_StarterWare_02_00_01_01\drivers\edma.obj" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.obj" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.obj" "AM335X_StarterWare_02_00_01_01\drivers\hsi2c.obj" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.obj" 
-	-$(RM) "AM335X_StarterWare_02_00_01_01\drivers\mcspi.obj" "AM335X_StarterWare_02_00_01_01\drivers\mmcsd_proto.obj" "AM335X_StarterWare_02_00_01_01\drivers\mmu.obj" "AM335X_StarterWare_02_00_01_01\drivers\ramdisk.obj" "AM335X_StarterWare_02_00_01_01\drivers\rtc.obj" "AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.obj" "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.obj" "AM335X_StarterWare_02_00_01_01\drivers\usb_msc_structs.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdata.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdcdesc.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdconfig.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdenum.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdesc.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdhandler.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdmsc.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdmscglue.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbphyGS70.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbtick.obj" "AM335X_StarterWare_02_00_01_01\drivers\ustdlib.obj" 
+	-$(RM) "ADC.d" "AUDIO.d" "BMP.d" "CMD.d" "EEPROM.d" "EMMC.d" "FRAM.d" "GPIO.d" "GUI.d" "I2C.d" "INTERRUPTS.d" "IR.d" "LCD.d" "LEDS.d" "MEMORY.d" "MISC.d" "PMIC.d" "POWER.d" "PWM.d" "RF.d" "RTCC.d" "SD.d" "SPI.d" "SYSTEM.d" "TEST.d" "TIMERS.d" "UART.d" "USB.d" "WAV.d" "main.d" "AM335X_StarterWare_02_00_01_01\drivers\cache.d" "AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.d" "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.d" "AM335X_StarterWare_02_00_01_01\drivers\edma.d" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.d" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.d" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.d" "AM335X_StarterWare_02_00_01_01\drivers\hsi2c.d" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.d" "AM335X_StarterWare_02_00_01_01\drivers\mcspi.d" "AM335X_StarterWare_02_00_01_01\drivers\mmcsd_proto.d" "AM335X_StarterWare_02_00_01_01\drivers\mmu.d" "AM335X_StarterWare_02_00_01_01\drivers\ramdisk.d" "AM335X_StarterWare_02_00_01_01\drivers\rtc.d" "AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.d" 
+	-$(RM) "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.d" "AM335X_StarterWare_02_00_01_01\drivers\usb_msc_structs.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdata.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdcdesc.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdconfig.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdenum.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdesc.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdhandler.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdmsc.d" "AM335X_StarterWare_02_00_01_01\drivers\usbdmscglue.d" "AM335X_StarterWare_02_00_01_01\drivers\usbphyGS70.d" "AM335X_StarterWare_02_00_01_01\drivers\usbtick.d" "AM335X_StarterWare_02_00_01_01\drivers\ustdlib.d" "Bitmaps\BITMAP_CHARLIE_BEACH.d" "Bitmaps\BITMAP_SD_CARD_SYMBOL.d" "Bitmaps\BITMAP_TV_REMOTE.d" "Bitmaps\BITMAP_USB_SYMBOL.d" "WAV_Audio\WAV_POST_COMPLETE.d" "fatfs\ff12\src\ff.d" "fatfs\ff12\src\option\ccsbcs.d" 
+	-$(RM) "ADC.obj" "AUDIO.obj" "BMP.obj" "CMD.obj" "EEPROM.obj" "EMMC.obj" "FRAM.obj" "GPIO.obj" "GUI.obj" "I2C.obj" "INTERRUPTS.obj" "IR.obj" "LCD.obj" "LEDS.obj" "MEMORY.obj" "MISC.obj" "PMIC.obj" "POWER.obj" "PWM.obj" "RF.obj" "RTCC.obj" "SD.obj" "SPI.obj" "SYSTEM.obj" "TEST.obj" "TIMERS.obj" "UART.obj" "USB.obj" "WAV.obj" "main.obj" "AM335X_StarterWare_02_00_01_01\drivers\cache.obj" "AM335X_StarterWare_02_00_01_01\drivers\cppi41dma.obj" "AM335X_StarterWare_02_00_01_01\drivers\dmtimer.obj" "AM335X_StarterWare_02_00_01_01\drivers\edma.obj" "AM335X_StarterWare_02_00_01_01\drivers\gpio_v2.obj" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsd.obj" "AM335X_StarterWare_02_00_01_01\drivers\hs_mmcsdlib.obj" "AM335X_StarterWare_02_00_01_01\drivers\hsi2c.obj" "AM335X_StarterWare_02_00_01_01\drivers\interrupt.obj" "AM335X_StarterWare_02_00_01_01\drivers\mcspi.obj" "AM335X_StarterWare_02_00_01_01\drivers\mmcsd_proto.obj" "AM335X_StarterWare_02_00_01_01\drivers\mmu.obj" "AM335X_StarterWare_02_00_01_01\drivers\ramdisk.obj" 
+	-$(RM) "AM335X_StarterWare_02_00_01_01\drivers\rtc.obj" "AM335X_StarterWare_02_00_01_01\drivers\tsc_adc.obj" "AM335X_StarterWare_02_00_01_01\drivers\uart_irda_cir.obj" "AM335X_StarterWare_02_00_01_01\drivers\usb_msc_structs.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdata.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdcdesc.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdconfig.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdenum.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdesc.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdhandler.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdmsc.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbdmscglue.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbphyGS70.obj" "AM335X_StarterWare_02_00_01_01\drivers\usbtick.obj" "AM335X_StarterWare_02_00_01_01\drivers\ustdlib.obj" "Bitmaps\BITMAP_CHARLIE_BEACH.obj" "Bitmaps\BITMAP_SD_CARD_SYMBOL.obj" "Bitmaps\BITMAP_TV_REMOTE.obj" "Bitmaps\BITMAP_USB_SYMBOL.obj" "WAV_Audio\WAV_POST_COMPLETE.obj" "fatfs\ff12\src\ff.obj" 
+	-$(RM) "fatfs\ff12\src\option\ccsbcs.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

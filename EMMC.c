@@ -43,8 +43,6 @@
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-mmcsdCtrlInfo  EMMC_ctrlInfo;
-mmcsdCardInfo EMMC_Card;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -66,33 +64,6 @@ void Init_EMMC(void)
 
 	/* take EMMC out of reset */
 	EMMC_HardwareReset(FALSE);
-
-	EMMC_ctrlInfo.memBase = SOC_MMCHS_1_REGS;
-	EMMC_ctrlInfo.ctrlInit = HSMMCSDControllerInit;
-	EMMC_ctrlInfo.xferSetup = EMMC_HSMMCSDXferSetup;
-	EMMC_ctrlInfo.cmdStatusGet = EMMC_HSMMCSDCmdStatusGet;
-	EMMC_ctrlInfo.xferStatusGet = EMMC_HSMMCSDXferStatusGet;
-	EMMC_ctrlInfo.cardPresent = HSMMCSDCardPresent;
-	EMMC_ctrlInfo.cmdSend = HSMMCSDCmdSend;
-	EMMC_ctrlInfo.busWidthConfig = HSMMCSDBusWidthConfig;
-	EMMC_ctrlInfo.busFreqConfig = HSMMCSDBusFreqConfig;
-	EMMC_ctrlInfo.intrMask = (HS_MMCSD_INTR_CMDCOMP | HS_MMCSD_INTR_CMDTIMEOUT |
-                            HS_MMCSD_INTR_DATATIMEOUT | HS_MMCSD_INTR_TRNFCOMP);
-	EMMC_ctrlInfo.intrEnable = HSMMCSDIntEnable;
-	EMMC_ctrlInfo.busWidth = SD_BUS_WIDTH_1BIT;
-    EMMC_ctrlInfo.highspeed = 1;
-    EMMC_ctrlInfo.ocr = (SD_OCR_VDD_3P0_3P1 | SD_OCR_VDD_3P1_3P2);
-    EMMC_ctrlInfo.card = &sdCard;
-    EMMC_ctrlInfo.ipClk = EMMC_IN_FREQ;
-    EMMC_ctrlInfo.opClk = EMMC_INIT_FREQ;
-    EMMC_ctrlInfo.cdPinNum = 0;
-    EMMC_Card.ctrl = &EMMC_ctrlInfo;
-
-	/* initialize the controller */
-	EMMC_ControllerInit();
-
-	/* initialize the disk */
-    EMMC_DiskInitialize();
 }
 
 /******************************************************************************/
@@ -210,109 +181,5 @@ void EMMC_HardwareReset(unsigned char state)
 		GPIOPinWrite(EMMC_RST_REGS, EMMC_RST_PIN, GPIO_PIN_HIGH); // reset EMMC
 	}
 }
-
-/******************************************************************************/
-/* EMMC_ControllerInit
- *
- * Initializes the MMC controller.
- *                                                                            */
-/******************************************************************************/
-void EMMC_ControllerInit(void)
-{
-    /*Refer to the MMC Host and Bus configuration steps in TRM */
-    /* controller Reset */
-    HSMMCSDSoftReset(SOC_MMCHS_1_REGS);
-
-    /* Lines Reset */
-    HSMMCSDLinesReset(SOC_MMCHS_1_REGS, HS_MMCSD_ALL_RESET);
-
-    /* Set supported voltage list */
-    HSMMCSDSupportedVoltSet(SOC_MMCHS_1_REGS, HS_MMCSD_SUPPORT_VOLT_1P8 |
-                                                HS_MMCSD_SUPPORT_VOLT_3P0);
-
-    HSMMCSDSystemConfig(SOC_MMCHS_1_REGS, HS_MMCSD_AUTOIDLE_ENABLE);
-
-    /* Set the bus width */
-    HSMMCSDBusWidthSet(SOC_MMCHS_1_REGS, HS_MMCSD_BUS_WIDTH_1BIT );
-
-    /* Set the bus voltage */
-    HSMMCSDBusVoltSet(SOC_MMCHS_1_REGS, HS_MMCSD_BUS_VOLT_3P0);
-
-    /* Bus power on */
-    HSMMCSDBusPower(SOC_MMCHS_1_REGS, HS_MMCSD_BUS_POWER_ON);
-
-    /* Set the initialization frequency */
-    HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, EMMC_Card.ctrl->ipClk, EMMC_Card.ctrl->opClk, 0);
-
-    HSMMCSDInitStreamSend(SOC_MMCHS_1_REGS);
-}
-
-/******************************************************************************/
-/* EMMC_DiskInitialize
- *
- * Initializes the EMMC disk
- *                                                                            */
-/******************************************************************************/
-void EMMC_DiskInitialize(void)
-{
-	unsigned int status;
-
-	/* SD Card init */
-	status = MMCSDCardInit(EMMC_Card.ctrl);
-
-	if(status)
-	{
-		/* Set bus width */
-		MMCSDBusWidthSet(EMMC_Card.ctrl);
-
-		/* Transfer speed */
-		MMCSDTranSpeedSet(EMMC_Card.ctrl);
-	}
-}
-
-/******************************************************************************/
-/* EMMC_HSMMCSDXferSetup
- *
- * Configures the DMA for SD card for transmit and receive.
- *                                                                            */
-/******************************************************************************/
-void EMMC_HSMMCSDXferSetup(mmcsdCtrlInfo *ctrl, unsigned char rwFlag, void *ptr, unsigned int blkSize, unsigned int nBlks)
-{
-    HSMMCSDBlkLenSet(ctrl->memBase, blkSize);
-}
-
-/******************************************************************************/
-/* EMMC_HSMMCSDCmdStatusGet
- *
- * Checks the command status.
- *                                                                            */
-/******************************************************************************/
-unsigned int EMMC_HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl)
-{
-	while(!(HWREG(SOC_MMCHS_1_REGS + MMCHS_STAT) & MMCHS_STAT_CC))
-	{
-		if(HWREG(SOC_MMCHS_1_REGS + MMCHS_STAT) & MMCHS_STAT_CTO)
-		{
-			HWREG(SOC_MMCHS_1_REGS + MMCHS_STAT) |= MMCHS_STAT_CTO; // clear
-			return FAIL;
-		}
-	}
-	return PASS;
-}
-
-
-/******************************************************************************/
-/* EMMC_HSMMCSDXferStatusGet
- *
- * Gets the EMMC transfer status.
- *                                                                            */
-/******************************************************************************/
-unsigned int EMMC_HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl)
-{
-	while(!(HWREG(SOC_MMCHS_1_REGS + MMCHS_STAT) & MMCHS_STAT_TC));
-
-	return PASS;
-}
-
 
 /******************************* End of file *********************************/

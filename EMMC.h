@@ -15,13 +15,12 @@
  *  (MTFC4GACAAAM-1M WT).
  *                                                                            */
 /******************************************************************************/
-#ifndef _I2C_H_
-#define _I2C_H_
+#ifndef _EMMC_H_
+#define _EMMC_H_
 
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-#include "mmcsd_proto.h"
 
 /******************************************************************************/
 /* Pin Definitions			                                                  */
@@ -51,11 +50,6 @@ void Init_EMMC(void);
 void EMMC_PinMuxSetup(void);
 void EMMC_HSMMCSDModuleClkConfig(void);
 void EMMC_HardwareReset(unsigned char state);
-void EMMC_ControllerInit(void);
-void EMMC_DiskInitialize(void);
-void EMMC_HSMMCSDXferSetup(mmcsdCtrlInfo *ctrl, unsigned char rwFlag, void *ptr, unsigned int blkSize, unsigned int nBlks);
-unsigned int EMMC_HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl);
-unsigned int EMMC_HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl);
 
 #endif
 /******************************* End of file *********************************/

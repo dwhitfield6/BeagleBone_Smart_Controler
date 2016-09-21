@@ -226,15 +226,7 @@ void main (void)
 #ifndef USE_RAM_DISK
 				Init_USB0();
 #endif
-				sprintf(FileDataBuffer, "Data log: \r\n");
-				SD_HSMMCSDFsMount(0, &sdCard);
-				USB_InterruptEnable0(OFF);
-				Result = f_mkdir("/System_Data");
-				Result = f_mkdir("/System_Data/System_Log");
-				Result = f_open (&fileWrite, "/System_Data/System_Log/Log3.txt", FA_WRITE | FA_CREATE_NEW);
-				Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
-				Result = f_close (&fileWrite);
-				USB_InterruptEnable0(ON);
+				SD_CardInit();
 				SD_SetCardStatus(CARD_PRESENT);
 				GUI_ScreenRefresh();
 			}

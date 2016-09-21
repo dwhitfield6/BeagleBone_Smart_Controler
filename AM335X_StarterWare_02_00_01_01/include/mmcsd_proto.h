@@ -113,7 +113,7 @@ typedef struct _mmcsdCtrlInfo {
 }mmcsdCtrlInfo;
 
 /* SD Commands enumeration */
-#define SD_CMD(x)   (x)
+//#define SD_CMD(x)   (x)
 
 /* Command/Response flags for notifying some information to controller */
 #define SD_CMDRSP_NONE			BIT(0)
@@ -231,6 +231,7 @@ extern unsigned int MMCSDCardReset(mmcsdCtrlInfo *ctrl);
 extern unsigned int MMCSDCardInit(mmcsdCtrlInfo *ctrl);
 extern unsigned int MMCSDCtrlInit(mmcsdCtrlInfo *ctrl);
 extern void MMCSDIntEnable(mmcsdCtrlInfo *ctrl);
+unsigned int SD_CMD(unsigned int x);
 #ifdef __cplusplus
 }
 #endif

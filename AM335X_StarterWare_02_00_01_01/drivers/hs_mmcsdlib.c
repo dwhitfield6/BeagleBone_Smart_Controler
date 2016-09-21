@@ -114,7 +114,7 @@ unsigned int HSMMCSDControllerInit(mmcsdCtrlInfo *ctrl)
     HSMMCSDBusWidthSet(ctrl->memBase, HS_MMCSD_BUS_WIDTH_1BIT );
 
     /* Set the bus voltage */
-    HSMMCSDBusVoltSet(ctrl->memBase, HS_MMCSD_BUS_VOLT_3P0);
+    HSMMCSDBusVoltSet(ctrl->memBase, HS_MMCSD_BUS_VOLT_3P3);
 
     /* Bus power on */
     status = HSMMCSDBusPower(ctrl->memBase, HS_MMCSD_BUS_POWER_ON);
