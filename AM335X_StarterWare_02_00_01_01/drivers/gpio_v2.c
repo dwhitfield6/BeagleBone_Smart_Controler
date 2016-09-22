@@ -42,7 +42,6 @@
 
 #include "gpio_v2.h"
 #include "hw_types.h"
-#include "soc_AM335x.h"
 
 /*****************************************************************************
 **                       FUNCTION DEFINITIONS                                
@@ -214,11 +213,7 @@ void GPIOPinWrite(unsigned int baseAdd,
 unsigned int GPIOPinRead(unsigned int baseAdd,
                          unsigned int pinNumber)
 {
-	unsigned int temp;
-	temp = HWREG(baseAdd + GPIO_DATAIN);
-	temp &= (1L << pinNumber);
-	temp >>= pinNumber;
-    return temp;
+    return(HWREG(baseAdd + GPIO_DATAIN) & (1 << pinNumber));
 }
 
 /**
@@ -1034,26 +1029,6 @@ void gpioContextRestore(unsigned int baseAdd, GPIOCONTEXT *contextPtr)
     HWREG(baseAdd + GPIO_CTRL) = contextPtr->ctrl;
     HWREG(baseAdd + GPIO_OE) = contextPtr->dir;
     HWREG(baseAdd + GPIO_SETDATAOUT) = contextPtr->data;
-}
-
-/**
- * \brief  This function does the pin multiplexing for any GPIO Pin.
- *
- * \param  offsetAddr   This is the offset address of the Pad Control Register
- *                      corresponding to the GPIO pin. These addresses are
- *                      offsets with respect to the base address of the
- *                      Control Module.
- * \param  padConfValue This is the value to be written to the Pad Control
- *                      register whose offset address is given by 'offsetAddr'.
- *
- * The 'offsetAddr' and 'padConfValue' can be obtained from macros defined
- * in the file 'include/armv7a/am335x/pin_mux.h'.\n
- *
- * \return  None.
- */
-void GpioPinMuxSetup(unsigned int offsetAddr, unsigned int padConfValue)
-{
-    HWREG(SOC_CONTROL_REGS + offsetAddr) = (padConfValue);
 }
 
 /******************************* End Of File ********************************/

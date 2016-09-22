@@ -40,11 +40,8 @@
 *
 */
 
-#include "hw_control_AM335x.h"
-#include "hw_cm_wkup.h"
-#include "soc_AM335x.h"
+
 #include "hw_hsi2c.h"
-#include "hw_cm_per.h"
 #include "hw_types.h"
 #include "hsi2c.h"
 
@@ -1108,44 +1105,3 @@ void I2CContextRestore(unsigned int i2cBase, I2CCONTEXT *contextPtr)
 	while((!HWREG(i2cBase + I2C_SYSS) & I2C_SYSS_RDONE)); 	// reset complete...?
 }
 
-/*
-** This function enables the system L3 and system L4_WKUP clocks.
-** This also enables the clocks for I2C0 instance.
-*/
-void I2C0ModuleClkConfig(void)
-{
-   /* Writing to MODULEMODE field of CM_WKUP_I2C0_CLKCTRL register. */
-    HWREG(SOC_CM_WKUP_REGS + CM_WKUP_I2C0_CLKCTRL) |=
-          CM_WKUP_I2C0_CLKCTRL_MODULEMODE_ENABLE;
-
-    /* Waiting for MODULEMODE field to reflect the written value. */
-    while(CM_WKUP_I2C0_CLKCTRL_MODULEMODE_ENABLE !=
-          (HWREG(SOC_CM_WKUP_REGS + CM_WKUP_I2C0_CLKCTRL) &
-           CM_WKUP_I2C0_CLKCTRL_MODULEMODE));
-
-
-    /*
-    ** Waiting for IDLEST field in CM_WKUP_CONTROL_CLKCTRL register to attain
-    ** desired value.
-    */
-    while((CM_WKUP_CONTROL_CLKCTRL_IDLEST_FUNC <<
-           CM_WKUP_CONTROL_CLKCTRL_IDLEST_SHIFT) !=
-          (HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CONTROL_CLKCTRL) &
-           CM_WKUP_CONTROL_CLKCTRL_IDLEST));
-    /*
-    ** Waiting for CLKACTIVITY_I2C0_GFCLK field in CM_WKUP_CLKSTCTRL
-    ** register to attain desired value.
-    */
-    while(CM_WKUP_CLKSTCTRL_CLKACTIVITY_I2C0_GFCLK !=
-          (HWREG(SOC_CM_WKUP_REGS + CM_WKUP_CLKSTCTRL) &
-           CM_WKUP_CLKSTCTRL_CLKACTIVITY_I2C0_GFCLK));
-
-    /*
-    ** Waiting for IDLEST field in CM_WKUP_I2C0_CLKCTRL register to attain
-    ** desired value.
-    */
-    while((CM_WKUP_I2C0_CLKCTRL_IDLEST_FUNC <<
-           CM_WKUP_I2C0_CLKCTRL_IDLEST_SHIFT) !=
-          (HWREG(SOC_CM_WKUP_REGS + CM_WKUP_I2C0_CLKCTRL) &
-           CM_WKUP_I2C0_CLKCTRL_IDLEST));
-}

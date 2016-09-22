@@ -53,8 +53,6 @@
 /*                named below, be sure to use the correct name here.        */
 /*                                                                          */
 /****************************************************************************/
--stack  0x0008                             /* SOFTWARE STACK SIZE           */
--heap   0x2000                             /* HEAP AREA SIZE                */
 -e Entry
 /* Since we used 'Entry' as the entry-point symbol the compiler issues a    */
 /* warning (#10063-D: entry-point symbol other than "_c_int00" specified:   */
@@ -68,7 +66,8 @@
 
 MEMORY
 {
-        DDR_MEM        : org = 0x80000000  len = 0x7FFFFFF          /* DDR */
+        DDR_MEM        : org = 0x80000000  len = 0x4000000          /* DDR */
+        DDR_MEM_CACHE  : org = 0x84000000  len = 0x4000000          /* DDR */
         SRAM_MEM       : org = 0x402F0400  len = 0xFBFF           	/* SRAM */
         L3_SRAM_MEM    : org = 0x40300000  len = 0xFFFF           	/* L3_SRAM */
 }
@@ -79,15 +78,29 @@ SECTIONS
 {
     .text:Entry : load > 0x80000000
 
-    .text    : load > DDR_MEM              /* CODE                          */
-    .data    : load > DDR_MEM              /* INITIALIZED GLOBAL AND STATIC VARIABLES */
-    .bss     : load > DDR_MEM              /* UNINITIALIZED OR ZERO INITIALIZED */
-                                           /* GLOBAL & STATIC VARIABLES */
+Cache_Code         /* Name the output section        */
+    {
+       cppi41dma.obj(.text)
+       usbdenum.obj(.text)
+       usb_driver.obj (.text)
+       usbdmsc.obj (.text)
+       usbdconfig.obj (.text)
+       usbdcdesc.obj (.text)
+       usbdesc.obj (.text)
+       mmu.obj (.text)
+       ramdisk.obj (.text)
+       cache.obj (.text)
+       usbdmscglue.obj (.text)
+       usb.obj (.text)
+       usbphyGS70.obj (.text)
+    } > DDR_MEM_CACHE                   /* Allocate to FLASH memory range */
+
+    .text    : load > DDR_MEM	       		/* CODE                          */
+    .data    : load > DDR_MEM              	/* INITIALIZED GLOBAL AND STATIC VARIABLES */
+    .bss     : load > DDR_MEM              	/* UNINITIALIZED OR ZERO INITIALIZED */  /* GLOBAL & STATIC VARIABLES */
                     RUN_START(bss_start)
                     RUN_END(bss_end)
-    .const   : load > DDR_MEM              /* GLOBAL CONSTANTS              */
-    .stack   : load > 0x87FFFFF0           /* SOFTWARE SYSTEM STACK         */
 
-	.l3_memory: load > L3_SRAM_MEM
+    .const   : load > DDR_MEM              	/* GLOBAL CONSTANTS              */
+    .stack   : load > 0x87FFF000           	/* SOFTWARE SYSTEM STACK         */
 }
-

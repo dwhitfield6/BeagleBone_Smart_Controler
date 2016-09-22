@@ -47,20 +47,42 @@
 /******************************************************************************/
 void MMU_ConfigAndEnable(void)
 {
+    /*
+    ** Define DDR memory region of AM335x. DDR can be configured as Normal
+    ** memory with R/W access in user/privileged modes. The cache attributes
+    ** specified here are,
+    ** Inner - Write through, No Write Allocate
+    ** Outer - Write Back, Write Allocate
+    */
     REGION regionDdr = {
                         MMU_PGTYPE_SECTION, START_ADDR_DDR, NUM_SECTIONS_DDR,
-						MMU_MEMTYPE_NORMAL_SHAREABLE(MMU_CACHE_WT_NOWA,
-                                                         MMU_CACHE_WB_WA),
+						MMU_MEMTYPE_NORMAL_NON_SHAREABLE(MMU_NON_CACHEABLE,
+												 MMU_NON_CACHEABLE),
                         MMU_REGION_NON_SECURE, MMU_AP_PRV_RW_USR_RW,
                         (unsigned int*)pageTable
                        };
+
+    /*
+	** Define DDR memory region of AM335x. DDR can be configured as Normal
+	** memory with R/W access in user/privileged modes. The cache attributes
+	** specified here are,
+	** Inner - Write through, No Write Allocate
+	** Outer - Write Back, Write Allocate
+	*/
+	REGION regionDdrCache = {
+						MMU_PGTYPE_SECTION, START_ADDR_DDR_CACHE, NUM_SECTIONS_DDR_CACHE,
+						MMU_MEMTYPE_NORMAL_NON_SHAREABLE(MMU_CACHE_WT_NOWA,
+								MMU_CACHE_WB_WA),
+						MMU_REGION_NON_SECURE, MMU_AP_PRV_RW_USR_RW,
+						(unsigned int*)pageTable
+					   };
     /*
     ** Define OCMC RAM region of AM335x. Same Attributes of DDR region given.
     */
     REGION regionOcmc = {
                          MMU_PGTYPE_SECTION, START_ADDR_OCMC, NUM_SECTIONS_OCMC,
-						 MMU_MEMTYPE_NORMAL_SHAREABLE(MMU_CACHE_WT_NOWA,
-                                                          MMU_CACHE_WB_WA),
+						 MMU_MEMTYPE_NORMAL_NON_SHAREABLE(MMU_NON_CACHEABLE,
+                        		 MMU_NON_CACHEABLE),
                          MMU_REGION_NON_SECURE, MMU_AP_PRV_RW_USR_RW,
                          (unsigned int*)pageTable
                         };
@@ -83,6 +105,7 @@ void MMU_ConfigAndEnable(void)
 
     /* Map the defined regions */
     MMUMemRegionMap(&regionDdr);
+    MMUMemRegionMap(&regionDdrCache);
     MMUMemRegionMap(&regionOcmc);
     MMUMemRegionMap(&regionDev);
 

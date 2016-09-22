@@ -32,7 +32,7 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 #include <string.h>
-
+#include <USB_MSC_DEVICE.h>
 #include "cache.h"
 #include "FT_Gpu.h"
 #include "hw_control_AM335x.h"
@@ -55,7 +55,6 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
-#include "USB.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -64,8 +63,6 @@
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-#pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
-static FIL fileWrite;
 
 /******************************************************************************/
 /* Main Program                                                               */
@@ -88,7 +85,6 @@ void main (void)
     Init_Modules();
 
     /* display the initial status */
-    LED_Show();
     UART_PrintString(CRLN);
     UART_PrintString(PROJECT_NAME);
     UART_PrintString(CRLN);
@@ -133,7 +129,7 @@ void main (void)
 	    			{
 	    				/* the screen is off */
 	    				GUI_StartNewScreenTagTimer();
-		    			GUI_Backlight(ON);
+		    			GUI_Backlight(TRUE);
 	    			}
 	    			TMR_ResetBacklightTimer();
 	    		}
@@ -147,14 +143,14 @@ void main (void)
 	    		GUI_DrawNextScreen(tags);
 	    	}
 			LCD_ClearInterruptFlag();
-			LCD_Interrupt(ON);
+			LCD_Interrupt(TRUE);
 		}
 
     	/* check for Backlight timeout flag */
     	if(GUI_GetBacklightTimeout())
     	{
     		LCD_InteruptDisable(INTERRUPT_TAG);
-    		GUI_Backlight(OFF);
+    		GUI_Backlight(FALSE);
     		GUI_ClearBacklightTimeout();
     	}
 
@@ -235,7 +231,6 @@ void main (void)
 			{
 				SD_SetCardStatus(CARD_NOTPRESENT);
 				GUI_ScreenRefresh();
-				SD_ReInitialize();
 			}
 			SD_ClearCardActionFlag();
 		}

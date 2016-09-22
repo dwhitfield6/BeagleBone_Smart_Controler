@@ -5,7 +5,7 @@
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/CortxA8" value="${build_artifact:BeagleBone_Smart_Controler}"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_PROJECT.Texas Instruments XDS100v2 USB Debug Probe_0/CortxA8" value="BeagleBone_Smart_Controler"/>
 <stringAttribute key="com.ti.ccstudio.debug.debugModel.ATTR_TARGET_CONFIG" value="${target_config_active_default:BeagleBone_Smart_Controler}"/>
-<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/CortxA8" value="C:/Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Release\BeagleBone_Smart_Controler.out"/>
+<stringAttribute key="com.ti.ccstudio.debug.debugModel.MRU_PROGRAM.Texas Instruments XDS100v2 USB Debug Probe_0/CortxA8" value="C:/Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug\BeagleBone_Smart_Controler.out"/>
 <mapAttribute key="com.ti.ccstudio.debug.ui.displayFormats">
 <mapEntry key="Texas Instruments XDS100v2 USB Debug Probe_0/CortxA8@##separator##@0" value="32-Bit Hex - TI Style"/>
 </mapAttribute>

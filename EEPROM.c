@@ -109,13 +109,13 @@ unsigned char EEPROM_ReadBuffer(unsigned short address, unsigned char* data, uns
 	{
 		if(!EEPROM_ReadAddress(temp_address, data))
 		{
-			return FAIL;
+			return FALSE;
 		}
 		temp_address++;
 		data++;
 		bytes--;
 	}
-	return PASS;
+	return TRUE;
 }
 
 /******************************************************************************/
@@ -131,13 +131,13 @@ unsigned char EEPROM_WriteBuffer(unsigned short address, unsigned char* data, un
 	{
 		if(!EEPROM_WriteAddress(temp_address, data))
 		{
-			return FAIL;
+			return FALSE;
 		}
 		temp_address++;
 		data++;
 		bytes--;
 	}
-	return PASS;
+	return TRUE;
 }
 
 /******************************* End of file *********************************/

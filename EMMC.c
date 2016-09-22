@@ -19,16 +19,10 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-#include "edma.h"
-#include "gpio_v2.h"
 #include "hw_control_AM335x.h"
 #include "hw_cm_per.h"
-#include "hw_hs_mmcsd.h"
 #include "hw_types.h"
-#include "hs_mmcsd.h"
-#include "hs_mmcsdlib.h"
-#include "interrupt.h"
-#include "mmcsd_proto.h"
+#include "gpio_v2.h"
 #include "soc_AM335x.h"
 #include "pin_mux.h"
 

@@ -28,11 +28,11 @@
 typedef struct t_i2c_data
 {
 	unsigned char* p_Receive;
-	unsigned char ReceiveBytes;
-	unsigned char BytesReceived;
+	unsigned int ReceiveBytes;
+	unsigned int BytesReceived;
 	unsigned char* p_Transmit;
-	unsigned char TransmitBytes;
-	unsigned char BytesTransmitted;
+	unsigned int TransmitBytes;
+	unsigned int BytesTransmitted;
 }TYPE_I2C_DATA;
 
 /******************************************************************************/

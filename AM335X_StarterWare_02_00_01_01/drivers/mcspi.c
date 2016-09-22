@@ -41,13 +41,11 @@
 
 #include "mcspi.h"
 #include "hw_types.h"
-#include "hw_cm_per.h"
-#include "hw_cm_wkup.h"
-#include "soc_AM335x.h"
 
 /*******************************************************************************
 *                       INTERNAL MACRO DEFINITIONS
 *******************************************************************************/
+#define MCSPI_CH_NUM_0        (0u)
 #define MCSPI_CLKD_MASK       (0xF)
 
 /*******************************************************************************
@@ -101,23 +99,23 @@ void McSPIClkConfig(unsigned int baseAdd, unsigned int spiInClk,
     if(0 != (fRatio & (fRatio - 1))) 
     {
         /* Set the clock granularity to 1 clock cycle.*/
-        HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= MCSPI_CH1CONF_CLKG;
+        HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= MCSPI_CH0CONF_CLKG;
 
         /* Calculate the ratios clkD and extClk based on fClk */
         extClk = (fRatio - 1) >> 4;
         clkD = (fRatio - 1) & MCSPI_CLKD_MASK;
 
         /*Clear the extClk field of MCSPI_CHCTRL register.*/
-        HWREG(baseAdd + MCSPI_CHCTRL(chNum)) &= ~MCSPI_CH1CTRL_EXTCLK;
+        HWREG(baseAdd + MCSPI_CHCTRL(chNum)) &= ~MCSPI_CH0CTRL_EXTCLK;
 
         /* Set the extClk field of MCSPI_CHCTRL register.*/
         HWREG(baseAdd + MCSPI_CHCTRL(chNum)) |= (extClk << 
-                                                 MCSPI_CH1CTRL_EXTCLK_SHIFT);
+                                                 MCSPI_CH0CTRL_EXTCLK_SHIFT);
     }
     else
     {
         /* Clock granularity of power of 2.*/
-        HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_CLKG;
+        HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_CLKG;
 
         while(1 != fRatio)
         {
@@ -127,18 +125,18 @@ void McSPIClkConfig(unsigned int baseAdd, unsigned int spiInClk,
     }
 
     /*Clearing the clkD field of MCSPI_CHCONF register.*/
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_CLKD;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_CLKD;
 
     /* Configure the clkD field of MCSPI_CHCONF register.*/
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (clkD << MCSPI_CH1CONF_CLKD_SHIFT);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (clkD << MCSPI_CH0CONF_CLKD_SHIFT);
          
     /*Clearing the clkMode field of MCSPI_CHCONF register.*/
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(MCSPI_CH1CONF_PHA |
-                                               MCSPI_CH1CONF_POL);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(MCSPI_CH0CONF_PHA | 
+                                               MCSPI_CH0CONF_POL);
 
     /* Configure the clkMode of MCSPI_CHCONF register.*/
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (clkMode & (MCSPI_CH1CONF_PHA |
-                                                         MCSPI_CH1CONF_POL));
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (clkMode & (MCSPI_CH0CONF_PHA | 
+                                                         MCSPI_CH0CONF_POL));
 }
 
 /**
@@ -169,10 +167,10 @@ void McSPIWordLengthSet(unsigned int baseAdd, unsigned int wordLength,
                         unsigned int chNum)
 {
     /*Clearing the wordLength field of MCSPI_CHCONF register.*/
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_WL;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_WL;
 
     /* Setting the wordlength field. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (wordLength & MCSPI_CH1CONF_WL);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (wordLength & MCSPI_CH0CONF_WL);
 }
 
 /**
@@ -226,10 +224,10 @@ void McSPICSPolarityConfig(unsigned int baseAdd, unsigned int spiEnPol,
                            unsigned int chNum) 
 {
     /* Clear the EPOL field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_EPOL;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_EPOL;
 
     /* Set the EPOL field with the user sent value. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (spiEnPol & MCSPI_CH1CONF_EPOL);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (spiEnPol & MCSPI_CH0CONF_EPOL);
 }
 
 /**
@@ -259,8 +257,8 @@ void McSPICSTimeControlSet(unsigned int baseAdd, unsigned int csTimeControl,
 
     /* Set the TCS field with the user sent value. */
     HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= ((csTimeControl <<
-    										 MCSPI_CH0CONF_TCS0_SHIFT) &
-    										 MCSPI_CH0CONF_TCS0);
+                                              MCSPI_CH0CONF_TCS0_SHIFT) &
+                                              MCSPI_CH0CONF_TCS0);
 }
 
 /**
@@ -279,7 +277,7 @@ void McSPICSTimeControlSet(unsigned int baseAdd, unsigned int csTimeControl,
 void McSPICSAssert(unsigned int baseAdd, unsigned int chNum)
 {
     /* Set the FORCE bit of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (MCSPI_CH1CONF_FORCE);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (MCSPI_CH0CONF_FORCE);
 }
 
 /**
@@ -298,7 +296,7 @@ void McSPICSAssert(unsigned int baseAdd, unsigned int chNum)
 void McSPICSDeAssert(unsigned int baseAdd, unsigned int chNum)
 {
     /* Clear the FORCE bit of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(MCSPI_CH1CONF_FORCE);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(MCSPI_CH0CONF_FORCE);
 }
 
 /**
@@ -317,7 +315,7 @@ void McSPICSDeAssert(unsigned int baseAdd, unsigned int chNum)
 void McSPIStartBitEnable(unsigned int baseAdd, unsigned int chNum)
 {
     /* Set the SBE bit of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= MCSPI_CH1CONF_SBE;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= MCSPI_CH0CONF_SBE; 
 }
 
 /**
@@ -344,11 +342,11 @@ void McSPIStartBitPolarityConfig(unsigned int baseAdd, unsigned int startBitPol,
                                  unsigned int chNum)
 {
     /* Clear the SBE field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_SBPOL;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_SBPOL;     
    
     /* Set the user sent value */
     HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (startBitPol & 
-                                              MCSPI_CH1CONF_SBPOL);
+                                              MCSPI_CH0CONF_SBPOL);
 }
 
 /**
@@ -367,7 +365,7 @@ void McSPIStartBitPolarityConfig(unsigned int baseAdd, unsigned int startBitPol,
 void McSPIStartBitDisable(unsigned int baseAdd, unsigned int chNum)
 {
     /* Clear the SBE field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_SBE;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_SBE; 
 }
 
 /**
@@ -436,10 +434,10 @@ unsigned int McSPIMasterModeConfig(unsigned int baseAdd,
     HWREG(baseAdd + MCSPI_MODULCTRL) |= (channelMode & MCSPI_MODULCTRL_SINGLE);
 
     /* Clear the TRM field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_TRM;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_TRM;
 
     /* Set the TRM field with the user sent value. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (trMode & MCSPI_CH1CONF_TRM);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (trMode & MCSPI_CH0CONF_TRM);
 
     if(((MCSPI_TX_RX_MODE == trMode) && 
        (MCSPI_DATA_LINE_COMM_MODE_3 == pinMode)) || 
@@ -455,14 +453,14 @@ unsigned int McSPIMasterModeConfig(unsigned int baseAdd,
     else 
     {
         /* Clear the IS, DPE0, DPE1 fields of MCSPI_CHCONF register. */
-        HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(MCSPI_CH1CONF_IS |
-                                                   MCSPI_CH1CONF_DPE1 |
-                                                   MCSPI_CH1CONF_DPE0);
+        HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(MCSPI_CH0CONF_IS | 
+                                                   MCSPI_CH0CONF_DPE1 | 
+                                                   MCSPI_CH0CONF_DPE0);
   
         /* Set the IS, DPE0, DPE1 fields with the user sent values. */
-        HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (pinMode & (MCSPI_CH1CONF_IS |
-                                                            MCSPI_CH1CONF_DPE1 |
-                                                            MCSPI_CH1CONF_DPE0));
+        HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (pinMode & (MCSPI_CH0CONF_IS |
+                                                            MCSPI_CH0CONF_DPE1 | 
+                                                            MCSPI_CH0CONF_DPE0));
 
         retVal = TRUE;
     }
@@ -489,7 +487,7 @@ unsigned int McSPIMasterModeConfig(unsigned int baseAdd,
 void McSPIChannelEnable(unsigned int baseAdd, unsigned int chNum)
 {
     /* Set the EN field of MCSPI_CHCTRL register. */
-    HWREG(baseAdd + MCSPI_CHCTRL(chNum)) |= MCSPI_CH1CTRL_EN_ACTIVE;
+    HWREG(baseAdd + MCSPI_CHCTRL(chNum)) |= MCSPI_CH0CTRL_EN_ACTIVE;                        
 }
 
 /**
@@ -508,7 +506,7 @@ void McSPIChannelEnable(unsigned int baseAdd, unsigned int chNum)
 void McSPIChannelDisable(unsigned int baseAdd, unsigned int chNum)
 {
     /* Clear the EN field of MCSPI_CHCTRL register. */
-    HWREG(baseAdd + MCSPI_CHCTRL(chNum)) &= ~MCSPI_CH1CTRL_EN_ACTIVE;
+    HWREG(baseAdd + MCSPI_CHCTRL(chNum)) &= ~MCSPI_CH0CTRL_EN_ACTIVE;                   
 }
 
 /**
@@ -546,7 +544,7 @@ void McSPIReset(unsigned int baseAdd)
 void McSPITurboModeEnable(unsigned int baseAdd, unsigned int chNum)
 {
     /* Set the TURBO field on MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= MCSPI_CH1CONF_TURBO;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= MCSPI_CH0CONF_TURBO; 
 }
 
 /**
@@ -565,7 +563,7 @@ void McSPITurboModeEnable(unsigned int baseAdd, unsigned int chNum)
 void McSPITurboModeDisable(unsigned int baseAdd, unsigned int chNum)
 {
     /* Clear the TURBO field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_TURBO;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_TURBO;
 }
 
 /**
@@ -592,10 +590,10 @@ void McSPITxFIFOConfig(unsigned int baseAdd, unsigned int txFifo,
                        unsigned int chNum)
 {
     /* Clear the FFEW field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_FFEW;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_FFEW;
 
     /* Set the FFEW field with user sent value. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (txFifo & MCSPI_CH1CONF_FFEW);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (txFifo & MCSPI_CH0CONF_FFEW); 
 }
 
 /**
@@ -622,10 +620,10 @@ void McSPIRxFIFOConfig(unsigned int baseAdd, unsigned int rxFifo,
                        unsigned int chNum)
 {
     /* Clear the FFER field of MCSPI_CHCONF register. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH1CONF_FFER;
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~MCSPI_CH0CONF_FFER;
 
     /* Set the FFER field with the user sent value. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (rxFifo & MCSPI_CH1CONF_FFER);
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (rxFifo & MCSPI_CH0CONF_FFER);
 }
 
 /**
@@ -740,8 +738,8 @@ void McSPIDMAEnable(unsigned int baseAdd, unsigned int dmaFlags,
                     unsigned int chNum)
 {
     /* Enable the DMA events. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (dmaFlags & (MCSPI_CH1CONF_DMAR |
-                                                          MCSPI_CH1CONF_DMAW));
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) |= (dmaFlags & (MCSPI_CH0CONF_DMAR |
+                                                          MCSPI_CH0CONF_DMAW)); 
 }
 
 /**
@@ -767,8 +765,8 @@ void McSPIDMADisable(unsigned int baseAdd, unsigned int dmaFlags,
                      unsigned int chNum)
 {
     /* Disable the DMA events. */
-    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(dmaFlags & (MCSPI_CH1CONF_DMAR |
-                                                           MCSPI_CH1CONF_DMAW));
+    HWREG(baseAdd + MCSPI_CHCONF(chNum)) &= ~(dmaFlags & (MCSPI_CH0CONF_DMAR | 
+                                                           MCSPI_CH0CONF_DMAW));
 }
 
 /**
@@ -1038,155 +1036,6 @@ void McSPIFIFODatManagementConfig(unsigned int baseAdd, unsigned int fdaa)
 
     /* Set the FDAA field with the user sent value. */
     HWREG(baseAdd + MCSPI_MODULCTRL) |= (fdaa & MCSPI_MODULCTRL_FDAA);
-}
-
-/**
- * \brief   This function will configure the required clocks for McSPI1 instance.
- *
- * \return  None.
- *
- */
-void McSPI1ModuleClkConfig(void)
-{
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) =
-                             CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) &
-     CM_PER_L3S_CLKSTCTRL_CLKTRCTRL) != CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) =
-                             CM_PER_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) &
-     CM_PER_L3_CLKSTCTRL_CLKTRCTRL) != CM_PER_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_INSTR_CLKCTRL) =
-                             CM_PER_L3_INSTR_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_INSTR_CLKCTRL) &
-                               CM_PER_L3_INSTR_CLKCTRL_MODULEMODE) !=
-                                   CM_PER_L3_INSTR_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) =
-                             CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) &
-        CM_PER_L3_CLKCTRL_MODULEMODE) != CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) =
-                             CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) &
-                              CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL) !=
-                                CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) =
-                             CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-                             CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL) !=
-                               CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKCTRL) =
-                             CM_PER_L4LS_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKCTRL) &
-      CM_PER_L4LS_CLKCTRL_MODULEMODE) != CM_PER_L4LS_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_SPI1_CLKCTRL) &= ~CM_PER_SPI1_CLKCTRL_MODULEMODE;
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_SPI1_CLKCTRL) |= CM_PER_SPI1_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_SPI1_CLKCTRL) &
-      CM_PER_SPI1_CLKCTRL_MODULEMODE) != CM_PER_SPI1_CLKCTRL_MODULEMODE_ENABLE);
-
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) &
-            CM_PER_L3S_CLKSTCTRL_CLKACTIVITY_L3S_GCLK));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) &
-            CM_PER_L3_CLKSTCTRL_CLKACTIVITY_L3_GCLK));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) &
-           (CM_PER_OCPWP_L3_CLKSTCTRL_CLKACTIVITY_OCPWP_L3_GCLK |
-            CM_PER_OCPWP_L3_CLKSTCTRL_CLKACTIVITY_OCPWP_L4_GCLK)));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-           (CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_L4LS_GCLK |
-            CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_SPI_GCLK)));
-
-}
-
-void McSPI0ModuleClkConfig(void)
-{
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) =
-                             CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) &
-     CM_PER_L3S_CLKSTCTRL_CLKTRCTRL) != CM_PER_L3S_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) =
-                             CM_PER_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) &
-     CM_PER_L3_CLKSTCTRL_CLKTRCTRL) != CM_PER_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_INSTR_CLKCTRL) =
-                             CM_PER_L3_INSTR_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_INSTR_CLKCTRL) &
-                               CM_PER_L3_INSTR_CLKCTRL_MODULEMODE) !=
-                                   CM_PER_L3_INSTR_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) =
-                             CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKCTRL) &
-        CM_PER_L3_CLKCTRL_MODULEMODE) != CM_PER_L3_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) =
-                             CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) &
-                              CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL) !=
-                                CM_PER_OCPWP_L3_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) =
-                             CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-                             CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL) !=
-                               CM_PER_L4LS_CLKSTCTRL_CLKTRCTRL_SW_WKUP);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKCTRL) =
-                             CM_PER_L4LS_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKCTRL) &
-      CM_PER_L4LS_CLKCTRL_MODULEMODE) != CM_PER_L4LS_CLKCTRL_MODULEMODE_ENABLE);
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_SPI0_CLKCTRL) &= ~CM_PER_SPI0_CLKCTRL_MODULEMODE;
-
-    HWREG(SOC_CM_PER_REGS + CM_PER_SPI0_CLKCTRL) |=
-                             CM_PER_SPI0_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_SPI0_CLKCTRL) &
-      CM_PER_SPI0_CLKCTRL_MODULEMODE) != CM_PER_SPI0_CLKCTRL_MODULEMODE_ENABLE);
-
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L3S_CLKSTCTRL) &
-            CM_PER_L3S_CLKSTCTRL_CLKACTIVITY_L3S_GCLK));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L3_CLKSTCTRL) &
-            CM_PER_L3_CLKSTCTRL_CLKACTIVITY_L3_GCLK));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_OCPWP_L3_CLKSTCTRL) &
-           (CM_PER_OCPWP_L3_CLKSTCTRL_CLKACTIVITY_OCPWP_L3_GCLK |
-            CM_PER_OCPWP_L3_CLKSTCTRL_CLKACTIVITY_OCPWP_L4_GCLK)));
-
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-           (CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_L4LS_GCLK |
-            CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_SPI_GCLK)));
-
 }
 
 /***************************** END OF FILE ************************************/

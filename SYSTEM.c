@@ -19,6 +19,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include <USB_MSC_DEVICE.h>
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
 #include "interrupt.h"
@@ -46,7 +47,6 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
-#include "USB.h"
 #include "WAV.h"
 
 /******************************************************************************/
@@ -69,11 +69,11 @@
 /******************************************************************************/
 void Init_Modules(void)
 {
-    /* Initialze ARM interrupt controller */
-    IntAINTCInit();
-
     /* Enabling IRQ in CPSR of ARM processor. */
     IntMasterIRQEnable();
+
+    /* Initialze ARM interrupt controller */
+    IntAINTCInit();
 
 	Init_GPIO();
 	Init_Timers();
@@ -125,7 +125,7 @@ void Init_Modules(void)
 	GUI_DrawInitialScreenProgress(85);
 	GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);	// clear flag
 	LCD_wr8(REG_INT_EN, 1);											// enable interrupts on FT81x
-	LCD_Interrupt(ON);
+	LCD_Interrupt(TRUE);
 	GUI_DrawInitialScreenProgress(90);// enable interrupts on INT pin
 	dummy = LCD_rd8(REG_INT_FLAGS); // read interrupt flags
 	GUI_DrawInitialScreenProgress(95);
@@ -135,9 +135,10 @@ void Init_Modules(void)
 	TMR_ResetBacklightTimer();
 
 #ifdef USE_RAM_DISK
-	RAM_disk_initialize();
+	disk_initialize();
 	Init_USB0();
 #endif
+
 }
 
 /******************************* End of file *********************************/

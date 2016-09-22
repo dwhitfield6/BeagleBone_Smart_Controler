@@ -42,10 +42,6 @@
 
 #include "hw_types.h"
 #include "rtc.h"
-#include "hw_cm_wkup.h"
-#include "soc_AM335x.h"
-#include "hw_cm_per.h"
-#include "hw_cm_rtc.h"
 
 /******************************************************************************
 **                 LOCAL MACRO DEFINITIONS                                   
@@ -2325,20 +2321,6 @@ void RTCAlarm2CalendarSet(unsigned int baseAdd, unsigned int calVal)
 
     /* Writing to RTC_ALARM2_DAYS register.*/
     HWREG(baseAdd + RTC_ALARM2_DAYS) = (calVal & DAY_MASK) >> DAY_SHIFT;
-}
-
-/**
- * \brief  This API returns a unique number which identifies itself
- *         with the RTC IP in AM335X SoC.
- *
- * \param  None
- *
- * \return This returns a number '2' which is unique to RTC IP in AM335X.
- */
-
-unsigned int RtcVersionGet(void)
-{
-    return 2;
 }
 
 /*****************************************************************************

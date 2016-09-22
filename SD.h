@@ -21,9 +21,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
-#include "diskio.h"
 #include "edma.h"
-#include "ff.h"
 #include "mmcsd_proto.h"
 
 /******************************************************************************/
@@ -59,13 +57,6 @@
 /******************************************************************************/
 /* Structure Declaration                                                      */
 /******************************************************************************/
-typedef struct t_fat_Device
-{
-    void *dev;
-    FATFS *fs;
-	unsigned int initDone;
-
-}TYPE_FAT_DEVICE;
 
 typedef enum e_sd_card_state
 {
@@ -90,53 +81,11 @@ typedef enum e_sd_response
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
-extern volatile unsigned int sdBlkSize;
-extern volatile unsigned int SD_callbackOccured;
-extern volatile unsigned int xferCompFlag;
-extern volatile unsigned int dataTimeout;
-extern volatile unsigned int cmdCompFlag;
-extern volatile unsigned int cmdTimeout;
-extern volatile unsigned int errFlag;
-extern mmcsdCtrlInfo  ctrlInfo;
-extern mmcsdCardInfo sdCard;
-extern TYPE_FAT_DEVICE fat_devices[DRIVE_NUM_MAX];
-extern void (*cb_Fxn[EDMA3_NUM_TCC]) (unsigned int tcc, unsigned int status);
-extern char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
-extern unsigned long BytesWritten;
-extern unsigned long BytesRead;
-extern FRESULT Result;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_SD(void);
-unsigned int SD_SetUpController(unsigned int baseAddr);
-unsigned char SD_IsCardInserted(void);
-void SD_ReInitialize(void);
-unsigned char SD_DiskInitialize(unsigned char bValue);
-unsigned char SD_DiskStatus (unsigned char drv);
-ENUM_DISK_RESULT SD_DiskRead(unsigned char drv, unsigned char* buff, unsigned long sector, unsigned char count);
-ENUM_DISK_RESULT SD_DiskWrite (unsigned char ucDrive, const unsigned char* buff, unsigned long sector, unsigned char count);
-ENUM_DISK_RESULT SD_DiskIOCTL(unsigned char drv, unsigned char ctrl, void *buff);
-unsigned long SD_GetFatTime(void);
-unsigned int SD_HSMMCSDCmdStatusGet(mmcsdCtrlInfo *ctrl);
-unsigned int SD_HSMMCSDXferStatusGet(mmcsdCtrlInfo *ctrl);
-void SD_HSMMCSDRxDmaConfig(void *ptr, unsigned int blkSize, unsigned int nblks);
-void SD_HSMMCSDTxDmaConfig(void *ptr, unsigned int blkSize, unsigned int blks);
-void SD_HSMMCSDXferSetup(mmcsdCtrlInfo *ctrl, unsigned char rwFlag, void *ptr, unsigned int blkSize, unsigned int nBlks);
-void SD_DMA_Callback(unsigned int tccNum, unsigned int status);
-void SD_DMA_ConfigureInterrupt(void);
-void SD_DMA_Init(void);
-void SD_DMA_HSMMCSD(void);
-void SD_HSMMCSDFsMount(unsigned int driveNum, void *ptr);
-void SD_SetCardActionFlag(void);
-void SD_ClearCardActionFlag(void);
-unsigned char SD_GetCardActionFlag(void);
-void SD_SetCardStatus(ENUM_SD_CARD_STATE state);
-ENUM_SD_CARD_STATE SD_GetCardStatus(void);
-void SD_SetInitialized(void);
-void SD_ClearInitialized(void);
-unsigned char SD_IsInitialized(void);
 
 #endif
 /******************************* End of file *********************************/

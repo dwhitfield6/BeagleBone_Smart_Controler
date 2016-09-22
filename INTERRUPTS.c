@@ -18,6 +18,7 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include <USB_MSC_DEVICE.h>
 #include "beaglebone.h"
 #include "dmtimer.h"
 #include "edma.h"
@@ -54,7 +55,6 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
-#include "USB.h"
 
 /******************************************************************************/
 /* Interrupt Service Routines                                                 */
@@ -70,7 +70,7 @@ void GPIO_3A_ISR(void)
 {
     if(GPIOPinIntStatus(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN))
     {
-    	LCD_Interrupt(OFF);
+    	LCD_Interrupt(FALSE);
     	LCD_SetInterruptFlag();
         GPIOPinIntClear(SOC_GPIO_3_REGS, GPIO_INT_LINE_1, LCD_INT_PIN);
     }
@@ -175,7 +175,7 @@ void TMR_2_ISR(void)
 			TMR_NewScreenTagTimer++;
 			if(TMR_NewScreenTagTimer >= GUI_NEW_SCREEN_TAG_TIMER)
 			{
-				TMR_SetNewScreenTagTimerEnabled(OFF);
+				TMR_SetNewScreenTagTimerEnabled(FALSE);
 				TMR_ResetNewScreenTagTimer();
 				GUI_SetTagTimoutFlag();
 			}

@@ -303,7 +303,6 @@ void TSCADCFIFOIRQThresholdLevelConfig(unsigned int baseAdd, unsigned char FIFOS
 void TSCADCFIFODMAThresholdLevelConfig(unsigned int baseAdd, 
                                     unsigned int FIFOSel, 
                                     unsigned int numberOfSamples);
-void TSCADCModuleClkConfig(void);
 
 unsigned int TSCADCIntStatus(unsigned int baseAdd);
 

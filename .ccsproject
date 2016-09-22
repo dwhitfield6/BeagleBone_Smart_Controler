@@ -5,10 +5,10 @@
 	<deviceEndianness value="little"/>
 	<codegenToolVersion value="4.9.1"/>
 	<isElfFormat value="true"/>
-	<linkerCommandFile value="uartEcho.cmd"/>
+	<connection value=""/>
+	<linkerCommandFile value="usb_dev_msc.cmd"/>
 	<rts value="libc.a"/>
 	<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate,"/>
 	<deviceFamily value="TMS470"/>
-	<isTargetManual value="true"/>
-	<origin value="C:/ti/AM335X_StarterWare_02_00_01_01/build/armv7a/cgt_ccs/am335x/evmskAM335x/uart"/>
+	<isTargetManual value="false"/>
 </projectOptions>

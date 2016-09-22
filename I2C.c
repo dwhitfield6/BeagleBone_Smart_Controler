@@ -139,7 +139,7 @@ unsigned char I2C_SendReceiveData0(unsigned char address, unsigned char* write, 
     {
     	if(I2C_GetFailFlag0())
     	{
-    		return FAIL;
+    		return FALSE;
     	}
     }
 
@@ -147,7 +147,7 @@ unsigned char I2C_SendReceiveData0(unsigned char address, unsigned char* write, 
     {
     	if(I2C_GetFailFlag0())
     	{
-    		return FAIL;
+    		return FALSE;
     	}
     }
 
@@ -175,7 +175,7 @@ unsigned char I2C_SendReceiveData0(unsigned char address, unsigned char* write, 
 		{
 	    	if(I2C_GetFailFlag0())
 	    	{
-	    		return FAIL;
+	    		return FALSE;
 	    	}
 		}
 
@@ -183,11 +183,11 @@ unsigned char I2C_SendReceiveData0(unsigned char address, unsigned char* write, 
 	    {
 	    	if(I2C_GetFailFlag0())
 	    	{
-	    		return FAIL;
+	    		return FALSE;
 	    	}
 	    }
     }
-    return PASS;
+    return TRUE;
 }
 
 /******************************************************************************/

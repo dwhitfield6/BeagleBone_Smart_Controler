@@ -84,7 +84,7 @@ void Init_WAV(void)
 void WAV_CalculateHeader(TYPE_WAV* file)
 {
 	unsigned char *pointer;
-	unsigned char status = PASS;
+	unsigned char status = TRUE;
 
 	pointer = file->p_File;
 	MSC_BufferCopy(pointer,&file->ChunkID[0], 44);
@@ -105,14 +105,14 @@ void WAV_CalculateHeader(TYPE_WAV* file)
         /* chaeck the Chunk ID */
     if(file->ChunkID[0] != 'R' || file->ChunkID[1] != 'I' || file->ChunkID[2] != 'F' || file->ChunkID[3] != 'F')
     {
-    	status = FAIL;
+    	status = FALSE;
     }
 
     if(status)
     {
     	if(file->Format[0] != 'W' || file->Format[1] != 'A' || file->Format[2] != 'V' || file->Format[3] != 'E')
     	{
-    		status = FAIL;
+    		status = FALSE;
     	}
     }
 
@@ -120,7 +120,7 @@ void WAV_CalculateHeader(TYPE_WAV* file)
     {
     	if(file->Subchunk1ID[0] != 'f' || file->Subchunk1ID[1] != 'm' || file->Subchunk1ID[2] != 't' || file->Subchunk1ID[3] != ' ')
     	{
-    		status = FAIL;
+    		status = FALSE;
     	}
     }
 
@@ -128,7 +128,7 @@ void WAV_CalculateHeader(TYPE_WAV* file)
     {
     	if(file->Subchunk2ID[0] != 'd' || file->Subchunk2ID[1] != 'a' || file->Subchunk2ID[2] != 't' || file->Subchunk2ID[3] != 'a')
     	{
-    		status = FAIL;
+    		status = FALSE;
     	}
     }
 
@@ -136,7 +136,7 @@ void WAV_CalculateHeader(TYPE_WAV* file)
     {
     	if(file->Subchunk1Size != 16)
     	{
-    		status = FAIL;
+    		status = FALSE;
     	}
     }
 
@@ -144,7 +144,7 @@ void WAV_CalculateHeader(TYPE_WAV* file)
     {
     	if(file->AudioFormat != 1)
     	{
-    		status = FAIL;
+    		status = FALSE;
     	}
     }
 
@@ -152,7 +152,7 @@ void WAV_CalculateHeader(TYPE_WAV* file)
     {
     	if((file->NumChannels != 1) && (file->NumChannels != 2))
     	{
-    		status = FAIL;
+    		status = FALSE;
     	}
     }
 

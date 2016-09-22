@@ -73,7 +73,7 @@ void Init_FRAM(void)
 {
 	unsigned char StatusRegister = 0;
 	unsigned long count = 0;
-	unsigned char status = PASS;
+	unsigned char status = TRUE;
 	unsigned long crc;
 
 	FRAM_Hold(FALSE);
@@ -91,7 +91,7 @@ void Init_FRAM(void)
 		count++;
 		if(count > FRAM_COUNT_TIMEOUT)
 		{
-			status = FAIL;
+			status = FALSE;
 			return;
 		}
 	}

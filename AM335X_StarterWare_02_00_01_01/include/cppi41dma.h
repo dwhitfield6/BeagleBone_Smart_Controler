@@ -47,7 +47,7 @@ extern "C"
 {
 #endif
 
-#include "usbd.h"
+#include "usb.h"
 #include "hw_usb.h"
 
 #ifndef NULL

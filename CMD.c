@@ -87,7 +87,7 @@ unsigned char CMD_CheckMatch(unsigned char* received, const COMMANDTYPE* command
 					{
 						/* we have a match */
 						(*commands[j].Function) ();
-						return PASS;
+						return TRUE;
 					}
 					else
 					{
@@ -102,7 +102,7 @@ unsigned char CMD_CheckMatch(unsigned char* received, const COMMANDTYPE* command
             }
         }
     }
-    return FAIL;
+    return FALSE;
 }
 
 /******************************************************************************/

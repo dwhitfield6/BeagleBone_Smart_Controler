@@ -1999,3 +1999,34 @@ unsigned int Cppi41DmaRecoverBD( hostPacketDesc* completed_bd )
     return (state);
 }
 
+/**
+* \brief   Print Pend Registers - debug
+*
+* \param  none
+*
+*
+*
+* \return  none.
+*
+**/
+
+void print_pend ( )
+{
+
+    unsigned int pend0 = 0;
+    unsigned int pend1 = 0;
+    unsigned int pend2 = 0;
+    unsigned int pend3 = 0;
+
+    pend0 = HWREG(USB_OTGBASE + CPDMA_PEND_0_REGISTER);
+    pend1 = HWREG(USB_OTGBASE + CPDMA_PEND_1_REGISTER);
+    pend2 = HWREG(USB_OTGBASE + CPDMA_PEND_2_REGISTER);
+    pend3 = HWREG(USB_OTGBASE + CPDMA_PEND_3_REGISTER);
+
+    //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend0 ", pend0);
+    //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend1 ", pend1);
+    //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend2 ", pend2);
+    //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend3 ", pend3);
+
+}
+

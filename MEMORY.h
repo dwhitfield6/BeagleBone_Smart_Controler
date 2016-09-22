@@ -27,15 +27,16 @@
 /* Memory Addresses                                                           */
 /******************************************************************************/
 /* Definitions related to MMU Configuration. */
-#define START_ADDR_DDR                (0x80000000)
-#define START_ADDR_DEV                (0x44000000)
-#define START_ADDR_OCMC               (0x40300000)
-#define NUM_SECTIONS_DDR              (512)
-#define NUM_SECTIONS_DEV              (960)
-#define NUM_SECTIONS_OCMC             (1)
+#define START_ADDR_DDR                     (0x80000000)
+#define START_ADDR_DDR_CACHE               (0x84000000)
+#define START_ADDR_DEV                     (0x44000000)
+#define START_ADDR_OCMC                    (0x40300000)
+#define NUM_SECTIONS_DDR                   (64)
+#define NUM_SECTIONS_DDR_CACHE             (64)
+#define NUM_SECTIONS_DEV                   (960)
+#define NUM_SECTIONS_OCMC                  (1)
 
-static volatile unsigned int pageTable[MMU_PAGETABLE_NUM_ENTRY]
- __attribute__((aligned(MMU_PAGETABLE_ALIGN_SIZE)));
+static volatile unsigned int pageTable[4*1024]__attribute__((aligned(16*1024)));
 
 /******************************************************************************/
 /* Defines                                                                    */

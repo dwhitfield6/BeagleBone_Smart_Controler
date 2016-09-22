@@ -41,8 +41,8 @@
 *
 */
 
-#ifndef __MMU_STARTER_H
-#define __MMU_STARTER_H
+#ifndef __MMU_H
+#define __MMU_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -192,4 +192,4 @@ extern void MMUEnable(unsigned int *masterPt);
 #ifdef __cplusplus
 }
 #endif
-#endif /* __MMU_STARTER_H */
+#endif /* __MMU_H__ */

@@ -19,7 +19,7 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 #include <stdio.h>
-
+#include <USB_MSC_DEVICE.h>
 #include "beaglebone.h"
 #include "FT_Gpu.h"
 #include "gpio_v2.h"
@@ -42,7 +42,6 @@
 #include "RTCC.h"
 #include "SD.h"
 #include "TIMERS.h"
-#include "USB.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -515,9 +514,9 @@ void GUI_CreateTouchCalibration(TYPE_TOUCH_CALIBRATION* calibration)
 /******************************************************************************/
 void GUI_StartNewScreenTagTimer(void)
 {
-	TMR_SetNewScreenTagTimerEnabled(OFF);
+	TMR_SetNewScreenTagTimerEnabled(FALSE);
 	TMR_ResetNewScreenTagTimer();
-	TMR_SetNewScreenTagTimerEnabled(ON);
+	TMR_SetNewScreenTagTimerEnabled(TRUE);
 }
 
 /******************************************************************************/

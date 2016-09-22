@@ -44,12 +44,12 @@
 /******************************************************************************/
 void Init_Test(void)
 {
-	TEST_Setpoint1(OFF);
-	TEST_Setpoint1(ON);
-	TEST_Setpoint2(OFF);
-	TEST_Setpoint2(ON);
-	TEST_Setpoint3(OFF);
-	TEST_Setpoint3(ON);
+	TEST_Setpoint1(FALSE);
+	TEST_Setpoint1(TRUE);
+	TEST_Setpoint2(FALSE);
+	TEST_Setpoint2(TRUE);
+	TEST_Setpoint3(FALSE);
+	TEST_Setpoint3(TRUE);
 	TEST_Togglepoint1();
 	TEST_Togglepoint2();
 	TEST_Togglepoint3();

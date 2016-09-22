@@ -42,10 +42,7 @@
 
 
 #include "dmtimer.h"
-#include "hw_cm_dpll.h"
-#include "hw_cm_per.h"
 #include "hw_types.h"
-#include "soc_AM335x.h"
 
 /*******************************************************************************
 *                       INTERNAL MACRO DEFINITIONS
@@ -75,7 +72,7 @@
 *******************************************************************************/
 
 /**
- * \brief   This API will start the timer.
+ * \brief   This API will start the timer. 
  *
  * \param   baseAdd       Base Address of the DMTimer Module Register.
  *
@@ -94,7 +91,7 @@ void DMTimerEnable(unsigned int baseAdd)
 }
 
 /**
- * \brief   This API will stop the timer.
+ * \brief   This API will stop the timer. 
  *
  * \param   baseAdd      Base Address of the DMTimer Module Register.
  *
@@ -111,9 +108,9 @@ void DMTimerDisable(unsigned int baseAdd)
 }
 
 /**
- * \brief   This API will configure the timer in combinations of
- *          'One Shot timer' and 'Compare' Mode or 'Auto-reload timer'
- *          and 'Compare' Mode.
+ * \brief   This API will configure the timer in combinations of 
+ *          'One Shot timer' and 'Compare' Mode or 'Auto-reload timer' 
+ *          and 'Compare' Mode.  
  *
  * \param   baseAdd      Base Address of the DMTimer Module Register.
  * \param   timerMode    Mode for enabling the timer.
@@ -122,7 +119,7 @@ void DMTimerDisable(unsigned int baseAdd)
  *    DMTIMER_ONESHOT_CMP_ENABLE - One shot and compare mode enabled \n
  *    DMTIMER_ONESHOT_NOCMP_ENABLE - One shot enabled, compare mode disabled \n
  *    DMTIMER_AUTORLD_CMP_ENABLE - Auto-reload and compare mode enabled \n
- *    DMTIMER_AUTORLD_NOCMP_ENABLE - Auto-reload enabled, compare mode
+ *    DMTIMER_AUTORLD_NOCMP_ENABLE - Auto-reload enabled, compare mode 
  *                                   disabled \n
  *
  * \return  None.
@@ -140,7 +137,7 @@ void DMTimerModeConfigure(unsigned int baseAdd, unsigned int timerMode)
     DMTimerWaitForWrite(DMTIMER_WRITE_POST_TCLR, baseAdd);
 
     /* Set the timer mode in TCLR register */
-    HWREG(baseAdd + DMTIMER_TCLR) |= (timerMode & (DMTIMER_TCLR_AR |
+    HWREG(baseAdd + DMTIMER_TCLR) |= (timerMode & (DMTIMER_TCLR_AR | 
                                                    DMTIMER_TCLR_CE));
 }
 
@@ -203,7 +200,7 @@ void DMTimerPreScalerClkDisable(unsigned int baseAdd)
  *
  * \return  None.
  *
- * \note    Value can be loaded into the counter register when the counter is
+ * \note    Value can be loaded into the counter register when the counter is 
  *          stopped or when it is running.
  **/
 void DMTimerCounterSet(unsigned int baseAdd, unsigned int counter)
@@ -243,7 +240,7 @@ unsigned int DMTimerCounterGet(unsigned int baseAdd)
  *
  * \return  None.
  *
- * \note:   It is recommended to not use reload value as 0xFFFFFFFF as it can
+ * \note:   It is recommended to not use reload value as 0xFFFFFFFF as it can 
  *          lead to undesired results.
  **/
 void DMTimerReloadSet(unsigned int baseAdd, unsigned int reload)
@@ -274,10 +271,10 @@ unsigned int DMTimerReloadGet(unsigned int baseAdd)
  *
  * \param   baseAdd       Base Address of the DMTimer Module Register.
  * \param   gpoCfg        General purpose output.
- *
+ * 
  * 'gpoCfg' can take the following values \n
  *    DMTIMER_GPO_CFG_0 - PORGPOCFG drives 0 \n
- *    DMTIMER_GPO_CFG_1 - PORGPOCFG drives 1 \n
+ *    DMTIMER_GPO_CFG_1 - PORGPOCFG drives 1 \n  
  *
  * \return  None.
  *
@@ -346,7 +343,7 @@ unsigned int DMTimerCompareGet(unsigned int baseAdd)
 void DMTimerIntRawStatusSet(unsigned int baseAdd, unsigned int intFlags)
 {
     /* Trigger the events in IRQSTATUS_RAW register */
-    HWREG(baseAdd + DMTIMER_IRQSTATUS_RAW) = (intFlags &
+    HWREG(baseAdd + DMTIMER_IRQSTATUS_RAW) = (intFlags & 
                                            (DMTIMER_IRQSTATUS_RAW_MAT_IT_FLAG |
                                             DMTIMER_IRQSTATUS_RAW_OVF_IT_FLAG |
                                             DMTIMER_IRQSTATUS_RAW_TCAR_IT_FLAG));
@@ -397,9 +394,9 @@ unsigned int DMTimerIntStatusGet(unsigned int baseAdd)
 void DMTimerIntStatusClear(unsigned int baseAdd, unsigned int intFlags)
 {
     /* Clear the interrupt status from IRQSTATUS register */
-    HWREG(baseAdd + DMTIMER_IRQSTATUS) = (intFlags &
-                                         (DMTIMER_IRQSTATUS_TCAR_IT_FLAG |
-                                          DMTIMER_IRQSTATUS_OVF_IT_FLAG |
+    HWREG(baseAdd + DMTIMER_IRQSTATUS) = (intFlags & 
+                                         (DMTIMER_IRQSTATUS_TCAR_IT_FLAG | 
+                                          DMTIMER_IRQSTATUS_OVF_IT_FLAG | 
                                           DMTIMER_IRQSTATUS_MAT_IT_FLAG));
 }
 
@@ -420,9 +417,9 @@ void DMTimerIntStatusClear(unsigned int baseAdd, unsigned int intFlags)
 void DMTimerIntEnable(unsigned int baseAdd, unsigned int intFlags)
 {
     /* Enable the DMTimer interrupts represented by intFlags */
-    HWREG(baseAdd + DMTIMER_IRQENABLE_SET) = (intFlags &
+    HWREG(baseAdd + DMTIMER_IRQENABLE_SET) = (intFlags & 
                                            (DMTIMER_IRQENABLE_SET_TCAR_EN_FLAG |
-                                            DMTIMER_IRQENABLE_SET_OVF_EN_FLAG |
+                                            DMTIMER_IRQENABLE_SET_OVF_EN_FLAG | 
                                             DMTIMER_IRQENABLE_SET_MAT_EN_FLAG));
 }
 
@@ -456,9 +453,9 @@ void DMTimerIntDisable(unsigned int baseAdd, unsigned int intFlags)
  *
  * \return  None.
  *
- * \note    When we have enabled the timer in Auto-reload mode, the value from
- *          TLDR is reloaded into TCRR when a overflow condition occurs. But if
- *           we want to load the contents from TLDR to TCRR before overflow
+ * \note    When we have enabled the timer in Auto-reload mode, the value from 
+ *          TLDR is reloaded into TCRR when a overflow condition occurs. But if 
+ *           we want to load the contents from TLDR to TCRR before overflow 
  *          occurs then call this API.
  **/
 void DMTimerTriggerSet(unsigned int baseAdd)
@@ -489,10 +486,10 @@ unsigned int DMTimerIntEnableGet(unsigned int baseAdd)
  *
  * \param   baseAdd       Base Address of the DMTimer Module Register.
  * \param   rstOption     Enable/Disable reset option for DMTimer.
- *
+ *          
  * 'rstOption' can take the following values \n
  *    DMTIMER_SFT_RESET_ENABLE - Software reset is enabled \n
- *    DMTIMER_SFT_RESET_DISABLE - Software reset is disabled \n
+ *    DMTIMER_SFT_RESET_DISABLE - Software reset is disabled \n   
  *
  * \return  None.
  *
@@ -614,80 +611,4 @@ unsigned int DMTimerWritePostedStatusGet(unsigned int baseAdd)
 {
     /* Return the status of TWPS register */
     return (HWREG(baseAdd + DMTIMER_TWPS));
-}
-
-/*
- * \brief This function will enable the module clock for DMTIMER2 instance.
- *
- * \return None.
- */
-void DMTimer2ModuleClkConfig(void)
-{
-    /* Clear CLKSEL field of CM_DPLL_CLKSEL_TIMER2_CLK register. */
-    HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER2_CLK) &=
-          ~(CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL);
-
-    /* Writing to the CLKSEL field of CM_DPLL_CLKSEL_TIMER2_CLK register. */
-    HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER2_CLK) |=
-          CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL_CLK_M_OSC;
-
-    /* Waiting for the CLKSEL field to reflect the written value. */
-    while((HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER2_CLK) &
-           CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL) !=
-           CM_DPLL_CLKSEL_TIMER2_CLK_CLKSEL_CLK_M_OSC);
-
-    /* Writing to MODULEMODE field of CM_PER_TIMER2_CLKCTRL register. */
-    HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) |=
-                             CM_PER_TIMER2_CLKCTRL_MODULEMODE_ENABLE;
-
-    /* Waiting for the MODULEMODE field to reflect the written value. */
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_TIMER2_CLKCTRL) &
-    CM_PER_TIMER2_CLKCTRL_MODULEMODE) != CM_PER_TIMER2_CLKCTRL_MODULEMODE_ENABLE);
-
-    /*
-    ** Waiting for the CLKACTIVITY_TIMER2_GCLK field of CM_PER_L4LS_CLKSTCTRL
-    ** register to be set.
-    */
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-           (CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_L4LS_GCLK |
-            CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_TIMER2_GCLK)));
-
-}
-
-/*
- * \brief This function will enable the module clock for DMTIMER3 instance.
- *
- * \return None.
- */
-void DMTimer3ModuleClkConfig(void)
-{
-    /* Clear CLKSEL field of CM_DPLL_CLKSEL_TIMER3_CLK register. */
-    HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER3_CLK) &=
-          ~(CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL);
-
-    /* Writing to the CLKSEL field of CM_DPLL_CLKSEL_TIMER3_CLK register. */
-    HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER3_CLK) |=
-          CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL_CLK_M_OSC;
-
-    /* Waiting for the CLKSEL field to reflect the written value. */
-    while((HWREG(SOC_CM_DPLL_REGS + CM_DPLL_CLKSEL_TIMER3_CLK) &
-           CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL) !=
-           CM_DPLL_CLKSEL_TIMER3_CLK_CLKSEL_CLK_M_OSC);
-
-    /* Writing to MODULEMODE field of CM_PER_TIMER3_CLKCTRL register. */
-    HWREG(SOC_CM_PER_REGS + CM_PER_TIMER3_CLKCTRL) |=
-                             CM_PER_TIMER3_CLKCTRL_MODULEMODE_ENABLE;
-
-    /* Waiting for the MODULEMODE field to reflect the written value. */
-    while((HWREG(SOC_CM_PER_REGS + CM_PER_TIMER3_CLKCTRL) &
-    CM_PER_TIMER3_CLKCTRL_MODULEMODE) != CM_PER_TIMER3_CLKCTRL_MODULEMODE_ENABLE);
-
-    /*
-    ** Waiting for the CLKACTIVITY_TIMER3_GCLK field of CM_PER_L4LS_CLKSTCTRL
-    ** register to be set.
-    */
-    while(!(HWREG(SOC_CM_PER_REGS + CM_PER_L4LS_CLKSTCTRL) &
-           (CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_L4LS_GCLK |
-            CM_PER_L4LS_CLKSTCTRL_CLKACTIVITY_TIMER3_GCLK)));
-
 }

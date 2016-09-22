@@ -296,9 +296,6 @@ extern unsigned int McSPIChannelStatusGet(unsigned int baseAdd, unsigned int chN
 extern void McSPIMultipleWordAccessConfig(unsigned int baseAdd, unsigned int moa);
 extern void McSPIFIFODatManagementConfig(unsigned int baseAdd, unsigned int fdaa);
 
-void McSPI1ModuleClkConfig(void);
-void McSPI0ModuleClkConfig(void);
-
 #ifdef __cplusplus
 }
 #endif
