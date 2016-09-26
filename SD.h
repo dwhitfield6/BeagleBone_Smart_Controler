@@ -53,6 +53,7 @@
 #define DATA_BUF_SIZE   			64 * (2 * 512)
 #define CMD_BUF_SIZE    			512
 #define FILE_DATA_BUFFER_SIZE 		1024
+#define SD_BUFFER_SIZE 				16384
 
 /******************************************************************************/
 /* Structure Declaration                                                      */
@@ -81,11 +82,27 @@ typedef enum e_sd_response
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
+extern unsigned char SD_Buffer[SD_BUFFER_SIZE];
 
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_SD(void);
+unsigned int SD_SetUpController(unsigned int baseAddr);
+unsigned char SD_IsCardInserted(void);
+unsigned long SD_GetFatTime(void);
+void SD_SetCardActionFlag(void);
+void SD_ClearCardActionFlag(void);
+unsigned char SD_GetCardActionFlag(void);
+void SD_SetCardStatus(ENUM_SD_CARD_STATE state);
+ENUM_SD_CARD_STATE SD_GetCardStatus(void);
+void SD_SetInitialized(void);
+void SD_ClearInitialized(void);
+unsigned char SD_IsInitialized(void);
+unsigned int SD_CardInit(void);
+unsigned char SD_SendCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
+unsigned char SD_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
+void SD_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
 
 #endif
 /******************************* End of file *********************************/

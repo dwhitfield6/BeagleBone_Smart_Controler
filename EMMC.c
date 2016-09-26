@@ -19,10 +19,12 @@
 /******************************************************************************/
 /* Files to Include                                                           */
 /******************************************************************************/
+#include "beaglebone.h"
 #include "hw_control_AM335x.h"
 #include "hw_cm_per.h"
 #include "hw_types.h"
 #include "gpio_v2.h"
+#include "gpio.h"
 #include "soc_AM335x.h"
 #include "pin_mux.h"
 

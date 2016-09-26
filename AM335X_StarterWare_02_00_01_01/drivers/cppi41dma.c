@@ -2012,7 +2012,7 @@ unsigned int Cppi41DmaRecoverBD( hostPacketDesc* completed_bd )
 
 void print_pend ( )
 {
-
+#if 0
     unsigned int pend0 = 0;
     unsigned int pend1 = 0;
     unsigned int pend2 = 0;
@@ -2027,6 +2027,6 @@ void print_pend ( )
     //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend1 ", pend1);
     //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend2 ", pend2);
     //ConsoleUtilsPrintf("\t\t%s: %s = %x\n\n", __FUNCTION__, " pend3 ", pend3);
-
+#endif
 }
 
