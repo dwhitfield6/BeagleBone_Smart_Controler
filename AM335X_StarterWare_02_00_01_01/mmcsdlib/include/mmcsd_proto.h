@@ -198,7 +198,7 @@ typedef struct _mmcsdCtrlInfo {
 
 /* Cacheline size */
 #ifndef SOC_CACHELINE_SIZE
-#define SOC_CACHELINE_SIZE         128
+#define SOC_CACHELINE_SIZE         64
 #endif
 
 /* CM6 Swith mode arguments for High Speed */

@@ -39,10 +39,13 @@
 */
 
 /* Function prototypes */
-void disk_read(unsigned int lba, unsigned char *buf, unsigned int len);
-void disk_write(unsigned int lba, unsigned char *buf, unsigned int len);
-void disk_initialize(void);
-void disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int* buffer);
+void RAM_disk_read(unsigned int lba, unsigned char *buf, unsigned int len);
+void RAM_disk_write(unsigned int lba, unsigned char *buf, unsigned int len);
+void RAM_disk_initialize(void);
+void RAM_disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int* buffer);
 
-#define GET_SECTOR_SIZE 1
-#define GET_SECTOR_COUNT 2
+#define RAM_DISK_SIZE (1024 * 1024 * 16)
+#define LBA_SIZE 512
+#define TRANSFER_SIZE 512
+
+extern unsigned char ram_disk[RAM_DISK_SIZE];

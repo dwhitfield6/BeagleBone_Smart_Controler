@@ -4670,8 +4670,8 @@ USBHCDRxAbort(unsigned int ulIndex,  unsigned int endPoint)
         USBHostAutoReqClear(g_USBInstance[ulIndex].uiBaseAddr,
                                                    endPoint);	
 
-    }    
 #endif
+    }
  else 
  {
     

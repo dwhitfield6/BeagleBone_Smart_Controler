@@ -12,7 +12,9 @@
 #include "mmcsd_proto.h"
 #include "hs_mmcsdlib.h"
 #include "ff.h"
+#include "SD.h"
 #include "uartStdio.h"
+#include "UART.h"
 
 
 
@@ -54,49 +56,18 @@ disk_initialize(
     
     if ((DRIVE_NUM_MMCSD == bValue) && (fat_devices[bValue].initDone != 1))
     {
-        mmcsdCardInfo *card = (mmcsdCardInfo *) fat_devices[bValue].dev;
-        
-        /* SD Card init */
-        status = MMCSDCardInit(card->ctrl);
+    	/* SD Card init */
+    	status = SD_CardInit();
 
         if (status == 0)
         {
-            UARTPuts("\r\nCard Init Failed \r\n", -1);
+        	UART_PrintString("\r\nCard Init Failed \r\n");
             
             return STA_NOINIT;
         }
         else
         {
-#if DEBUG				
-            if (card->cardType == MMCSD_CARD_SD)
-            {
-                UARTPuts("\r\nSD Card ", -1);
-                UARTPuts("version : ",-1);
-                UARTPutNum(card->sd_ver);
-    
-                if (card->highCap)
-                {
-                    UARTPuts(", High Capacity", -1);
-                }
-    
-                if (card->tranSpeed == SD_TRANSPEED_50MBPS)
-                {
-                    UARTPuts(", High Speed", -1);
-                }
-            }
-            else if (card->cardType == MMCSD_CARD_MMC)
-            {
-                UARTPuts("\r\nMMC Card ", -1);
-            }
-#endif            
-            /* Set bus width */
-            if (card->cardType == MMCSD_CARD_SD)
-            {
-                MMCSDBusWidthSet(card->ctrl);
-            }
-    
-            /* Transfer speed */
-            MMCSDTranSpeedSet(card->ctrl);
+        	UART_PrintString("\r\nCard Init Passed \r\n");
         }
 
 		fat_devices[bValue].initDone = 1;
@@ -131,13 +102,16 @@ DRESULT disk_read (
 {
 	if (drv == DRIVE_NUM_MMCSD)
 	{
-		mmcsdCardInfo *card = fat_devices[drv].dev;
-
     	/* READ BLOCK */
-		if (MMCSDReadCmdSend(card->ctrl, buff, sector, count) == 1)
-		{
-        	return RES_OK;
-		}
+#ifdef USE_RAM_DISK
+    RAM_disk_read(sector, buff, count);
+    return RES_OK;
+#else
+    if (SD_ReadBlocks(SOC_MMCHS_0_REGS, sector, count, buff))
+	{
+		return RES_OK;
+	}
+#endif
     }
 
     return RES_ERROR;
@@ -158,12 +132,16 @@ DRESULT disk_write (
 {
 	if (ucDrive == DRIVE_NUM_MMCSD)
 	{
-		mmcsdCardInfo *card = fat_devices[ucDrive].dev;
     	/* WRITE BLOCK */
-	    if(MMCSDWriteCmdSend(card->ctrl,(BYTE*) buff, sector, count) == 1)
+#ifdef USE_RAM_DISK
+    RAM_disk_write(sector, buff, count);
+    return RES_OK;
+#else
+		if (SD_WriteBlocks(SOC_MMCHS_0_REGS, sector, count, (unsigned char*)buff))
 		{
-        	return RES_OK;
+			return RES_OK;
 		}
+#endif
 	}
 
     return RES_ERROR;
@@ -182,20 +160,3 @@ DRESULT disk_ioctl (
 	return RES_OK;
 }
 
-/*---------------------------------------------------------*/
-/* User Provided Timer Function for FatFs module           */
-/*---------------------------------------------------------*/
-/* This is a real time clock service to be called from     */
-/* FatFs module. Any valid time must be returned even if   */
-/* the system does not support a real time clock.          */
-
-DWORD get_fattime (void)
-{
-    return    ((2007UL-1980) << 25) // Year = 2007
-            | (6UL << 21)           // Month = June
-            | (5UL << 16)           // Day = 5
-            | (11U << 11)           // Hour = 11
-            | (38U << 5)            // Min = 38
-            | (0U >> 1)             // Sec = 0
-            ;
-}

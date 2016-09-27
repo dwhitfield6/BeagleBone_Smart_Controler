@@ -23,6 +23,7 @@
 #include "beaglebone.h"
 #include "edma.h"
 #include "edma_event.h"
+#include "ff.h"
 #include "gpio_v2.h"
 #include "hw_cm_per.h"
 #include "hw_cm_wkup.h"
@@ -61,16 +62,27 @@ static unsigned int RCA;
 static unsigned int CSD[4];
 static unsigned int TransSpeed;
 static unsigned int BlockLength;
-static unsigned int Size;
+static unsigned long long Size;
 static unsigned int NumberBlocks;
 static unsigned int SCR[2];
 static unsigned int SD_Version;
 static unsigned int BusWidth;
+static unsigned short BytesWritten;
+static FRESULT Result;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 unsigned char SD_Buffer[SD_BUFFER_SIZE];
+
+#pragma DATA_ALIGN(g_sFatFs, SOC_CACHELINE_SIZE);
+FATFS g_sFatFs;
+
+#pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
+static FIL fileWrite;
+
+#pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
+char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -96,6 +108,11 @@ void Init_SD(void)
     if(SD_IsCardInserted())
 	{
 		SD_CardInit();
+		Result = f_mount(0, &g_sFatFs);
+		Result = f_open (&fileWrite, "Log5.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
+		sprintf(FileDataBuffer, "This is a test.");
+		Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
+		Result = f_close (&fileWrite);
 	}
 }
 
@@ -385,8 +402,30 @@ unsigned int SD_CardInit(void)
 			{
 				TransSpeed = SD_CSD1_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
 				BlockLength = 1 << (SD_CSD1_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
-				Size = (SD_CSD1_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]) + 1) * (512 * 1024);
-				NumberBlocks = Size / BlockLength;
+
+				if((CSD[3] & (0xFL << 26) >> 26) == 4)
+				{
+					/* get EXT_CSD */
+					status = SD_SendCommand(SOC_MMCHS_0_REGS, 8, 0, 1, 512, SD_RESPONSE_READ | SD_RESPONSE_DATA, response);
+
+					if (status == 0)
+					{
+						return 0;
+					}
+
+					SD_ReceiveData(SOC_MMCHS_0_REGS, SD_Buffer, 512);
+					Size = ((unsigned int)SD_Buffer[212]) + ((unsigned int)SD_Buffer[213] << 8) + ((unsigned int)SD_Buffer[214] << 16) + ((unsigned int)SD_Buffer[215] << 24);
+					Size *= 512;
+					NumberBlocks = Size / BlockLength;
+				}
+				else
+				{
+					Size = SD_CARD_SIZE;
+					Size *= 1024;
+					Size *= 1024;
+					Size *= 1024;
+					NumberBlocks = Size / BlockLength;
+				}
 			}
 			else
 			{

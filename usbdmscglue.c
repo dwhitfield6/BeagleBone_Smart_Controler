@@ -143,7 +143,7 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
     ASSERT(pvDrive != 0);
 
 #ifdef USE_RAM_DISK
-    disk_read(ulSector, pucData, ulNumBlocks);
+    RAM_disk_read(ulSector, pucData, ulNumBlocks);
 #else
     SD_ReadBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
 #endif
@@ -177,7 +177,7 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
     ASSERT(pvDrive != 0);
 
 #ifdef USE_RAM_DISK
-    disk_write(ulSector, pucData, ulNumBlocks);
+    RAM_disk_write(ulSector, pucData, ulNumBlocks);
 #else
     SD_WriteBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
 #endif
@@ -207,9 +207,9 @@ USBDMSCStorageNumBlocks(void * pvDrive)
     // Read the number of sectors.
     //
 #ifdef USE_RAM_DISK
-    disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
+    RAM_disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
 #else
-    ulSectorCount = SD_GetNumberBlocks();
+    ulSectorCount = (g_sFatFs.sects_clust * (g_sFatFs.max_clust - 1));
 #endif
 
     return(ulSectorCount);

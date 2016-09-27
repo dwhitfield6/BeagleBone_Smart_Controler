@@ -1,6 +1,5 @@
 #ifndef _INTEGER
 
-typedef signed int		INT;
 typedef unsigned int	UINT;
 
 /* These types are assumed as 8-bit integer */
@@ -17,9 +16,6 @@ typedef unsigned short	WORD;
 typedef signed int		LONG;
 typedef unsigned int	ULONG;
 typedef unsigned int	DWORD;
-
-/* Boolean type */
-typedef enum {FALSE = 0, TRUE} BOOL;
 
 #define _INTEGER
 #endif

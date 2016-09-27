@@ -40,6 +40,8 @@
 #include <string.h>
 #include "ff.h"            /* FatFs declarations */
 #include "diskio.h"        /* Include file for user provided disk functions */
+#include "hw_types.h"        /* Include file for user provided disk functions */
+#include "SD.h"        /* Include file for user provided disk functions */
 
 /*--------------------------------------------------------------------------
 
@@ -59,7 +61,7 @@ WORD fsid;                /* File system mount ID */
 /*-----------------------------------------------------------------------*/
 
 static
-BOOL move_window (        /* TRUE: successful, FALSE: failed */
+unsigned int move_window (        /* TRUE: successful, FALSE: failed */
     FATFS *fs,            /* File system object */
     DWORD sector        /* Sector number to make apperance in the fs->win[] */
 )                        /* Move to zero only writes back dirty window */
@@ -175,7 +177,7 @@ DWORD get_cluster (        /* 0,>=2: successful, 1: failed */
 
 #if !_FS_READONLY
 static
-BOOL put_cluster (        /* TRUE: successful, FALSE: failed */
+unsigned int put_cluster (        /* TRUE: successful, FALSE: failed */
     FATFS *fs,            /* File system object */
     DWORD clust,        /* Cluster# to change */
     DWORD val            /* New value to mark the cluster */
@@ -227,7 +229,7 @@ BOOL put_cluster (        /* TRUE: successful, FALSE: failed */
 
 #if !_FS_READONLY
 static
-BOOL remove_chain (        /* TRUE: successful, FALSE: failed */
+unsigned int remove_chain (        /* TRUE: successful, FALSE: failed */
     FATFS *fs,            /* File system object */
     DWORD clust            /* Cluster# to remove chain from */
 )
@@ -333,7 +335,7 @@ DWORD clust2sect (    /* !=0: sector number, 0: failed - invalid cluster# */
 /*-----------------------------------------------------------------------*/
 
 static
-BOOL next_dir_entry (    /* TRUE: successful, FALSE: could not move next */
+unsigned int next_dir_entry (    /* TRUE: successful, FALSE: could not move next */
     DIR *dirobj            /* Pointer to directory object */
 )
 {
@@ -853,7 +855,7 @@ FRESULT f_open (
         }
         if (mode & FA_CREATE_ALWAYS) {
             dir[DIR_Attr] = AM_ARC;                /* New attribute */
-            ps = get_fattime();
+            ps = SD_GetFatTime();
             ST_DWORD(&dir[DIR_WrtTime], ps);    /* Updated time */
             ST_DWORD(&dir[DIR_CrtTime], ps);    /* Created time */
             fs->winflag = 1;
@@ -1076,7 +1078,7 @@ FRESULT f_sync (
             ST_DWORD(&dir[DIR_FileSize], fp->fsize);        /* Update file size */
             ST_WORD(&dir[DIR_FstClusLO], fp->org_clust);    /* Update start cluster */
             ST_WORD(&dir[DIR_FstClusHI], fp->org_clust >> 16);
-            tim = get_fattime();                    /* Updated time */
+            tim = SD_GetFatTime();                    /* Updated time */
             ST_DWORD(&dir[DIR_WrtTime], tim);
             fp->flag &= ~FA__WRITTEN;
             res = sync(fs);
@@ -1470,7 +1472,7 @@ FRESULT f_mkdir (
     memset(&fw[DIR_Name], ' ', 8+3);            /* Create "." entry */
     fw[DIR_Name] = '.';
     fw[DIR_Attr] = AM_DIR;
-    tim = get_fattime();
+    tim = SD_GetFatTime();
     ST_DWORD(&fw[DIR_WrtTime], tim);
     memcpy(&fw[32], &fw[0], 32); fw[33] = '.';    /* Create ".." entry */
     pclust = dirobj.sclust;

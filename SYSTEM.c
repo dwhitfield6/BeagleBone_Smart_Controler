@@ -135,7 +135,7 @@ void Init_Modules(void)
 	TMR_ResetBacklightTimer();
 
 #ifdef USE_RAM_DISK
-	disk_initialize();
+	RAM_disk_initialize();
 	Init_USB0();
 #endif
 

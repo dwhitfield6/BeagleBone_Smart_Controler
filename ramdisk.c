@@ -40,34 +40,24 @@
 */
 
 #include <string.h>
+#include "diskio.h"
 #include "ramdisk.h"
 #include "hw_usb.h"
-
-#ifdef USE_RAM_DISK
-#define RAM_DISK_SIZE (1024 * 1024 * 16)
-#define LBA_SIZE 512
-#define TRANSFER_SIZE 512
-#else
-#define RAM_DISK_SIZE (64)
-#define LBA_SIZE 64
-#define TRANSFER_SIZE 64
-#endif
 
 #if defined(__IAR_SYSTEMS_ICC__)
 #pragma data_alignment=(SOC_CACHELINE_SIZE_MAX)
 unsigned char ram_disk[RAM_DISK_SIZE];
 #else
+#pragma DATA_SECTION(ram_disk, ".data_cache")
 unsigned char ram_disk[RAM_DISK_SIZE]__attribute__((aligned(SOC_CACHELINE_SIZE_MAX)));
 #endif
 
-
-
-void disk_initialize(void)
+void RAM_disk_initialize(void)
 {
     memset(ram_disk, 0,RAM_DISK_SIZE);
 }
 
-void disk_read(unsigned int lba, unsigned char *buf,
+void RAM_disk_read(unsigned int lba, unsigned char *buf,
         unsigned int len)
 {
     int start;
@@ -81,7 +71,7 @@ void disk_read(unsigned int lba, unsigned char *buf,
     }
 
 }
-void disk_write(unsigned int lba, unsigned char *buf,
+void RAM_disk_write(unsigned int lba, unsigned char *buf,
         unsigned int len)
 {
     int start;
@@ -95,7 +85,7 @@ void disk_write(unsigned int lba, unsigned char *buf,
     }
 }
 
-void disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffer)
+void RAM_disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffer)
 {
 
     switch(command)
@@ -118,7 +108,6 @@ void disk_ioctl (unsigned int drive, unsigned int  command,  unsigned int *buffe
             buffer = 0;
             break;
         }
-
     }
 }
 

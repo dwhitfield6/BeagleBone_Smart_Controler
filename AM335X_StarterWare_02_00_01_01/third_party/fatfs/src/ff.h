@@ -60,7 +60,7 @@
 /* When _USE_NTFLAG is set to 1, upper/lower case of the file name is preserved.
 /  Note that the files are always accessed in case insensitive. */
 
-
+#include "diskio.h"
 #include "integer.h"
 #if defined(am335x)
 #include "soc_AM335x.h"
@@ -250,7 +250,6 @@ typedef enum {
 
 /*-----------------------------------------------------*/
 /* FatFs module application interface                  */
-
 FRESULT f_mount (BYTE, FATFS*);                        /* Mount/Unmount a logical drive */
 FRESULT f_open (FIL*, const char*, BYTE);            /* Open or create a file */
 FRESULT f_read (FIL*, void*, WORD, WORD*);            /* Read data from a file */
@@ -270,10 +269,6 @@ FRESULT f_mkfs (BYTE, BYTE, BYTE);                    /* Create a file system on
 
 
 /* User defined function to give a current time to fatfs module */
-
-DWORD get_fattime (void);    /* 31-25: Year(0-127 org.1980), 24-21: Month(1-12), 20-16: Day(1-31) */
-                            /* 15-11: Hour(0-23), 10-5: Minute(0-59), 4-0: Second(0-29 *2) */
-
 
 
 /* File access control and file status flags (FIL.flag) */

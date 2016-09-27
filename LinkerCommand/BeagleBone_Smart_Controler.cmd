@@ -66,8 +66,8 @@
 
 MEMORY
 {
-        DDR_MEM        : org = 0x80000000  len = 0x4000000          /* DDR */
-        DDR_MEM_CACHE  : org = 0x84000000  len = 0x4000000          /* DDR */
+        DDR_MEM        : org = 0x80000000  len = 0x10000000          /* DDR */
+        DDR_MEM_CACHE  : org = 0x90000000  len = 0x10000000          /* DDR with Cache*/
         SRAM_MEM       : org = 0x402F0400  len = 0xFBFF           	/* SRAM */
         L3_SRAM_MEM    : org = 0x40300000  len = 0xFFFF           	/* L3_SRAM */
 }
@@ -88,7 +88,6 @@ Cache_Code         /* Name the output section        */
        usbdcdesc.obj (.text)
        usbdesc.obj (.text)
        mmu.obj (.text)
-       ramdisk.obj (.text)
        cache.obj (.text)
        usbdmscglue.obj (.text)
        usb.obj (.text)
@@ -96,11 +95,12 @@ Cache_Code         /* Name the output section        */
     } > DDR_MEM_CACHE                   /* Allocate to FLASH memory range */
 
     .text    : load > DDR_MEM	       		/* CODE                          */
+	.data_cache    : load > DDR_MEM_CACHE	/* data variables                          */
     .data    : load > DDR_MEM              	/* INITIALIZED GLOBAL AND STATIC VARIABLES */
     .bss     : load > DDR_MEM              	/* UNINITIALIZED OR ZERO INITIALIZED */  /* GLOBAL & STATIC VARIABLES */
                     RUN_START(bss_start)
                     RUN_END(bss_end)
 
     .const   : load > DDR_MEM              	/* GLOBAL CONSTANTS              */
-    .stack   : load > 0x87FFF000           	/* SOFTWARE SYSTEM STACK         */
+    .stack   : load > 0x9FFFF000           	/* SOFTWARE SYSTEM STACK         */
 }
