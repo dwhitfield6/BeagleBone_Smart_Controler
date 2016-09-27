@@ -48,6 +48,7 @@
 #include "usbdmsc.h"
 #include "usb_msc_structs.h"
 #include "ramdisk.h"
+#include "SD.h"
 
 #define SDCARD_PRESENT          0x00000001
 #define SDCARD_IN_USE           0x00000002
@@ -141,8 +142,11 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
 {
     ASSERT(pvDrive != 0);
 
-
+#ifdef USE_RAM_DISK
     disk_read(ulSector, pucData, ulNumBlocks);
+#else
+    SD_ReadBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+#endif
 
     return(ulNumBlocks * 512);
 }
@@ -172,7 +176,11 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
 {
     ASSERT(pvDrive != 0);
 
+#ifdef USE_RAM_DISK
     disk_write(ulSector, pucData, ulNumBlocks);
+#else
+    SD_WriteBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+#endif
 
     return(ulNumBlocks * 512);
 }
@@ -198,7 +206,11 @@ USBDMSCStorageNumBlocks(void * pvDrive)
     //
     // Read the number of sectors.
     //
+#ifdef USE_RAM_DISK
     disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
+#else
+    ulSectorCount = SD_GetNumberBlocks();
+#endif
 
     return(ulSectorCount);
 }

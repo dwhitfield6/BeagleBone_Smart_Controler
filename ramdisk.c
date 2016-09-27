@@ -43,9 +43,15 @@
 #include "ramdisk.h"
 #include "hw_usb.h"
 
+#ifdef USE_RAM_DISK
 #define RAM_DISK_SIZE (1024 * 1024 * 16)
 #define LBA_SIZE 512
 #define TRANSFER_SIZE 512
+#else
+#define RAM_DISK_SIZE (64)
+#define LBA_SIZE 64
+#define TRANSFER_SIZE 64
+#endif
 
 #if defined(__IAR_SYSTEMS_ICC__)
 #pragma data_alignment=(SOC_CACHELINE_SIZE_MAX)

@@ -219,7 +219,6 @@ void main (void)
 			/* there was a card removed or inserted */
 			if(SD_IsCardInserted())
 			{
-				SD_SetUpController(SOC_MMCHS_0_REGS);
 				SD_CardInit();
 #ifndef USE_RAM_DISK
 				Init_USB0();

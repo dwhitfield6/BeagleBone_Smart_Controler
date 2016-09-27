@@ -35,24 +35,6 @@
 /******************************************************************************/
 /* Defines                                                                    */
 /******************************************************************************/
-#define HSMMCSD_BLK_SIZE			512
-#define DRIVE_NUM_MMCSD     		0
-#define DRIVE_NUM_MAX      			2
-#define MMCSD_INST_BASE    			(SOC_MMCHS_0_REGS)
-#define MMCSD_INT_NUM       		(SYS_INT_MMCSD0INT)
-#define EDMA_INST_BASE  			(SOC_EDMA30CC_0_REGS)
-#define EDMA_COMPLTN_INT_NUM 		(SYS_INT_EDMACOMPINT)
-#define EDMA_ERROR_INT_NUM  		(SYS_INT_EDMAERRINT)
-#define MMCSD_TX_EDMA_CHAN			(EDMA3_CHA_MMCSD0_TX)
-#define MMCSD_RX_EDMA_CHAN   		(EDMA3_CHA_MMCSD0_RX)
-#define EVT_QUEUE_NUM      			0
-#define HSMMCSD_IN_FREQ         	96000000 /* 96MHz */
-#define HSMMCSD_INIT_FREQ    		400000   /* 400kHz */
-#define HSMMCSD_CARD_DETECT_PINNUM 	6
-#define PATH_BUF_SIZE   			512
-#define DATA_BUF_SIZE   			64 * (2 * 512)
-#define CMD_BUF_SIZE    			512
-#define FILE_DATA_BUFFER_SIZE 		1024
 #define SD_BUFFER_SIZE 				16384
 
 /******************************************************************************/
@@ -106,6 +88,7 @@ void SD_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int
 void SD_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
 unsigned int SD_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
 unsigned int SD_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
+unsigned int SD_GetNumberBlocks(void);
 
 #endif
 /******************************* End of file *********************************/
