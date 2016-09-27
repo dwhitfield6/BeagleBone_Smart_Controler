@@ -282,6 +282,7 @@ unsigned int SD_CardInit(void)
 {
 	unsigned char status = 0;
 	unsigned int retry = 0xFFFF;
+	unsigned int speed;
 
 	/* CMD0 - reset card */
 	status = SD_SendCommand(SOC_MMCHS_0_REGS, 0, 0, 0, 512, SD_RESPONSE_NONE, response);
@@ -434,12 +435,78 @@ unsigned int SD_CardInit(void)
 
         SD_Version = SCR[0] & 0x0F;
         BusWidth = (SCR[0] & 0xF00) >> 8;
+
+    	/* change the bus width ACMD6*/
+        status = SD_SendAppCommand(SOC_MMCHS_0_REGS, 6, SD_BUS_WIDTH_4BIT >> 1, 0, 512, SD_RESPONSE_48BITS, response);
+        if (status == 0)
+		{
+			return 0;
+		}
+
+        HSMMCSDBusWidthSet(SOC_MMCHS_0_REGS, HS_MMCSD_BUS_WIDTH_4BIT);
+
+		/* Get Transfer speed with CMD6 */
+        status = SD_SendCommand(SOC_MMCHS_0_REGS, 6, ((SD_SWITCH_MODE & SD_CMD6_GRP1_SEL) | (SD_CMD6_GRP1_HS)), 1, 64, SD_RESPONSE_READ | SD_RESPONSE_DATA, response);
+        if (status == 0)
+		{
+			return 0;
+		}
+
+        SD_ReceiveData(SOC_MMCHS_0_REGS, SD_Buffer, 64);
+
+		speed = TransSpeed;
+
+		if ((SD_Buffer[16] & 0xF) == SD_CMD6_GRP1_HS)
+		{
+			TransSpeed = SD_TRANSPEED_50MBPS;
+		}
+
+		if (speed == SD_TRANSPEED_50MBPS)
+		{
+			status = HSMMCSDBusFreqSet(SOC_MMCHS_0_REGS, 96000000, 50000000, 0);
+		}
+		else
+		{
+			status = HSMMCSDBusFreqSet(SOC_MMCHS_0_REGS, 96000000, 25000000, 0);
+		}
+
+		if (status != 0)
+		{
+			return 0;
+		}
+
+		/*
+		 * Send ACMD51, to get the SD Configuration register details.
+		 * Note, this needs data transfer (on data lines).
+		 */
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 55, RCA << 16, 0, 512, SD_RESPONSE_48BITS, response);
+
+		if (status == 0)
+		{
+			return 0;
+		}
+
+		status = SD_SendCommand(SOC_MMCHS_0_REGS, 51, RCA << 16, 1, 8, SD_RESPONSE_READ | SD_RESPONSE_DATA, response);
+		if (status == 0)
+		{
+			return 0;
+		}
+
+		SD_ReceiveData(SOC_MMCHS_0_REGS, SD_Buffer, 8);
+
+		SCR[0] = (SD_Buffer[3] << 24) | (SD_Buffer[2] << 16) | \
+						   (SD_Buffer[1] << 8) | (SD_Buffer[0]);
+		SCR[1] = (SD_Buffer[7] << 24) | (SD_Buffer[6] << 16) | \
+								   (SD_Buffer[5] << 8) | (SD_Buffer[4]);
+
+		SD_Version = SCR[0] & 0x0F;
+		BusWidth = (SCR[0] & 0xF00) >> 8;
+
     }
     else
     {
         return 0;
     }
-
     return 1;
 }
 
@@ -496,10 +563,14 @@ unsigned char SD_SendCommand(unsigned int baseAddr, unsigned int command, unsign
 
 	    cmd = HS_MMCSD_CMD(command, cmdType, rspType, cmdDir);
 
+	    HSMMCSDIntrStatusDisable(baseAddr, MMCHS_ISE_BRR_SIGEN);
+		HSMMCSDIntrStatusDisable(baseAddr, MMCHS_ISE_BWR_SIGEN);
 	    if (dataPresent)
 	    {
-	        HSMMCSDIntrStatusClear(baseAddr, HS_MMCSD_STAT_TRNFCOMP);
-
+	    	HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_BRR_SIGEN);
+	    	HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_BWR_SIGEN);
+	    	HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_TC_SIGEN);
+	    	HSMMCSDIntrStatusClear(baseAddr, MMCHS_ISE_TC_SIGEN);
 	        HSMMCSDDataTimeoutSet(baseAddr, HS_MMCSD_DATA_TIMEOUT(27));
 	    }
 
@@ -541,7 +612,7 @@ unsigned char SD_SendCommand(unsigned int baseAddr, unsigned int command, unsign
 /******************************************************************************/
 unsigned char SD_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response)
 {
-	if(SD_SendCommand(baseAddr, 55, 0, 0, blocksize, SD_RESPONSE_48BITS, response))
+	if(SD_SendCommand(baseAddr, 55, RCA << 16, 0, blocksize, SD_RESPONSE_48BITS, response))
 	{
 		if(SD_SendCommand(baseAddr, command, argument, nblks, blocksize, type, response))
 		{
@@ -565,4 +636,170 @@ void SD_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int
 	HSMMCSDDataGet(baseAddr, p_buffer, length);
 }
 
+/******************************************************************************/
+/* SD_ReceiveData
+ *
+ * Sets up the mmc module for receive.
+ *
+ * len has to be less than 1024 bytes.
+ *                                                                            */
+/******************************************************************************/
+void SD_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length)
+{
+	unsigned int i;
+
+	while(!(HWREG(baseAddr + MMCHS_PSTATE) & MMCHS_PSTATE_BWE));
+
+	for (i = 0; i < length/4; i++)
+	{
+		 HWREG(baseAddr + MMCHS_DATA) = ((unsigned int*)p_buffer)[i];
+	}
+}
+
+/******************************************************************************/
+/* SD_WriteBlocks
+ *
+ * Writes data to the SD card.
+ *                                                                            */
+/******************************************************************************/
+unsigned int SD_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr)
+{
+    unsigned int status = 0;
+    unsigned int address;
+
+    /*
+     * Address is in blks for high cap cards and in actual bytes
+     * for standard capacity cards
+     */
+    if (HighCap)
+    {
+        address = block;
+    }
+    else
+    {
+        address = block * BlockLength;
+    }
+
+    if (nblks > 1)
+    {
+    	while(nblks)
+		{
+			status = SD_SendCommand(SOC_MMCHS_0_REGS, 24, address, 1, 512, SD_RESPONSE_WRITE | SD_RESPONSE_DATA, response);
+
+			if (status == 0)
+			{
+				return 0;
+			}
+
+			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BWR));
+
+			SD_TransmitData(SOC_MMCHS_0_REGS, ptr, 512);
+
+			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+
+			ptr+=512;
+			if (HighCap)
+			{
+				address++;
+			}
+			else
+			{
+				address += BlockLength;
+			}
+
+			nblks--;
+		}
+    }
+    else
+    {
+    	status = SD_SendCommand(SOC_MMCHS_0_REGS, 24, address, 1, 512, SD_RESPONSE_WRITE | SD_RESPONSE_DATA, response);
+
+    	if (status == 0)
+		{
+			return 0;
+		}
+
+    	while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BWR));
+
+    	SD_TransmitData(SOC_MMCHS_0_REGS, (unsigned char*) ptr, 512);
+
+    	while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+    }
+
+    return 1;
+}
+
+/******************************************************************************/
+/* SD_ReadBlocks
+ *
+ * Reads data from the SD card.
+ *                                                                            */
+/******************************************************************************/
+unsigned int SD_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr)
+{
+    unsigned int status = 0;
+    unsigned int address;
+
+    /*
+     * Address is in blks for high cap cards and in actual bytes
+     * for standard capacity cards
+     */
+    if (HighCap)
+    {
+        address = block;
+    }
+    else
+    {
+        address = block * BlockLength;
+    }
+
+
+    if (nblks > 1)
+    {
+		while(nblks)
+		{
+			status = SD_SendCommand(baseAddr, 17, address, 1, 512, SD_RESPONSE_READ | SD_RESPONSE_DATA, response);
+
+			if (status == 0)
+			{
+				return 0;
+			}
+
+			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BRR));
+
+			SD_ReceiveData(baseAddr, ptr, 512);
+
+			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+
+			ptr+=512;
+			if (HighCap)
+			{
+				address++;
+			}
+			else
+			{
+				address += BlockLength;
+			}
+
+			nblks--;
+		}
+    }
+    else
+    {
+		status = SD_SendCommand(baseAddr, 17, address, 1, 512, SD_RESPONSE_READ | SD_RESPONSE_DATA, response);
+
+		if (status == 0)
+		{
+			return 0;
+		}
+
+		while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BRR));
+
+		SD_ReceiveData(baseAddr, (unsigned char*) ptr, 512);
+
+		while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+    }
+
+    return 1;
+}
 /******************************* End of file *********************************/

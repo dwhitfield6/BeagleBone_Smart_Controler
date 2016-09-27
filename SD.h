@@ -103,6 +103,9 @@ unsigned int SD_CardInit(void);
 unsigned char SD_SendCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
 unsigned char SD_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
 void SD_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
+void SD_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
+unsigned int SD_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
+unsigned int SD_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
 
 #endif
 /******************************* End of file *********************************/
