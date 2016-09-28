@@ -185,6 +185,7 @@ typedef struct _mmcsdCtrlInfo {
 #define SD_VERSION_2P0		2
 #define SD_BUS_WIDTH_1BIT	1
 #define SD_BUS_WIDTH_4BIT	4
+#define SD_BUS_WIDTH_8BIT	8
 
 /* Helper macros */
 /* Note card registers are big endian */

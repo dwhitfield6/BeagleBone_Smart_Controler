@@ -209,7 +209,7 @@ USBDMSCStorageNumBlocks(void * pvDrive)
 #ifdef USE_RAM_DISK
     RAM_disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
 #else
-    ulSectorCount = (g_sFatFs.sects_clust * (g_sFatFs.max_clust - 1));
+    ulSectorCount = (g_SD_FatFs.sects_clust * (g_SD_FatFs.max_clust - 1));
 #endif
 
     return(ulSectorCount);

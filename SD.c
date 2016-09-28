@@ -70,19 +70,19 @@ static unsigned int BusWidth;
 static unsigned short BytesWritten;
 static FRESULT Result;
 
+#pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
+static FIL fileWrite;
+
+#pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
+static char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
+
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 unsigned char SD_Buffer[SD_BUFFER_SIZE];
 
-#pragma DATA_ALIGN(g_sFatFs, SOC_CACHELINE_SIZE);
-FATFS g_sFatFs;
-
-#pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
-static FIL fileWrite;
-
-#pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
-char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
+#pragma DATA_ALIGN(g_SD_FatFs, SOC_CACHELINE_SIZE);
+FATFS g_SD_FatFs;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -108,7 +108,7 @@ void Init_SD(void)
     if(SD_IsCardInserted())
 	{
 		SD_CardInit();
-		Result = f_mount(0, &g_sFatFs);
+		Result = f_mount(0, &g_SD_FatFs);
 		Result = f_open (&fileWrite, "Log5.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 		sprintf(FileDataBuffer, "This is a test.");
 		Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);

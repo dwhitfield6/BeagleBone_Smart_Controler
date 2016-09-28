@@ -91,7 +91,7 @@ typedef enum e_sd_response
 /* Global Variable                                                            */
 /******************************************************************************/
 extern unsigned char SD_Buffer[SD_BUFFER_SIZE];
-extern FATFS g_sFatFs;
+extern FATFS g_SD_FatFs;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
