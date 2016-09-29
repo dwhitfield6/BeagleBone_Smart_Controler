@@ -105,6 +105,7 @@ void Init_Modules(void)
 #endif
 	GUI_DrawInitialScreenProgress(47);
 	Init_EMMC();
+	Init_USB();
 	GUI_DrawInitialScreenProgress(50);
 	Init_Test();
 	GUI_DrawInitialScreenProgress(55);

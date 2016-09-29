@@ -43,6 +43,12 @@ typedef enum e_msc_states
 	MSC_DEV_WRITE,
 }ENUM_MSC_STATES;
 
+typedef enum e_msc_sd
+{
+	USB_MSC_SD,
+	USB_MSC_EMMC,
+}ENUM_USB_MSC_DEVICE;
+
 typedef enum e_msc_status
 {
 	USB_DISCONNECT,
@@ -61,6 +67,8 @@ extern unsigned char *dataBuffer;
 /******************************************************************************/
 void Init_USB(void);
 void Init_USB0(void);
+ENUM_USB_MSC_DEVICE USB_GetMSCDevice_EMMC_or_SD(void);
+void USB_SetMSCDevice_EMMC_or_SD(ENUM_USB_MSC_DEVICE device);
 void USB_InterruptConfigure0(void);
 void USB_InterruptEnable0(unsigned char state);
 unsigned int USB_DMSCEventCallback0(void *pvCBData, unsigned int ulEvent, unsigned int ulMsgParam, void *pvMsgData);

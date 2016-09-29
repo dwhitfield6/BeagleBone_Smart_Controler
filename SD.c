@@ -341,6 +341,7 @@ unsigned int SD_CardInit(void)
 				/* If the cmd fails, it can be due to version < 2.0, since
 				 * we are currently supporting high voltage cards only
 				 */
+				return 0;
 			}
 
 			/* Go ahead and send ACMD41, with host capabilities */
@@ -403,7 +404,7 @@ unsigned int SD_CardInit(void)
 				TransSpeed = SD_CSD1_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
 				BlockLength = 1 << (SD_CSD1_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
 
-				if((CSD[3] & (0xFL << 26) >> 26) == 4)
+				if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 				{
 					/* get EXT_CSD */
 					status = SD_SendCommand(SOC_MMCHS_0_REGS, 8, 0, 1, 512, SD_RESPONSE_READ | SD_RESPONSE_DATA, response);
@@ -431,7 +432,7 @@ unsigned int SD_CardInit(void)
 			{
 				TransSpeed = SD_CSD0_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
 				BlockLength = 1 << (SD_CSD0_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
-				Size = SD_CSD0_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]);
+				Size = (SD_CSD0_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]) + 1) * (512 * 1024);
 				NumberBlocks = Size / BlockLength;
 			}
 
@@ -556,6 +557,7 @@ unsigned int SD_CardInit(void)
 		{
 			return 0;
 		}
+
 		SD_SetInitialized();
 		return 1;
 	}

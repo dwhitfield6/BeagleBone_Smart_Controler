@@ -38,7 +38,7 @@
 *
 */
 
-
+#include "EMMC.h"
 #include "hw_types.h"
 #include "debug.h"
 #include "interrupt.h"
@@ -49,6 +49,7 @@
 #include "usb_msc_structs.h"
 #include "ramdisk.h"
 #include "SD.h"
+#include "USB_MSC_DEVICE.h"
 
 #define SDCARD_PRESENT          0x00000001
 #define SDCARD_IN_USE           0x00000002
@@ -144,11 +145,21 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
 
 #ifdef USE_RAM_DISK
     RAM_disk_read(ulSector, pucData, ulNumBlocks);
+    ulNumBlocks *= 512;
 #else
-    SD_ReadBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+    if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
+	{
+    	SD_ReadBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+    	ulNumBlocks *= 512;
+	}
+	else
+	{
+		EMMC_ReadBlocks(SOC_MMCHS_1_REGS, ulSector, ulNumBlocks, pucData);
+		ulNumBlocks *= 512;
+	}
 #endif
 
-    return(ulNumBlocks * 512);
+    return(ulNumBlocks);
 }
 
 //*****************************************************************************
@@ -179,7 +190,14 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
 #ifdef USE_RAM_DISK
     RAM_disk_write(ulSector, pucData, ulNumBlocks);
 #else
-    SD_WriteBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+    if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
+	{
+		SD_WriteBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+	}
+	else
+	{
+		EMMC_WriteBlocks(SOC_MMCHS_1_REGS, ulSector, ulNumBlocks, pucData);
+	}
 #endif
 
     return(ulNumBlocks * 512);
@@ -209,7 +227,14 @@ USBDMSCStorageNumBlocks(void * pvDrive)
 #ifdef USE_RAM_DISK
     RAM_disk_ioctl(0, GET_SECTOR_COUNT, &ulSectorCount);
 #else
-    ulSectorCount = (g_SD_FatFs.sects_clust * (g_SD_FatFs.max_clust - 1));
+    if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
+    {
+    	ulSectorCount = (g_SD_FatFs.sects_clust * (g_SD_FatFs.max_clust - 1));
+    }
+    else
+    {
+    	ulSectorCount = EMMC_GetNumberBlocks();
+    }
 #endif
 
     return(ulSectorCount);

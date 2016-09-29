@@ -57,8 +57,6 @@ static unsigned int TransSpeed;
 static unsigned int BlockLength;
 static unsigned long long Size;
 static unsigned int NumberBlocks;
-static unsigned int SCR[2];
-static unsigned int EMMC_Version;
 static unsigned int BusWidth;
 static unsigned short BytesWritten;
 static FRESULT Result;
@@ -101,6 +99,7 @@ void Init_EMMC(void)
 	memset(EMMC_Buffer, 0, sizeof(EMMC_Buffer));
 
 	EMMC_CardInit();
+
 	Result = f_mount(1, &g_EMMC_FatFs);
 	Result = f_open (&fileWrite, "Log5.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 	sprintf(FileDataBuffer, "This is a test.");
@@ -118,59 +117,59 @@ void EMMC_PinMuxSetup(void)
 {
 	/* pin U7 as mmc1_dat0 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(0)) =
-				   (1 << CONTROL_CONF_GPMC_AD0_CONF_GPMC_AD0_MMODE)    |
-				   (0 << CONTROL_CONF_GPMC_AD0_CONF_GPMC_AD0_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD0_CONF_GPMC_AD0_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD0_CONF_GPMC_AD0_PUDEN_SHIFT)    |
 				   (1 << CONTROL_CONF_GPMC_AD0_CONF_GPMC_AD0_PUTYPESEL_SHIFT)|
 				   (1 << CONTROL_CONF_GPMC_AD0_CONF_GPMC_AD0_RXACTIVE_SHIFT);
 
 	/* pin V7 as mmc1_dat1 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(1)) =
 				   (1 << CONTROL_CONF_GPMC_AD1_CONF_GPMC_AD1_MMODE_SHIFT)    |
-				   (0 << CONTROL_CONF_GPMC_AD1_CONF_GPMC_AD1_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD1_CONF_GPMC_AD1_PUDEN_SHIFT)    |
 				   (1 << CONTROL_CONF_GPMC_AD1_CONF_GPMC_AD1_PUTYPESEL_SHIFT)|
 				   (1 << CONTROL_CONF_GPMC_AD1_CONF_GPMC_AD1_RXACTIVE_SHIFT);
 
 	/* pin R8 as mmc1_dat2 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(2)) =
-					(1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_MMODE_SHIFT)    |
-					(0 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_PUDEN_SHIFT)    |
-					(1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_PUTYPESEL_SHIFT)|
-					(1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_RXACTIVE_SHIFT);
+				   (1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_PUTYPESEL_SHIFT)|
+				   (1 << CONTROL_CONF_GPMC_AD2_CONF_GPMC_AD2_RXACTIVE_SHIFT);
 
 	/* pin T8 as mmc1_dat3 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(3)) =
-					(1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_MMODE_SHIFT)    |
-					(0 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_PUDEN_SHIFT)    |
-					(1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_PUTYPESEL_SHIFT)|
-					(1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_RXACTIVE_SHIFT);
+				   (1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_PUTYPESEL_SHIFT)|
+				   (1 << CONTROL_CONF_GPMC_AD3_CONF_GPMC_AD3_RXACTIVE_SHIFT);
 
 	/* pin U8 as mmc1_dat4 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(4)) =
-					(1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_MMODE_SHIFT)    |
-					(0 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_PUDEN_SHIFT)    |
-					(1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_PUTYPESEL_SHIFT)|
-					(1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_RXACTIVE_SHIFT);
+				   (1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_PUTYPESEL_SHIFT)|
+				   (1 << CONTROL_CONF_GPMC_AD4_CONF_GPMC_AD4_RXACTIVE_SHIFT);
 
 	/* pin V8 as mmc1_dat5 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(5)) =
-					(1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_MMODE_SHIFT)    |
-					(0 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_PUDEN_SHIFT)    |
-					(1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_PUTYPESEL_SHIFT)|
-					(1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_RXACTIVE_SHIFT);
+				   (1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_PUTYPESEL_SHIFT)|
+				   (1 << CONTROL_CONF_GPMC_AD5_CONF_GPMC_AD5_RXACTIVE_SHIFT);
 
 	/* pin R9 as mmc1_dat6 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(6)) =
-					(1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_MMODE_SHIFT)    |
-					(0 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_PUDEN_SHIFT)    |
-					(1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_PUTYPESEL_SHIFT)|
-					(1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_RXACTIVE_SHIFT);
+				   (1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_PUTYPESEL_SHIFT)|
+				   (1 << CONTROL_CONF_GPMC_AD6_CONF_GPMC_AD6_RXACTIVE_SHIFT);
 
 	/* pin T9 as mmc1_dat7 */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_AD(7)) =
-					(1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_MMODE_SHIFT)    |
-					(0 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_PUDEN_SHIFT)    |
-					(1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_PUTYPESEL_SHIFT)|
-					(1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_RXACTIVE_SHIFT);
+				   (1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_MMODE_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_PUDEN_SHIFT)    |
+				   (1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_PUTYPESEL_SHIFT)|
+				   (1 << CONTROL_CONF_GPMC_AD7_CONF_GPMC_AD7_RXACTIVE_SHIFT);
 
 	/* pin U9 as mmc1_CLK */
 	HWREG(SOC_CONTROL_REGS + CONTROL_CONF_GPMC_CSN(1)) =
@@ -199,11 +198,8 @@ void EMMC_PinMuxSetup(void)
 /******************************************************************************/
 void EMMC_HSMMCSDModuleClkConfig(void)
 {
-    HWREG(SOC_PRCM_REGS + CM_PER_MMC1_CLKCTRL) |=
-                             CM_PER_MMC1_CLKCTRL_MODULEMODE_ENABLE;
-
-    while((HWREG(SOC_PRCM_REGS + CM_PER_MMC1_CLKCTRL) &
-      CM_PER_MMC1_CLKCTRL_MODULEMODE) != CM_PER_MMC1_CLKCTRL_MODULEMODE_ENABLE);
+	HWREG(SOC_PRCM_REGS+CM_PER_MMC1_CLKCTRL)|=CM_PER_MMC1_CLKCTRL_MODULEMODE_ENABLE;
+	while ((HWREG(SOC_PRCM_REGS+CM_PER_MMC1_CLKCTRL) & CM_PER_MMC1_CLKCTRL_MODULEMODE)!=CM_PER_MMC1_CLKCTRL_MODULEMODE_ENABLE);
 }
 
 /******************************************************************************/
@@ -232,52 +228,52 @@ void EMMC_HardwareReset(unsigned char state)
 /******************************************************************************/
 unsigned int EMMC_SetUpController(unsigned int baseAddr)
 {
-    int status = 0;
+	int status = 0;
 
-    /*Refer to the MMC Host and Bus configuration steps in TRM */
-    /* controller Reset */
-    status = HSMMCSDSoftReset(baseAddr);
+	/*Refer to the MMC Host and Bus configuration steps in TRM */
+	/* controller Reset */
+	status = HSMMCSDSoftReset(baseAddr);
 
-    if (status != 0)
-    {
-    	UART_PrintString("HS EMMC Reset failed\n\r");
-    }
+	if (status != 0)
+	{
+		UART_PrintString("HS MMC/SD Reset failed\n\r");
+	}
 
-    /* Lines Reset */
-    HSMMCSDLinesReset(baseAddr, HS_MMCSD_ALL_RESET);
+	/* Lines Reset */
+	HSMMCSDLinesReset(baseAddr, HS_MMCSD_ALL_RESET);
 
-    /* Set supported voltage list */
-    HSMMCSDSupportedVoltSet(baseAddr, HS_MMCSD_SUPPORT_VOLT_1P8 |
-                                                HS_MMCSD_SUPPORT_VOLT_3P0 | HS_MMCSD_SUPPORT_VOLT_3P3);
+	/* Set supported voltage list */
+	HSMMCSDSupportedVoltSet(baseAddr, HS_MMCSD_SUPPORT_VOLT_1P8 |
+												HS_MMCSD_SUPPORT_VOLT_3P0);
 
-    HSMMCSDSystemConfig(baseAddr, HS_MMCSD_AUTOIDLE_ENABLE);
+	HSMMCSDSystemConfig(baseAddr, HS_MMCSD_AUTOIDLE_ENABLE);
 
-    /* Set the bus width */
-    HSMMCSDBusWidthSet(baseAddr, HS_MMCSD_BUS_WIDTH_1BIT );
+	/* Set the bus width */
+	HSMMCSDBusWidthSet(baseAddr, HS_MMCSD_BUS_WIDTH_1BIT );
 
-    /* Set the bus voltage */
-    HSMMCSDBusVoltSet(baseAddr, HS_MMCSD_BUS_VOLT_3P0);
+	/* Set the bus voltage */
+	HSMMCSDBusVoltSet(baseAddr, HS_MMCSD_BUS_VOLT_3P0);
 
-    /* Bus power on */
-    status = HSMMCSDBusPower(baseAddr, HS_MMCSD_BUS_POWER_ON);
+	/* Bus power on */
+	status = HSMMCSDBusPower(baseAddr, HS_MMCSD_BUS_POWER_ON);
 
-    if (status != 0)
-    {
-    	UART_PrintString("HS EMMC Power on failed\n\r");
-    }
+	if (status != 0)
+	{
+		UART_PrintString("HS MMC/SD Power on failed\n\r");
+	}
 
-    /* Set the initialization frequency */
-    status = HSMMCSDBusFreqSet(baseAddr, 96000000, 400000, 0);
-    if (status != 0)
-    {
-    	UART_PrintString("HS EMMC Bus Frequency set failed\n\r");
-    }
+	/* Set the initialization frequency */
+	status = HSMMCSDBusFreqSet(baseAddr, 96000000, 400000, 0);
+	if (status != 0)
+	{
+		UART_PrintString("HS MMC/SD Bus Frequency set failed\n\r");
+	}
 
-    status = HSMMCSDInitStreamSend(baseAddr);
+	status = HSMMCSDInitStreamSend(baseAddr);
 
-    status = (status == 0) ? 1 : 0;
+	status = (status == 0) ? 1 : 0;
 
-    return status;
+	return status;
 }
 
 /******************************************************************************/
@@ -290,6 +286,7 @@ unsigned int EMMC_CardInit(void)
 {
 	unsigned char status = 0;
 	unsigned int speed;
+	unsigned int temp;
 
 	if(!EMMC_IsInitialized())
 	{
@@ -319,6 +316,7 @@ unsigned int EMMC_CardInit(void)
 		}
 
 		OCR = response[0];
+		HighCap = (OCR & SD_OCR_HIGH_CAPACITY) ? 1 : 0;
 
 		/* Send CMD2, to get the card identification register */
 		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 2, 0, 0, 512, EMMC_RESPONSE_136BITS, response);
@@ -331,9 +329,8 @@ unsigned int EMMC_CardInit(void)
 		memcpy(CID, response, 16);
 
 		/* Send CMD3, to get the card relative address */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 3, 0xAAAA0000, 0, 512, EMMC_RESPONSE_48BITS, response);
-
-		RCA = 0xAAAA;
+		RCA = 0x1;
+		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 3, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
 
 		if (status == 0)
 		{
@@ -350,53 +347,33 @@ unsigned int EMMC_CardInit(void)
 			return 0;
 		}
 
+		if ((CSD[3] & 0xC0000000) >> 30)
+		{
+			TransSpeed = SD_CSD1_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
+			BlockLength = 1 << (SD_CSD1_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
+			Size = (SD_CSD0_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]) + 1) * (BlockLength * 512);
+			NumberBlocks = Size / BlockLength;
+		}
+		else
+		{
+			TransSpeed = SD_CSD0_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
+			BlockLength = 1 << (SD_CSD0_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
+			Size = (SD_CSD0_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]) + 1) * (512 * 1024);
+			NumberBlocks = Size / BlockLength;
+		}
+
 		/* Select the card */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 7, RCA << 16, 0, 512, EMMC_RESPONSE_BUSY, response);
+		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 7, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
 
 		if (status == 0)
 		{
 			return 0;
 		}
 
-		if ((CSD[3] & 0xC0000000) >> 30)
-		{
-			TransSpeed = SD_CSD1_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
-			BlockLength = 1 << (SD_CSD1_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
-
-			if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
-			{
-				/* get EXT_CSD */
-				status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 8, 0, 1, BlockLength, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
-
-				if (status == 0)
-				{
-					return 0;
-				}
-
-				SD_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, BlockLength);
-
-				Size = ((unsigned int)EMMC_Buffer[212]) + ((unsigned int)EMMC_Buffer[213] << 8) + ((unsigned int)EMMC_Buffer[214] << 16) + ((unsigned int)EMMC_Buffer[215] << 24);
-				Size *= 512;
-				NumberBlocks = Size / BlockLength;
-			}
-			else
-			{
-				Size = 0;
-				NumberBlocks = Size / BlockLength;
-			}
-		}
-		else
-		{
-			TransSpeed = SD_CSD0_TRANSPEED(CSD[3], CSD[2], CSD[1], CSD[0]);
-			BlockLength = 1 << (SD_CSD0_RDBLKLEN(CSD[3], CSD[2], CSD[1], CSD[0]));
-			Size = SD_CSD0_DEV_SIZE(CSD[3], CSD[2], CSD[1], CSD[0]);
-			NumberBlocks = Size / BlockLength;
-		}
-
 		/* Set data block length to 512 (for byte addressing cards) */
 		if(!(HighCap))
 		{
-			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 16, 512, 0, 512, EMMC_RESPONSE_NONE, response);
+			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 16, 512, 0, 512, EMMC_RESPONSE_48BITS, response);
 
 			if (status == 0)
 			{
@@ -408,33 +385,21 @@ unsigned int EMMC_CardInit(void)
 			}
 		}
 
-#if 0
-		/* change the bus width ACMD6*/
-		status = EMMC_SendAppCommand(SOC_MMCHS_1_REGS, 6, SD_BUS_WIDTH_4BIT >> 1, 0, 512, SD_RESPONSE_48BITS, response);
-		if (status == 0)
+		if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 		{
-			return 0;
+			/* get EXT_CSD */
+			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 8, 0, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
+
+			if (status == 0)
+			{
+				return 0;
+			}
+
+			memset(EMMC_Buffer,2,512);
+			EMMC_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, 512);
 		}
 
-		HSMMCSDBusWidthSet(SOC_MMCHS_1_REGS, HS_MMCSD_BUS_WIDTH_8BIT);
-
-		/* Get Transfer speed with CMD6 */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 6, ((SD_SWITCH_MODE & SD_CMD6_GRP1_SEL) | (SD_CMD6_GRP1_HS)), 1, 64, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
-		if (status == 0)
-		{
-			return 0;
-		}
-
-		EMMC_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, 64);
-
-		speed = TransSpeed;
-
-		if ((EMMC_Buffer[16] & 0xF) == SD_CMD6_GRP1_HS)
-		{
-			TransSpeed = SD_TRANSPEED_50MBPS;
-		}
-
-		if (speed == SD_TRANSPEED_50MBPS)
+		if (TransSpeed == SD_TRANSPEED_50MBPS)
 		{
 			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 50000000, 0);
 		}
@@ -443,15 +408,6 @@ unsigned int EMMC_CardInit(void)
 			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 25000000, 0);
 		}
 
-		if (status != 0)
-		{
-			return 0;
-		}
-#endif
-		memset(EMMC_Buffer, 4, sizeof(EMMC_Buffer));
-		EMMC_WriteBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
-		memset(EMMC_Buffer, 1, sizeof(EMMC_Buffer));
-		EMMC_ReadBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
 		EMMC_SetInitialized();
 		return 1;
 	}

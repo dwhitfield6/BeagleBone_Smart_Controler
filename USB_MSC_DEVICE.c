@@ -48,6 +48,7 @@
 /******************************************************************************/
 static ENUM_MSC_STATES USB0_MSCState = MSC_DEV_IDLE;
 static ENUM_USB_STATUS USB0_Status = USB_DISCONNECT;
+static ENUM_USB_MSC_DEVICE Current_USB_Device = USB_MSC_SD;
 
 /******************************************************************************/
 /* Global Variable                                                            */
@@ -72,7 +73,7 @@ ENUM_MSC_STATES g_eMSCState;
 /******************************************************************************/
 void Init_USB(void)
 {
-
+	USB_SetMSCDevice_EMMC_or_SD(USB_MSC_EMMC);
 }
 
 /******************************************************************************/
@@ -113,6 +114,28 @@ void Init_USB0(void)
     }
 #endif
 
+}
+
+/******************************************************************************/
+/* USB_GetMSCDevice_EMMC_or_SD
+ *
+ * Returns the device viewed through USB enumeration.
+ *                                                                            */
+/******************************************************************************/
+ENUM_USB_MSC_DEVICE USB_GetMSCDevice_EMMC_or_SD(void)
+{
+	return Current_USB_Device;
+}
+
+/******************************************************************************/
+/* USB_GetMSCDevice_EMMC_or_SD
+ *
+ * Returns the device viewed through USB enumeration.
+ *                                                                            */
+/******************************************************************************/
+void USB_SetMSCDevice_EMMC_or_SD(ENUM_USB_MSC_DEVICE device)
+{
+	Current_USB_Device = device;
 }
 
 /******************************************************************************/
