@@ -424,6 +424,22 @@ unsigned int EMMC_CardInit(void)
 			memcpy(EXT_CSD, EMMC_Buffer, 512);
 		}
 
+		/* Set data block length to 512 (for byte addressing cards) */
+		if(!(HighCap))
+		{
+			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 16, 512, 0, 512, SD_RESPONSE_48BITS, response);
+
+			if (status == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				BlockLength = 512;
+				NumberBlocks = Size / BlockLength;
+			}
+		}
+		EMMC_TestWrite();
 		EMMC_SetInitialized();
 		return 1;
 	}
