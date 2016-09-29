@@ -165,24 +165,24 @@ void HSMMCSDSystemConfig(unsigned int baseAddr, unsigned int config)
 void HSMMCSDBusWidthSet(unsigned int baseAddr, unsigned int width)
 {
     switch (width)
-    {
-        case HS_MMCSD_BUS_WIDTH_8BIT: 
-            HWREG(baseAddr + MMCHS_CON) |= MMCHS_CON_DW8;
-        break;
+	{
+		case HS_MMCSD_BUS_WIDTH_8BIT:
+			HWREG(baseAddr + MMCHS_CON) |= MMCHS_CON_DW8;
+		break;
 
-        case HS_MMCSD_BUS_WIDTH_4BIT:
-            HWREG(baseAddr + MMCHS_CON) &= ~MMCHS_CON_DW8;
-            HWREG(baseAddr + MMCHS_HCTL) |= 
-                    (MMCHS_HCTL_DTW_4_BITMODE << MMCHS_HCTL_DTW_SHIFT);
-        break;
+		case HS_MMCSD_BUS_WIDTH_4BIT:
+			HWREG(baseAddr + MMCHS_CON) &= ~MMCHS_CON_DW8;
+			HWREG(baseAddr + MMCHS_HCTL) |=
+					(MMCHS_HCTL_DTW_4_BITMODE << MMCHS_HCTL_DTW_SHIFT);
+		break;
 
-        case HS_MMCSD_BUS_WIDTH_1BIT:
-            HWREG(baseAddr + MMCHS_CON) &= ~MMCHS_CON_DW8;
-            HWREG(baseAddr + MMCHS_HCTL) &= ~MMCHS_HCTL_DTW;
-            HWREG(baseAddr + MMCHS_HCTL) |=
-                    (MMCHS_HCTL_DTW_1_BITMODE << MMCHS_HCTL_DTW_SHIFT);
-        break;
-    }
+		case HS_MMCSD_BUS_WIDTH_1BIT:
+			HWREG(baseAddr + MMCHS_CON) &= ~MMCHS_CON_DW8;
+			HWREG(baseAddr + MMCHS_HCTL) &= ~MMCHS_HCTL_DTW;
+			HWREG(baseAddr + MMCHS_HCTL) |=
+					(MMCHS_HCTL_DTW_1_BITMODE << MMCHS_HCTL_DTW_SHIFT);
+		break;
+	}
 }
 
 /**

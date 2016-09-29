@@ -36,6 +36,7 @@
 #include "EMMC.h"
 #include "INTERRUPTS.h"
 #include "I2C.h"
+#include "LEDS.h"
 #include "MISC.h"
 #include "SD.h"
 #include "UART.h"
@@ -60,6 +61,7 @@ static unsigned long long Size;
 static unsigned int NumberBlocks;
 static unsigned int BusWidth;
 static unsigned short BytesWritten;
+static unsigned char HighPower = 0;
 static unsigned char EXT_CSD[512];
 static FRESULT Result;
 
@@ -246,7 +248,7 @@ unsigned int EMMC_SetUpController(unsigned int baseAddr)
 
 	/* Set supported voltage list */
 	HSMMCSDSupportedVoltSet(baseAddr, HS_MMCSD_SUPPORT_VOLT_1P8 |
-												HS_MMCSD_SUPPORT_VOLT_3P0);
+												HS_MMCSD_SUPPORT_VOLT_3P3);
 
 	HSMMCSDSystemConfig(baseAddr, HS_MMCSD_AUTOIDLE_ENABLE);
 
@@ -254,7 +256,7 @@ unsigned int EMMC_SetUpController(unsigned int baseAddr)
 	HSMMCSDBusWidthSet(baseAddr, HS_MMCSD_BUS_WIDTH_1BIT );
 
 	/* Set the bus voltage */
-	HSMMCSDBusVoltSet(baseAddr, HS_MMCSD_BUS_VOLT_3P0);
+	HSMMCSDBusVoltSet(baseAddr, HS_MMCSD_BUS_VOLT_3P3);
 
 	/* Bus power on */
 	status = HSMMCSDBusPower(baseAddr, HS_MMCSD_BUS_POWER_ON);
@@ -410,6 +412,17 @@ unsigned int EMMC_CardInit(void)
 
 		MSC_DelayNOP(10000);
 
+		/* set power to high power mode */
+		if(!EXT_CSD[EXT_CSD_POWER_CLASS])
+		{
+			if (EMMC_SendCommandSwitch(SOC_MMCHS_1_REGS, MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_POWER_CLASS, 8))
+			{
+				HighPower = 1;
+			}
+		}
+
+		MSC_DelayNOP(10000);
+
 		if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 		{
 			/* get EXT_CSD */
@@ -436,10 +449,13 @@ unsigned int EMMC_CardInit(void)
 			else
 			{
 				BlockLength = 512;
-				NumberBlocks = Size / BlockLength;
 			}
 		}
-		EMMC_TestWrite();
+
+		Size = (((unsigned int)EXT_CSD[212] << 0) | ((unsigned int)EXT_CSD[213] << 8) | ((unsigned int)EXT_CSD[214] << 16) | ((unsigned int)EXT_CSD[215] << 24));
+		Size *= 512;
+		NumberBlocks = Size / BlockLength;
+
 		EMMC_SetInitialized();
 		return 1;
 	}
@@ -861,7 +877,7 @@ unsigned char EMMC_TestWrite(void)
 {
 	unsigned char status;
 
-	memset(EMMC_Buffer, 0x52, 512);
+	memset(EMMC_Buffer, 0, 512);
 	status = EMMC_WriteBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
 	if(status)
 	{
