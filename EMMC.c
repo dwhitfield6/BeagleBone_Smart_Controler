@@ -36,6 +36,7 @@
 #include "EMMC.h"
 #include "INTERRUPTS.h"
 #include "I2C.h"
+#include "MISC.h"
 #include "SD.h"
 #include "UART.h"
 
@@ -59,6 +60,7 @@ static unsigned long long Size;
 static unsigned int NumberBlocks;
 static unsigned int BusWidth;
 static unsigned short BytesWritten;
+static unsigned char EXT_CSD[512];
 static FRESULT Result;
 
 #pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
@@ -285,8 +287,8 @@ unsigned int EMMC_SetUpController(unsigned int baseAddr)
 unsigned int EMMC_CardInit(void)
 {
 	unsigned char status = 0;
-	unsigned int speed;
-	unsigned int temp;
+
+	BusWidth = 1;
 
 	if(!EMMC_IsInitialized())
 	{
@@ -370,20 +372,43 @@ unsigned int EMMC_CardInit(void)
 			return 0;
 		}
 
-		/* Set data block length to 512 (for byte addressing cards) */
-		if(!(HighCap))
+		if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 		{
-			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 16, 512, 0, 512, EMMC_RESPONSE_48BITS, response);
+			/* get EXT_CSD */
+			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 8, 0, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
 
 			if (status == 0)
 			{
 				return 0;
 			}
-			else
+
+			EMMC_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, 512);
+			memcpy(EXT_CSD, EMMC_Buffer, 512);
+		}
+
+		/* enable high speed mode */
+		if (EMMC_SendCommandSwitch(SOC_MMCHS_1_REGS, MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_HS_TIMING, 0x1))
+		{
+			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 50000000, 0);
+		}
+		else
+		{
+			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 25000000, 0);
+		}
+
+		MSC_DelayNOP(10000);
+
+		/* set bus width to 8 */
+		if(BusWidth == 1)
+		{
+			if (EMMC_SendCommandSwitch(SOC_MMCHS_1_REGS, MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_BUS_WIDTH, EXT_CSD_BUS_WIDTH_8))
 			{
-				BlockLength = 512;
+				HSMMCSDBusWidthSet(SOC_MMCHS_1_REGS, HS_MMCSD_BUS_WIDTH_8BIT);
+				BusWidth = 8;
 			}
 		}
+
+		MSC_DelayNOP(10000);
 
 		if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 		{
@@ -395,17 +420,8 @@ unsigned int EMMC_CardInit(void)
 				return 0;
 			}
 
-			memset(EMMC_Buffer,2,512);
 			EMMC_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, 512);
-		}
-
-		if (TransSpeed == SD_TRANSPEED_50MBPS)
-		{
-			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 50000000, 0);
-		}
-		else
-		{
-			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 25000000, 0);
+			memcpy(EXT_CSD, EMMC_Buffer, 512);
 		}
 
 		EMMC_SetInitialized();
@@ -751,6 +767,101 @@ void EMMC_ClearInitialized(void)
 unsigned char EMMC_IsInitialized(void)
 {
 	return EMMC_CardInitialized;
+}
+
+/******************************************************************************/
+/* EMMC_SendCommandSwitch
+ *
+ * Sends the switch command.
+ *                                                                            */
+/******************************************************************************/
+unsigned char EMMC_SendCommandSwitch(unsigned int baseAddr, unsigned int set, unsigned int index, unsigned int value)
+{
+	unsigned int status;
+	unsigned char err;
+
+	err = EMMC_SendCommand(baseAddr, 6, (MMC_SWITCH_MODE_WRITE_BYTE << 24) | (index << 16) | (value << 8) | set, 1, 512, EMMC_RESPONSE_BUSY, response);
+
+	if (err == 0)
+	{
+		return 0;
+	}
+
+
+	/* Must check status to be sure of no errors */
+	do
+	{
+		err = EMMC_SendStatus(&status);
+		if (err == 0)
+		{
+			return 0;
+		}
+
+		if(status & (BIT(7)))
+		{
+			/* switch error */
+			return 0;
+		}
+
+		if(status & (BIT(22)))
+	   {
+			return 0;
+	   }
+
+	} while (!(status & BIT(8)) & (!err)); // run while the card is not ready
+
+	return 1;
+}
+
+/******************************************************************************/
+/* EMMC_SendStatus
+ *
+ * Sends the status command.
+ *                                                                            */
+/******************************************************************************/
+unsigned char EMMC_SendStatus(unsigned int* status)
+{
+    unsigned char err;
+
+    err = EMMC_SendCommand(SOC_MMCHS_1_REGS, 13, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
+
+    if (err == 0)
+	{
+		return 0;
+	}
+
+    *status = response[0];
+
+    return 1;
+}
+
+/******************************************************************************/
+/* EMMC_TestWrite
+ *
+ * Tests write and read.
+ *                                                                            */
+/******************************************************************************/
+unsigned char EMMC_TestWrite(void)
+{
+	unsigned char status;
+
+	memset(EMMC_Buffer, 0x52, 512);
+	status = EMMC_WriteBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
+	if(status)
+	{
+		memset(EMMC_Buffer, 0, 512);
+		status = EMMC_ReadBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
+	}
+
+	if(status)
+	{
+		status = 0;
+		if((EMMC_Buffer[0] == 0) && (EMMC_Buffer[511] == 0))
+		{
+			status = 1;
+		}
+	}
+	return status;
 }
 
 /******************************* End of file *********************************/
