@@ -30,6 +30,11 @@
 #define EMMC_RST_PIN	20
 
 /******************************************************************************/
+/* EMMC module base address	                                                  */
+/******************************************************************************/
+#define EMMC_BASE_ADDRESS SOC_MMCHS_1_REGS
+
+/******************************************************************************/
 /* EMMC_BUFFER_SIZE
  *
  * This is the size of the EMMC card buffer in DDR.
@@ -207,19 +212,19 @@ void Init_EMMC(void);
 void EMMC_PinMuxSetup(void);
 void EMMC_HSMMCSDModuleClkConfig(void);
 void EMMC_HardwareReset(unsigned char state);
-unsigned int EMMC_SetUpController(unsigned int baseAddr);
+unsigned int EMMC_SetUpController(void);
 unsigned int EMMC_CardInit(void);
-unsigned char EMMC_SendCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response);
-unsigned char EMMC_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response);
-void EMMC_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
-void EMMC_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
-unsigned int EMMC_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
-unsigned int EMMC_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
+unsigned char EMMC_SendCommand(unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response);
+unsigned char EMMC_SendAppCommand(unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response);
+void EMMC_ReceiveData(unsigned char* p_buffer, unsigned int length);
+void EMMC_TransmitData(unsigned char* p_buffer, unsigned int length);
+unsigned int EMMC_WriteBlocks(unsigned int block, unsigned int nblks, unsigned char *ptr);
+unsigned int EMMC_ReadBlocks(unsigned int block, unsigned int nblks, unsigned char *ptr);
 unsigned int EMMC_GetNumberBlocks(void);
 void EMMC_SetInitialized(void);
 void EMMC_ClearInitialized(void);
 unsigned char EMMC_IsInitialized(void);
-unsigned char EMMC_SendCommandSwitch(unsigned int baseAddr, unsigned int set, unsigned int index, unsigned int value);
+unsigned char EMMC_SendCommandSwitch(unsigned int set, unsigned int index, unsigned int value);
 unsigned char EMMC_SendStatus(unsigned int* status);
 unsigned char EMMC_TestWrite(void);
 

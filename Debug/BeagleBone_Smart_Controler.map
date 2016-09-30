@@ -1,0 +1,2688 @@
+******************************************************************************
+                  TI ARM Linker PC v5.2.5                      
+******************************************************************************
+>> Linked Fri Sep 30 11:07:48 2016
+
+OUTPUT FILE NAME:   <BeagleBone_Smart_Controler.out>
+ENTRY POINT SYMBOL: "Entry"  address: 80000000
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  SRAM_MEM              402f0400   0000fbff  00000000  0000fbff  RWIX
+  L3_SRAM_MEM           40300000   0000ffff  00000000  0000ffff  RWIX
+  DDR_MEM               80000000   10000000  00070fca  0ff8f036  RWIX
+  DDR_MEM_CACHE         90000000   10000000  00007420  0fff8be0  RWIX
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+80000000    80000000    0005d794   0005d794    r-x
+  80000000    80000000    000000d0   000000d0    r-x .text:Entry
+  800000d0    800000d0    00042ce8   00042ce8    r-- .const
+  80042db8    80042db8    0001a9dc   0001a9dc    r-x .text
+80060000    80060000    0000f3b2   00000000    rw-
+  80060000    80060000    0000f3b2   00000000    rw- .bss
+8006f3b8    8006f3b8    00004484   00004484    rw-
+  8006f3b8    8006f3b8    00004484   00004484    rw- .data
+90000000    90000000    00007220   00007220    r-x
+  90000000    90000000    00007220   00007220    r-x Cache_Code
+9ffff000    9ffff000    00000200   00000000    rw-
+  9ffff000    9ffff000    00000200   00000000    rw- .stack
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.text:Entry 
+*          0    80000000    000000d0     
+                  80000000    000000c8     init.obj (.text:Entry)
+                  800000c8    00000008     rtsv7A8_A_le_v3_eabi.lib : autoinit.obj (.tramp.__TI_auto_init.1)
+
+.const     0    800000d0    00042ce8     
+                  800000d0    0003fc00     BITMAP_CHARLIE_BEACH.obj (.const:.string:BITMAP_CharlieBeach)
+                  8003fcd0    00002bc0     BITMAP_TV_REMOTE.obj (.const:.string:BITMAP_TVRemote)
+                  80042890    00000101     rtsv7A8_A_le_v3_eabi.lib : ctype.obj (.const:.string:_ctypes_)
+                  80042991    000000cc     BITMAP_SD_CARD_SYMBOL.obj (.const:.string:BITMAP_SD_Card_Symbol)
+                  80042a5d    00000001     --HOLE-- [fill = 0]
+                  80042a5e    00000078     usbdenum.obj (.const:g_sUSBDefaultFIFOConfig)
+                  80042ad6    00000002     --HOLE-- [fill = 0]
+                  80042ad8    00000070     MEMORY.obj (.const)
+                  80042b48    00000058     BITMAP_USB_SYMBOL.obj (.const:.string:BITMAP_USB_Symbol)
+                  80042ba0    00000048     usb_msc_structs.obj (.const:g_sMSCDevice)
+                  80042be8    00000038     startup.obj (.const:vecTbl)
+                  80042c20    00000034     usbdenum.obj (.const:g_psUSBDStdRequests)
+                  80042c54    00000030     usb_msc_structs.obj (.const:.string:g_pConfigString)
+                  80042c84    00000029     usbdmsc.obj (.const:.string)
+                  80042cad    00000028     usb_msc_structs.obj (.const:.string:g_pDataInterfaceString)
+                  80042cd5    00000028     usb_msc_structs.obj (.const:.string:g_pProductString)
+                  80042cfd    00000024     usb_msc_structs.obj (.const:.string:g_pManufacturerString)
+                  80042d21    00000003     --HOLE-- [fill = 0]
+                  80042d24    0000001d     usbdmsc.obj (.const)
+                  80042d41    00000003     --HOLE-- [fill = 0]
+                  80042d44    00000018     usb_msc_structs.obj (.const)
+                  80042d5c    00000016     usb_msc_structs.obj (.const:.string)
+                  80042d72    00000002     --HOLE-- [fill = 0]
+                  80042d74    00000010     CMD.obj (.const)
+                  80042d84    0000000c     BITMAP_CHARLIE_BEACH.obj (.const)
+                  80042d90    0000000c     BITMAP_SD_CARD_SYMBOL.obj (.const)
+                  80042d9c    0000000c     BITMAP_TV_REMOTE.obj (.const)
+                  80042da8    0000000c     BITMAP_USB_SYMBOL.obj (.const)
+                  80042db4    00000004     startup.obj (.const)
+
+.text      0    80042db8    0001a9dc     
+                  80042db8    00003638     ff.obj (.text)
+                  800463f0    00002a68     LCD.obj (.text)
+                  80048e58    00001d10     uart_irda_cir.obj (.text)
+                  8004ab68    000018d0     rtsv7A8_A_le_v3_eabi.lib : _printfi.obj (.text)
+                  8004c438    00001580     rtc.obj (.text)
+                  8004d9b8    000013e0     SD.obj (.text)
+                  8004ed98    000012a8     EMMC.obj (.text)
+                  80050040    000011d8     tsc_adc.obj (.text)
+                  80051218    00000e38     GUI.obj (.text)
+                  80052050    00000be4     mcspi.obj (.text)
+                  80052c34    00000b50     gpio_v2.obj (.text)
+                  80053784    00000ad0     hsi2c.obj (.text)
+                  80054254    000009f0     hs_mmcsd.obj (.text)
+                  80054c44    000008c0     MISC.obj (.text)
+                  80055504    00000780     dmtimer_driver.obj (.text)
+                  80055c84    000006c4     FRAM.obj (.text)
+                  80056348    0000069c     dmtimer.obj (.text)
+                  800569e4    000005e0     INTERRUPTS.obj (.text)
+                  80056fc4    00000510     SPI.obj (.text)
+                  800574d4    00000504     AUDIO.obj (.text)
+                  800579d8    000004a0     UART.obj (.text)
+                  80057e78    00000498     GPIO.obj (.text)
+                  80058310    00000488     cp15.obj (.text)
+                  80058798    00000418     hsi2c.obj (.text)
+                  80058bb0    000003e4     interrupt.obj (.text)
+                  80058f94    000003e0     mcspi.obj (.text)
+                  80059374    0000033c     RTCC.obj (.text)
+                  800596b0    00000314     main.obj (.text)
+                  800599c4    000002e8     WAV.obj (.text)
+                  80059cac    000002dc     tscAdc.obj (.text)
+                  80059f88    000002d8     USB_MSC_DEVICE.obj (.text)
+                  8005a260    000002c8     LEDS.obj (.text)
+                  8005a528    000002b8     rtsv7A8_A_le_v3_eabi.lib : ull_div32.obj (.text)
+                  8005a7e0    0000029c     ADC.obj (.text)
+                  8005aa7c    00000298     fat_mmcsd.obj (.text)
+                  8005ad14    00000290     I2C.obj (.text)
+                  8005afa4    00000274     rtc.obj (.text)
+                  8005b218    00000270     TIMERS.obj (.text)
+                  8005b488    00000220     cpld.obj (.text)
+                  8005b6a8    00000204     TEST.obj (.text)
+                  8005b8ac    000001d8     CMD.obj (.text)
+                  8005ba84    000001d4     EEPROM.obj (.text)
+                  8005bc58    000001d0     PMIC.obj (.text)
+                  8005be28    000001a8     rtsv7A8_A_le_v3_eabi.lib : xdscale.obj (.text)
+                  8005bfd0    000001a0     gpio.obj (.text)
+                  8005c170    00000184     SYSTEM.obj (.text)
+                  8005c2f4    00000180     rtsv7A8_A_le_v3_eabi.lib : memcpy32.obj (.text)
+                  8005c474    00000160                              : xdnorm.obj (.text)
+                  8005c5d4    00000144     usbtick.obj (.text)
+                  8005c718    0000013c     POWER.obj (.text)
+                  8005c854    00000114     rtsv7A8_A_le_v3_eabi.lib : i_div32.obj (.text)
+                  8005c968    0000010c     exceptionhandler.obj (.text)
+                  8005ca74    000000f8     usbdhandler.obj (.text)
+                  8005cb6c    000000f0     rtsv7A8_A_le_v3_eabi.lib : u_div32.obj (.text)
+                  8005cc5c    000000f0     sysdelay.obj (.text)
+                  8005cd4c    000000d4     MEMORY.obj (.text)
+                  8005ce20    000000b8     rtsv7A8_A_le_v3_eabi.lib : xdunscal.obj (.text)
+                  8005ced8    000000b0                              : memset32.obj (.text)
+                  8005cf88    000000a8                              : sprintf.obj (.text)
+                  8005d030    000000a4                              : autoinit.obj (.text)
+                  8005d0d4    000000a0     hs_mmcsd.obj (.text)
+                  8005d174    00000084     rtsv7A8_A_le_v3_eabi.lib : atoi.obj (.text)
+                  8005d1f8    00000084                              : cpy_tbl.obj (.text)
+                  8005d27c    00000084     startup.obj (.text)
+                  8005d300    00000080     rtsv7A8_A_le_v3_eabi.lib : ltoa.obj (.text)
+                  8005d380    00000068                              : ldexp.obj (.text)
+                  8005d3e8    00000064                              : signal.obj (.text)
+                  8005d44c    00000060     cpu.obj (.text)
+                  8005d4ac    00000058     rtsv7A8_A_le_v3_eabi.lib : feraiseexcept.obj (.text)
+                  8005d504    0000004c     delay.obj (.text)
+                  8005d550    0000004c     rtsv7A8_A_le_v3_eabi.lib : raise.obj (.text)
+                  8005d59c    00000048                              : xdclass.obj (.text)
+                  8005d5e4    00000044                              : xferaise.obj (.text)
+                  8005d628    00000034                              : memcmp.obj (.text)
+                  8005d65c    00000030                              : frexp.obj (.text)
+                  8005d68c    0000002c                              : memccpy.obj (.text)
+                  8005d6b8    00000028                              : strchr.obj (.text)
+                  8005d6e0    00000024                              : _lock.obj (.text)
+                  8005d704    00000024                              : ll_lsr32.obj (.text)
+                  8005d728    0000001c                              : strlen.obj (.text)
+                  8005d744    0000000c     cpu.obj (.text:CPUIntStatus)
+                  8005d750    00000004     rtsv7A8_A_le_v3_eabi.lib : i_div0.obj (.text)
+                  8005d754    00000008     usbdenum.obj (.tramp.USBDeviceIntHandlerInternal.1)
+                  8005d75c    00000008     cache.obj (.tramp.CacheEnable.1)
+                  8005d764    00000008     usb.obj (.tramp.USB0ModuleClkConfig.1)
+                  8005d76c    00000008     cache.obj (.tramp.CacheDataCleanInvalidateAll.1)
+                  8005d774    00000008     usbdmsc.obj (.tramp.USBDMSCInit.1)
+                  8005d77c    00000008     mmu.obj (.tramp.MMUInit.1)
+                  8005d784    00000008     mmu.obj (.tramp.MMUMemRegionMap.1)
+                  8005d78c    00000008     mmu.obj (.tramp.MMUEnable.1)
+
+.bss       0    80060000    0000f3b2     UNINITIALIZED
+                  80060000    00004000     EMMC.obj (.bss:EMMC_Buffer)
+                  80064000    00004000     SD.obj (.bss:SD_Buffer)
+                  80068000    00004000     MEMORY.obj (.bss:pageTable)
+                  8006c000    00000830     usb_msc_structs.obj (.bss:g_sMSCInstance)
+                  8006c830    000007d0     UART.obj (.bss:UART_RX_buffer)
+                  8006d000    000007d0     UART.obj (.bss:UART_TX_buffer)
+                  8006d7d0    00000030     usbdata.obj (.bss:g_USBInstance)
+                  8006d800    00000400     EMMC.obj (.bss:FileDataBuffer)
+                  8006dc00    00000400     SD.obj (.bss:FileDataBuffer)
+                  8006e000    000003e8     MISC.obj (.bss:MISC_Buffer)
+                  8006e3e8    00000018     (.common:I2C_0_Buffers)
+                  8006e400    00000248     EMMC.obj (.bss:fileWrite)
+                  8006e648    00000018     (.common:fat_devices)
+                  8006e660    00000010     (.common:CID)
+                  8006e670    00000010     (.common:CID)
+                  8006e680    00000248     SD.obj (.bss:fileWrite)
+                  8006e8c8    00000010     (.common:CSD)
+                  8006e8d8    00000010     (.common:CSD)
+                  8006e8e8    00000010     (.common:EEPROM_Contents)
+                  8006e8f8    00000008     (.common:FatFs)
+                  8006e900    00000240     EMMC.obj (.bss:g_EMMC_FatFs)
+                  8006eb40    00000240     SD.obj (.bss:g_SD_FatFs)
+                  8006ed80    00000200     EMMC.obj (.bss:EXT_CSD)
+                  8006ef80    00000200     interrupt.obj (.bss:fnRAMVectors)
+                  8006f180    000000a8     usbdenum.obj (.bss:g_psUSBDevice)
+                  8006f228    00000040     POWER.obj (.bss:Voltage)
+                  8006f268    00000040     usbdmsc.obj (.bss:g_pucCommand)
+                  8006f2a8    00000040     usbdenum.obj (.bss:g_pucDataBufferIn)
+                  8006f2e8    00000010     (.common:response)
+                  8006f2f8    00000010     (.common:response)
+                  8006f308    0000000c     (.common:Command_String)
+                  8006f314    0000000c     (.common:g_pfTickHandlers)
+                  8006f320    0000000c     (.common:g_pvTickInstance)
+                  8006f32c    0000000a     (.common:CurrentTimeDate)
+                  8006f336    00000002     (.common:BytesWritten)
+                  8006f338    00000008     (.common:SCR)
+                  8006f340    00000008     (.common:Size)
+                  8006f348    00000008     (.common:Size)
+                  8006f350    00000004     (.common:BlockLength)
+                  8006f354    00000004     (.common:BlockLength)
+                  8006f358    00000004     (.common:BusWidth)
+                  8006f35c    00000004     (.common:BusWidth)
+                  8006f360    00000004     (.common:HighCap)
+                  8006f364    00000004     (.common:HighCap)
+                  8006f368    00000004     (.common:NumberBlocks)
+                  8006f36c    00000004     (.common:NumberBlocks)
+                  8006f370    00000004     (.common:OCR)
+                  8006f374    00000004     (.common:OCR)
+                  8006f378    00000004     (.common:RCA)
+                  8006f37c    00000004     (.common:RCA)
+                  8006f380    00000004     (.common:SD_Version)
+                  8006f384    00000004     (.common:TransSpeed)
+                  8006f388    00000004     (.common:TransSpeed)
+                  8006f38c    00000004     (.common:dummy)
+                  8006f390    00000004     (.common:g_sDriveInformation)
+                  8006f394    00000004     (.common:g_ulFlags)
+                  8006f398    00000004     (.common:g_ulIdleTimeout)
+                  8006f39c    00000004     (.common:p_CurrentScreen)
+                  8006f3a0    00000004     (.common:p_CurrentWAVFile)
+                  8006f3a4    00000004     (.common:p_PreviousScreen)
+                  8006f3a8    00000002     (.common:BytesWritten)
+                  8006f3aa    00000002     (.common:fsid)
+                  8006f3ac    00000001     (.common:CurrentScreen)
+                  8006f3ad    00000001     (.common:PreviousPreviousScreen)
+                  8006f3ae    00000001     (.common:PreviousScreen)
+                  8006f3af    00000001     (.common:Result)
+                  8006f3b0    00000001     (.common:Result)
+                  8006f3b1    00000001     (.common:g_eMSCState)
+
+.TI.noinit 
+*          0    80060000    00000000     UNINITIALIZED
+
+.data      0    8006f3b8    00004484     
+                  8006f3b8    00003cbc     WAV_POST_COMPLETE.obj (.data:WAV_PostComplete)
+                  80073074    00000500     GUI.obj (.data:Screens)
+                  80073574    000000b0     rtsv7A8_A_le_v3_eabi.lib : signal.obj (.data:sigtable)
+                  80073624    00000004                              : errno.obj (.data)
+                  80073628    00000080                              : xvalues.obj (.data)
+                  800736a8    00000062     WAV.obj (.data:WAV_Files)
+                  8007370a    00000002     CMD.obj (.data)
+                  8007370c    00000048     usbdmsc.obj (.data:g_sMSCDeviceInfo)
+                  80073754    00000030     usbdmsc.obj (.data)
+                  80073784    00000023     LCD.obj (.data)
+                  800737a7    0000001f     FRAM.obj (.data)
+                  800737c6    00000002     EMMC.obj (.data)
+                  800737c8    00000010     AUDIO.obj (.data)
+                  800737d8    00000010     TIMERS.obj (.data)
+                  800737e8    0000000c     RTCC.obj (.data)
+                  800737f4    0000000c     UART.obj (.data)
+                  80073800    0000000c     USB_MSC_DEVICE.obj (.data)
+                  8007380c    0000000c     usbtick.obj (.data)
+                  80073818    00000008     rtsv7A8_A_le_v3_eabi.lib : _lock.obj (.data)
+                  80073820    00000008                              : feraiseexcept.obj (.data)
+                  80073828    00000008     usbdenum.obj (.data)
+                  80073830    00000004     sysdelay.obj (.data)
+                  80073834    00000003     GUI.obj (.data)
+                  80073837    00000003     SD.obj (.data)
+                  8007383a    00000001     ADC.obj (.data)
+                  8007383b    00000001     I2C.obj (.data)
+
+.TI.persistent 
+*          0    8006f3b8    00000000     UNINITIALIZED
+
+Cache_Code 
+*          0    90000000    00007220     
+                  90000000    00002234     usbdenum.obj (.text)
+                  90002234    00001f90     usb_driver.obj (.text)
+                  900041c4    000018e0     usbdmsc.obj (.text)
+                  90005aa4    00000830     usbdconfig.obj (.text)
+                  900062d4    00000544     usbdcdesc.obj (.text)
+                  90006818    00000360     usbdesc.obj (.text)
+                  90006b78    0000016c     mmu.obj (.text)
+                  90006ce4    00000130     cache.obj (.text)
+                  90006e14    00000158     usbdmscglue.obj (.text)
+                  90006f6c    000000c4     usb.obj (.text)
+                  90007030    000000c8     usbphyGS70.obj (.text)
+                  900070f8    00000008     delay.obj (.tramp.delay.1)
+                  90007100    00000008     interrupt.obj (.tramp.IntSystemEnable.1)
+                  90007108    00000008     interrupt.obj (.tramp.IntSystemDisable.1)
+                  90007110    00000008     rtsv7A8_A_le_v3_eabi.lib : u_div32.obj (.tramp.__aeabi_uidivmod.1)
+                  90007118    00000008                              : memcpy32.obj (.tramp.memcpy.1)
+                  90007120    00000008     usbtick.obj (.tramp.InternalUSBStartOfFrameTick.1)
+                  90007128    00000008     interrupt.obj (.tramp.IntRegister.1)
+                  90007130    00000008     interrupt.obj (.tramp.IntEnable.1)
+                  90007138    00000008     interrupt.obj (.tramp.IntDisable.1)
+                  90007140    00000008     rtsv7A8_A_le_v3_eabi.lib : memset32.obj (.tramp.memset.1)
+                  90007148    00000008     cp15.obj (.tramp.CP15TlbInvalidate.1)
+                  90007150    00000008     cp15.obj (.tramp.CP15DomainAccessClientSet.1)
+                  90007158    00000008     cp15.obj (.tramp.CP15ControlFeatureDisable.1)
+                  90007160    00000008     cp15.obj (.tramp.CP15TtbCtlTtb0Config.1)
+                  90007168    00000008     cp15.obj (.tramp.CP15Ttb0Set.1)
+                  90007170    00000008     cp15.obj (.tramp.CP15MMUEnable.1)
+                  90007178    00000008     cp15.obj (.tramp.CP15ICacheDisable.1)
+                  90007180    00000008     cp15.obj (.tramp.CP15DCacheDisable.1)
+                  90007188    00000008     cp15.obj (.tramp.CP15MainIdPrimPartNumGet.1)
+                  90007190    00000008     cp15.obj (.tramp.CP15AuxControlFeatureDisable.1)
+                  90007198    00000008     cp15.obj (.tramp.CP15ICacheFlush.1)
+                  900071a0    00000008     cp15.obj (.tramp.CP15ICacheEnable.1)
+                  900071a8    00000008     cp15.obj (.tramp.CP15AuxControlFeatureEnable.1)
+                  900071b0    00000008     cp15.obj (.tramp.CP15DCacheFlush.1)
+                  900071b8    00000008     cp15.obj (.tramp.CP15DCacheEnable.1)
+                  900071c0    00000008     cp15.obj (.tramp.CP15ICacheFlushBuff.1)
+                  900071c8    00000008     cp15.obj (.tramp.CP15DCacheCleanFlush.1)
+                  900071d0    00000008     cp15.obj (.tramp.CP15DCacheClean.1)
+                  900071d8    00000008     cp15.obj (.tramp.CP15DCacheCleanBuff.1)
+                  900071e0    00000008     cp15.obj (.tramp.CP15DCacheFlushBuff.1)
+                  900071e8    00000008     cp15.obj (.tramp.CP15DCacheCleanFlushBuff.1)
+                  900071f0    00000008     USB_MSC_DEVICE.obj (.tramp.USB_GetMSCDevice_EMMC_or_SD.1)
+                  900071f8    00000008     SD.obj (.tramp.SD_ReadBlocks.1)
+                  90007200    00000008     EMMC.obj (.tramp.EMMC_ReadBlocks.1)
+                  90007208    00000008     SD.obj (.tramp.SD_WriteBlocks.1)
+                  90007210    00000008     EMMC.obj (.tramp.EMMC_WriteBlocks.1)
+                  90007218    00000008     EMMC.obj (.tramp.EMMC_GetNumberBlocks.1)
+
+.stack     0    9ffff000    00000200     UNINITIALIZED
+                  9ffff000    00000200     --HOLE--
+
+
+FAR CALL TRAMPOLINES
+
+callee name               trampoline name
+   callee addr  tramp addr   call addr  call info
+--------------  -----------  ---------  ----------------
+__TI_auto_init            $Tramp$AA$S$$__TI_auto_init
+   8005d030     800000c8     800000a0   init.obj (.text:Entry)
+delay                     $Tramp$AA$L$PI$$delay
+   8005d510     900070f8     900002a8   usbdenum.obj (.text)
+                             90003b70   usb_driver.obj (.text)
+IntSystemEnable           $Tramp$AA$L$PI$$IntSystemEnable
+   80058ca0     90007100     900002d8   usbdenum.obj (.text)
+IntSystemDisable          $Tramp$AA$L$PI$$IntSystemDisable
+   80058cd4     90007108     90000330   usbdenum.obj (.text)
+__aeabi_uidivmod          $Tramp$AA$L$PI$$__aeabi_uidivmod
+   8005cb6c     90007110     90001344   usbdenum.obj (.text)
+memcpy                    $Tramp$AA$L$PI$$memcpy
+   8005c2f4     90007118     90001bac   usbdenum.obj (.text)
+InternalUSBStartOfFrameTick  $Tramp$AA$L$PI$$InternalUSBStartOfFrameTick
+   8005c680     90007120     90002184   usbdenum.obj (.text)
+IntRegister               $Tramp$AA$L$PI$$IntRegister
+   80058bb4     90007128     90002890   usb_driver.obj (.text)
+IntEnable                 $Tramp$AA$L$PI$$IntEnable
+   80058f38     90007130     90002898   usb_driver.obj (.text)
+IntDisable                $Tramp$AA$L$PI$$IntDisable
+   80058f20     90007138     900028a8   usb_driver.obj (.text)
+memset                    $Tramp$AA$L$PI$$memset
+   8005cee8     90007140     9000469c   usbdmsc.obj (.text)
+CP15TlbInvalidate         $Tramp$AA$L$PI$$CP15TlbInvalidate
+   800586a0     90007148     90006b80   mmu.obj (.text)
+CP15DomainAccessClientSet  $Tramp$AA$L$PI$$CP15DomainAccessClientSet
+   80058710     90007150     90006b84   mmu.obj (.text)
+CP15ControlFeatureDisable  $Tramp$AA$L$PI$$CP15ControlFeatureDisable
+   80058720     90007158     90006b8c   mmu.obj (.text)
+CP15TtbCtlTtb0Config      $Tramp$AA$L$PI$$CP15TtbCtlTtb0Config
+   80058748     90007160     90006b90   mmu.obj (.text)
+CP15Ttb0Set               $Tramp$AA$L$PI$$CP15Ttb0Set
+   80058694     90007168     90006cd4   mmu.obj (.text)
+CP15MMUEnable             $Tramp$AA$L$PI$$CP15MMUEnable
+   800586c4     90007170     90006cd8   mmu.obj (.text)
+CP15ICacheDisable         $Tramp$AA$L$PI$$CP15ICacheDisable
+   80058310     90007178     90006cf8   cache.obj (.text)
+CP15DCacheDisable         $Tramp$AA$L$PI$$CP15DCacheDisable
+   8005832c     90007180     90006d08   cache.obj (.text)
+CP15MainIdPrimPartNumGet  $Tramp$AA$L$PI$$CP15MainIdPrimPartNumGet
+   80058780     90007188     90006d0c   cache.obj (.text)
+                             90006d50   cache.obj (.text)
+CP15AuxControlFeatureDisable  $Tramp$AA$L$PI$$CP15AuxControlFeatureDisable
+   8005876c     90007190     90006d20   cache.obj (.text)
+CP15ICacheFlush           $Tramp$AA$L$PI$$CP15ICacheFlush
+   80058524     90007198     90006d3c   cache.obj (.text)
+                             90006d78   cache.obj (.text)
+CP15ICacheEnable          $Tramp$AA$L$PI$$CP15ICacheEnable
+   80058348     900071a0     90006d40   cache.obj (.text)
+CP15AuxControlFeatureEnable  $Tramp$AA$L$PI$$CP15AuxControlFeatureEnable
+   80058758     900071a8     90006d64   cache.obj (.text)
+CP15DCacheFlush           $Tramp$AA$L$PI$$CP15DCacheFlush
+   80058368     900071b0     90006d68   cache.obj (.text)
+                             90006db8   cache.obj (.text)
+CP15DCacheEnable          $Tramp$AA$L$PI$$CP15DCacheEnable
+   80058358     900071b8     90006d6c   cache.obj (.text)
+CP15ICacheFlushBuff       $Tramp$AA$L$PI$$CP15ICacheFlushBuff
+   80058640     900071c0     90006d94   cache.obj (.text)
+CP15DCacheCleanFlush      $Tramp$AA$L$PI$$CP15DCacheCleanFlush
+   80058490     900071c8     90006da0   cache.obj (.text)
+CP15DCacheClean           $Tramp$AA$L$PI$$CP15DCacheClean
+   800583fc     900071d0     90006dac   cache.obj (.text)
+CP15DCacheCleanBuff       $Tramp$AA$L$PI$$CP15DCacheCleanBuff
+   80058534     900071d8     90006dd4   cache.obj (.text)
+CP15DCacheFlushBuff       $Tramp$AA$L$PI$$CP15DCacheFlushBuff
+   800585dc     900071e0     90006df0   cache.obj (.text)
+CP15DCacheCleanFlushBuff  $Tramp$AA$L$PI$$CP15DCacheCleanFlushBuff
+   80058588     900071e8     90006e0c   cache.obj (.text)
+USB_GetMSCDevice_EMMC_or_SD  $Tramp$AA$L$PI$$USB_GetMSCDevice_EMMC_or_SD
+   80059fbc     900071f0     90006e68   usbdmscglue.obj (.text)
+                             90006ed4   usbdmscglue.obj (.text)
+                             90006f24   usbdmscglue.obj (.text)
+SD_ReadBlocks             $Tramp$AA$L$PI$$SD_ReadBlocks
+   8004eb60     900071f8     90006e80   usbdmscglue.obj (.text)
+EMMC_ReadBlocks           $Tramp$AA$L$PI$$EMMC_ReadBlocks
+   8004fb8c     90007200     90006ea0   usbdmscglue.obj (.text)
+SD_WriteBlocks            $Tramp$AA$L$PI$$SD_WriteBlocks
+   8004e9a0     90007208     90006eec   usbdmscglue.obj (.text)
+EMMC_WriteBlocks          $Tramp$AA$L$PI$$EMMC_WriteBlocks
+   8004f9f0     90007210     90006f00   usbdmscglue.obj (.text)
+EMMC_GetNumberBlocks      $Tramp$AA$L$PI$$EMMC_GetNumberBlocks
+   8004fd28     90007218     90006f50   usbdmscglue.obj (.text)
+USBDeviceIntHandlerInternal  $Tramp$AA$L$PI$$USBDeviceIntHandlerInternal
+   90001fac     8005d754     80056f48   INTERRUPTS.obj (.text)
+                             8005cad4   usbdhandler.obj (.text)
+                             8005cb4c   usbdhandler.obj (.text)
+CacheEnable               $Tramp$AA$L$PI$$CacheEnable
+   90006d28     8005d75c     800596bc   main.obj (.text)
+USB0ModuleClkConfig       $Tramp$AA$L$PI$$USB0ModuleClkConfig
+   90006f74     8005d764     80059f9c   USB_MSC_DEVICE.obj (.text)
+CacheDataCleanInvalidateAll  $Tramp$AA$L$PI$$CacheDataCleanInvalidateAll
+   90006d9c     8005d76c     80059fa8   USB_MSC_DEVICE.obj (.text)
+USBDMSCInit               $Tramp$AA$L$PI$$USBDMSCInit
+   900047e0     8005d774     80059fb4   USB_MSC_DEVICE.obj (.text)
+MMUInit                   $Tramp$AA$L$PI$$MMUInit
+   90006b78     8005d77c     8005cdd8   MEMORY.obj (.text)
+MMUMemRegionMap           $Tramp$AA$L$PI$$MMUMemRegionMap
+   90006bd8     8005d784     8005cde0   MEMORY.obj (.text)
+                             8005cde8   MEMORY.obj (.text)
+                             8005cdf0   MEMORY.obj (.text)
+                             8005cdf8   MEMORY.obj (.text)
+MMUEnable                 $Tramp$AA$L$PI$$MMUEnable
+   90006cc8     8005d78c     8005ce00   MEMORY.obj (.text)
+
+[46 trampolines]
+[57 trampoline calls]
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                                 
+-------   ----                                 
+80056e64  ADC_0_ISR                            
+8005aa4c  ADC_ClearFinishedFlag                
+8005a994  ADC_ConfigureInterrupt               
+8005aa5c  ADC_GetFinishedFlag                  
+8005a9c0  ADC_ReadChannels                     
+8005aa3c  ADC_SetFinishedFlag                  
+80042db4  AM335X_VECTOR_BASE                   
+80057934  AUD_AmpShutdown                      
+800737d0  AUD_AudioTimeoutCount                
+8005786c  AUD_ClearPlaybackFinishedFlag        
+800575dc  AUD_ClearPlayingFlag                 
+800578a4  AUD_ClearTimoutFlag                  
+80057888  AUD_GetPlaybackFinishedFlag          
+800575ec  AUD_GetPlayingFlag                   
+800578b4  AUD_GetTimoutFlag                    
+800578c0  AUD_IsWAVPlaying                     
+800574d8  AUD_PlayWAV                          
+8005785c  AUD_SetPlaybackFinishedFlag          
+800575cc  AUD_SetPlayingFlag                   
+80057894  AUD_SetTimoutFlag                    
+800575a0  AUD_StopWAV                          
+800578d8  AUD_TestAudio                        
+800575f8  AUD_TransferWAVToRAMG                
+8005ca5c  AbortHandler                         
+800737cc  AudioBytesTransferred                
+800000d0  BITMAP_CharlieBeach                  
+80042991  BITMAP_SD_Card_Symbol                
+8003fcd0  BITMAP_TVRemote                      
+80042b48  BITMAP_USB_Symbol                    
+800737a6  BackLightSetting                     
+8005b8bc  CMD_CheckMatch                       
+8005ba48  CMD_ClearNewCommand                  
+8005ba58  CMD_GetNewCommand                    
+8005ba28  CMD_Help                             
+8005ba38  CMD_SetNewCommand                    
+8005876c  CP15AuxControlFeatureDisable         
+80058758  CP15AuxControlFeatureEnable          
+80058700  CP15BranchPredictionDisable          
+800586f0  CP15BranchPredictionEnable           
+800586e4  CP15BranchPredictorInvalidate        
+80058720  CP15ControlFeatureDisable            
+80058734  CP15ControlFeatureEnable             
+800583fc  CP15DCacheClean                      
+80058534  CP15DCacheCleanBuff                  
+80058490  CP15DCacheCleanFlush                 
+80058588  CP15DCacheCleanFlushBuff             
+8005832c  CP15DCacheDisable                    
+80058358  CP15DCacheEnable                     
+80058368  CP15DCacheFlush                      
+800585dc  CP15DCacheFlushBuff                  
+80058710  CP15DomainAccessClientSet            
+80058310  CP15ICacheDisable                    
+80058348  CP15ICacheEnable                     
+80058524  CP15ICacheFlush                      
+80058640  CP15ICacheFlushBuff                  
+800586ac  CP15MMUDisable                       
+800586c4  CP15MMUEnable                        
+80058780  CP15MainIdPrimPartNumGet             
+800586a0  CP15TlbInvalidate                    
+80058694  CP15Ttb0Set                          
+80058748  CP15TtbCtlTtb0Config                 
+800586d8  CP15VectorBaseAddrSet                
+8005b488  CPLDI2CRead                          
+8005b5e4  CPLDI2CSetup                         
+8005d468  CPUAbortHandler                      
+8005d744  CPUIntStatus                         
+8005d44c  CPUSwitchToPrivilegedMode            
+8005d454  CPUSwitchToUserMode                  
+8005d48c  CPUfiqd                              
+8005d49c  CPUfiqe                              
+8005d46c  CPUirqd                              
+8005d47c  CPUirqe                              
+90006da8  CacheDataCleanAll                    
+90006dc0  CacheDataCleanBuff                   
+90006d9c  CacheDataCleanInvalidateAll          
+90006df8  CacheDataCleanInvalidateBuff         
+90006db4  CacheDataInvalidateAll               
+90006ddc  CacheDataInvalidateBuff              
+90006ce4  CacheDisable                         
+90006d28  CacheEnable                          
+90006d74  CacheInstInvalidateAll               
+90006d80  CacheInstInvalidateBuff              
+8006f308  Command_String                       
+80042d74  Commands                             
+8006f3ac  CurrentScreen                        
+800737a7  CurrentSystemSettings                
+8006f32c  CurrentTimeDate                      
+80055ba8  DMTimer1msModuleClkConfig            
+80055690  DMTimer2ModuleClkConfig              
+80055504  DMTimer3ModuleClkConfig              
+8005581c  DMTimer4ModuleClkConfig              
+800559ac  DMTimer6ModuleClkConfig              
+80055a1c  DMTimer7ModuleClkConfig              
+80056688  DMTimerCompareGet                    
+8005664c  DMTimerCompareSet                    
+800568a8  DMTimerContextRestore                
+80056828  DMTimerContextSave                   
+80056544  DMTimerCounterGet                    
+80056508  DMTimerCounterSet                    
+80056388  DMTimerDisable                       
+80056348  DMTimerEnable                        
+800565cc  DMTimerGPOConfigure                  
+8005673c  DMTimerIntDisable                    
+80056718  DMTimerIntEnable                     
+80056798  DMTimerIntEnableGet                  
+800566c4  DMTimerIntRawStatusGet               
+800566a0  DMTimerIntRawStatusSet               
+800566f4  DMTimerIntStatusClear                
+800566dc  DMTimerIntStatusGet                  
+800563c8  DMTimerModeConfigure                 
+80056988  DMTimerPostedModeConfig              
+800564c8  DMTimerPreScalerClkDisable           
+80056448  DMTimerPreScalerClkEnable            
+800565b4  DMTimerReloadGet                     
+80056578  DMTimerReloadSet                     
+800567f4  DMTimerReset                         
+800567b0  DMTimerResetConfigure                
+80056760  DMTimerTriggerSet                    
+800569cc  DMTimerWritePostedStatusGet          
+800737ea  DefaultTimeDate                      
+8005d504  DelayTimerSetup                      
+8006e8e8  EEPROM_Contents                      
+8005ba9c  EEPROM_ReadAddress                   
+8005bb60  EEPROM_ReadBuffer                    
+8005baf8  EEPROM_WriteAddress                  
+8005bbd8  EEPROM_WriteBuffer                   
+80060000  EMMC_Buffer                          
+8004f080  EMMC_CardInit                        
+8004fd44  EMMC_ClearInitialized                
+8004fd28  EMMC_GetNumberBlocks                 
+8004eecc  EMMC_HSMMCSDModuleClkConfig          
+8004eef4  EMMC_HardwareReset                   
+8004fd54  EMMC_IsInitialized                   
+8004ee30  EMMC_PinMuxSetup                     
+8004fb8c  EMMC_ReadBlocks                      
+8004f960  EMMC_ReceiveData                     
+8004f8d4  EMMC_SendAppCommand                  
+8004f678  EMMC_SendCommand                     
+8004fda0  EMMC_SendCommandSwitch               
+8004feb4  EMMC_SendStatus                      
+8004fd34  EMMC_SetInitialized                  
+8004ef30  EMMC_SetUpController                 
+8004ff24  EMMC_TestWrite                       
+8004f990  EMMC_TransmitData                    
+8004f9f0  EMMC_WriteBlocks                     
+8005b648  EVMProfileGet                        
+80000000  Entry                                
+8005ca58  FIQHandler                           
+8005620c  FRAM_CalculateCRC                    
+800561d0  FRAM_Hold                            
+80056224  FRAM_LoadDefaultSettings             
+80055d84  FRAM_LoadSettings                    
+80055fb4  FRAM_ReadMemory                      
+80055e88  FRAM_ReadStatusRegister              
+80055da0  FRAM_SaveSettings                    
+800562a0  FRAM_Test                            
+80055e08  FRAM_WriteDisable                    
+80055dcc  FRAM_WriteEnable                     
+80055ec8  FRAM_WriteMemory                     
+80056194  FRAM_WriteProtect                    
+800560a0  FRAM_WriteRead                       
+80055e44  FRAM_WriteStatusRegister             
+800737a2  FT_DispCSpread                       
+800737a4  FT_DispDither                        
+8007378c  FT_DispHCycle                        
+8007378e  FT_DispHOffset                       
+80073790  FT_DispHSync0                        
+80073792  FT_DispHSync1                        
+8007378a  FT_DispHeight                        
+8007379c  FT_DispPCLK                          
+800737a0  FT_DispPCLKPol                       
+8007379e  FT_DispSwizzle                       
+80073794  FT_DispVCycle                        
+80073796  FT_DispVOffset                       
+80073798  FT_DispVSync0                        
+8007379a  FT_DispVSync1                        
+80073788  FT_DispWidth                         
+8005bfe0  GPIO0ModuleClkConfig                 
+8005c098  GPIO1ModuleClkConfig                 
+8005bfd0  GPIO1Pin23PinMuxSetup                
+8005c100  GPIO1PinMuxSetup                     
+800535a4  GPIOAutoIdleModeControl              
+80053670  GPIODebounceFuncControl              
+800536c0  GPIODebounceTimeConfig               
+80052d10  GPIODirModeGet                       
+80052cb0  GPIODirModeSet                       
+8005362c  GPIOGatingRatioConfigure             
+800535e8  GPIOIdleModeConfigure                
+8005325c  GPIOIntTypeGet                       
+80052ebc  GPIOIntTypeSet                       
+80052c8c  GPIOModuleDisable                    
+80052c68  GPIOModuleEnable                     
+80052c34  GPIOModuleReset                      
+80052df8  GPIOMultiplePinsRead                 
+80052dc8  GPIOMultiplePinsWrite                
+800533a0  GPIOPinIntClear                      
+80052e6c  GPIOPinIntDisable                    
+80052e1c  GPIOPinIntEnable                     
+8005333c  GPIOPinIntStatus                     
+80053544  GPIOPinIntWakeUpDisable              
+800534e4  GPIOPinIntWakeUpEnable               
+80052da0  GPIOPinRead                          
+80052d50  GPIOPinWrite                         
+800533f0  GPIORawIntStatus                     
+800536e4  GPIORevisionInfoGet                  
+8005344c  GPIOTriggerPinInt                    
+800534c0  GPIOWakeupGlobalDisable              
+8005349c  GPIOWakeupGlobalEnable               
+800569e4  GPIO_3A_ISR                          
+80058108  GPIO_Module0ClkConfig                
+80058170  GPIO_Module1ClkConfig                
+800581d8  GPIO_Module2ClkConfig                
+80058240  GPIO_Module3ClkConfig                
+80051e6c  GUI_Backlight                        
+80051eb4  GUI_ClearBacklightTimeout            
+80051da0  GUI_ClearTagTimoutFlag               
+80051c5c  GUI_CreateTouchCalibration           
+80051404  GUI_DrawHomeScreen                   
+80051260  GUI_DrawInitialScreen                
+800512e8  GUI_DrawInitialScreenProgress        
+80051a58  GUI_DrawNextScreen                   
+80051b94  GUI_DrawPreviousScreen               
+80051848  GUI_DrawTVRemoteScreen               
+80051dd0  GUI_DrawTime                         
+80051ec4  GUI_GetBacklightTimeout              
+80051eec  GUI_GetCurrentTag                    
+80051db0  GUI_GetTagTimoutFlag                 
+800518d4  GUI_LoadItemToRAMG                   
+80051be0  GUI_LoadTouchCalibration             
+80051dbc  GUI_ScreenRefresh                    
+80051ea4  GUI_SetBacklightTimeout              
+80051ed0  GUI_SetCurrentTag                    
+80051d90  GUI_SetTagTimoutFlag                 
+80051d74  GUI_StartNewScreenTagTimer           
+800519cc  GUI_TouchConfig                      
+8005c120  GpioPinMuxSetup                      
+80042d84  HEADER_CharlieBeach                  
+80042d90  HEADER_SD_Card_Symbol                
+80042d9c  HEADER_TVRemote                      
+80042da8  HEADER_USB_Symbol                    
+8005498c  HSMMCSDBlkLenSet                     
+80054650  HSMMCSDBusFreqSet                    
+80054474  HSMMCSDBusPower                      
+80054434  HSMMCSDBusVoltSet                    
+8005437c  HSMMCSDBusWidthSet                   
+800549cc  HSMMCSDCommandSend                   
+80054abc  HSMMCSDDataGet                       
+80054610  HSMMCSDDataTimeoutSet                
+8005478c  HSMMCSDInitStreamSend                
+800544f4  HSMMCSDIntClock                      
+80054850  HSMMCSDIntrEnable                    
+800548a8  HSMMCSDIntrStatusClear               
+80054824  HSMMCSDIntrStatusDisable             
+800547f8  HSMMCSDIntrStatusEnable              
+80054884  HSMMCSDIntrStatusGet                 
+80054b10  HSMMCSDIsCardInserted                
+80054b30  HSMMCSDIsCardWriteProtected          
+800548c8  HSMMCSDIsCmdComplete                 
+800545f0  HSMMCSDIsHSupported                  
+8005454c  HSMMCSDIsIntClockStable              
+80054928  HSMMCSDIsXferComplete                
+800542bc  HSMMCSDLinesReset                    
+8005d12c  HSMMCSDModuleClkConfig               
+8005d0d4  HSMMCSDPinMuxSetup                   
+80054a60  HSMMCSDResponseGet                   
+80054254  HSMMCSDSoftReset                     
+800545b0  HSMMCSDSupportedVoltSet              
+80054338  HSMMCSDSystemConfig                  
+8005895c  I2C0ModuleClkConfig                  
+800587f4  I2C1ModuleClkConfig                  
+80053cbc  I2CActiveOwnAddressGet               
+80053ecc  I2CAutoIdleDisable                   
+80053ea8  I2CAutoIdleEnable                    
+80053c38  I2CBufferStatus                      
+80053f78  I2CClockActivitySelect               
+80053d40  I2CClockBlockingControl              
+80054180  I2CContextRestore                    
+8005412c  I2CContextSave                       
+80053c08  I2CDMARxEventDisable                 
+80053ba8  I2CDMARxEventEnable                  
+80053bd8  I2CDMATxEventDisable                 
+80053b78  I2CDMATxEventEnable                  
+80053a94  I2CDataCountGet                      
+80053b2c  I2CFIFOClear                         
+80053aac  I2CFIFOThresholdConfig               
+80053f14  I2CGlobalWakeUpDisable               
+80053ef0  I2CGlobalWakeUpEnable                
+80053f38  I2CIdleModeSelect                    
+80053848  I2CMasterBusBusy                     
+80053880  I2CMasterBusy                        
+800538c4  I2CMasterControl                     
+8005410c  I2CMasterDataGet                     
+800540ec  I2CMasterDataPut                     
+80053824  I2CMasterDisable                     
+80053800  I2CMasterEnable                      
+8005389c  I2CMasterErr                         
+80053784  I2CMasterInitExpClk                  
+800539f4  I2CMasterIntClearEx                  
+8005395c  I2CMasterIntDisableEx                
+80053930  I2CMasterIntEnableEx                 
+800539b8  I2CMasterIntRawStatus                
+80053a14  I2CMasterIntRawStatusClearEx         
+800539d0  I2CMasterIntRawStatusEx              
+8005397c  I2CMasterIntStatus                   
+80053994  I2CMasterIntStatusEx                 
+80053a54  I2CMasterSlaveAddrGet                
+80053a34  I2CMasterSlaveAddrSet                
+800538e8  I2CMasterStart                       
+8005390c  I2CMasterStop                        
+80053e0c  I2COwnAddressSet                     
+80058798  I2CPinMuxSetup                       
+80053a74  I2CSetDataCount                      
+80053e84  I2CSoftReset                         
+800540d0  I2CSystemStatusGet                   
+80054044  I2CWakeUpDisable                     
+80053fb8  I2CWakeUpEnable                      
+8006e3e8  I2C_0_Buffers                        
+80056cf0  I2C_0_ISR                            
+8005af58  I2C_ClearFailFlag0                   
+8005af68  I2C_GetFailFlag0                     
+8005ad5c  I2C_InterruptConfigure0              
+8005ad88  I2C_SendReceiveData0                 
+8005af48  I2C_SetFailFlag0                     
+8005c9ac  IRQHandler                           
+8005b8ac  InitCMD                              
+8005a7e0  Init_ADC                             
+800574d4  Init_Audio                           
+8005ba84  Init_EEPROM                          
+8004ed98  Init_EMMC                            
+80055c84  Init_FRAM                            
+80057e78  Init_GPIO                            
+80051218  Init_GUI                             
+8005ad14  Init_I2C                             
+8005ad20  Init_I2C_Module0                     
+800463f0  Init_LCD                             
+8005a260  Init_LED                             
+8005c170  Init_Modules                         
+8005bc58  Init_PMIC                            
+8005c718  Init_Power                           
+80059374  Init_RTC                             
+8004d9b8  Init_SD                              
+80056fc4  Init_SPI                             
+80057180  Init_SPI_Module0                     
+80056fd4  Init_SPI_Module1                     
+8005b6a8  Init_Test                            
+8005b228  Init_Timer2                          
+8005b2a0  Init_Timer3                          
+8005b218  Init_Timers                          
+800579d8  Init_UART                            
+80059f88  Init_USB                             
+80059f98  Init_USB0                            
+800599c4  Init_WAV                             
+80058bf8  IntAINTCInit                         
+80058d30  IntActiveIrqNumGet                   
+80058dc8  IntCurrIrqPriorityGet                
+80058f20  IntDisable                           
+80058f38  IntEnable                            
+80058db4  IntFuncClkAutoGateSet                
+80058da0  IntFuncClkFreeRunSet                 
+80058d1c  IntIfClkAutoGateSet                  
+80058d08  IntIfClkFreeRunSet                   
+80058f08  IntMasterFIQDisable                  
+80058efc  IntMasterFIQEnable                   
+80058ef0  IntMasterIRQDisable                  
+80058ee4  IntMasterIRQEnable                   
+80058f14  IntMasterStatusGet                   
+80058ea8  IntPendingIrqMaskedStatusGet         
+80058c68  IntPrioritySet                       
+80058dd8  IntPriorityThresholdGet              
+80058de8  IntPriorityThresholdSet              
+80058d64  IntProtectionDisable                 
+80058d54  IntProtectionEnable                  
+80058e08  IntRawStatusGet                      
+80058bb4  IntRegister                          
+80058e78  IntSoftwareIntClear                  
+80058e48  IntSoftwareIntSet                    
+80058d40  IntSpurIrqFlagGet                    
+80058d8c  IntSyncClkAutoGateSet                
+80058d78  IntSyncClkFreeRunSet                 
+80058cd4  IntSystemDisable                     
+80058ca0  IntSystemEnable                      
+80058bd8  IntUnRegister                        
+8005c648  InternalUSBRegisterTickHandler       
+8005c680  InternalUSBStartOfFrameTick          
+8005c5d4  InternalUSBTickInit                  
+8005d544  IsTimerElapsed                       
+80048e34  LCD_ClearInterruptFlag               
+80048e44  LCD_GetInterruptFlag                 
+80046fd0  LCD_IncrementWriteOffset             
+80046774  LCD_Interrupt                        
+80046684  LCD_InterruptConfigure               
+80046704  LCD_InteruptDisable                  
+800466d0  LCD_InteruptEnable                   
+80046738  LCD_Reset                            
+8004704c  LCD_SendRAMAddress                   
+80048e24  LCD_SetInterruptFlag                 
+800470c8  LCD_WaitCoprocessorDone              
+80047010  LCD_WriteCommandParameters           
+80046f4c  LCD_cmd                              
+80048094  LCD_cmd_append                       
+80047470  LCD_cmd_bgcolor                      
+80047244  LCD_cmd_button                       
+80048848  LCD_cmd_calibrate                    
+800473b8  LCD_cmd_clock                        
+80048774  LCD_cmd_coldstart                    
+80047af8  LCD_cmd_dial                         
+80047514  LCD_cmd_fgcolor                      
+80047620  LCD_cmd_gauge                        
+800483c8  LCD_cmd_getmatrix                    
+800484dc  LCD_cmd_getprops                     
+80048484  LCD_cmd_getptr                       
+800475b0  LCD_cmd_gradcolor                    
+800476d4  LCD_cmd_gradient                     
+80048100  LCD_cmd_inflate                      
+80048784  LCD_cmd_interrupt                    
+80047778  LCD_cmd_keys                         
+80048210  LCD_cmd_loadidentity                 
+800481a4  LCD_cmd_loadimage                    
+80048de0  LCD_cmd_logo                         
+8004856c  LCD_cmd_mediafifo                    
+8004800c  LCD_cmd_memcpy                       
+80047de8  LCD_cmd_memcrc                       
+80047ed4  LCD_cmd_memset                       
+80047f58  LCD_cmd_memwrite                     
+80047e68  LCD_cmd_memzero                      
+80047d54  LCD_cmd_number                       
+800485d8  LCD_cmd_playvideo                    
+800478e8  LCD_cmd_progress                     
+800487dc  LCD_cmd_regread                      
+800488a0  LCD_cmd_romfont                      
+8004832c  LCD_cmd_rotate                       
+800482c0  LCD_cmd_scale                        
+80048bfc  LCD_cmd_screensaver                  
+80047994  LCD_cmd_scrollbar                    
+80047cfc  LCD_cmd_setbase                      
+80048aa8  LCD_cmd_setbitmap                    
+8004890c  LCD_cmd_setfont                      
+80048978  LCD_cmd_setfont2                     
+80048384  LCD_cmd_setmatrix                    
+80048a50  LCD_cmd_setrotate                    
+800489f8  LCD_cmd_setscratch                   
+80048c40  LCD_cmd_sketch                       
+80047a4c  LCD_cmd_slider                       
+80048ce4  LCD_cmd_snapshot                     
+80048d3c  LCD_cmd_snapshot2                    
+80048b34  LCD_cmd_spinner                      
+80048bb8  LCD_cmd_stop                         
+800470ec  LCD_cmd_text                         
+80047b8c  LCD_cmd_toggle                       
+800486e0  LCD_cmd_track                        
+80048254  LCD_cmd_translate                    
+80048674  LCD_cmd_videoframe                   
+80048630  LCD_cmd_videostart                   
+80046804  LCD_ft810memRead16                   
+80046874  LCD_ft810memRead32                   
+800467b0  LCD_ft810memRead8                    
+80046954  LCD_ft810memWrite16                  
+800469c0  LCD_ft810memWrite32                  
+80046914  LCD_ft810memWrite8                   
+80046a64  LCD_ft810memWriteBuffer              
+80046f74  LCD_host_command                     
+80046c34  LCD_rd16                             
+80046c4c  LCD_rd32                             
+80046c20  LCD_rd8                              
+80046e10  LCD_rd_buffer                        
+80046b74  LCD_wr16                             
+80046b90  LCD_wr32                             
+80046b58  LCD_wr8                              
+80046bac  LCD_wr8s                             
+80046c60  LCD_wr_buffer                        
+8005a26c  LED_Show                             
+800737d4  LastWritePointerAddress              
+8006e000  MISC_Buffer                          
+80055170  MISC_CRC_CRC16                       
+80055394  MISC_Calculate_CRC16                 
+80054bc4  MMCSDContextRestore                  
+80054b50  MMCSDContextSave                     
+90006cc8  MMUEnable                            
+90006b78  MMUInit                              
+90006bd8  MMUMemRegionMap                      
+8005cd4c  MMU_ConfigAndEnable                  
+80054e94  MSC_BCDtoHEX                         
+80054c44  MSC_BufferCopy                       
+80054d78  MSC_DelayNOP                         
+80054cf8  MSC_DelayUS                          
+80054fb8  MSC_EndianLong                       
+80055024  MSC_EndianLongArray                  
+80054f38  MSC_EndianShort                      
+80054f74  MSC_EndianShortArray                 
+80054de0  MSC_HEXtoBCD                         
+80054cbc  MSC_LowercaseChar                    
+800550b4  MSC_ReverseByte                      
+80054db0  MSC_Round                            
+80059018  McSPI0CSPinMuxSetup                  
+80059084  McSPI0ModuleClkConfig                
+800591e0  McSPI1ModuleClkConfig                
+800523b4  McSPICSAssert                        
+800523ec  McSPICSDeAssert                      
+800522bc  McSPICSDisable                       
+80052298  McSPICSEnable                        
+800522e0  McSPICSPolarityConfig                
+80052348  McSPICSTimeControlSet                
+800526c4  McSPIChannelDisable                  
+8005268c  McSPIChannelEnable                   
+80052b80  McSPIChannelStatusGet                
+80052050  McSPIClkConfig                       
+800529f4  McSPIDMADisable                      
+800529b0  McSPIDMAEnable                       
+80052bf0  McSPIFIFODatManagementConfig         
+80052870  McSPIFIFOTrigLvlSet                  
+80052a90  McSPIInitDelayConfig                 
+80052a64  McSPIIntDisable                      
+80052a38  McSPIIntEnable                       
+80052b4c  McSPIIntStatusClear                  
+80052b34  McSPIIntStatusGet                    
+80052520  McSPIMasterModeConfig                
+800524fc  McSPIMasterModeEnable                
+80052bac  McSPIMultipleWordAccessConfig        
+80058f94  McSPIPinMuxSetup                     
+80052b08  McSPIReceiveData                     
+800526fc  McSPIReset                           
+80052808  McSPIRxFIFOConfig                    
+800524c4  McSPIStartBitDisable                 
+80052424  McSPIStartBitEnable                  
+8005245c  McSPIStartBitPolarityConfig          
+80052ad4  McSPITransmitData                    
+80052768  McSPITurboModeDisable                
+80052730  McSPITurboModeEnable                 
+800527a0  McSPITxFIFOConfig                    
+80052970  McSPIWordCountSet                    
+80052230  McSPIWordLengthSet                   
+8007370b  NumCommand                           
+8005bd78  PMIC_ReadRegister                    
+8005bdc8  PMIC_WriteRegister                   
+8005c724  PWR_ReadVoltages                     
+8006f3ad  PreviousPreviousScreen               
+8006f3ae  PreviousScreen                       
+80073786  RAM_CMD_Offset                       
+8004d618  RTC32KClkClockControl                
+8004d5b4  RTC32KClkSourceSelect                
+8004d958  RTCAlarm2CalendarSet                 
+8004d8cc  RTCAlarm2IntStatusClear              
+8004d8b0  RTCAlarm2IntStatusGet                
+8004d8f0  RTCAlarm2TimeSet                     
+8004d300  RTCAlarmCalendarGet                  
+8004d2a0  RTCAlarmCalendarSet                  
+8004d1e4  RTCAlarmDayOfMonthGet                
+8004d1b0  RTCAlarmDayOfMonthSet                
+8004d010  RTCAlarmHourGet                      
+8004d06c  RTCAlarmHourMeridiemGet              
+8004d02c  RTCAlarmHourMeridiemSet              
+8004cfdc  RTCAlarmHourSet                      
+8004c674  RTCAlarmIntStatusClear               
+8004c658  RTCAlarmIntStatusGet                 
+8004cfc0  RTCAlarmMinuteGet                    
+8004cf8c  RTCAlarmMinuteSet                    
+8004d234  RTCAlarmMonthGet                     
+8004d200  RTCAlarmMonthSet                     
+8004cf70  RTCAlarmSecondGet                    
+8004cf3c  RTCAlarmSecondSet                    
+8004d0f0  RTCAlarmTimeGet                      
+8004d088  RTCAlarmTimeSet                      
+8004d284  RTCAlarmYearGet                      
+8004d250  RTCAlarmYearSet                      
+8004c790  RTCAutoCompDisable                   
+8004c74c  RTCAutoCompEnable                    
+8004c620  RTCBusyStatusGet                     
+8004cec4  RTCCalendarGet                       
+8004ce54  RTCCalendarSet                       
+8004d3a4  RTCCompensationGet                   
+8004d360  RTCCompensationSet                   
+8004d788  RTCConfigPmicExtWake                 
+8004d7e0  RTCConfigPmicExtWakeDebounce         
+8004d728  RTCConfigPmicExtWakePolarity         
+8004d6e4  RTCConfigPmicPowerEnable             
+8004cbfc  RTCDayOfMonthGet                     
+8004cbc8  RTCDayOfMonthSet                     
+8004ccec  RTCDayOfTheWeekGet                   
+8004ccb8  RTCDayOfTheWeekSet                   
+8004c96c  RTCDisable                           
+8004c9b0  RTCEnable                            
+8004ca18  RTCEnableStatus                      
+8004c698  RTCEventUpdateGet                    
+8004d6a0  RTCFeedbackResistanceSelect          
+8004cb50  RTCHourGet                           
+8004c868  RTCHourModeGet                       
+8004c7e4  RTCHourModeSet                       
+8004cb1c  RTCHourSet                           
+8004d49c  RTCIdleModeConfigure                 
+8004d87c  RTCIntAlarm2Enable                   
+8004c564  RTCIntAlarmDisable                   
+8004c530  RTCIntAlarmEnable                    
+8004c5ec  RTCIntTimerDisable                   
+8004c598  RTCIntTimerEnable                    
+8004cbac  RTCMeridiemGet                       
+8004cb6c  RTCMeridiemSet                       
+8004c6f8  RTCMinRoundingDisable                
+8004c6b4  RTCMinRoundingEnable                 
+8004cb00  RTCMinuteGet                         
+8004cacc  RTCMinuteSet                         
+8005afac  RTCModuleClkConfig                   
+8004cc4c  RTCMonthGet                          
+8004cc18  RTCMonthSet                          
+8004d65c  RTCOscillatorStateControl            
+8004d840  RTCPmicExtWakeStatusClear            
+8004d484  RTCRevisionIDGet                     
+8004c438  RTCRun                               
+8004c63c  RTCRunStatusGet                      
+8004d428  RTCScratchPadGet                     
+8004d3e8  RTCScratchPadSet                     
+8004cab0  RTCSecondGet                         
+8004ca7c  RTCSecondSet                         
+8004c8f0  RTCSet32CounterDisable               
+8004c884  RTCSet32CounterEnable                
+8004d460  RTCSoftwareReset                     
+8004ca58  RTCSplitPwrDisable                   
+8004ca34  RTCSplitPwrEnable                    
+8004c47c  RTCStop                              
+8004d570  RTCTestModeControl                   
+8004cda4  RTCTimeGet                           
+8004cd08  RTCTimeSet                           
+8004d4e8  RTCWakeUpAlarmEventControl           
+8004d52c  RTCWakeUpTimerEventControl           
+8004c508  RTCWriteProtectDisable               
+8004c4e0  RTCWriteProtectEnable                
+8004cc9c  RTCYearGet                           
+8004cc68  RTCYearSet                           
+80059420  RTC_ClearFlag                        
+80059430  RTC_GetFlag                          
+80059520  RTC_GetTimeDate                      
+80056cdc  RTC_ISR                              
+800593e4  RTC_InterruptConfigure               
+800595fc  RTC_ModuleClkConfig                  
+80059410  RTC_SetFlag                          
+8005943c  RTC_SetTimeDate                      
+8005afa4  RtcVersionGet                        
+80064000  SD_Buffer                            
+8004dce0  SD_CardInit                          
+8004dc08  SD_ClearCardActionFlag               
+8004dc5c  SD_ClearInitialized                  
+8004dc18  SD_GetCardActionFlag                 
+8004dc40  SD_GetCardStatus                     
+8004db64  SD_GetFatTime                        
+8004ecfc  SD_GetNumberBlocks                   
+8004db40  SD_IsCardInserted                    
+8004dc6c  SD_IsInitialized                     
+8004eb60  SD_ReadBlocks                        
+8004e8ec  SD_ReceiveData                       
+8004e860  SD_SendAppCommand                    
+8004e604  SD_SendCommand                       
+8004dbf8  SD_SetCardActionFlag                 
+8004dc24  SD_SetCardStatus                     
+8004dc4c  SD_SetInitialized                    
+8004da58  SD_SetUpController                   
+8004e91c  SD_TransmitData                      
+8004e9a0  SD_WriteBlocks                       
+UNDEFED   SHT$$INIT_ARRAY$$Base                
+UNDEFED   SHT$$INIT_ARRAY$$Limit               
+80056ee4  SPI_1_ISR                            
+80057290  SPI_INTCConfigure1                   
+80057374  SPI_ReadWriteByte0                   
+800573d0  SPI_ReadWriteByte1                   
+800572bc  SPI_WriteByte0                       
+80057318  SPI_WriteByte1                       
+8005742c  SPI_WriteByteNoRx0                   
+80057460  SPI_WriteByteNoRx1                   
+8005c984  SVC_Handler                          
+80073074  Screens                              
+8005d524  StartTimer                           
+8005d538  StopTimer                            
+8005cc5c  SysDelayTimerSetup                   
+8005cd10  SysIsTimerElapsed                    
+8005ccd4  SysStartTimer                        
+8005cd00  SysStopTimer                         
+8005cc74  Sysdelay                             
+8005b6f8  TEST_Setpoint1                       
+8005b734  TEST_Setpoint2                       
+8005b770  TEST_Setpoint3                       
+8005b7ac  TEST_Togglepoint1                    
+8005b7fc  TEST_Togglepoint2                    
+8005b84c  TEST_Togglepoint3                    
+80056bc0  TMR_2_ISR                            
+80056ca4  TMR_3_ISR                            
+800737e0  TMR_AudioPlaybackTimer               
+800737e4  TMR_BacklightTimer                   
+8005b30c  TMR_CalculateReload                  
+8005b43c  TMR_ClearMISCTimerFlag               
+8005b44c  TMR_GetMISCTimerFlag                 
+8005b3b8  TMR_GetNewScreenTagTimerEnabled      
+8005b360  TMR_InterruptConfigure2              
+8005b38c  TMR_InterruptConfigure3              
+800737dc  TMR_NewScreenTagTimer                
+8005b40c  TMR_ResetAudioPlaybackTimer          
+8005b41c  TMR_ResetBacklightTimer              
+8005b3fc  TMR_ResetNewScreenTagTimer           
+8005b42c  TMR_SetMISCTimerFlag                 
+8005b3c4  TMR_SetNewScreenTagTimerEnabled      
+800503ac  TSCADCBiasConfig                     
+80050af0  TSCADCChargeStepAnalogGroundConfig   
+80050a50  TSCADCChargeStepAnalogSupplyConfig   
+80050984  TSCADCChargeStepConfig               
+80050938  TSCADCChargeStepOperationModeControl 
+80050250  TSCADCConfigHWEventPrempt            
+800505a4  TSCADCConfigureAFEClock              
+800505f4  TSCADCConfigureMisc                  
+80050664  TSCADCConfigureStepEnable            
+800501f8  TSCADCDMAFIFODisable                 
+800501c8  TSCADCDMAFIFOEnable                  
+80050188  TSCADCEventInterruptDisable          
+8005015c  TSCADCEventInterruptEnable           
+80051154  TSCADCFIFOADCDataRead                
+80051128  TSCADCFIFOChannelIDRead              
+800511e0  TSCADCFIFODMAThresholdLevelConfig    
+800511a8  TSCADCFIFOIRQThresholdLevelConfig    
+8005117c  TSCADCFIFOWordCountRead              
+80050040  TSCADCGetRevision                    
+80050290  TSCADCHWEventMapSet                  
+80050058  TSCADCIdleModeSet                    
+8005086c  TSCADCIdleStepAnalogGroundConfig     
+800507cc  TSCADCIdleStepAnalogSupplyConfig     
+80050700  TSCADCIdleStepConfig                 
+800506b4  TSCADCIdleStepOperationModeControl   
+80050144  TSCADCIntStatus                      
+80050100  TSCADCIntStatusClear                 
+80050120  TSCADCIntStatusRead                  
+80050228  TSCADCIsDMAFIFOEnabled               
+80059cac  TSCADCModuleClkConfig                
+80050474  TSCADCModuleStateSet                 
+80050534  TSCADCOutputRangeConfig              
+80059eb4  TSCADCPinMuxSetUp                    
+800500e8  TSCADCRawIntStatus                   
+800500c4  TSCADCRawIntStatusRead               
+80050098  TSCADCRawIntStatusSet                
+80050518  TSCADCSequencerCurrentStepID         
+800504f8  TSCADCSequencerFSMBusyStatus         
+800504b4  TSCADCSequencerPenIrqStatusRead      
+80050350  TSCADCSetADCPowerDown                
+80050388  TSCADCSetADCPowerUp                  
+80050410  TSCADCStepConfigProtectionDisable    
+800503ec  TSCADCStepConfigProtectionEnable     
+80050434  TSCADCStepIDTagConfig                
+80050bbc  TSCADCTSChargeStepOpenDelayConfig    
+80050310  TSCADCTSModeConfig                   
+80050e18  TSCADCTSStepAnalogGroundConfig       
+80050d48  TSCADCTSStepAnalogSupplyConfig       
+80050fd8  TSCADCTSStepAverageConfig            
+80050c3c  TSCADCTSStepConfig                   
+80050f84  TSCADCTSStepFIFOSelConfig            
+8005102c  TSCADCTSStepModeConfig               
+800510d4  TSCADCTSStepOpenDelayConfig          
+80050bdc  TSCADCTSStepOperationModeControl     
+80050f54  TSCADCTSStepOutOfRangeCheckDisable   
+80050f24  TSCADCTSStepOutOfRangeCheckEnable    
+80051080  TSCADCTSStepSampleDelayConfig        
+800502d0  TSCADCTSTransistorConfig             
+800501a8  TSCADCWakeUpPenEventConfig           
+8004a498  UARTAutoIdleModeControl              
+8004a244  UARTAutoRTSAutoCTSControl            
+8004a980  UARTAutobaudParityGet                
+8004aa18  UARTAutobaudSpeedGet                 
+8004a9cc  UARTAutobaudWordLenGet               
+800491e0  UARTBreakCtl                         
+80049f20  UARTCharGet                          
+80049ec8  UARTCharGetNonBlocking               
+80049f78  UARTCharGetTimeout                   
+8004a008  UARTCharPut                          
+80049e5c  UARTCharPutNonBlocking               
+80049e08  UARTCharsAvail                       
+8004a8f0  UARTDMACounterResetControl           
+8004971c  UARTDMADisable                       
+800496c0  UARTDMAEnable                        
+8004a808  UARTDSRInterruptControl              
+80049124  UARTDivisorLatchDisable              
+80049100  UARTDivisorLatchEnable               
+80048f7c  UARTDivisorLatchWrite                
+80048eb8  UARTDivisorValCompute                
+80049840  UARTEnhanFuncBitValRestore           
+800497e0  UARTEnhanFuncEnable                  
+8004a07c  UARTFIFOCharGet                      
+8004a05c  UARTFIFOCharPut                      
+800492fc  UARTFIFOConfig                       
+8004a1f0  UARTFIFOEnableStatusGet              
+80049754  UARTFIFORegisterWrite                
+8004a7a4  UARTFIFOTrigLvlGranControl           
+8004a098  UARTFIFOWrite                        
+8004a4dc  UARTFlowCtrlTrigLvlConfig            
+8004a410  UARTIdleModeConfigure                
+80049cec  UARTIntDisable                       
+80049c08  UARTIntEnable                        
+8004a150  UARTIntIdentityGet                   
+8004a19c  UARTIntPendingStatusGet              
+80049224  UARTLineCharacConfig                 
+8004a650  UARTLoopbackModeControl              
+8004a6c4  UARTModemControlClear                
+8004a694  UARTModemControlSet                  
+8004a710  UARTModemStatusChangeCheck           
+8004a6f4  UARTModemStatusGet                   
+8004a3dc  UARTModuleReset                      
+8004aac4  UARTModuleVersionNumberGet           
+80048e58  UARTOperatingModeSelect              
+800492e0  UARTParityModeGet                    
+8004929c  UARTParityModeSet                    
+8004a398  UARTPulseShapingControl              
+8004a8d4  UARTRXCTSDSRTransitionStatusGet      
+8004a890  UARTRXCTSDSRWakeUpConfigure          
+800491c0  UARTRegConfModeRestore               
+80049148  UARTRegConfigModeEnable              
+8004a72c  UARTResumeOperation                  
+8004a104  UARTRxErrorGet                       
+8004a968  UARTRxFIFOLevelGet                   
+8004aaa8  UARTScratchPadRegRead                
+8004aa64  UARTScratchPadRegWrite               
+8004a334  UARTSoftwareFlowCtrlOptSet           
+80049db4  UARTSpaceAvail                       
+8004a2d0  UARTSpecialCharDetectControl         
+800498a4  UARTSubConfigMSRSPRModeEn            
+8004997c  UARTSubConfigTCRTLRModeEn            
+80049a54  UARTSubConfigXOFFModeEn              
+80049b2c  UARTTCRTLRBitValRestore              
+8004aae0  UARTTxDMAThresholdControl            
+8004ab24  UARTTxDMAThresholdValConfig          
+8004a84c  UARTTxEmptyIntControl                
+8004a934  UARTTxFIFOFullStatusGet              
+8004a950  UARTTxFIFOLevelGet                   
+8004a454  UARTWakeUpControl                    
+8004a774  UARTWakeUpEventsDisable              
+8004a744  UARTWakeUpEventsEnable               
+8004a52c  UARTXON1XOFF1ValProgram              
+8004a55c  UARTXON2XOFF2ValProgram              
+8004a58c  UARTXONAnyFeatureControl             
+80056a20  UART_0_ISR                           
+80057c20  UART_AddToRXBuffer                   
+80057d50  UART_AddToTXBuffer                   
+80057b2c  UART_BaudRateSet                     
+80057ba8  UART_Configure                       
+80057b08  UART_FIFOConfigure                   
+80057dfc  UART_GetTXInterruptStatus            
+80057bf4  UART_InterruptConfigure0             
+80057b64  UART_LineCharacSet                   
+80057a28  UART_Module0ClkConfig                
+80057a84  UART_PrintBuffer                     
+80057a70  UART_PrintChar                       
+80057ad0  UART_PrintString                     
+8006c830  UART_RX_buffer                       
+800737f4  UART_RX_place                        
+800737f8  UART_TX_add                          
+8006d000  UART_TX_buffer                       
+800737fc  UART_TX_remove                       
+8005ca74  USB0DeviceIntHandler                 
+90006f74  USB0ModuleClkConfig                  
+8005caec  USB1DeviceIntHandler                 
+80073803  USBChangeStatusFlag0                 
+90006fe4  USBClearInt                          
+90004198  USBClearOtgIntr                      
+90006550  USBDCDConfigDescGet                  
+900064c4  USBDCDConfigDescGetNum               
+9000645c  USBDCDConfigDescGetSize              
+900066ec  USBDCDConfigGetInterface             
+90006744  USBDCDConfigGetInterfaceEndpoint     
+90006650  USBDCDConfigGetNumAlternateInterfaces
+90000000  USBDCDInit                           
+9000054c  USBDCDPowerStatusSet                 
+900005b4  USBDCDRemoteWakeupRequest            
+90000400  USBDCDRequestDataEP0                 
+90000478  USBDCDSendDataEP0                    
+900004dc  USBDCDSetDefaultConfiguration        
+90000508  USBDCDStallEP0                       
+900002e4  USBDCDTerm                           
+90004814  USBDMSCCompositeInit                 
+8005a18c  USBDMSCEventCallback                 
+900047e0  USBDMSCInit                          
+900041c4  USBDMSCMediaChange                   
+90006e34  USBDMSCStorageClose                  
+90006f14  USBDMSCStorageNumBlocks              
+90006e14  USBDMSCStorageOpen                   
+90006e50  USBDMSCStorageRead                   
+90006ebc  USBDMSCStorageWrite                  
+90004b24  USBDMSCTerm                          
+900057c0  USBDSCSICommand                      
+900068c4  USBDescGet                           
+90006ae8  USBDescGetInterface                  
+90006b34  USBDescGetInterfaceEndpoint          
+90006818  USBDescGetNum                        
+9000698c  USBDescGetNumAlternateInterfaces     
+90002da8  USBDevAddrGet                        
+90002d88  USBDevAddrSet                        
+90002d40  USBDevConnect                        
+90002d64  USBDevDisconnect                     
+900031a8  USBDevEndpointConfigGet              
+90003028  USBDevEndpointConfigSet              
+90003710  USBDevEndpointDataAck                
+90002be0  USBDevEndpointStall                  
+90002c70  USBDevEndpointStallClear             
+9000298c  USBDevEndpointStatusClear            
+90005c70  USBDeviceConfig                      
+90006110  USBDeviceConfigAlternate             
+90000874  USBDeviceEnumHandler                 
+90000aec  USBDeviceEnumResetHandler            
+90001fac  USBDeviceIntHandlerInternal          
+90000650  USBDeviceResumeTickHandler           
+90003c0c  USBDmaTxChDisable                    
+90003c64  USBDmaTxChTeardown                   
+90006fbc  USBEnableInt                         
+9000411c  USBEnableOtgIntr                     
+900040b4  USBEndpointDMAChannel                
+90003530  USBEndpointDMADisable                
+900034c8  USBEndpointDMAEnable                 
+90003598  USBEndpointDataAvail                 
+90003604  USBEndpointDataGet                   
+900037d8  USBEndpointDataPut                   
+90003888  USBEndpointDataSend                  
+90002b78  USBEndpointDataToggleClear           
+900028b0  USBEndpointStatus                    
+90004074  USBFIFOAddrGet                       
+90003410  USBFIFOConfigGet                     
+90003358  USBFIFOConfigSet                     
+90003900  USBFIFOFlush                         
+90004010  USBFrameNumberGet                    
+90003e50  USBHostAddrGet                       
+90003dfc  USBHostAddrSet                       
+90003ab8  USBHostAutoReqClear                  
+90003a64  USBHostAutoReqSet                    
+90002dc0  USBHostEndpointConfig                
+9000377c  USBHostEndpointDataAck               
+90002a70  USBHostEndpointDataToggle            
+90002900  USBHostEndpointStatusClear           
+90003eec  USBHostHubAddrGet                    
+90003e98  USBHostHubAddrSet                    
+90003f34  USBHostPwrConfig                     
+90003fec  USBHostPwrDisable                    
+90003fc8  USBHostPwrEnable                     
+90003fa4  USBHostPwrFaultDisable               
+90003f80  USBHostPwrFaultEnable                
+900039c4  USBHostRequestIN                     
+90003a10  USBHostRequestINClear                
+90003de0  USBHostRequestStatus                 
+9000233c  USBHostReset                         
+90002388  USBHostResume                        
+900023d4  USBHostSpeedGet                      
+90002318  USBHostSuspend                       
+90003cfc  USBHostTxFifoFlush                   
+900024e0  USBIntDisable                        
+90002658  USBIntDisableControl                 
+900027b0  USBIntDisableEndpoint                
+9000259c  USBIntEnable                         
+900026c4  USBIntEnableControl                  
+900027fc  USBIntEnableEndpoint                 
+9000287c  USBIntRegister                       
+90002430  USBIntStatus                         
+9000272c  USBIntStatusControl                  
+90002848  USBIntStatusEndpoint                 
+900028a0  USBIntUnregister                     
+80073804  USBMSCFlag0                          
+90004098  USBModeGet                           
+90007008  USBModuleClkDisable                  
+90006ff4  USBModuleClkEnable                   
+90004028  USBOTGSessionRequest                 
+90004154  USBReset                             
+90003b0c  USBRxChAbort                         
+90006f6c  USBVersionGet                        
+80056ee8  USB_0_ISR                            
+8005a170  USB_ClearUSBMSCFlag0                 
+8005a144  USB_ClearUSBStatusFlag0              
+8005a060  USB_DMSCEventCallback0               
+80059fbc  USB_GetMSCDevice_EMMC_or_SD          
+8005a0f0  USB_GetMSCState0                     
+8005a180  USB_GetUSBMSCFlag0                   
+8005a128  USB_GetUSBStatus0                    
+8005a154  USB_GetUSBStatusFlag0                
+80059fe4  USB_InterruptConfigure0              
+8005a034  USB_InterruptEnable0                 
+80059fc8  USB_SetMSCDevice_EMMC_or_SD          
+8005a0d4  USB_SetMSCState0                     
+8005a160  USB_SetUSBMSCFlag0                   
+8005a0fc  USB_SetUSBStatus0                    
+8005a134  USB_SetUSBStatusFlag0                
+8005ca5c  UndefInstHandler                     
+90007098  UsbPhyOff                            
+90007030  UsbPhyOn                             
+8006f228  Voltage                              
+80059a1c  WAV_CalculateHeader                  
+800736a8  WAV_Files                            
+8006f3b8  WAV_PostComplete                     
+8005d59c  _Dclass                              
+80073628  _Denorm                              
+8005c474  _Dnorm                               
+8005be28  _Dscale                              
+8005ce20  _Dunscale                            
+80073638  _Eps                                 
+80073624  _Errno                               
+80073820  _Fenv                                
+8005d5e4  _Feraise                             
+80073648  _Hugeval                             
+80073658  _Inf                                 
+80073668  _Nan                                 
+80073688  _Rteps                               
+80073678  _Snan                                
+80073824  _Tls_setup__Fenv                     
+80073698  _Xbig                                
+800736a0  _Zero                                
+9ffff200  __STACK_END                          
+00000200  __STACK_SIZE                         
+UNDEFED   __TI_CINIT_Base                      
+UNDEFED   __TI_CINIT_Limit                     
+UNDEFED   __TI_Handler_Table_Base              
+UNDEFED   __TI_Handler_Table_Limit             
+8005d030  __TI_auto_init                       
+8004bf3c  __TI_printfi                         
+80000000  __TI_static_base__                   
+8005c854  __aeabi_idiv                         
+8005d750  __aeabi_idiv0                        
+8005c854  __aeabi_idivmod                      
+8005d704  __aeabi_llsr                         
+8005ced8  __aeabi_memclr                       
+8005ced8  __aeabi_memclr4                      
+8005ced8  __aeabi_memclr8                      
+8005c2f4  __aeabi_memcpy                       
+8005c2f4  __aeabi_memcpy4                      
+8005c2f4  __aeabi_memcpy8                      
+8005cedc  __aeabi_memset                       
+8005cedc  __aeabi_memset4                      
+8005cedc  __aeabi_memset8                      
+8005cb6c  __aeabi_uidiv                        
+8005cb6c  __aeabi_uidivmod                     
+8005a528  __aeabi_uldivmod                     
+ffffffff  __binit__                            
+ffffffff  __c_args__                           
+9ffff000  __stack                              
+80042890  _ctypes_                             
+80073818  _lock                                
+8005d6f8  _nop                                 
+8005d6ec  _register_lock                       
+8005d6e0  _register_unlock                     
+8007381c  _unlock                              
+8005d174  atoi                                 
+ffffffff  binit                                
+8006f3b2  bss_end                              
+80060000  bss_start                            
+8005d1f8  copy_in                              
+8005d510  delay                                
+8005aa7c  disk_initialize                      
+8005ac84  disk_ioctl                           
+8005ab8c  disk_read                            
+8005ab78  disk_status                          
+8005ac08  disk_write                           
+8006f38c  dummy                                
+800461ac  f_chmod                              
+80045484  f_close                              
+80045a74  f_getfree                            
+800454bc  f_lseek                              
+80045e84  f_mkdir                              
+800446d0  f_mount                              
+80044750  f_open                               
+800457bc  f_opendir                            
+80044b58  f_read                               
+800458c8  f_readdir                            
+80046278  f_rename                             
+800459e0  f_stat                               
+800452c0  f_sync                               
+80045ca0  f_unlink                             
+80044ec8  f_write                              
+8006e648  fat_devices                          
+8005d4ac  feraiseexcept                        
+8006ef80  fnRAMVectors                         
+8005d65c  frexp                                
+8007376e  gDMAflag                             
+8006e900  g_EMMC_FatFs                         
+8006eb40  g_SD_FatFs                           
+8006d7d0  g_USBInstance                        
+8007380c  g_bUSBTimerInitialized               
+80073808  g_bufferIndex                        
+80073758  g_bytesRead                          
+8007375c  g_bytesWritten                       
+8006f3b1  g_eMSCState                          
+80042c54  g_pConfigString                      
+80042cad  g_pDataInterfaceString               
+80042d5c  g_pLangDescriptor                    
+80042d3c  g_pMSCConfigDescriptors              
+80042c96  g_pMSCInterface                      
+80042cfd  g_pManufacturerString                
+80042cd5  g_pProductString                     
+80042d60  g_pSerialNumberString                
+80042d44  g_pStringDescriptors                 
+8006f314  g_pfTickHandlers                     
+8007377c  g_psMSCSections                      
+8006f180  g_psUSBDevice                        
+8006f268  g_pucCommand                         
+8006f320  g_pvTickInstance                     
+8006f390  g_sDriveInformation                  
+80042d34  g_sMSCConfigHeader                   
+80042d24  g_sMSCConfigSection                  
+80042ba0  g_sMSCDevice                         
+8007370c  g_sMSCDeviceInfo                     
+8006c000  g_sMSCInstance                       
+80042d2c  g_sMSCInterfaceSection               
+80042a5e  g_sUSBDefaultFIFOConfig              
+80073810  g_ulCurrentUSBTick                   
+80073814  g_ulUSBSOFCount                      
+80053740  gpioContextRestore                   
+800536fc  gpioContextSave                      
+80073754  intStatus                            
+8005d380  ldexp                                
+8005d300  ltoa                                 
+800596b0  main                                 
+8005d68c  memccpy                              
+8005d628  memcmp                               
+8005c2f4  memcpy                               
+8005cee8  memset                               
+8006f39c  p_CurrentScreen                      
+8006f3a0  p_CurrentWAVFile                     
+8006f3a4  p_PreviousScreen                     
+8005d550  raise                                
+8005d3e8  signal                               
+8005cf88  sprintf                              
+8005d27c  start_boot                           
+8005d6b8  strchr                               
+8005d728  strlen                               
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                                 
+-------   ----                                 
+00000200  __STACK_SIZE                         
+80000000  Entry                                
+80000000  __TI_static_base__                   
+800000d0  BITMAP_CharlieBeach                  
+8003fcd0  BITMAP_TVRemote                      
+80042890  _ctypes_                             
+80042991  BITMAP_SD_Card_Symbol                
+80042a5e  g_sUSBDefaultFIFOConfig              
+80042b48  BITMAP_USB_Symbol                    
+80042ba0  g_sMSCDevice                         
+80042c54  g_pConfigString                      
+80042c96  g_pMSCInterface                      
+80042cad  g_pDataInterfaceString               
+80042cd5  g_pProductString                     
+80042cfd  g_pManufacturerString                
+80042d24  g_sMSCConfigSection                  
+80042d2c  g_sMSCInterfaceSection               
+80042d34  g_sMSCConfigHeader                   
+80042d3c  g_pMSCConfigDescriptors              
+80042d44  g_pStringDescriptors                 
+80042d5c  g_pLangDescriptor                    
+80042d60  g_pSerialNumberString                
+80042d74  Commands                             
+80042d84  HEADER_CharlieBeach                  
+80042d90  HEADER_SD_Card_Symbol                
+80042d9c  HEADER_TVRemote                      
+80042da8  HEADER_USB_Symbol                    
+80042db4  AM335X_VECTOR_BASE                   
+800446d0  f_mount                              
+80044750  f_open                               
+80044b58  f_read                               
+80044ec8  f_write                              
+800452c0  f_sync                               
+80045484  f_close                              
+800454bc  f_lseek                              
+800457bc  f_opendir                            
+800458c8  f_readdir                            
+800459e0  f_stat                               
+80045a74  f_getfree                            
+80045ca0  f_unlink                             
+80045e84  f_mkdir                              
+800461ac  f_chmod                              
+80046278  f_rename                             
+800463f0  Init_LCD                             
+80046684  LCD_InterruptConfigure               
+800466d0  LCD_InteruptEnable                   
+80046704  LCD_InteruptDisable                  
+80046738  LCD_Reset                            
+80046774  LCD_Interrupt                        
+800467b0  LCD_ft810memRead8                    
+80046804  LCD_ft810memRead16                   
+80046874  LCD_ft810memRead32                   
+80046914  LCD_ft810memWrite8                   
+80046954  LCD_ft810memWrite16                  
+800469c0  LCD_ft810memWrite32                  
+80046a64  LCD_ft810memWriteBuffer              
+80046b58  LCD_wr8                              
+80046b74  LCD_wr16                             
+80046b90  LCD_wr32                             
+80046bac  LCD_wr8s                             
+80046c20  LCD_rd8                              
+80046c34  LCD_rd16                             
+80046c4c  LCD_rd32                             
+80046c60  LCD_wr_buffer                        
+80046e10  LCD_rd_buffer                        
+80046f4c  LCD_cmd                              
+80046f74  LCD_host_command                     
+80046fd0  LCD_IncrementWriteOffset             
+80047010  LCD_WriteCommandParameters           
+8004704c  LCD_SendRAMAddress                   
+800470c8  LCD_WaitCoprocessorDone              
+800470ec  LCD_cmd_text                         
+80047244  LCD_cmd_button                       
+800473b8  LCD_cmd_clock                        
+80047470  LCD_cmd_bgcolor                      
+80047514  LCD_cmd_fgcolor                      
+800475b0  LCD_cmd_gradcolor                    
+80047620  LCD_cmd_gauge                        
+800476d4  LCD_cmd_gradient                     
+80047778  LCD_cmd_keys                         
+800478e8  LCD_cmd_progress                     
+80047994  LCD_cmd_scrollbar                    
+80047a4c  LCD_cmd_slider                       
+80047af8  LCD_cmd_dial                         
+80047b8c  LCD_cmd_toggle                       
+80047cfc  LCD_cmd_setbase                      
+80047d54  LCD_cmd_number                       
+80047de8  LCD_cmd_memcrc                       
+80047e68  LCD_cmd_memzero                      
+80047ed4  LCD_cmd_memset                       
+80047f58  LCD_cmd_memwrite                     
+8004800c  LCD_cmd_memcpy                       
+80048094  LCD_cmd_append                       
+80048100  LCD_cmd_inflate                      
+800481a4  LCD_cmd_loadimage                    
+80048210  LCD_cmd_loadidentity                 
+80048254  LCD_cmd_translate                    
+800482c0  LCD_cmd_scale                        
+8004832c  LCD_cmd_rotate                       
+80048384  LCD_cmd_setmatrix                    
+800483c8  LCD_cmd_getmatrix                    
+80048484  LCD_cmd_getptr                       
+800484dc  LCD_cmd_getprops                     
+8004856c  LCD_cmd_mediafifo                    
+800485d8  LCD_cmd_playvideo                    
+80048630  LCD_cmd_videostart                   
+80048674  LCD_cmd_videoframe                   
+800486e0  LCD_cmd_track                        
+80048774  LCD_cmd_coldstart                    
+80048784  LCD_cmd_interrupt                    
+800487dc  LCD_cmd_regread                      
+80048848  LCD_cmd_calibrate                    
+800488a0  LCD_cmd_romfont                      
+8004890c  LCD_cmd_setfont                      
+80048978  LCD_cmd_setfont2                     
+800489f8  LCD_cmd_setscratch                   
+80048a50  LCD_cmd_setrotate                    
+80048aa8  LCD_cmd_setbitmap                    
+80048b34  LCD_cmd_spinner                      
+80048bb8  LCD_cmd_stop                         
+80048bfc  LCD_cmd_screensaver                  
+80048c40  LCD_cmd_sketch                       
+80048ce4  LCD_cmd_snapshot                     
+80048d3c  LCD_cmd_snapshot2                    
+80048de0  LCD_cmd_logo                         
+80048e24  LCD_SetInterruptFlag                 
+80048e34  LCD_ClearInterruptFlag               
+80048e44  LCD_GetInterruptFlag                 
+80048e58  UARTOperatingModeSelect              
+80048eb8  UARTDivisorValCompute                
+80048f7c  UARTDivisorLatchWrite                
+80049100  UARTDivisorLatchEnable               
+80049124  UARTDivisorLatchDisable              
+80049148  UARTRegConfigModeEnable              
+800491c0  UARTRegConfModeRestore               
+800491e0  UARTBreakCtl                         
+80049224  UARTLineCharacConfig                 
+8004929c  UARTParityModeSet                    
+800492e0  UARTParityModeGet                    
+800492fc  UARTFIFOConfig                       
+800496c0  UARTDMAEnable                        
+8004971c  UARTDMADisable                       
+80049754  UARTFIFORegisterWrite                
+800497e0  UARTEnhanFuncEnable                  
+80049840  UARTEnhanFuncBitValRestore           
+800498a4  UARTSubConfigMSRSPRModeEn            
+8004997c  UARTSubConfigTCRTLRModeEn            
+80049a54  UARTSubConfigXOFFModeEn              
+80049b2c  UARTTCRTLRBitValRestore              
+80049c08  UARTIntEnable                        
+80049cec  UARTIntDisable                       
+80049db4  UARTSpaceAvail                       
+80049e08  UARTCharsAvail                       
+80049e5c  UARTCharPutNonBlocking               
+80049ec8  UARTCharGetNonBlocking               
+80049f20  UARTCharGet                          
+80049f78  UARTCharGetTimeout                   
+8004a008  UARTCharPut                          
+8004a05c  UARTFIFOCharPut                      
+8004a07c  UARTFIFOCharGet                      
+8004a098  UARTFIFOWrite                        
+8004a104  UARTRxErrorGet                       
+8004a150  UARTIntIdentityGet                   
+8004a19c  UARTIntPendingStatusGet              
+8004a1f0  UARTFIFOEnableStatusGet              
+8004a244  UARTAutoRTSAutoCTSControl            
+8004a2d0  UARTSpecialCharDetectControl         
+8004a334  UARTSoftwareFlowCtrlOptSet           
+8004a398  UARTPulseShapingControl              
+8004a3dc  UARTModuleReset                      
+8004a410  UARTIdleModeConfigure                
+8004a454  UARTWakeUpControl                    
+8004a498  UARTAutoIdleModeControl              
+8004a4dc  UARTFlowCtrlTrigLvlConfig            
+8004a52c  UARTXON1XOFF1ValProgram              
+8004a55c  UARTXON2XOFF2ValProgram              
+8004a58c  UARTXONAnyFeatureControl             
+8004a650  UARTLoopbackModeControl              
+8004a694  UARTModemControlSet                  
+8004a6c4  UARTModemControlClear                
+8004a6f4  UARTModemStatusGet                   
+8004a710  UARTModemStatusChangeCheck           
+8004a72c  UARTResumeOperation                  
+8004a744  UARTWakeUpEventsEnable               
+8004a774  UARTWakeUpEventsDisable              
+8004a7a4  UARTFIFOTrigLvlGranControl           
+8004a808  UARTDSRInterruptControl              
+8004a84c  UARTTxEmptyIntControl                
+8004a890  UARTRXCTSDSRWakeUpConfigure          
+8004a8d4  UARTRXCTSDSRTransitionStatusGet      
+8004a8f0  UARTDMACounterResetControl           
+8004a934  UARTTxFIFOFullStatusGet              
+8004a950  UARTTxFIFOLevelGet                   
+8004a968  UARTRxFIFOLevelGet                   
+8004a980  UARTAutobaudParityGet                
+8004a9cc  UARTAutobaudWordLenGet               
+8004aa18  UARTAutobaudSpeedGet                 
+8004aa64  UARTScratchPadRegWrite               
+8004aaa8  UARTScratchPadRegRead                
+8004aac4  UARTModuleVersionNumberGet           
+8004aae0  UARTTxDMAThresholdControl            
+8004ab24  UARTTxDMAThresholdValConfig          
+8004bf3c  __TI_printfi                         
+8004c438  RTCRun                               
+8004c47c  RTCStop                              
+8004c4e0  RTCWriteProtectEnable                
+8004c508  RTCWriteProtectDisable               
+8004c530  RTCIntAlarmEnable                    
+8004c564  RTCIntAlarmDisable                   
+8004c598  RTCIntTimerEnable                    
+8004c5ec  RTCIntTimerDisable                   
+8004c620  RTCBusyStatusGet                     
+8004c63c  RTCRunStatusGet                      
+8004c658  RTCAlarmIntStatusGet                 
+8004c674  RTCAlarmIntStatusClear               
+8004c698  RTCEventUpdateGet                    
+8004c6b4  RTCMinRoundingEnable                 
+8004c6f8  RTCMinRoundingDisable                
+8004c74c  RTCAutoCompEnable                    
+8004c790  RTCAutoCompDisable                   
+8004c7e4  RTCHourModeSet                       
+8004c868  RTCHourModeGet                       
+8004c884  RTCSet32CounterEnable                
+8004c8f0  RTCSet32CounterDisable               
+8004c96c  RTCDisable                           
+8004c9b0  RTCEnable                            
+8004ca18  RTCEnableStatus                      
+8004ca34  RTCSplitPwrEnable                    
+8004ca58  RTCSplitPwrDisable                   
+8004ca7c  RTCSecondSet                         
+8004cab0  RTCSecondGet                         
+8004cacc  RTCMinuteSet                         
+8004cb00  RTCMinuteGet                         
+8004cb1c  RTCHourSet                           
+8004cb50  RTCHourGet                           
+8004cb6c  RTCMeridiemSet                       
+8004cbac  RTCMeridiemGet                       
+8004cbc8  RTCDayOfMonthSet                     
+8004cbfc  RTCDayOfMonthGet                     
+8004cc18  RTCMonthSet                          
+8004cc4c  RTCMonthGet                          
+8004cc68  RTCYearSet                           
+8004cc9c  RTCYearGet                           
+8004ccb8  RTCDayOfTheWeekSet                   
+8004ccec  RTCDayOfTheWeekGet                   
+8004cd08  RTCTimeSet                           
+8004cda4  RTCTimeGet                           
+8004ce54  RTCCalendarSet                       
+8004cec4  RTCCalendarGet                       
+8004cf3c  RTCAlarmSecondSet                    
+8004cf70  RTCAlarmSecondGet                    
+8004cf8c  RTCAlarmMinuteSet                    
+8004cfc0  RTCAlarmMinuteGet                    
+8004cfdc  RTCAlarmHourSet                      
+8004d010  RTCAlarmHourGet                      
+8004d02c  RTCAlarmHourMeridiemSet              
+8004d06c  RTCAlarmHourMeridiemGet              
+8004d088  RTCAlarmTimeSet                      
+8004d0f0  RTCAlarmTimeGet                      
+8004d1b0  RTCAlarmDayOfMonthSet                
+8004d1e4  RTCAlarmDayOfMonthGet                
+8004d200  RTCAlarmMonthSet                     
+8004d234  RTCAlarmMonthGet                     
+8004d250  RTCAlarmYearSet                      
+8004d284  RTCAlarmYearGet                      
+8004d2a0  RTCAlarmCalendarSet                  
+8004d300  RTCAlarmCalendarGet                  
+8004d360  RTCCompensationSet                   
+8004d3a4  RTCCompensationGet                   
+8004d3e8  RTCScratchPadSet                     
+8004d428  RTCScratchPadGet                     
+8004d460  RTCSoftwareReset                     
+8004d484  RTCRevisionIDGet                     
+8004d49c  RTCIdleModeConfigure                 
+8004d4e8  RTCWakeUpAlarmEventControl           
+8004d52c  RTCWakeUpTimerEventControl           
+8004d570  RTCTestModeControl                   
+8004d5b4  RTC32KClkSourceSelect                
+8004d618  RTC32KClkClockControl                
+8004d65c  RTCOscillatorStateControl            
+8004d6a0  RTCFeedbackResistanceSelect          
+8004d6e4  RTCConfigPmicPowerEnable             
+8004d728  RTCConfigPmicExtWakePolarity         
+8004d788  RTCConfigPmicExtWake                 
+8004d7e0  RTCConfigPmicExtWakeDebounce         
+8004d840  RTCPmicExtWakeStatusClear            
+8004d87c  RTCIntAlarm2Enable                   
+8004d8b0  RTCAlarm2IntStatusGet                
+8004d8cc  RTCAlarm2IntStatusClear              
+8004d8f0  RTCAlarm2TimeSet                     
+8004d958  RTCAlarm2CalendarSet                 
+8004d9b8  Init_SD                              
+8004da58  SD_SetUpController                   
+8004db40  SD_IsCardInserted                    
+8004db64  SD_GetFatTime                        
+8004dbf8  SD_SetCardActionFlag                 
+8004dc08  SD_ClearCardActionFlag               
+8004dc18  SD_GetCardActionFlag                 
+8004dc24  SD_SetCardStatus                     
+8004dc40  SD_GetCardStatus                     
+8004dc4c  SD_SetInitialized                    
+8004dc5c  SD_ClearInitialized                  
+8004dc6c  SD_IsInitialized                     
+8004dce0  SD_CardInit                          
+8004e604  SD_SendCommand                       
+8004e860  SD_SendAppCommand                    
+8004e8ec  SD_ReceiveData                       
+8004e91c  SD_TransmitData                      
+8004e9a0  SD_WriteBlocks                       
+8004eb60  SD_ReadBlocks                        
+8004ecfc  SD_GetNumberBlocks                   
+8004ed98  Init_EMMC                            
+8004ee30  EMMC_PinMuxSetup                     
+8004eecc  EMMC_HSMMCSDModuleClkConfig          
+8004eef4  EMMC_HardwareReset                   
+8004ef30  EMMC_SetUpController                 
+8004f080  EMMC_CardInit                        
+8004f678  EMMC_SendCommand                     
+8004f8d4  EMMC_SendAppCommand                  
+8004f960  EMMC_ReceiveData                     
+8004f990  EMMC_TransmitData                    
+8004f9f0  EMMC_WriteBlocks                     
+8004fb8c  EMMC_ReadBlocks                      
+8004fd28  EMMC_GetNumberBlocks                 
+8004fd34  EMMC_SetInitialized                  
+8004fd44  EMMC_ClearInitialized                
+8004fd54  EMMC_IsInitialized                   
+8004fda0  EMMC_SendCommandSwitch               
+8004feb4  EMMC_SendStatus                      
+8004ff24  EMMC_TestWrite                       
+80050040  TSCADCGetRevision                    
+80050058  TSCADCIdleModeSet                    
+80050098  TSCADCRawIntStatusSet                
+800500c4  TSCADCRawIntStatusRead               
+800500e8  TSCADCRawIntStatus                   
+80050100  TSCADCIntStatusClear                 
+80050120  TSCADCIntStatusRead                  
+80050144  TSCADCIntStatus                      
+8005015c  TSCADCEventInterruptEnable           
+80050188  TSCADCEventInterruptDisable          
+800501a8  TSCADCWakeUpPenEventConfig           
+800501c8  TSCADCDMAFIFOEnable                  
+800501f8  TSCADCDMAFIFODisable                 
+80050228  TSCADCIsDMAFIFOEnabled               
+80050250  TSCADCConfigHWEventPrempt            
+80050290  TSCADCHWEventMapSet                  
+800502d0  TSCADCTSTransistorConfig             
+80050310  TSCADCTSModeConfig                   
+80050350  TSCADCSetADCPowerDown                
+80050388  TSCADCSetADCPowerUp                  
+800503ac  TSCADCBiasConfig                     
+800503ec  TSCADCStepConfigProtectionEnable     
+80050410  TSCADCStepConfigProtectionDisable    
+80050434  TSCADCStepIDTagConfig                
+80050474  TSCADCModuleStateSet                 
+800504b4  TSCADCSequencerPenIrqStatusRead      
+800504f8  TSCADCSequencerFSMBusyStatus         
+80050518  TSCADCSequencerCurrentStepID         
+80050534  TSCADCOutputRangeConfig              
+800505a4  TSCADCConfigureAFEClock              
+800505f4  TSCADCConfigureMisc                  
+80050664  TSCADCConfigureStepEnable            
+800506b4  TSCADCIdleStepOperationModeControl   
+80050700  TSCADCIdleStepConfig                 
+800507cc  TSCADCIdleStepAnalogSupplyConfig     
+8005086c  TSCADCIdleStepAnalogGroundConfig     
+80050938  TSCADCChargeStepOperationModeControl 
+80050984  TSCADCChargeStepConfig               
+80050a50  TSCADCChargeStepAnalogSupplyConfig   
+80050af0  TSCADCChargeStepAnalogGroundConfig   
+80050bbc  TSCADCTSChargeStepOpenDelayConfig    
+80050bdc  TSCADCTSStepOperationModeControl     
+80050c3c  TSCADCTSStepConfig                   
+80050d48  TSCADCTSStepAnalogSupplyConfig       
+80050e18  TSCADCTSStepAnalogGroundConfig       
+80050f24  TSCADCTSStepOutOfRangeCheckEnable    
+80050f54  TSCADCTSStepOutOfRangeCheckDisable   
+80050f84  TSCADCTSStepFIFOSelConfig            
+80050fd8  TSCADCTSStepAverageConfig            
+8005102c  TSCADCTSStepModeConfig               
+80051080  TSCADCTSStepSampleDelayConfig        
+800510d4  TSCADCTSStepOpenDelayConfig          
+80051128  TSCADCFIFOChannelIDRead              
+80051154  TSCADCFIFOADCDataRead                
+8005117c  TSCADCFIFOWordCountRead              
+800511a8  TSCADCFIFOIRQThresholdLevelConfig    
+800511e0  TSCADCFIFODMAThresholdLevelConfig    
+80051218  Init_GUI                             
+80051260  GUI_DrawInitialScreen                
+800512e8  GUI_DrawInitialScreenProgress        
+80051404  GUI_DrawHomeScreen                   
+80051848  GUI_DrawTVRemoteScreen               
+800518d4  GUI_LoadItemToRAMG                   
+800519cc  GUI_TouchConfig                      
+80051a58  GUI_DrawNextScreen                   
+80051b94  GUI_DrawPreviousScreen               
+80051be0  GUI_LoadTouchCalibration             
+80051c5c  GUI_CreateTouchCalibration           
+80051d74  GUI_StartNewScreenTagTimer           
+80051d90  GUI_SetTagTimoutFlag                 
+80051da0  GUI_ClearTagTimoutFlag               
+80051db0  GUI_GetTagTimoutFlag                 
+80051dbc  GUI_ScreenRefresh                    
+80051dd0  GUI_DrawTime                         
+80051e6c  GUI_Backlight                        
+80051ea4  GUI_SetBacklightTimeout              
+80051eb4  GUI_ClearBacklightTimeout            
+80051ec4  GUI_GetBacklightTimeout              
+80051ed0  GUI_SetCurrentTag                    
+80051eec  GUI_GetCurrentTag                    
+80052050  McSPIClkConfig                       
+80052230  McSPIWordLengthSet                   
+80052298  McSPICSEnable                        
+800522bc  McSPICSDisable                       
+800522e0  McSPICSPolarityConfig                
+80052348  McSPICSTimeControlSet                
+800523b4  McSPICSAssert                        
+800523ec  McSPICSDeAssert                      
+80052424  McSPIStartBitEnable                  
+8005245c  McSPIStartBitPolarityConfig          
+800524c4  McSPIStartBitDisable                 
+800524fc  McSPIMasterModeEnable                
+80052520  McSPIMasterModeConfig                
+8005268c  McSPIChannelEnable                   
+800526c4  McSPIChannelDisable                  
+800526fc  McSPIReset                           
+80052730  McSPITurboModeEnable                 
+80052768  McSPITurboModeDisable                
+800527a0  McSPITxFIFOConfig                    
+80052808  McSPIRxFIFOConfig                    
+80052870  McSPIFIFOTrigLvlSet                  
+80052970  McSPIWordCountSet                    
+800529b0  McSPIDMAEnable                       
+800529f4  McSPIDMADisable                      
+80052a38  McSPIIntEnable                       
+80052a64  McSPIIntDisable                      
+80052a90  McSPIInitDelayConfig                 
+80052ad4  McSPITransmitData                    
+80052b08  McSPIReceiveData                     
+80052b34  McSPIIntStatusGet                    
+80052b4c  McSPIIntStatusClear                  
+80052b80  McSPIChannelStatusGet                
+80052bac  McSPIMultipleWordAccessConfig        
+80052bf0  McSPIFIFODatManagementConfig         
+80052c34  GPIOModuleReset                      
+80052c68  GPIOModuleEnable                     
+80052c8c  GPIOModuleDisable                    
+80052cb0  GPIODirModeSet                       
+80052d10  GPIODirModeGet                       
+80052d50  GPIOPinWrite                         
+80052da0  GPIOPinRead                          
+80052dc8  GPIOMultiplePinsWrite                
+80052df8  GPIOMultiplePinsRead                 
+80052e1c  GPIOPinIntEnable                     
+80052e6c  GPIOPinIntDisable                    
+80052ebc  GPIOIntTypeSet                       
+8005325c  GPIOIntTypeGet                       
+8005333c  GPIOPinIntStatus                     
+800533a0  GPIOPinIntClear                      
+800533f0  GPIORawIntStatus                     
+8005344c  GPIOTriggerPinInt                    
+8005349c  GPIOWakeupGlobalEnable               
+800534c0  GPIOWakeupGlobalDisable              
+800534e4  GPIOPinIntWakeUpEnable               
+80053544  GPIOPinIntWakeUpDisable              
+800535a4  GPIOAutoIdleModeControl              
+800535e8  GPIOIdleModeConfigure                
+8005362c  GPIOGatingRatioConfigure             
+80053670  GPIODebounceFuncControl              
+800536c0  GPIODebounceTimeConfig               
+800536e4  GPIORevisionInfoGet                  
+800536fc  gpioContextSave                      
+80053740  gpioContextRestore                   
+80053784  I2CMasterInitExpClk                  
+80053800  I2CMasterEnable                      
+80053824  I2CMasterDisable                     
+80053848  I2CMasterBusBusy                     
+80053880  I2CMasterBusy                        
+8005389c  I2CMasterErr                         
+800538c4  I2CMasterControl                     
+800538e8  I2CMasterStart                       
+8005390c  I2CMasterStop                        
+80053930  I2CMasterIntEnableEx                 
+8005395c  I2CMasterIntDisableEx                
+8005397c  I2CMasterIntStatus                   
+80053994  I2CMasterIntStatusEx                 
+800539b8  I2CMasterIntRawStatus                
+800539d0  I2CMasterIntRawStatusEx              
+800539f4  I2CMasterIntClearEx                  
+80053a14  I2CMasterIntRawStatusClearEx         
+80053a34  I2CMasterSlaveAddrSet                
+80053a54  I2CMasterSlaveAddrGet                
+80053a74  I2CSetDataCount                      
+80053a94  I2CDataCountGet                      
+80053aac  I2CFIFOThresholdConfig               
+80053b2c  I2CFIFOClear                         
+80053b78  I2CDMATxEventEnable                  
+80053ba8  I2CDMARxEventEnable                  
+80053bd8  I2CDMATxEventDisable                 
+80053c08  I2CDMARxEventDisable                 
+80053c38  I2CBufferStatus                      
+80053cbc  I2CActiveOwnAddressGet               
+80053d40  I2CClockBlockingControl              
+80053e0c  I2COwnAddressSet                     
+80053e84  I2CSoftReset                         
+80053ea8  I2CAutoIdleEnable                    
+80053ecc  I2CAutoIdleDisable                   
+80053ef0  I2CGlobalWakeUpEnable                
+80053f14  I2CGlobalWakeUpDisable               
+80053f38  I2CIdleModeSelect                    
+80053f78  I2CClockActivitySelect               
+80053fb8  I2CWakeUpEnable                      
+80054044  I2CWakeUpDisable                     
+800540d0  I2CSystemStatusGet                   
+800540ec  I2CMasterDataPut                     
+8005410c  I2CMasterDataGet                     
+8005412c  I2CContextSave                       
+80054180  I2CContextRestore                    
+80054254  HSMMCSDSoftReset                     
+800542bc  HSMMCSDLinesReset                    
+80054338  HSMMCSDSystemConfig                  
+8005437c  HSMMCSDBusWidthSet                   
+80054434  HSMMCSDBusVoltSet                    
+80054474  HSMMCSDBusPower                      
+800544f4  HSMMCSDIntClock                      
+8005454c  HSMMCSDIsIntClockStable              
+800545b0  HSMMCSDSupportedVoltSet              
+800545f0  HSMMCSDIsHSupported                  
+80054610  HSMMCSDDataTimeoutSet                
+80054650  HSMMCSDBusFreqSet                    
+8005478c  HSMMCSDInitStreamSend                
+800547f8  HSMMCSDIntrStatusEnable              
+80054824  HSMMCSDIntrStatusDisable             
+80054850  HSMMCSDIntrEnable                    
+80054884  HSMMCSDIntrStatusGet                 
+800548a8  HSMMCSDIntrStatusClear               
+800548c8  HSMMCSDIsCmdComplete                 
+80054928  HSMMCSDIsXferComplete                
+8005498c  HSMMCSDBlkLenSet                     
+800549cc  HSMMCSDCommandSend                   
+80054a60  HSMMCSDResponseGet                   
+80054abc  HSMMCSDDataGet                       
+80054b10  HSMMCSDIsCardInserted                
+80054b30  HSMMCSDIsCardWriteProtected          
+80054b50  MMCSDContextSave                     
+80054bc4  MMCSDContextRestore                  
+80054c44  MSC_BufferCopy                       
+80054cbc  MSC_LowercaseChar                    
+80054cf8  MSC_DelayUS                          
+80054d78  MSC_DelayNOP                         
+80054db0  MSC_Round                            
+80054de0  MSC_HEXtoBCD                         
+80054e94  MSC_BCDtoHEX                         
+80054f38  MSC_EndianShort                      
+80054f74  MSC_EndianShortArray                 
+80054fb8  MSC_EndianLong                       
+80055024  MSC_EndianLongArray                  
+800550b4  MSC_ReverseByte                      
+80055170  MISC_CRC_CRC16                       
+80055394  MISC_Calculate_CRC16                 
+80055504  DMTimer3ModuleClkConfig              
+80055690  DMTimer2ModuleClkConfig              
+8005581c  DMTimer4ModuleClkConfig              
+800559ac  DMTimer6ModuleClkConfig              
+80055a1c  DMTimer7ModuleClkConfig              
+80055ba8  DMTimer1msModuleClkConfig            
+80055c84  Init_FRAM                            
+80055d84  FRAM_LoadSettings                    
+80055da0  FRAM_SaveSettings                    
+80055dcc  FRAM_WriteEnable                     
+80055e08  FRAM_WriteDisable                    
+80055e44  FRAM_WriteStatusRegister             
+80055e88  FRAM_ReadStatusRegister              
+80055ec8  FRAM_WriteMemory                     
+80055fb4  FRAM_ReadMemory                      
+800560a0  FRAM_WriteRead                       
+80056194  FRAM_WriteProtect                    
+800561d0  FRAM_Hold                            
+8005620c  FRAM_CalculateCRC                    
+80056224  FRAM_LoadDefaultSettings             
+800562a0  FRAM_Test                            
+80056348  DMTimerEnable                        
+80056388  DMTimerDisable                       
+800563c8  DMTimerModeConfigure                 
+80056448  DMTimerPreScalerClkEnable            
+800564c8  DMTimerPreScalerClkDisable           
+80056508  DMTimerCounterSet                    
+80056544  DMTimerCounterGet                    
+80056578  DMTimerReloadSet                     
+800565b4  DMTimerReloadGet                     
+800565cc  DMTimerGPOConfigure                  
+8005664c  DMTimerCompareSet                    
+80056688  DMTimerCompareGet                    
+800566a0  DMTimerIntRawStatusSet               
+800566c4  DMTimerIntRawStatusGet               
+800566dc  DMTimerIntStatusGet                  
+800566f4  DMTimerIntStatusClear                
+80056718  DMTimerIntEnable                     
+8005673c  DMTimerIntDisable                    
+80056760  DMTimerTriggerSet                    
+80056798  DMTimerIntEnableGet                  
+800567b0  DMTimerResetConfigure                
+800567f4  DMTimerReset                         
+80056828  DMTimerContextSave                   
+800568a8  DMTimerContextRestore                
+80056988  DMTimerPostedModeConfig              
+800569cc  DMTimerWritePostedStatusGet          
+800569e4  GPIO_3A_ISR                          
+80056a20  UART_0_ISR                           
+80056bc0  TMR_2_ISR                            
+80056ca4  TMR_3_ISR                            
+80056cdc  RTC_ISR                              
+80056cf0  I2C_0_ISR                            
+80056e64  ADC_0_ISR                            
+80056ee4  SPI_1_ISR                            
+80056ee8  USB_0_ISR                            
+80056fc4  Init_SPI                             
+80056fd4  Init_SPI_Module1                     
+80057180  Init_SPI_Module0                     
+80057290  SPI_INTCConfigure1                   
+800572bc  SPI_WriteByte0                       
+80057318  SPI_WriteByte1                       
+80057374  SPI_ReadWriteByte0                   
+800573d0  SPI_ReadWriteByte1                   
+8005742c  SPI_WriteByteNoRx0                   
+80057460  SPI_WriteByteNoRx1                   
+800574d4  Init_Audio                           
+800574d8  AUD_PlayWAV                          
+800575a0  AUD_StopWAV                          
+800575cc  AUD_SetPlayingFlag                   
+800575dc  AUD_ClearPlayingFlag                 
+800575ec  AUD_GetPlayingFlag                   
+800575f8  AUD_TransferWAVToRAMG                
+8005785c  AUD_SetPlaybackFinishedFlag          
+8005786c  AUD_ClearPlaybackFinishedFlag        
+80057888  AUD_GetPlaybackFinishedFlag          
+80057894  AUD_SetTimoutFlag                    
+800578a4  AUD_ClearTimoutFlag                  
+800578b4  AUD_GetTimoutFlag                    
+800578c0  AUD_IsWAVPlaying                     
+800578d8  AUD_TestAudio                        
+80057934  AUD_AmpShutdown                      
+800579d8  Init_UART                            
+80057a28  UART_Module0ClkConfig                
+80057a70  UART_PrintChar                       
+80057a84  UART_PrintBuffer                     
+80057ad0  UART_PrintString                     
+80057b08  UART_FIFOConfigure                   
+80057b2c  UART_BaudRateSet                     
+80057b64  UART_LineCharacSet                   
+80057ba8  UART_Configure                       
+80057bf4  UART_InterruptConfigure0             
+80057c20  UART_AddToRXBuffer                   
+80057d50  UART_AddToTXBuffer                   
+80057dfc  UART_GetTXInterruptStatus            
+80057e78  Init_GPIO                            
+80058108  GPIO_Module0ClkConfig                
+80058170  GPIO_Module1ClkConfig                
+800581d8  GPIO_Module2ClkConfig                
+80058240  GPIO_Module3ClkConfig                
+80058310  CP15ICacheDisable                    
+8005832c  CP15DCacheDisable                    
+80058348  CP15ICacheEnable                     
+80058358  CP15DCacheEnable                     
+80058368  CP15DCacheFlush                      
+800583fc  CP15DCacheClean                      
+80058490  CP15DCacheCleanFlush                 
+80058524  CP15ICacheFlush                      
+80058534  CP15DCacheCleanBuff                  
+80058588  CP15DCacheCleanFlushBuff             
+800585dc  CP15DCacheFlushBuff                  
+80058640  CP15ICacheFlushBuff                  
+80058694  CP15Ttb0Set                          
+800586a0  CP15TlbInvalidate                    
+800586ac  CP15MMUDisable                       
+800586c4  CP15MMUEnable                        
+800586d8  CP15VectorBaseAddrSet                
+800586e4  CP15BranchPredictorInvalidate        
+800586f0  CP15BranchPredictionEnable           
+80058700  CP15BranchPredictionDisable          
+80058710  CP15DomainAccessClientSet            
+80058720  CP15ControlFeatureDisable            
+80058734  CP15ControlFeatureEnable             
+80058748  CP15TtbCtlTtb0Config                 
+80058758  CP15AuxControlFeatureEnable          
+8005876c  CP15AuxControlFeatureDisable         
+80058780  CP15MainIdPrimPartNumGet             
+80058798  I2CPinMuxSetup                       
+800587f4  I2C1ModuleClkConfig                  
+8005895c  I2C0ModuleClkConfig                  
+80058bb4  IntRegister                          
+80058bd8  IntUnRegister                        
+80058bf8  IntAINTCInit                         
+80058c68  IntPrioritySet                       
+80058ca0  IntSystemEnable                      
+80058cd4  IntSystemDisable                     
+80058d08  IntIfClkFreeRunSet                   
+80058d1c  IntIfClkAutoGateSet                  
+80058d30  IntActiveIrqNumGet                   
+80058d40  IntSpurIrqFlagGet                    
+80058d54  IntProtectionEnable                  
+80058d64  IntProtectionDisable                 
+80058d78  IntSyncClkFreeRunSet                 
+80058d8c  IntSyncClkAutoGateSet                
+80058da0  IntFuncClkFreeRunSet                 
+80058db4  IntFuncClkAutoGateSet                
+80058dc8  IntCurrIrqPriorityGet                
+80058dd8  IntPriorityThresholdGet              
+80058de8  IntPriorityThresholdSet              
+80058e08  IntRawStatusGet                      
+80058e48  IntSoftwareIntSet                    
+80058e78  IntSoftwareIntClear                  
+80058ea8  IntPendingIrqMaskedStatusGet         
+80058ee4  IntMasterIRQEnable                   
+80058ef0  IntMasterIRQDisable                  
+80058efc  IntMasterFIQEnable                   
+80058f08  IntMasterFIQDisable                  
+80058f14  IntMasterStatusGet                   
+80058f20  IntDisable                           
+80058f38  IntEnable                            
+80058f94  McSPIPinMuxSetup                     
+80059018  McSPI0CSPinMuxSetup                  
+80059084  McSPI0ModuleClkConfig                
+800591e0  McSPI1ModuleClkConfig                
+80059374  Init_RTC                             
+800593e4  RTC_InterruptConfigure               
+80059410  RTC_SetFlag                          
+80059420  RTC_ClearFlag                        
+80059430  RTC_GetFlag                          
+8005943c  RTC_SetTimeDate                      
+80059520  RTC_GetTimeDate                      
+800595fc  RTC_ModuleClkConfig                  
+800596b0  main                                 
+800599c4  Init_WAV                             
+80059a1c  WAV_CalculateHeader                  
+80059cac  TSCADCModuleClkConfig                
+80059eb4  TSCADCPinMuxSetUp                    
+80059f88  Init_USB                             
+80059f98  Init_USB0                            
+80059fbc  USB_GetMSCDevice_EMMC_or_SD          
+80059fc8  USB_SetMSCDevice_EMMC_or_SD          
+80059fe4  USB_InterruptConfigure0              
+8005a034  USB_InterruptEnable0                 
+8005a060  USB_DMSCEventCallback0               
+8005a0d4  USB_SetMSCState0                     
+8005a0f0  USB_GetMSCState0                     
+8005a0fc  USB_SetUSBStatus0                    
+8005a128  USB_GetUSBStatus0                    
+8005a134  USB_SetUSBStatusFlag0                
+8005a144  USB_ClearUSBStatusFlag0              
+8005a154  USB_GetUSBStatusFlag0                
+8005a160  USB_SetUSBMSCFlag0                   
+8005a170  USB_ClearUSBMSCFlag0                 
+8005a180  USB_GetUSBMSCFlag0                   
+8005a18c  USBDMSCEventCallback                 
+8005a260  Init_LED                             
+8005a26c  LED_Show                             
+8005a528  __aeabi_uldivmod                     
+8005a7e0  Init_ADC                             
+8005a994  ADC_ConfigureInterrupt               
+8005a9c0  ADC_ReadChannels                     
+8005aa3c  ADC_SetFinishedFlag                  
+8005aa4c  ADC_ClearFinishedFlag                
+8005aa5c  ADC_GetFinishedFlag                  
+8005aa7c  disk_initialize                      
+8005ab78  disk_status                          
+8005ab8c  disk_read                            
+8005ac08  disk_write                           
+8005ac84  disk_ioctl                           
+8005ad14  Init_I2C                             
+8005ad20  Init_I2C_Module0                     
+8005ad5c  I2C_InterruptConfigure0              
+8005ad88  I2C_SendReceiveData0                 
+8005af48  I2C_SetFailFlag0                     
+8005af58  I2C_ClearFailFlag0                   
+8005af68  I2C_GetFailFlag0                     
+8005afa4  RtcVersionGet                        
+8005afac  RTCModuleClkConfig                   
+8005b218  Init_Timers                          
+8005b228  Init_Timer2                          
+8005b2a0  Init_Timer3                          
+8005b30c  TMR_CalculateReload                  
+8005b360  TMR_InterruptConfigure2              
+8005b38c  TMR_InterruptConfigure3              
+8005b3b8  TMR_GetNewScreenTagTimerEnabled      
+8005b3c4  TMR_SetNewScreenTagTimerEnabled      
+8005b3fc  TMR_ResetNewScreenTagTimer           
+8005b40c  TMR_ResetAudioPlaybackTimer          
+8005b41c  TMR_ResetBacklightTimer              
+8005b42c  TMR_SetMISCTimerFlag                 
+8005b43c  TMR_ClearMISCTimerFlag               
+8005b44c  TMR_GetMISCTimerFlag                 
+8005b488  CPLDI2CRead                          
+8005b5e4  CPLDI2CSetup                         
+8005b648  EVMProfileGet                        
+8005b6a8  Init_Test                            
+8005b6f8  TEST_Setpoint1                       
+8005b734  TEST_Setpoint2                       
+8005b770  TEST_Setpoint3                       
+8005b7ac  TEST_Togglepoint1                    
+8005b7fc  TEST_Togglepoint2                    
+8005b84c  TEST_Togglepoint3                    
+8005b8ac  InitCMD                              
+8005b8bc  CMD_CheckMatch                       
+8005ba28  CMD_Help                             
+8005ba38  CMD_SetNewCommand                    
+8005ba48  CMD_ClearNewCommand                  
+8005ba58  CMD_GetNewCommand                    
+8005ba84  Init_EEPROM                          
+8005ba9c  EEPROM_ReadAddress                   
+8005baf8  EEPROM_WriteAddress                  
+8005bb60  EEPROM_ReadBuffer                    
+8005bbd8  EEPROM_WriteBuffer                   
+8005bc58  Init_PMIC                            
+8005bd78  PMIC_ReadRegister                    
+8005bdc8  PMIC_WriteRegister                   
+8005be28  _Dscale                              
+8005bfd0  GPIO1Pin23PinMuxSetup                
+8005bfe0  GPIO0ModuleClkConfig                 
+8005c098  GPIO1ModuleClkConfig                 
+8005c100  GPIO1PinMuxSetup                     
+8005c120  GpioPinMuxSetup                      
+8005c170  Init_Modules                         
+8005c2f4  __aeabi_memcpy                       
+8005c2f4  __aeabi_memcpy4                      
+8005c2f4  __aeabi_memcpy8                      
+8005c2f4  memcpy                               
+8005c474  _Dnorm                               
+8005c5d4  InternalUSBTickInit                  
+8005c648  InternalUSBRegisterTickHandler       
+8005c680  InternalUSBStartOfFrameTick          
+8005c718  Init_Power                           
+8005c724  PWR_ReadVoltages                     
+8005c854  __aeabi_idiv                         
+8005c854  __aeabi_idivmod                      
+8005c984  SVC_Handler                          
+8005c9ac  IRQHandler                           
+8005ca58  FIQHandler                           
+8005ca5c  AbortHandler                         
+8005ca5c  UndefInstHandler                     
+8005ca74  USB0DeviceIntHandler                 
+8005caec  USB1DeviceIntHandler                 
+8005cb6c  __aeabi_uidiv                        
+8005cb6c  __aeabi_uidivmod                     
+8005cc5c  SysDelayTimerSetup                   
+8005cc74  Sysdelay                             
+8005ccd4  SysStartTimer                        
+8005cd00  SysStopTimer                         
+8005cd10  SysIsTimerElapsed                    
+8005cd4c  MMU_ConfigAndEnable                  
+8005ce20  _Dunscale                            
+8005ced8  __aeabi_memclr                       
+8005ced8  __aeabi_memclr4                      
+8005ced8  __aeabi_memclr8                      
+8005cedc  __aeabi_memset                       
+8005cedc  __aeabi_memset4                      
+8005cedc  __aeabi_memset8                      
+8005cee8  memset                               
+8005cf88  sprintf                              
+8005d030  __TI_auto_init                       
+8005d0d4  HSMMCSDPinMuxSetup                   
+8005d12c  HSMMCSDModuleClkConfig               
+8005d174  atoi                                 
+8005d1f8  copy_in                              
+8005d27c  start_boot                           
+8005d300  ltoa                                 
+8005d380  ldexp                                
+8005d3e8  signal                               
+8005d44c  CPUSwitchToPrivilegedMode            
+8005d454  CPUSwitchToUserMode                  
+8005d468  CPUAbortHandler                      
+8005d46c  CPUirqd                              
+8005d47c  CPUirqe                              
+8005d48c  CPUfiqd                              
+8005d49c  CPUfiqe                              
+8005d4ac  feraiseexcept                        
+8005d504  DelayTimerSetup                      
+8005d510  delay                                
+8005d524  StartTimer                           
+8005d538  StopTimer                            
+8005d544  IsTimerElapsed                       
+8005d550  raise                                
+8005d59c  _Dclass                              
+8005d5e4  _Feraise                             
+8005d628  memcmp                               
+8005d65c  frexp                                
+8005d68c  memccpy                              
+8005d6b8  strchr                               
+8005d6e0  _register_unlock                     
+8005d6ec  _register_lock                       
+8005d6f8  _nop                                 
+8005d704  __aeabi_llsr                         
+8005d728  strlen                               
+8005d744  CPUIntStatus                         
+8005d750  __aeabi_idiv0                        
+80060000  EMMC_Buffer                          
+80060000  bss_start                            
+80064000  SD_Buffer                            
+8006c000  g_sMSCInstance                       
+8006c830  UART_RX_buffer                       
+8006d000  UART_TX_buffer                       
+8006d7d0  g_USBInstance                        
+8006e000  MISC_Buffer                          
+8006e3e8  I2C_0_Buffers                        
+8006e648  fat_devices                          
+8006e8e8  EEPROM_Contents                      
+8006e900  g_EMMC_FatFs                         
+8006eb40  g_SD_FatFs                           
+8006ef80  fnRAMVectors                         
+8006f180  g_psUSBDevice                        
+8006f228  Voltage                              
+8006f268  g_pucCommand                         
+8006f308  Command_String                       
+8006f314  g_pfTickHandlers                     
+8006f320  g_pvTickInstance                     
+8006f32c  CurrentTimeDate                      
+8006f38c  dummy                                
+8006f390  g_sDriveInformation                  
+8006f39c  p_CurrentScreen                      
+8006f3a0  p_CurrentWAVFile                     
+8006f3a4  p_PreviousScreen                     
+8006f3ac  CurrentScreen                        
+8006f3ad  PreviousPreviousScreen               
+8006f3ae  PreviousScreen                       
+8006f3b1  g_eMSCState                          
+8006f3b2  bss_end                              
+8006f3b8  WAV_PostComplete                     
+80073074  Screens                              
+80073624  _Errno                               
+80073628  _Denorm                              
+80073638  _Eps                                 
+80073648  _Hugeval                             
+80073658  _Inf                                 
+80073668  _Nan                                 
+80073678  _Snan                                
+80073688  _Rteps                               
+80073698  _Xbig                                
+800736a0  _Zero                                
+800736a8  WAV_Files                            
+8007370b  NumCommand                           
+8007370c  g_sMSCDeviceInfo                     
+80073754  intStatus                            
+80073758  g_bytesRead                          
+8007375c  g_bytesWritten                       
+8007376e  gDMAflag                             
+8007377c  g_psMSCSections                      
+80073786  RAM_CMD_Offset                       
+80073788  FT_DispWidth                         
+8007378a  FT_DispHeight                        
+8007378c  FT_DispHCycle                        
+8007378e  FT_DispHOffset                       
+80073790  FT_DispHSync0                        
+80073792  FT_DispHSync1                        
+80073794  FT_DispVCycle                        
+80073796  FT_DispVOffset                       
+80073798  FT_DispVSync0                        
+8007379a  FT_DispVSync1                        
+8007379c  FT_DispPCLK                          
+8007379e  FT_DispSwizzle                       
+800737a0  FT_DispPCLKPol                       
+800737a2  FT_DispCSpread                       
+800737a4  FT_DispDither                        
+800737a6  BackLightSetting                     
+800737a7  CurrentSystemSettings                
+800737cc  AudioBytesTransferred                
+800737d0  AUD_AudioTimeoutCount                
+800737d4  LastWritePointerAddress              
+800737dc  TMR_NewScreenTagTimer                
+800737e0  TMR_AudioPlaybackTimer               
+800737e4  TMR_BacklightTimer                   
+800737ea  DefaultTimeDate                      
+800737f4  UART_RX_place                        
+800737f8  UART_TX_add                          
+800737fc  UART_TX_remove                       
+80073803  USBChangeStatusFlag0                 
+80073804  USBMSCFlag0                          
+80073808  g_bufferIndex                        
+8007380c  g_bUSBTimerInitialized               
+80073810  g_ulCurrentUSBTick                   
+80073814  g_ulUSBSOFCount                      
+80073818  _lock                                
+8007381c  _unlock                              
+80073820  _Fenv                                
+80073824  _Tls_setup__Fenv                     
+90000000  USBDCDInit                           
+900002e4  USBDCDTerm                           
+90000400  USBDCDRequestDataEP0                 
+90000478  USBDCDSendDataEP0                    
+900004dc  USBDCDSetDefaultConfiguration        
+90000508  USBDCDStallEP0                       
+9000054c  USBDCDPowerStatusSet                 
+900005b4  USBDCDRemoteWakeupRequest            
+90000650  USBDeviceResumeTickHandler           
+90000874  USBDeviceEnumHandler                 
+90000aec  USBDeviceEnumResetHandler            
+90001fac  USBDeviceIntHandlerInternal          
+90002318  USBHostSuspend                       
+9000233c  USBHostReset                         
+90002388  USBHostResume                        
+900023d4  USBHostSpeedGet                      
+90002430  USBIntStatus                         
+900024e0  USBIntDisable                        
+9000259c  USBIntEnable                         
+90002658  USBIntDisableControl                 
+900026c4  USBIntEnableControl                  
+9000272c  USBIntStatusControl                  
+900027b0  USBIntDisableEndpoint                
+900027fc  USBIntEnableEndpoint                 
+90002848  USBIntStatusEndpoint                 
+9000287c  USBIntRegister                       
+900028a0  USBIntUnregister                     
+900028b0  USBEndpointStatus                    
+90002900  USBHostEndpointStatusClear           
+9000298c  USBDevEndpointStatusClear            
+90002a70  USBHostEndpointDataToggle            
+90002b78  USBEndpointDataToggleClear           
+90002be0  USBDevEndpointStall                  
+90002c70  USBDevEndpointStallClear             
+90002d40  USBDevConnect                        
+90002d64  USBDevDisconnect                     
+90002d88  USBDevAddrSet                        
+90002da8  USBDevAddrGet                        
+90002dc0  USBHostEndpointConfig                
+90003028  USBDevEndpointConfigSet              
+900031a8  USBDevEndpointConfigGet              
+90003358  USBFIFOConfigSet                     
+90003410  USBFIFOConfigGet                     
+900034c8  USBEndpointDMAEnable                 
+90003530  USBEndpointDMADisable                
+90003598  USBEndpointDataAvail                 
+90003604  USBEndpointDataGet                   
+90003710  USBDevEndpointDataAck                
+9000377c  USBHostEndpointDataAck               
+900037d8  USBEndpointDataPut                   
+90003888  USBEndpointDataSend                  
+90003900  USBFIFOFlush                         
+900039c4  USBHostRequestIN                     
+90003a10  USBHostRequestINClear                
+90003a64  USBHostAutoReqSet                    
+90003ab8  USBHostAutoReqClear                  
+90003b0c  USBRxChAbort                         
+90003c0c  USBDmaTxChDisable                    
+90003c64  USBDmaTxChTeardown                   
+90003cfc  USBHostTxFifoFlush                   
+90003de0  USBHostRequestStatus                 
+90003dfc  USBHostAddrSet                       
+90003e50  USBHostAddrGet                       
+90003e98  USBHostHubAddrSet                    
+90003eec  USBHostHubAddrGet                    
+90003f34  USBHostPwrConfig                     
+90003f80  USBHostPwrFaultEnable                
+90003fa4  USBHostPwrFaultDisable               
+90003fc8  USBHostPwrEnable                     
+90003fec  USBHostPwrDisable                    
+90004010  USBFrameNumberGet                    
+90004028  USBOTGSessionRequest                 
+90004074  USBFIFOAddrGet                       
+90004098  USBModeGet                           
+900040b4  USBEndpointDMAChannel                
+9000411c  USBEnableOtgIntr                     
+90004154  USBReset                             
+90004198  USBClearOtgIntr                      
+900041c4  USBDMSCMediaChange                   
+900047e0  USBDMSCInit                          
+90004814  USBDMSCCompositeInit                 
+90004b24  USBDMSCTerm                          
+900057c0  USBDSCSICommand                      
+90005c70  USBDeviceConfig                      
+90006110  USBDeviceConfigAlternate             
+9000645c  USBDCDConfigDescGetSize              
+900064c4  USBDCDConfigDescGetNum               
+90006550  USBDCDConfigDescGet                  
+90006650  USBDCDConfigGetNumAlternateInterfaces
+900066ec  USBDCDConfigGetInterface             
+90006744  USBDCDConfigGetInterfaceEndpoint     
+90006818  USBDescGetNum                        
+900068c4  USBDescGet                           
+9000698c  USBDescGetNumAlternateInterfaces     
+90006ae8  USBDescGetInterface                  
+90006b34  USBDescGetInterfaceEndpoint          
+90006b78  MMUInit                              
+90006bd8  MMUMemRegionMap                      
+90006cc8  MMUEnable                            
+90006ce4  CacheDisable                         
+90006d28  CacheEnable                          
+90006d74  CacheInstInvalidateAll               
+90006d80  CacheInstInvalidateBuff              
+90006d9c  CacheDataCleanInvalidateAll          
+90006da8  CacheDataCleanAll                    
+90006db4  CacheDataInvalidateAll               
+90006dc0  CacheDataCleanBuff                   
+90006ddc  CacheDataInvalidateBuff              
+90006df8  CacheDataCleanInvalidateBuff         
+90006e14  USBDMSCStorageOpen                   
+90006e34  USBDMSCStorageClose                  
+90006e50  USBDMSCStorageRead                   
+90006ebc  USBDMSCStorageWrite                  
+90006f14  USBDMSCStorageNumBlocks              
+90006f6c  USBVersionGet                        
+90006f74  USB0ModuleClkConfig                  
+90006fbc  USBEnableInt                         
+90006fe4  USBClearInt                          
+90006ff4  USBModuleClkEnable                   
+90007008  USBModuleClkDisable                  
+90007030  UsbPhyOn                             
+90007098  UsbPhyOff                            
+9ffff000  __stack                              
+9ffff200  __STACK_END                          
+ffffffff  __binit__                            
+ffffffff  __c_args__                           
+ffffffff  binit                                
+UNDEFED   SHT$$INIT_ARRAY$$Base                
+UNDEFED   SHT$$INIT_ARRAY$$Limit               
+UNDEFED   __TI_CINIT_Base                      
+UNDEFED   __TI_CINIT_Limit                     
+UNDEFED   __TI_Handler_Table_Base              
+UNDEFED   __TI_Handler_Table_Limit             
+
+[1117 symbols]

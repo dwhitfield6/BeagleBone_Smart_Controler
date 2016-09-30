@@ -32,8 +32,9 @@ typedef struct _fatDevice
 }fatDevice;
 
 
-#define DRIVE_NUM_MMCSD     0
-#define DRIVE_NUM_MAX      2
+#define DRIVE_NUM_SD     	0
+#define DRIVE_NUM_EMMC     	1
+#define DRIVE_NUM_MAX      	2
 
 
 fatDevice fat_devices[DRIVE_NUM_MAX];
@@ -54,24 +55,43 @@ disk_initialize(
         return STA_NODISK;
     }
     
-    if ((DRIVE_NUM_MMCSD == bValue) && (fat_devices[bValue].initDone != 1))
+    if ((DRIVE_NUM_SD == bValue) && (fat_devices[bValue].initDone != 1))
     {
     	/* SD Card init */
     	status = SD_CardInit();
 
         if (status == 0)
         {
-        	UART_PrintString("\r\nCard Init Failed \r\n");
+        	UART_PrintString("\r\nSD Card Init Failed \r\n");
             
             return STA_NOINIT;
         }
         else
         {
-        	UART_PrintString("\r\nCard Init Passed \r\n");
+        	UART_PrintString("\r\nSD Card Init Passed \r\n");
         }
 
 		fat_devices[bValue].initDone = 1;
     }
+
+    if ((DRIVE_NUM_EMMC == bValue) && (fat_devices[bValue].initDone != 1))
+	{
+		/* EMMC Card init */
+		status = EMMC_CardInit();
+
+		if (status == 0)
+		{
+			UART_PrintString("\r\nEMMC Card Init Failed \r\n");
+
+			return STA_NOINIT;
+		}
+		else
+		{
+			UART_PrintString("\r\nnEMMC Card Init Passed \r\n");
+		}
+
+		fat_devices[bValue].initDone = 1;
+	}
         
     return 0;
 }
@@ -100,19 +120,26 @@ DRESULT disk_read (
     DWORD sector,           /* Physical drive nmuber (0) */
     BYTE count)             /* Sector count (1..255) */
 {
-	if (drv == DRIVE_NUM_MMCSD)
+	if (drv == DRIVE_NUM_SD)
 	{
     	/* READ BLOCK */
 #ifdef USE_RAM_DISK
     RAM_disk_read(sector, buff, count);
     return RES_OK;
 #else
-    if (SD_ReadBlocks(SOC_MMCHS_0_REGS, sector, count, buff))
+    if (SD_ReadBlocks(sector, count, buff))
 	{
 		return RES_OK;
 	}
 #endif
     }
+	else if (drv == DRIVE_NUM_EMMC)
+	{
+		if (EMMC_ReadBlocks(sector, count, buff))
+		{
+			return RES_OK;
+		}
+	}
 
     return RES_ERROR;
 }
@@ -130,18 +157,25 @@ DRESULT disk_write (
     DWORD sector,           /* Start sector number (LBA) */
     BYTE count)             /* Sector count (1..255) */
 {
-	if (ucDrive == DRIVE_NUM_MMCSD)
+	if (ucDrive == DRIVE_NUM_SD)
 	{
     	/* WRITE BLOCK */
 #ifdef USE_RAM_DISK
     RAM_disk_write(sector, buff, count);
     return RES_OK;
 #else
-		if (SD_WriteBlocks(SOC_MMCHS_0_REGS, sector, count, (unsigned char*)buff))
+		if (SD_WriteBlocks(sector, count, (unsigned char*)buff))
 		{
 			return RES_OK;
 		}
 #endif
+	}
+	else if (ucDrive == DRIVE_NUM_EMMC)
+	{
+		if (EMMC_WriteBlocks(sector, count, (unsigned char*)buff))
+		{
+			return RES_OK;
+		}
 	}
 
     return RES_ERROR;

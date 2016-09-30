@@ -34,6 +34,11 @@
 #define USE_SD_CARD
 
 /******************************************************************************/
+/* EMMC module base address	                                                  */
+/******************************************************************************/
+#define SD_BASE_ADDRESS SOC_MMCHS_0_REGS
+
+/******************************************************************************/
 /* SD_BUFFER_SIZE
  *
  * This is the size of the SD card buffer in DDR.
@@ -97,7 +102,7 @@ extern FATFS g_SD_FatFs;
 /* Function Declarations                                                      */
 /******************************************************************************/
 void Init_SD(void);
-unsigned int SD_SetUpController(unsigned int baseAddr);
+unsigned int SD_SetUpController(void);
 unsigned char SD_IsCardInserted(void);
 unsigned long SD_GetFatTime(void);
 void SD_SetCardActionFlag(void);
@@ -109,12 +114,12 @@ void SD_SetInitialized(void);
 void SD_ClearInitialized(void);
 unsigned char SD_IsInitialized(void);
 unsigned int SD_CardInit(void);
-unsigned char SD_SendCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
-unsigned char SD_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
-void SD_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
-void SD_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length);
-unsigned int SD_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
-unsigned int SD_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr);
+unsigned char SD_SendCommand(unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
+unsigned char SD_SendAppCommand(unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_SD_RESPONSE type, unsigned int* response);
+void SD_ReceiveData(unsigned char* p_buffer, unsigned int length);
+void SD_TransmitData(unsigned char* p_buffer, unsigned int length);
+unsigned int SD_WriteBlocks(unsigned int block, unsigned int nblks, unsigned char *ptr);
+unsigned int SD_ReadBlocks(unsigned int block, unsigned int nblks, unsigned char *ptr);
 unsigned int SD_GetNumberBlocks(void);
 
 #endif

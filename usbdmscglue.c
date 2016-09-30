@@ -149,12 +149,12 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
 #else
     if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
 	{
-    	SD_ReadBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+    	SD_ReadBlocks(ulSector, ulNumBlocks, pucData);
     	ulNumBlocks *= 512;
 	}
 	else
 	{
-		EMMC_ReadBlocks(SOC_MMCHS_1_REGS, ulSector, ulNumBlocks, pucData);
+		EMMC_ReadBlocks(ulSector, ulNumBlocks, pucData);
 		ulNumBlocks *= 512;
 	}
 #endif
@@ -192,11 +192,11 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
 #else
     if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
 	{
-		SD_WriteBlocks(SOC_MMCHS_0_REGS, ulSector, ulNumBlocks, pucData);
+		SD_WriteBlocks(ulSector, ulNumBlocks, pucData);
 	}
 	else
 	{
-		EMMC_WriteBlocks(SOC_MMCHS_1_REGS, ulSector, ulNumBlocks, pucData);
+		EMMC_WriteBlocks(ulSector, ulNumBlocks, pucData);
 	}
 #endif
 

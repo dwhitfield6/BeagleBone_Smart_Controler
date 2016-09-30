@@ -105,7 +105,7 @@ void Init_EMMC(void)
 	EMMC_CardInit();
 
 	Result = f_mount(1, &g_EMMC_FatFs);
-	Result = f_open (&fileWrite, "Log5.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
+	Result = f_open (&fileWrite, "1:/Log7.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 	sprintf(FileDataBuffer, "This is a test.");
 	Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
 	Result = f_close (&fileWrite);
@@ -230,50 +230,50 @@ void EMMC_HardwareReset(unsigned char state)
  * Sets up the EMMC card controller
  *                                                                            */
 /******************************************************************************/
-unsigned int EMMC_SetUpController(unsigned int baseAddr)
+unsigned int EMMC_SetUpController(void)
 {
 	int status = 0;
 
 	/*Refer to the MMC Host and Bus configuration steps in TRM */
 	/* controller Reset */
-	status = HSMMCSDSoftReset(baseAddr);
+	status = HSMMCSDSoftReset(EMMC_BASE_ADDRESS);
 
 	if (status != 0)
 	{
-		UART_PrintString("HS MMC/SD Reset failed\n\r");
+		UART_PrintString("EMMC Reset failed\n\r");
 	}
 
 	/* Lines Reset */
-	HSMMCSDLinesReset(baseAddr, HS_MMCSD_ALL_RESET);
+	HSMMCSDLinesReset(EMMC_BASE_ADDRESS, HS_MMCSD_ALL_RESET);
 
 	/* Set supported voltage list */
-	HSMMCSDSupportedVoltSet(baseAddr, HS_MMCSD_SUPPORT_VOLT_1P8 |
+	HSMMCSDSupportedVoltSet(EMMC_BASE_ADDRESS, HS_MMCSD_SUPPORT_VOLT_1P8 |
 												HS_MMCSD_SUPPORT_VOLT_3P3);
 
-	HSMMCSDSystemConfig(baseAddr, HS_MMCSD_AUTOIDLE_ENABLE);
+	HSMMCSDSystemConfig(EMMC_BASE_ADDRESS, HS_MMCSD_AUTOIDLE_ENABLE);
 
 	/* Set the bus width */
-	HSMMCSDBusWidthSet(baseAddr, HS_MMCSD_BUS_WIDTH_1BIT );
+	HSMMCSDBusWidthSet(EMMC_BASE_ADDRESS, HS_MMCSD_BUS_WIDTH_1BIT );
 
 	/* Set the bus voltage */
-	HSMMCSDBusVoltSet(baseAddr, HS_MMCSD_BUS_VOLT_3P3);
+	HSMMCSDBusVoltSet(EMMC_BASE_ADDRESS, HS_MMCSD_BUS_VOLT_3P3);
 
 	/* Bus power on */
-	status = HSMMCSDBusPower(baseAddr, HS_MMCSD_BUS_POWER_ON);
+	status = HSMMCSDBusPower(EMMC_BASE_ADDRESS, HS_MMCSD_BUS_POWER_ON);
 
 	if (status != 0)
 	{
-		UART_PrintString("HS MMC/SD Power on failed\n\r");
+		UART_PrintString("EMMC Power on failed\n\r");
 	}
 
 	/* Set the initialization frequency */
-	status = HSMMCSDBusFreqSet(baseAddr, 96000000, 400000, 0);
+	status = HSMMCSDBusFreqSet(EMMC_BASE_ADDRESS, 96000000, 400000, 0);
 	if (status != 0)
 	{
-		UART_PrintString("HS MMC/SD Bus Frequency set failed\n\r");
+		UART_PrintString("EMMC Bus Frequency set failed\n\r");
 	}
 
-	status = HSMMCSDInitStreamSend(baseAddr);
+	status = HSMMCSDInitStreamSend(EMMC_BASE_ADDRESS);
 
 	status = (status == 0) ? 1 : 0;
 
@@ -295,10 +295,10 @@ unsigned int EMMC_CardInit(void)
 	if(!EMMC_IsInitialized())
 	{
 
-		EMMC_SetUpController(SOC_MMCHS_1_REGS);
+		EMMC_SetUpController();
 
 		/* CMD0 - reset card */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 0, 0, 0, 512, EMMC_RESPONSE_NONE, response);
+		status = EMMC_SendCommand(0, 0, 0, 512, EMMC_RESPONSE_NONE, response);
 
 		if (status == 0)
 		{
@@ -307,7 +307,7 @@ unsigned int EMMC_CardInit(void)
 
 		/* CMD1 - SEND_OP_COND */
 		RepeatOCR:
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 1, 0xC0FF8080, 0, 512, EMMC_RESPONSE_48BITS, response);
+		status = EMMC_SendCommand(1, 0xC0FF8080, 0, 512, EMMC_RESPONSE_48BITS, response);
 
 		if (status == 0)
 		{
@@ -323,7 +323,7 @@ unsigned int EMMC_CardInit(void)
 		HighCap = (OCR & SD_OCR_HIGH_CAPACITY) ? 1 : 0;
 
 		/* Send CMD2, to get the card identification register */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 2, 0, 0, 512, EMMC_RESPONSE_136BITS, response);
+		status = EMMC_SendCommand(2, 0, 0, 512, EMMC_RESPONSE_136BITS, response);
 
 		if (status == 0)
 		{
@@ -334,7 +334,7 @@ unsigned int EMMC_CardInit(void)
 
 		/* Send CMD3, to get the card relative address */
 		RCA = 0x1;
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 3, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
+		status = EMMC_SendCommand(3, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
 
 		if (status == 0)
 		{
@@ -342,7 +342,7 @@ unsigned int EMMC_CardInit(void)
 		}
 
 		/* Send CMD9, to get the card specific data */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 9, RCA << 16, 0, 512, EMMC_RESPONSE_136BITS, response);
+		status = EMMC_SendCommand(9, RCA << 16, 0, 512, EMMC_RESPONSE_136BITS, response);
 
 		memcpy(CSD, response, 16);
 
@@ -367,7 +367,7 @@ unsigned int EMMC_CardInit(void)
 		}
 
 		/* Select the card */
-		status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 7, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
+		status = EMMC_SendCommand(7, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
 
 		if (status == 0)
 		{
@@ -377,25 +377,25 @@ unsigned int EMMC_CardInit(void)
 		if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 		{
 			/* get EXT_CSD */
-			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 8, 0, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
+			status = EMMC_SendCommand(8, 0, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
 
 			if (status == 0)
 			{
 				return 0;
 			}
 
-			EMMC_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, 512);
+			EMMC_ReceiveData(EMMC_Buffer, 512);
 			memcpy(EXT_CSD, EMMC_Buffer, 512);
 		}
 
 		/* enable high speed mode */
-		if (EMMC_SendCommandSwitch(SOC_MMCHS_1_REGS, MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_HS_TIMING, 0x1))
+		if (EMMC_SendCommandSwitch(MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_HS_TIMING, 0x1))
 		{
-			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 50000000, 0);
+			status = HSMMCSDBusFreqSet(EMMC_BASE_ADDRESS, 96000000, 50000000, 0);
 		}
 		else
 		{
-			status = HSMMCSDBusFreqSet(SOC_MMCHS_1_REGS, 96000000, 25000000, 0);
+			status = HSMMCSDBusFreqSet(EMMC_BASE_ADDRESS, 96000000, 25000000, 0);
 		}
 
 		MSC_DelayNOP(10000);
@@ -403,9 +403,9 @@ unsigned int EMMC_CardInit(void)
 		/* set bus width to 8 */
 		if(BusWidth == 1)
 		{
-			if (EMMC_SendCommandSwitch(SOC_MMCHS_1_REGS, MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_BUS_WIDTH, EXT_CSD_BUS_WIDTH_8))
+			if (EMMC_SendCommandSwitch(MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_BUS_WIDTH, EXT_CSD_BUS_WIDTH_8))
 			{
-				HSMMCSDBusWidthSet(SOC_MMCHS_1_REGS, HS_MMCSD_BUS_WIDTH_8BIT);
+				HSMMCSDBusWidthSet(EMMC_BASE_ADDRESS, HS_MMCSD_BUS_WIDTH_8BIT);
 				BusWidth = 8;
 			}
 		}
@@ -415,7 +415,7 @@ unsigned int EMMC_CardInit(void)
 		/* set power to high power mode */
 		if(!EXT_CSD[EXT_CSD_POWER_CLASS])
 		{
-			if (EMMC_SendCommandSwitch(SOC_MMCHS_1_REGS, MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_POWER_CLASS, 8))
+			if (EMMC_SendCommandSwitch(MMC_SWITCH_MODE_WRITE_BYTE, EXT_CSD_POWER_CLASS, 8))
 			{
 				HighPower = 1;
 			}
@@ -426,21 +426,21 @@ unsigned int EMMC_CardInit(void)
 		if(((CSD[3] & (0xFL << 26)) >> 26) == 4)
 		{
 			/* get EXT_CSD */
-			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 8, 0, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
+			status = EMMC_SendCommand(8, 0, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
 
 			if (status == 0)
 			{
 				return 0;
 			}
 
-			EMMC_ReceiveData(SOC_MMCHS_1_REGS, EMMC_Buffer, 512);
+			EMMC_ReceiveData(EMMC_Buffer, 512);
 			memcpy(EXT_CSD, EMMC_Buffer, 512);
 		}
 
 		/* Set data block length to 512 (for byte addressing cards) */
 		if(!(HighCap))
 		{
-			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 16, 512, 0, 512, SD_RESPONSE_48BITS, response);
+			status = EMMC_SendCommand(16, 512, 0, 512, SD_RESPONSE_48BITS, response);
 
 			if (status == 0)
 			{
@@ -469,7 +469,7 @@ unsigned int EMMC_CardInit(void)
  * Sends a command to the EMMC card.
  *                                                                            */
 /******************************************************************************/
-unsigned char EMMC_SendCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response)
+unsigned char EMMC_SendCommand(unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response)
 {
 		unsigned int cmdType = HS_MMCSD_CMD_TYPE_NORMAL;
 	    unsigned int dataPresent;
@@ -516,42 +516,42 @@ unsigned char EMMC_SendCommand(unsigned int baseAddr, unsigned int command, unsi
 
 	    cmd = HS_MMCSD_CMD(command, cmdType, rspType, cmdDir);
 
-	    HSMMCSDIntrStatusDisable(baseAddr, MMCHS_ISE_BRR_SIGEN);
-	    HSMMCSDIntrStatusDisable(baseAddr, MMCHS_ISE_BWR_SIGEN);
+	    HSMMCSDIntrStatusDisable(EMMC_BASE_ADDRESS, MMCHS_ISE_BRR_SIGEN);
+	    HSMMCSDIntrStatusDisable(EMMC_BASE_ADDRESS, MMCHS_ISE_BWR_SIGEN);
 	    if (dataPresent)
 	    {
-	    	HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_BRR_SIGEN);
-	    	HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_BWR_SIGEN);
-	    	HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_TC_SIGEN);
-	    	HSMMCSDIntrStatusClear(baseAddr, MMCHS_ISE_TC_SIGEN);
-	        HSMMCSDDataTimeoutSet(baseAddr, HS_MMCSD_DATA_TIMEOUT(27));
+	    	HSMMCSDIntrStatusEnable(EMMC_BASE_ADDRESS, MMCHS_ISE_BRR_SIGEN);
+	    	HSMMCSDIntrStatusEnable(EMMC_BASE_ADDRESS, MMCHS_ISE_BWR_SIGEN);
+	    	HSMMCSDIntrStatusEnable(EMMC_BASE_ADDRESS, MMCHS_ISE_TC_SIGEN);
+	    	HSMMCSDIntrStatusClear(EMMC_BASE_ADDRESS, MMCHS_ISE_TC_SIGEN);
+	        HSMMCSDDataTimeoutSet(EMMC_BASE_ADDRESS, HS_MMCSD_DATA_TIMEOUT(27));
 	    }
 
 	    /* enable command event flags */
-	    HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_CTO_SIGEN);
-	    HSMMCSDIntrStatusEnable(baseAddr, MMCHS_ISE_CC_SIGEN);
+	    HSMMCSDIntrStatusEnable(EMMC_BASE_ADDRESS, MMCHS_ISE_CTO_SIGEN);
+	    HSMMCSDIntrStatusEnable(EMMC_BASE_ADDRESS, MMCHS_ISE_CC_SIGEN);
 
 	    /* clear timeout */
-	    HSMMCSDIntrStatusClear(baseAddr, MMCHS_STAT_CTO);
+	    HSMMCSDIntrStatusClear(EMMC_BASE_ADDRESS, MMCHS_STAT_CTO);
 
 	    /* clear command complete */
-	    HSMMCSDIntrStatusClear(baseAddr, MMCHS_STAT_CC);
+	    HSMMCSDIntrStatusClear(EMMC_BASE_ADDRESS, MMCHS_STAT_CC);
 
         /* set the block length */
-        HSMMCSDBlkLenSet(baseAddr, blocksize);
+        HSMMCSDBlkLenSet(EMMC_BASE_ADDRESS, blocksize);
 
-	    HSMMCSDCommandSend(baseAddr, cmd, argument, (void*)dataPresent, nblks, 0);
+	    HSMMCSDCommandSend(EMMC_BASE_ADDRESS, cmd, argument, (void*)dataPresent, nblks, 0);
 
-	    while((!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CTO)) && (!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CC)) && (!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CREM)));
+	    while((!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_CTO)) && (!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_CC)) && (!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_CREM)));
 
-	    if(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_CC)
+	    if(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_CC)
 	    {
 	    	status = 1;
 	    }
 
 	    if (status == 1)
 	    {
-	        HSMMCSDResponseGet(baseAddr, response);
+	        HSMMCSDResponseGet(EMMC_BASE_ADDRESS, response);
 	    }
 
 	    return status;
@@ -563,11 +563,11 @@ unsigned char EMMC_SendCommand(unsigned int baseAddr, unsigned int command, unsi
  * Sends an application specific command to the EMMC card.
  *                                                                            */
 /******************************************************************************/
-unsigned char EMMC_SendAppCommand(unsigned int baseAddr, unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response)
+unsigned char EMMC_SendAppCommand(unsigned int command, unsigned int argument, unsigned int nblks, unsigned int blocksize, ENUM_EMMC_RESPONSE type, unsigned int* response)
 {
-	if(EMMC_SendCommand(baseAddr, 55, RCA << 16, 0, blocksize, EMMC_RESPONSE_48BITS, response))
+	if(EMMC_SendCommand(55, RCA << 16, 0, blocksize, EMMC_RESPONSE_48BITS, response))
 	{
-		if(EMMC_SendCommand(baseAddr, command, argument, nblks, blocksize, type, response))
+		if(EMMC_SendCommand(command, argument, nblks, blocksize, type, response))
 		{
 			return TRUE;
 		}
@@ -583,10 +583,10 @@ unsigned char EMMC_SendAppCommand(unsigned int baseAddr, unsigned int command, u
  * len has to be less than 1024 bytes.
  *                                                                            */
 /******************************************************************************/
-void EMMC_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length)
+void EMMC_ReceiveData(unsigned char* p_buffer, unsigned int length)
 {
-	while(!(HWREG(baseAddr + MMCHS_PSTATE) & MMCHS_PSTATE_BRE));
-	HSMMCSDDataGet(baseAddr, p_buffer, length);
+	while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_PSTATE) & MMCHS_PSTATE_BRE));
+	HSMMCSDDataGet(EMMC_BASE_ADDRESS, p_buffer, length);
 }
 
 /******************************************************************************/
@@ -597,15 +597,15 @@ void EMMC_ReceiveData(unsigned int baseAddr, unsigned char* p_buffer, unsigned i
  * len has to be less than 1024 bytes.
  *                                                                            */
 /******************************************************************************/
-void EMMC_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned int length)
+void EMMC_TransmitData(unsigned char* p_buffer, unsigned int length)
 {
 	unsigned int i;
 
-	while(!(HWREG(baseAddr + MMCHS_PSTATE) & MMCHS_PSTATE_BWE));
+	while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_PSTATE) & MMCHS_PSTATE_BWE));
 
 	for (i = 0; i < length/4; i++)
 	{
-		 HWREG(baseAddr + MMCHS_DATA) = ((unsigned int*)p_buffer)[i];
+		 HWREG(EMMC_BASE_ADDRESS + MMCHS_DATA) = ((unsigned int*)p_buffer)[i];
 	}
 }
 
@@ -615,7 +615,7 @@ void EMMC_TransmitData(unsigned int baseAddr, unsigned char* p_buffer, unsigned 
  * Writes data to the EMMC card.
  *                                                                            */
 /******************************************************************************/
-unsigned int EMMC_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr)
+unsigned int EMMC_WriteBlocks(unsigned int block, unsigned int nblks, unsigned char *ptr)
 {
     unsigned int status = 0;
     unsigned int address;
@@ -637,18 +637,18 @@ unsigned int EMMC_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigne
     {
     	while(nblks)
 		{
-			status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 24, address, 1, 512, EMMC_RESPONSE_WRITE | EMMC_RESPONSE_DATA, response);
+			status = EMMC_SendCommand(24, address, 1, 512, EMMC_RESPONSE_WRITE | EMMC_RESPONSE_DATA, response);
 
 			if (status == 0)
 			{
 				return 0;
 			}
 
-			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BWR));
+			while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_BWR));
 
-			EMMC_TransmitData(SOC_MMCHS_1_REGS, ptr, 512);
+			EMMC_TransmitData(ptr, 512);
 
-			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+			while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_TC));
 
 			ptr+=512;
 			if (HighCap)
@@ -665,18 +665,18 @@ unsigned int EMMC_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigne
     }
     else
     {
-    	status = EMMC_SendCommand(SOC_MMCHS_1_REGS, 24, address, 1, 512, EMMC_RESPONSE_WRITE | EMMC_RESPONSE_DATA, response);
+    	status = EMMC_SendCommand(24, address, 1, 512, EMMC_RESPONSE_WRITE | EMMC_RESPONSE_DATA, response);
 
     	if (status == 0)
 		{
 			return 0;
 		}
 
-    	while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BWR));
+    	while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_BWR));
 
-    	EMMC_TransmitData(SOC_MMCHS_1_REGS, (unsigned char*) ptr, 512);
+    	EMMC_TransmitData((unsigned char*) ptr, 512);
 
-    	while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+    	while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_TC));
     }
 
     return 1;
@@ -688,7 +688,7 @@ unsigned int EMMC_WriteBlocks(unsigned int baseAddr, unsigned int block, unsigne
  * Reads data from the EMMC card.
  *                                                                            */
 /******************************************************************************/
-unsigned int EMMC_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned int nblks, unsigned char *ptr)
+unsigned int EMMC_ReadBlocks(unsigned int block, unsigned int nblks, unsigned char *ptr)
 {
     unsigned int status = 0;
     unsigned int address;
@@ -711,18 +711,18 @@ unsigned int EMMC_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned
     {
 		while(nblks)
 		{
-			status = EMMC_SendCommand(baseAddr, 17, address, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
+			status = EMMC_SendCommand(17, address, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
 
 			if (status == 0)
 			{
 				return 0;
 			}
 
-			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BRR));
+			while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_BRR));
 
-			EMMC_ReceiveData(baseAddr, ptr, 512);
+			EMMC_ReceiveData(ptr, 512);
 
-			while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+			while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_TC));
 
 			ptr+=512;
 			if (HighCap)
@@ -739,18 +739,18 @@ unsigned int EMMC_ReadBlocks(unsigned int baseAddr, unsigned int block, unsigned
     }
     else
     {
-		status = EMMC_SendCommand(baseAddr, 17, address, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
+		status = EMMC_SendCommand(17, address, 1, 512, EMMC_RESPONSE_READ | EMMC_RESPONSE_DATA, response);
 
 		if (status == 0)
 		{
 			return 0;
 		}
 
-		while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_BRR));
+		while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_BRR));
 
-		EMMC_ReceiveData(baseAddr, (unsigned char*) ptr, 512);
+		EMMC_ReceiveData((unsigned char*) ptr, 512);
 
-		while(!(HWREG(baseAddr + MMCHS_STAT) & MMCHS_STAT_TC));
+		while(!(HWREG(EMMC_BASE_ADDRESS + MMCHS_STAT) & MMCHS_STAT_TC));
     }
 
     return 1;
@@ -807,12 +807,12 @@ unsigned char EMMC_IsInitialized(void)
  * Sends the switch command.
  *                                                                            */
 /******************************************************************************/
-unsigned char EMMC_SendCommandSwitch(unsigned int baseAddr, unsigned int set, unsigned int index, unsigned int value)
+unsigned char EMMC_SendCommandSwitch(unsigned int set, unsigned int index, unsigned int value)
 {
 	unsigned int status;
 	unsigned char err;
 
-	err = EMMC_SendCommand(baseAddr, 6, (MMC_SWITCH_MODE_WRITE_BYTE << 24) | (index << 16) | (value << 8) | set, 1, 512, EMMC_RESPONSE_BUSY, response);
+	err = EMMC_SendCommand(6, (MMC_SWITCH_MODE_WRITE_BYTE << 24) | (index << 16) | (value << 8) | set, 1, 512, EMMC_RESPONSE_BUSY, response);
 
 	if (err == 0)
 	{
@@ -855,7 +855,7 @@ unsigned char EMMC_SendStatus(unsigned int* status)
 {
     unsigned char err;
 
-    err = EMMC_SendCommand(SOC_MMCHS_1_REGS, 13, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
+    err = EMMC_SendCommand(13, RCA << 16, 0, 512, EMMC_RESPONSE_48BITS, response);
 
     if (err == 0)
 	{
@@ -878,11 +878,11 @@ unsigned char EMMC_TestWrite(void)
 	unsigned char status;
 
 	memset(EMMC_Buffer, 0, 512);
-	status = EMMC_WriteBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
+	status = EMMC_WriteBlocks(0, 1, EMMC_Buffer);
 	if(status)
 	{
 		memset(EMMC_Buffer, 0, 512);
-		status = EMMC_ReadBlocks(SOC_MMCHS_1_REGS, 0, 1, EMMC_Buffer);
+		status = EMMC_ReadBlocks(0, 1, EMMC_Buffer);
 	}
 
 	if(status)
