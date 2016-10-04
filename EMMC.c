@@ -104,8 +104,8 @@ void Init_EMMC(void)
 
 	EMMC_CardInit();
 
-	Result = f_mount(1, &g_EMMC_FatFs);
-	Result = f_open (&fileWrite, "1:/Log7.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
+	Result = f_mount(2, &g_EMMC_FatFs);
+	Result = f_open (&fileWrite, "2:/Log11.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 	sprintf(FileDataBuffer, "This is a test.");
 	Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
 	Result = f_close (&fileWrite);

@@ -11,7 +11,7 @@
 /******************************************************************************/
 
 /******************************************************************************/
-/* Contains functions to set up the USB host/device.
+/* Contains functions to set up the USB device.
  *                                                                            */
 /******************************************************************************/
 
@@ -65,7 +65,7 @@ extern unsigned char *dataBuffer;
 /******************************************************************************/
 /* Function Declarations                                                      */
 /******************************************************************************/
-void Init_USB(void);
+void Init_USB_Device(void);
 void Init_USB0(void);
 ENUM_USB_MSC_DEVICE USB_GetMSCDevice_EMMC_or_SD(void);
 void USB_SetMSCDevice_EMMC_or_SD(ENUM_USB_MSC_DEVICE device);

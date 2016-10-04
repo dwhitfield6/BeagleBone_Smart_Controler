@@ -12,11 +12,17 @@
 #include "mmcsd_proto.h"
 #include "hs_mmcsdlib.h"
 #include "ff.h"
+#include "EMMC.h"
 #include "SD.h"
 #include "uartStdio.h"
+#include "usbhmsc.h"
 #include "UART.h"
 
 
+extern tUSBHMSCInstance g_USBHMSCDevice[];
+
+static volatile
+DSTATUS USBStat = STA_NOINIT;    /* Disk status */
 
 typedef struct _fatDevice
 {
@@ -31,10 +37,10 @@ typedef struct _fatDevice
 
 }fatDevice;
 
-
-#define DRIVE_NUM_SD     	0
-#define DRIVE_NUM_EMMC     	1
-#define DRIVE_NUM_MAX      	2
+#define DRIVE_NUM_USB     	0
+#define DRIVE_NUM_SD     	1
+#define DRIVE_NUM_EMMC     	2
+#define DRIVE_NUM_MAX      	3
 
 
 fatDevice fat_devices[DRIVE_NUM_MAX];
@@ -49,6 +55,7 @@ disk_initialize(
     BYTE bValue)                /* Physical drive number (0) */
 {
 	unsigned int status;
+    unsigned int ulMSCInstance;
    
     if (DRIVE_NUM_MAX <= bValue)
     {
@@ -92,7 +99,25 @@ disk_initialize(
 
 		fat_devices[bValue].initDone = 1;
 	}
-        
+
+    if (DRIVE_NUM_USB == bValue)
+	{
+    	ulMSCInstance = (unsigned int)&g_USBHMSCDevice[bValue];
+
+    	/* Set the not initialized flag again. If all goes well and the disk is */
+        /* present, this will be cleared at the end of the function.            */
+        USBStat |= STA_NOINIT;
+
+        /* Find out if drive is ready yet. */
+        if (USBHMSCDriveReady(ulMSCInstance))
+		{
+        	return(FR_NOT_READY);
+		}
+
+        /* Clear the not init flag. */
+        USBStat &= ~STA_NOINIT;
+	}
+
     return 0;
 }
 
@@ -105,6 +130,10 @@ disk_initialize(
 DSTATUS disk_status (
     BYTE drv)                   /* Physical drive number (0) */
 {
+	if(drv == DRIVE_NUM_USB)
+	{
+		return USBStat;
+	}
 	return 0;
 }
 
@@ -120,6 +149,8 @@ DRESULT disk_read (
     DWORD sector,           /* Physical drive nmuber (0) */
     BYTE count)             /* Sector count (1..255) */
 {
+	unsigned int ulMSCInstance;
+
 	if (drv == DRIVE_NUM_SD)
 	{
     	/* READ BLOCK */
@@ -136,6 +167,21 @@ DRESULT disk_read (
 	else if (drv == DRIVE_NUM_EMMC)
 	{
 		if (EMMC_ReadBlocks(sector, count, buff))
+		{
+			return RES_OK;
+		}
+	}
+	else if (drv == DRIVE_NUM_USB)
+	{
+		ulMSCInstance = (unsigned int)&g_USBHMSCDevice[drv];
+
+		if(USBStat & STA_NOINIT)
+		{
+			return(RES_NOTRDY);
+		}
+
+		/* READ BLOCK */
+		if (USBHMSCBlockRead(ulMSCInstance, sector, buff, count) == 0)
 		{
 			return RES_OK;
 		}
@@ -157,6 +203,8 @@ DRESULT disk_write (
     DWORD sector,           /* Start sector number (LBA) */
     BYTE count)             /* Sector count (1..255) */
 {
+	unsigned int ulMSCInstance;
+
 	if (ucDrive == DRIVE_NUM_SD)
 	{
     	/* WRITE BLOCK */
@@ -177,6 +225,29 @@ DRESULT disk_write (
 			return RES_OK;
 		}
 	}
+	else if (ucDrive == DRIVE_NUM_USB)
+	{
+		ulMSCInstance = (unsigned int)&g_USBHMSCDevice[ucDrive];
+
+		if (ucDrive || !count)
+		{
+			return RES_PARERR;
+		}
+		if (USBStat & STA_NOINIT)
+		{
+			return RES_NOTRDY;
+		}
+		if (USBStat & STA_PROTECT)
+		{
+			return RES_WRPRT;
+		}
+
+		/* WRITE BLOCK */
+		if(USBHMSCBlockWrite(ulMSCInstance, sector, (unsigned char *)buff, count) == 0)
+		{
+			return RES_OK;
+		}
+	}
 
     return RES_ERROR;
 }
@@ -191,6 +262,27 @@ DRESULT disk_ioctl (
     BYTE ctrl,              /* Control code */
     void *buff)             /* Buffer to send/receive control data */
 {
+	if (drv == DRIVE_NUM_USB)
+	{
+		if(USBStat & STA_NOINIT)
+		{
+			return(RES_NOTRDY);
+		}
+
+		switch(ctrl)
+		{
+			case CTRL_SYNC:
+			{
+				return(RES_OK);
+			}
+
+			default:
+			{
+				return(RES_PARERR);
+			}
+		}
+	}
+
 	return RES_OK;
 }
 

@@ -108,8 +108,8 @@ void Init_SD(void)
     if(SD_IsCardInserted())
 	{
 		SD_CardInit();
-		Result = f_mount(0, &g_SD_FatFs);
-		Result = f_open (&fileWrite, "0:/Log6.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
+		Result = f_mount(1, &g_SD_FatFs);
+		Result = f_open (&fileWrite, "1:/Log12.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 		sprintf(FileDataBuffer, "This is a test.");
 		Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
 		Result = f_close (&fileWrite);

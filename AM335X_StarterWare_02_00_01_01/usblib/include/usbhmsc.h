@@ -26,6 +26,8 @@
 #ifndef __USBHMSC_H__
 #define __USBHMSC_H__
 
+#include "usbhost.h"
+
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header

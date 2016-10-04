@@ -32,7 +32,6 @@
 /* Files to Include                                                           */
 /******************************************************************************/
 #include <string.h>
-#include <USB_MSC_DEVICE.h>
 #include "cache.h"
 #include "FT_Gpu.h"
 #include "hw_control_AM335x.h"
@@ -55,6 +54,8 @@
 #include "TEST.h"
 #include "TIMERS.h"
 #include "UART.h"
+#include "USB_MSC_DEVICE.h"
+#include "USB_MSC_HOST.h"
 
 /******************************************************************************/
 /* Defines                                                                    */
@@ -168,12 +169,14 @@ void main (void)
 			RTC_ClearFlag();
 		}
 
+		/* process a USB event */
 		if(USB_GetUSBStatusFlag0())
 		{
 			GUI_ScreenRefresh();
 			USB_ClearUSBStatusFlag0();
 		}
 
+		/* process an Audio event */
 		if(AUD_GetPlayingFlag())
 		{
 			/* audio playback is occuring */
@@ -205,6 +208,7 @@ void main (void)
 			}
 		}
 
+		/* process an SD card event */
 #ifdef USE_SD_CARD
 		/* check for SD card activity */
 		if(((SD_IsCardInserted()) && (SD_GetCardStatus() == CARD_NOTPRESENT)) || (!(SD_IsCardInserted()) && (SD_GetCardStatus() == CARD_PRESENT)))
@@ -234,6 +238,9 @@ void main (void)
 			SD_ClearCardActionFlag();
 		}
 #endif
+
+		/* process a USB host event */
+		USB_HOST_Process();
     }
 }
 

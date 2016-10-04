@@ -80,7 +80,7 @@ SECTIONS
 
 Cache_Code         /* Name the output section        */
     {
-       cppi41dma.obj(.text)
+       //cppi41dma.obj(.text)		// uncomment if DMA_MODE is defined
        usbdenum.obj(.text)
        usb_driver.obj (.text)
        usbdmsc.obj (.text)

@@ -32,6 +32,7 @@ C_SRCS += \
 ../TIMERS.c \
 ../UART.c \
 ../USB_MSC_DEVICE.c \
+../USB_MSC_HOST.c \
 ../WAV.c \
 ../main.c \
 ../ramdisk.c \
@@ -67,6 +68,7 @@ OBJS += \
 ./TIMERS.obj \
 ./UART.obj \
 ./USB_MSC_DEVICE.obj \
+./USB_MSC_HOST.obj \
 ./WAV.obj \
 ./main.obj \
 ./ramdisk.obj \
@@ -102,6 +104,7 @@ C_DEPS += \
 ./TIMERS.d \
 ./UART.d \
 ./USB_MSC_DEVICE.d \
+./USB_MSC_HOST.d \
 ./WAV.d \
 ./main.d \
 ./ramdisk.d \
@@ -137,6 +140,7 @@ C_DEPS__QUOTED += \
 "TIMERS.d" \
 "UART.d" \
 "USB_MSC_DEVICE.d" \
+"USB_MSC_HOST.d" \
 "WAV.d" \
 "main.d" \
 "ramdisk.d" \
@@ -172,6 +176,7 @@ OBJS__QUOTED += \
 "TIMERS.obj" \
 "UART.obj" \
 "USB_MSC_DEVICE.obj" \
+"USB_MSC_HOST.obj" \
 "WAV.obj" \
 "main.obj" \
 "ramdisk.obj" \
@@ -207,6 +212,7 @@ C_SRCS__QUOTED += \
 "../TIMERS.c" \
 "../UART.c" \
 "../USB_MSC_DEVICE.c" \
+"../USB_MSC_HOST.c" \
 "../WAV.c" \
 "../main.c" \
 "../ramdisk.c" \
