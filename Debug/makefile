@@ -283,7 +283,7 @@ all: BeagleBone_Smart_Controler.out
 BeagleBone_Smart_Controler.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(A_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7A8 --code_state=32 --float_support=VFPv3 --abi=eabi -me --opt_for_speed=0 -g --gcc --define=am335x --define=am335x_15x15 --diag_warning=225 --display_error_number --unaligned_access=on --enum_type=packed --opt_for_cache -z -m"BeagleBone_Smart_Controler.map" --stack_size=0x200 -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --warn_sections --xml_link_info="BeagleBone_Smart_Controler_linkInfo.xml" --ram_model -o "BeagleBone_Smart_Controler.out" $(ORDERED_OBJS) $(A_SRCS)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7A8 --code_state=32 --float_support=VFPv3 --abi=eabi -me -Ooff --opt_for_speed=0 -g --gcc --define=am335x --define=am335x_15x15 --diag_warning=225 --display_error_number --unaligned_access=on --enum_type=packed --opt_for_cache -z -m"BeagleBone_Smart_Controler.map" --stack_size=0x200 -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --warn_sections --xml_link_info="BeagleBone_Smart_Controler_linkInfo.xml" --ram_model -o "BeagleBone_Smart_Controler.out" $(ORDERED_OBJS) $(A_SRCS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build

@@ -60,7 +60,7 @@ static unsigned int BlockLength;
 static unsigned long long Size;
 static unsigned int NumberBlocks;
 static unsigned int BusWidth;
-static unsigned short BytesWritten;
+static unsigned int BytesWritten;
 static unsigned char HighPower = 0;
 static unsigned char EXT_CSD[512];
 static FRESULT Result;
@@ -69,7 +69,7 @@ static FRESULT Result;
 static FIL fileWrite;
 
 #pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
-static char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
+static char FileDataBuffer[EMMC_FILE_DATA_BUFFER_SIZE];
 
 /******************************************************************************/
 /* Global Variable                                                            */

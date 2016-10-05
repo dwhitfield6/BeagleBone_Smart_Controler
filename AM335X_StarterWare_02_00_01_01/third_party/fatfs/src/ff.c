@@ -896,12 +896,12 @@ FRESULT f_open (
 FRESULT f_read (
     FIL *fp,         /* Pointer to the file object */
     void *buff,        /* Pointer to data buffer */
-    WORD btr,        /* Number of bytes to read */
-    WORD *br        /* Pointer to number of bytes read */
+	DWORD btr,        /* Number of bytes to read */
+	DWORD *br        /* Pointer to number of bytes read */
 )
 {
     DWORD clust, sect, remain;
-    WORD rcnt;
+    DWORD rcnt;
     BYTE cc, *rbuff = buff;
     FRESULT res;
     FATFS *fs = fp->fs;
@@ -949,7 +949,7 @@ FRESULT f_read (
             if (disk_read(fs->drive, fp->buffer, sect, 1) != RES_OK)    /* Load the sector into file I/O buffer */
                 goto fr_error;
         }
-        rcnt = S_SIZ - ((WORD)fp->fptr & (S_SIZ - 1));                /* Copy fractional bytes from file I/O buffer */
+        rcnt = S_SIZ - ((DWORD)fp->fptr & (S_SIZ - 1));                /* Copy fractional bytes from file I/O buffer */
         if (rcnt > btr) rcnt = btr;
         memcpy(rbuff, &fp->buffer[fp->fptr & (S_SIZ - 1)], rcnt);
     }
@@ -972,12 +972,12 @@ fr_error:    /* Abort this file due to an unrecoverable error */
 FRESULT f_write (
     FIL *fp,            /* Pointer to the file object */
     const void *buff,    /* Pointer to the data to be written */
-    WORD btw,            /* Number of bytes to write */
-    WORD *bw            /* Pointer to number of bytes written */
+	DWORD btw,            /* Number of bytes to write */
+	DWORD *bw            /* Pointer to number of bytes written */
 )
 {
     DWORD clust, sect;
-    WORD wcnt;
+    DWORD wcnt;
     BYTE cc;
     FRESULT res;
     const BYTE *wbuff = buff;
@@ -1029,7 +1029,7 @@ FRESULT f_write (
                 disk_read(fs->drive, fp->buffer, sect, 1) != RES_OK)
                     goto fw_error;
         }
-        wcnt = S_SIZ - ((WORD)fp->fptr & (S_SIZ - 1));    /* Copy fractional bytes to file I/O buffer */
+        wcnt = S_SIZ - ((DWORD)fp->fptr & (S_SIZ - 1));    /* Copy fractional bytes to file I/O buffer */
         if (wcnt > btw) wcnt = btw;
         memcpy(&fp->buffer[fp->fptr & (S_SIZ - 1)], wbuff, wcnt);
         fp->flag |= FA__DIRTY;

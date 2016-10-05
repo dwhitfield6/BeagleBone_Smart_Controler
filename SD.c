@@ -67,14 +67,14 @@ static unsigned int NumberBlocks;
 static unsigned int SCR[2];
 static unsigned int SD_Version;
 static unsigned int BusWidth;
-static unsigned short BytesWritten;
+static unsigned int BytesWritten;
 static FRESULT Result;
 
 #pragma DATA_ALIGN(fileWrite, SOC_CACHELINE_SIZE);
 static FIL fileWrite;
 
 #pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
-static char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
+static char FileDataBuffer[SD_FILE_DATA_BUFFER_SIZE];
 
 /******************************************************************************/
 /* Global Variable                                                            */

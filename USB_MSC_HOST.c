@@ -49,7 +49,7 @@ DECLARE_EVENT_DRIVER(g_sUSBEventDriver, 0, 0, USBHCDEvents);
 /******************************************************************************/
 static char g_cCwdBuf[PATH_BUF_SIZE] = "/";
 static FRESULT Result;
-static unsigned short BytesWritten;
+static unsigned int BytesWritten;
 static tUSBHostClassDriver const * const g_ppHostClassDrivers[] =
 {
     &g_USBHostMSCClassDriver,
@@ -60,7 +60,7 @@ static tUSBHostClassDriver const * const g_ppHostClassDrivers[] =
 static FIL fileWrite;
 
 #pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
-static char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
+static char FileDataBuffer[USB_HOST_FILE_DATA_BUFFER_SIZE];
 
 #pragma DATA_ALIGN(g_sDirObject, SOC_CACHELINE_SIZE);
 static DIR g_sDirObject;
@@ -76,6 +76,8 @@ static FIL g_sFileObject;
 /******************************************************************************/
 unsigned int g_ulMSCInstance = 0;
 unsigned char g_pHCDPool[HCD_MEMORY_SIZE];
+volatile tState g_eState;
+volatile tState g_eUIState;
 
 #pragma DATA_ALIGN(g_USB_HOST_FatFs, SOC_CACHELINE_SIZE);
 FATFS g_USB_HOST_FatFs;
@@ -213,23 +215,12 @@ void MSCCallback(unsigned int ulInstance, unsigned int ulEvent, void *pvData)
     }
 }
 
-//*****************************************************************************
-//
-// This is the generic callback from host stack.
-//
-// \param pvData is actually a pointer to a tEventInfo structure.
-//
-// This function will be called to inform the application when a USB event has
-// occurred that is outside those related to the mass storage device.  At this
-// point this is used to detect unsupported devices being inserted and removed.
-// It is also used to inform the application when a power fault has occurred.
-// This function is required when the g_USBGenericEventDriver is included in
-// the host controller driver array that is passed in to the
-// USBHCDRegisterDrivers() function.
-//
-// \return None.
-//
-//*****************************************************************************
+/******************************************************************************/
+/* USBHCDEvents
+ *
+ * Generic callback from host stack
+ *                                                                            */
+/******************************************************************************/
 void USBHCDEvents(void *pvData)
 {
     tEventInfo *pEventInfo;
@@ -284,12 +275,12 @@ void USBHCDEvents(void *pvData)
     }
 }
 
-//*****************************************************************************
-//
-// This function reads a line of text from the console.  The USB host main
-// function is called throughout this process to keep USB alive and well.
-//
-//*****************************************************************************
+/******************************************************************************/
+/* USB_HOST_Process
+ *
+ * Process the USB Host events.
+ *                                                                            */
+/******************************************************************************/
 void USB_HOST_Process(void)
 {
 	tState eStateCopy;
@@ -411,5 +402,21 @@ void USB_HOST_Process(void)
     USBHCDMain(1, g_ulMSCInstance);
 }
 
+/******************************************************************************/
+/* USB_Host_Test
+ *
+ * Tests the speed at which files are created.
+ *                                                                            */
+/******************************************************************************/
+void USB_Host_Test(void)
+{
+	unsigned char filename[20];
+	static unsigned int i = 0;
+	sprintf(filename, "0:/Test%d.txt", i);
+	Result = f_open (&fileWrite, filename, FA_WRITE | FA_CREATE_ALWAYS | FA_OPEN_ALWAYS);
+	Result = f_write (&fileWrite, FileDataBuffer, sizeof(FileDataBuffer), &BytesWritten);
+	Result = f_close (&fileWrite);
+	i++;
+}
 
 /******************************* End of file *********************************/

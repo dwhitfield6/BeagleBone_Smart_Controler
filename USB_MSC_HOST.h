@@ -41,6 +41,14 @@
                                  sizeof(g_ppHostClassDrivers[0]))
 
 /******************************************************************************/
+/* USB_HOST_FILE_DATA_BUFFER_SIZE
+ *
+ * This is the size of the file buffer in DDR.
+ *                                                                            */
+/******************************************************************************/
+#define USB_HOST_FILE_DATA_BUFFER_SIZE	(1024 * 1024)
+
+/******************************************************************************/
 /* USB_HOST_DRIVE
  *
  * This is the drive number.                                                  */
@@ -86,13 +94,14 @@ typedef enum
     STATE_POWER_FAULT
 }
 tState;
-volatile tState g_eState;
-volatile tState g_eUIState;
+
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 extern FATFS g_USB_HOST_FatFs;
+extern volatile tState g_eState;
+extern volatile tState g_eUIState;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -102,6 +111,7 @@ void USB_InterruptConfigure1(void);
 void MSCCallback(unsigned int ulInstance, unsigned int ulEvent, void *pvData);
 void USBHCDEvents(void *pvData);
 void USB_HOST_Process(void);
+void USB_Host_Test(void);
 
 #endif /* _USB_MSC_HOST_H__ */
 /******************************* End of file *********************************/

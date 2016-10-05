@@ -244,6 +244,11 @@ void main (void)
 
 		/* process a USB host event */
 		USB_HOST_Process();
+		if(g_eState == STATE_DEVICE_READY)
+		{
+			USB_Host_Test();
+			TEST_Togglepoint3();
+		}
     }
 }
 

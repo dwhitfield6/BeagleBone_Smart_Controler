@@ -47,12 +47,12 @@
 #define SD_BUFFER_SIZE 				16384
 
 /******************************************************************************/
-/* FILE_DATA_BUFFER_SIZE
+/* SD_FILE_DATA_BUFFER_SIZE
  *
  * This is the size of the file buffer in DDR.
  *                                                                            */
 /******************************************************************************/
-#define FILE_DATA_BUFFER_SIZE 		1024
+#define SD_FILE_DATA_BUFFER_SIZE	1024
 
 /******************************************************************************/
 /* SD_CARD_SIZE

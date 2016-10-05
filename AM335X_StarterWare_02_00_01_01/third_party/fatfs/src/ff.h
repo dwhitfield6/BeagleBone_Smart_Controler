@@ -264,8 +264,8 @@ extern fatDevice fat_devices[DRIVE_NUM_MAX];
 /* FatFs module application interface                  */
 FRESULT f_mount (BYTE, FATFS*);                        /* Mount/Unmount a logical drive */
 FRESULT f_open (FIL*, const char*, BYTE);            /* Open or create a file */
-FRESULT f_read (FIL*, void*, WORD, WORD*);            /* Read data from a file */
-FRESULT f_write (FIL*, const void*, WORD, WORD*);    /* Write data to a file */
+FRESULT f_read (FIL*, void*, DWORD, DWORD*);            /* Read data from a file */
+FRESULT f_write (FIL*, const void*, DWORD, DWORD*);    /* Write data to a file */
 FRESULT f_lseek (FIL*, DWORD);                        /* Move file pointer of a file object */
 FRESULT f_close (FIL*);                                /* Close an open file object */
 FRESULT f_opendir (DIR*, const char*);                /* Open an existing directory */
