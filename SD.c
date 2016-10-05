@@ -96,6 +96,8 @@ FATFS g_SD_FatFs;
 /******************************************************************************/
 void Init_SD(void)
 {
+	fat_devices[DRIVE_NUM_SD].initDone = 0;
+
     /* Perform pin-mux for HSMMCSD pins. */
     HSMMCSDPinMuxSetup();
 
@@ -108,7 +110,7 @@ void Init_SD(void)
     if(SD_IsCardInserted())
 	{
 		SD_CardInit();
-		Result = f_mount(1, &g_SD_FatFs);
+		Result = f_mount(DRIVE_NUM_SD, &g_SD_FatFs);
 		Result = f_open (&fileWrite, "1:/Log12.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 		sprintf(FileDataBuffer, "This is a test.");
 		Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);

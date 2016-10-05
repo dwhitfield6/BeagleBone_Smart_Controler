@@ -18,8 +18,7 @@
  * Add IR decoding.
  * Add RF 315MHZ code.
  * Add BMP file creation from screen shot.
- * Fix USB MSC with DMA_MODE set. This increases the performance alot.
- * Fix EMMC.
+ * Dont do USB MSC device as SD card if one is no present.
  *                                                                            */
 /******************************************************************************/
 
@@ -225,13 +224,17 @@ void main (void)
 			{
 				SD_CardInit();
 #ifndef USE_RAM_DISK
-				Init_USB0();
+				if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
+				{
+					Init_USB0();
+				}
 #endif
 				SD_SetCardStatus(CARD_PRESENT);
 				GUI_ScreenRefresh();
 			}
 			else
 			{
+				fat_devices[DRIVE_NUM_SD].initDone = 0;
 				SD_SetCardStatus(CARD_NOTPRESENT);
 				GUI_ScreenRefresh();
 			}

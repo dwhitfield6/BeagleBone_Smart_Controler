@@ -26,10 +26,13 @@
 #include "mmcsd_proto.h"
 #include "usbhost.h"
 #include "usbhmsc.h"
+#include "usb.h"
 
 #include "INTERRUPTS.h"
+#include "MISC.h"
 #include "SD.h"
 #include "UART.h"
+#include "USB_MSC_DEVICE.h"
 #include "USB_MSC_HOST.h"
 
 /******************************************************************************/
@@ -45,6 +48,7 @@ DECLARE_EVENT_DRIVER(g_sUSBEventDriver, 0, 0, USBHCDEvents);
 /* Private Variable                                                           */
 /******************************************************************************/
 static char g_cCwdBuf[PATH_BUF_SIZE] = "/";
+static FRESULT Result;
 static unsigned short BytesWritten;
 static tUSBHostClassDriver const * const g_ppHostClassDrivers[] =
 {
@@ -57,17 +61,24 @@ static FIL fileWrite;
 
 #pragma DATA_ALIGN(FileDataBuffer, SOC_CACHELINE_SIZE);
 static char FileDataBuffer[FILE_DATA_BUFFER_SIZE];
-static FRESULT Result;
+
+#pragma DATA_ALIGN(g_sDirObject, SOC_CACHELINE_SIZE);
+static DIR g_sDirObject;
+
+#pragma DATA_ALIGN(g_sFileInfo, SOC_CACHELINE_SIZE);
+static FILINFO g_sFileInfo;
+
+#pragma DATA_ALIGN(g_sFileObject, SOC_CACHELINE_SIZE);
+static FIL g_sFileObject;
 
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
 unsigned int g_ulMSCInstance = 0;
 unsigned char g_pHCDPool[HCD_MEMORY_SIZE];
-static FATFS g_sFatFs;
-static DIR g_sDirObject;
-static FILINFO g_sFileInfo;
-static FIL g_sFileObject;
+
+#pragma DATA_ALIGN(g_USB_HOST_FatFs, SOC_CACHELINE_SIZE);
+FATFS g_USB_HOST_FatFs;
 
 /******************************************************************************/
 /* Function Declarations                                                      */
@@ -81,12 +92,20 @@ static FIL g_sFileObject;
 /******************************************************************************/
 void Init_USB_Host(void)
 {
+	unsigned int i;
 
 	//
 	// Initially wait for device connection.
 	//
 	g_eState = STATE_NO_DEVICE;
 	g_eUIState = STATE_NO_DEVICE;
+
+	fat_devices[DRIVE_NUM_USB].initDone = 0;
+
+	//
+	//USB module clock enable
+	//
+	USB0ModuleClkConfig();
 
 	USB_InterruptConfigure1();
 
@@ -98,7 +117,7 @@ void Init_USB_Host(void)
 	//
 	// Open an instance of the mass storage class driver.
 	//
-	g_ulMSCInstance = USBHMSCDriveOpen(1, 0, MSCCallback);
+	g_ulMSCInstance = USBHMSCDriveOpen(1, USB_HOST_DRIVE, MSCCallback);
 
 	//
 	// Initialize the power configuration.  This sets the power enable signal
@@ -114,7 +133,18 @@ void Init_USB_Host(void)
 	//
 	// Initialize the file system.
 	//
-	Result = f_mount(USB_HOST_DRIVE, &g_sFatFs);
+	Result = f_mount(USB_HOST_DRIVE, &g_USB_HOST_FatFs);
+
+	for(i=0;i<60;i++)
+	{
+		/* process a USB host event */
+		USB_HOST_Process();
+		if(g_eState == STATE_DEVICE_READY)
+		{
+			break;
+		}
+		MSC_DelayUS(50000);
+	}
 }
 
 /******************************************************************************/
@@ -129,7 +159,7 @@ void USB_InterruptConfigure1(void)
 	IntRegister(SYS_INT_USB1, USB1HostIntHandler);
 
 	/* Setting the priority for the system interrupt in AINTC. */
-	IntPrioritySet(SYS_INT_USB1, 0, AINTC_HOSTINT_ROUTE_IRQ);
+	IntPrioritySet(SYS_INT_USB1, USB_HOST_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
 	/* Enabling the system interrupt in AINTC. */
 	IntSystemEnable(SYS_INT_USB1);
@@ -171,6 +201,7 @@ void MSCCallback(unsigned int ulInstance, unsigned int ulEvent, void *pvData)
             // Go back to the "no device" state and wait for a new connection.
             //
             g_eState = STATE_NO_DEVICE;
+            fat_devices[DRIVE_NUM_USB].initDone = 0;
 
             break;
         }
@@ -288,7 +319,7 @@ void USB_HOST_Process(void)
 		// start up than others, and this may fail (even though the USB
 		// device has enumerated) if it is still initializing.
 		//
-		Result = f_mount(USB_HOST_DRIVE, &g_sFatFs);
+		Result = f_mount(USB_HOST_DRIVE, &g_USB_HOST_FatFs);
 		 if(f_opendir(&g_sDirObject, g_cCwdBuf) == FR_OK)
 		{
 			//
@@ -345,6 +376,11 @@ void USB_HOST_Process(void)
 				sprintf(FileDataBuffer, "This is a test.");
 				Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);
 				Result = f_close (&fileWrite);
+
+				if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_USB_HOST)
+				{
+					Init_USB0();
+				}
 				break;
 			}
 

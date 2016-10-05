@@ -49,7 +49,9 @@
 #include "usb_msc_structs.h"
 #include "ramdisk.h"
 #include "SD.h"
+#include "usbhmsc.h"
 #include "USB_MSC_DEVICE.h"
+#include "USB_MSC_HOST.h"
 
 #define SDCARD_PRESENT          0x00000001
 #define SDCARD_IN_USE           0x00000002
@@ -141,6 +143,8 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
                                  unsigned int ulSector,
                                  unsigned int ulNumBlocks)
 {
+	unsigned int ulMSCInstance;
+
     ASSERT(pvDrive != 0);
 
 #ifdef USE_RAM_DISK
@@ -152,10 +156,20 @@ unsigned int USBDMSCStorageRead(void * pvDrive,
     	SD_ReadBlocks(ulSector, ulNumBlocks, pucData);
     	ulNumBlocks *= 512;
 	}
-	else
+    else if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_EMMC)
 	{
 		EMMC_ReadBlocks(ulSector, ulNumBlocks, pucData);
 		ulNumBlocks *= 512;
+	}
+    else if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_USB_HOST)
+	{
+    	ulMSCInstance = (unsigned int)&g_USBHMSCDevice[0];
+
+		/* READ BLOCK */
+		if (USBHMSCBlockRead(ulMSCInstance, ulSector, pucData, ulNumBlocks) == 0)
+		{
+			ulNumBlocks *= 512;
+		}
 	}
 #endif
 
@@ -185,6 +199,8 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
                                   unsigned int ulSector,
                                   unsigned int ulNumBlocks)
 {
+	unsigned int ulMSCInstance;
+
     ASSERT(pvDrive != 0);
 
 #ifdef USE_RAM_DISK
@@ -193,14 +209,26 @@ unsigned int USBDMSCStorageWrite(void * pvDrive,
     if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_SD)
 	{
 		SD_WriteBlocks(ulSector, ulNumBlocks, pucData);
+		ulNumBlocks *= 512;
 	}
-	else
+    else if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_EMMC)
 	{
 		EMMC_WriteBlocks(ulSector, ulNumBlocks, pucData);
+		ulNumBlocks *= 512;
+	}
+	else if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_USB_HOST)
+	{
+		ulMSCInstance = (unsigned int)&g_USBHMSCDevice[0];
+
+		/* READ BLOCK */
+		if (USBHMSCBlockWrite(ulMSCInstance, ulSector, pucData, ulNumBlocks) == 0)
+		{
+			ulNumBlocks *= 512;
+		}
 	}
 #endif
 
-    return(ulNumBlocks * 512);
+    return(ulNumBlocks);
 }
 
 //*****************************************************************************
@@ -231,9 +259,16 @@ USBDMSCStorageNumBlocks(void * pvDrive)
     {
     	ulSectorCount = (g_SD_FatFs.sects_clust * (g_SD_FatFs.max_clust - 1));
     }
-    else
+    else if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_EMMC)
     {
     	ulSectorCount = EMMC_GetNumberBlocks();
+    }
+    else if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_USB_HOST)
+    {
+    	if(fat_devices[DRIVE_NUM_USB].initDone)
+    	{
+    		ulSectorCount = (g_USB_HOST_FatFs.sects_clust * (g_USB_HOST_FatFs.max_clust - 1));
+    	}
     }
 #endif
 

@@ -20,6 +20,7 @@
 /******************************************************************************/
 #include "beaglebone.h"
 #include "dmtimer.h"
+#include "delay.h"
 #include "gpio_v2.h"
 #include "interrupt.h"
 #include "soc_AM335x.h"
@@ -61,6 +62,7 @@ void Init_Timers(void)
 {
 	Init_Timer2();
 	Init_Timer3();
+	DelayTimerSetup();
 }
 
 /******************************************************************************/

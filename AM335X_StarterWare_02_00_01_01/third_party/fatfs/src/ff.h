@@ -159,6 +159,18 @@ typedef struct _FATFS {
     BYTE    win[S_MAX_SIZ];    /* Disk access window for Directory/FAT */
 }PACKED FATFS;
 
+typedef struct _fatDevice
+{
+    /* Pointer to underlying device/controller */
+    void *dev;
+
+    /* File system pointer */
+    FATFS *fs;
+
+	/* state */
+	unsigned int initDone;
+
+}fatDevice;
 
 /* Directory object structure */
 typedef struct _DIR {
@@ -246,7 +258,7 @@ typedef enum {
     FR_MKFS_ABORTED        /* 13 */
 }PACKED FRESULT;
 
-
+extern fatDevice fat_devices[DRIVE_NUM_MAX];
 
 /*-----------------------------------------------------*/
 /* FatFs module application interface                  */

@@ -139,6 +139,11 @@ void Init_Modules(void)
 	GUI_DrawHomeScreen();
 	TMR_ResetBacklightTimer();
 
+	if(USB_GetMSCDevice_EMMC_or_SD() == USB_MSC_EMMC)
+	{
+		Init_USB0();
+	}
+
 #ifdef USE_RAM_DISK
 	RAM_disk_initialize();
 	Init_USB0();

@@ -47,6 +47,7 @@ typedef enum e_msc_sd
 {
 	USB_MSC_SD,
 	USB_MSC_EMMC,
+	USB_MSC_USB_HOST,
 }ENUM_USB_MSC_DEVICE;
 
 typedef enum e_msc_status

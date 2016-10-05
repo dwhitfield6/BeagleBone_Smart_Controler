@@ -73,7 +73,7 @@ ENUM_MSC_STATES g_eMSCState;
 /******************************************************************************/
 void Init_USB_Device(void)
 {
-	USB_SetMSCDevice_EMMC_or_SD(USB_MSC_EMMC);
+	USB_SetMSCDevice_EMMC_or_SD(USB_MSC_USB_HOST);
 }
 
 /******************************************************************************/
@@ -87,17 +87,12 @@ void Init_USB0(void)
     //
     //USB module clock enable
     //
-    USB0ModuleClkConfig();
+    //USB0ModuleClkConfig(); // done in Init_USB_Host
 
     //
     //USB Interrupt enable
     //
     USB_InterruptConfigure0();
-
-    //
-    //Delay timer setup
-    //
-    DelayTimerSetup();
 
     CacheDataCleanInvalidateAll();
 
@@ -150,7 +145,7 @@ void USB_InterruptConfigure0(void)
 	IntRegister(SYS_INT_USB0, USB0DeviceIntHandler);
 
 	/* Setting the priority for the system interrupt in AINTC. */
-	IntPrioritySet(SYS_INT_USB0, USB_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
+	IntPrioritySet(SYS_INT_USB0, USB_DEVICE_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
 	/* Enabling the system interrupt in AINTC. */
 	IntSystemEnable(SYS_INT_USB0);
@@ -159,7 +154,7 @@ void USB_InterruptConfigure0(void)
     IntRegister(SYS_INT_USBSSINT, USB0DeviceIntHandler);
 
     /* Setting the priority for the system interrupt in AINTC. */
-    IntPrioritySet(SYS_INT_USBSSINT, USB_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
+    IntPrioritySet(SYS_INT_USBSSINT, USB_DEVICE_INTERRUPT_PRIORITY, AINTC_HOSTINT_ROUTE_IRQ);
 
     /* Enabling the system interrupt in AINTC. */
     IntSystemEnable(SYS_INT_USBSSINT);

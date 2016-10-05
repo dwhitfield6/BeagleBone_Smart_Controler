@@ -24,25 +24,6 @@ extern tUSBHMSCInstance g_USBHMSCDevice[];
 static volatile
 DSTATUS USBStat = STA_NOINIT;    /* Disk status */
 
-typedef struct _fatDevice
-{
-    /* Pointer to underlying device/controller */
-    void *dev;
-    
-    /* File system pointer */
-    FATFS *fs;
-
-	/* state */
-	unsigned int initDone;
-
-}fatDevice;
-
-#define DRIVE_NUM_USB     	0
-#define DRIVE_NUM_SD     	1
-#define DRIVE_NUM_EMMC     	2
-#define DRIVE_NUM_MAX      	3
-
-
 fatDevice fat_devices[DRIVE_NUM_MAX];
 
 
@@ -100,7 +81,7 @@ disk_initialize(
 		fat_devices[bValue].initDone = 1;
 	}
 
-    if (DRIVE_NUM_USB == bValue)
+    if ((DRIVE_NUM_USB == bValue) && (fat_devices[bValue].initDone != 1))
 	{
     	ulMSCInstance = (unsigned int)&g_USBHMSCDevice[bValue];
 
@@ -116,6 +97,8 @@ disk_initialize(
 
         /* Clear the not init flag. */
         USBStat &= ~STA_NOINIT;
+
+        fat_devices[bValue].initDone = 1;
 	}
 
     return 0;

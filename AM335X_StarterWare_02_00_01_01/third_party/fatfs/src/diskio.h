@@ -8,6 +8,10 @@
 
 #include "integer.h"
 
+#define DRIVE_NUM_USB     	0
+#define DRIVE_NUM_SD     	1
+#define DRIVE_NUM_EMMC     	2
+#define DRIVE_NUM_MAX      	3
 
 /* Status of Disk Functions */
 typedef BYTE	DSTATUS;
@@ -20,6 +24,7 @@ typedef enum {
 	RES_NOTRDY,		/* 3: Not Ready */
 	RES_PARERR		/* 4: Invalid Parameter */
 } DRESULT;
+
 
 
 /*---------------------------------------*/
@@ -57,7 +62,6 @@ DRESULT disk_ioctl (BYTE, BYTE, void*);
 #define ATA_GET_REV			20
 #define ATA_GET_MODEL		21
 #define ATA_GET_SN			22
-
 
 #define _DISKIO
 #endif

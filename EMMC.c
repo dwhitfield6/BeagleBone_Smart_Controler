@@ -91,6 +91,8 @@ FATFS g_EMMC_FatFs;
 /******************************************************************************/
 void Init_EMMC(void)
 {
+	fat_devices[DRIVE_NUM_EMMC].initDone = 0;
+
 	/* set up the pins */
 	EMMC_PinMuxSetup();
 
@@ -104,7 +106,7 @@ void Init_EMMC(void)
 
 	EMMC_CardInit();
 
-	Result = f_mount(2, &g_EMMC_FatFs);
+	Result = f_mount(DRIVE_NUM_EMMC, &g_EMMC_FatFs);
 	Result = f_open (&fileWrite, "2:/Log11.txt", FA_WRITE | FA_CREATE_NEW | FA_OPEN_ALWAYS);
 	sprintf(FileDataBuffer, "This is a test.");
 	Result = f_write (&fileWrite, FileDataBuffer, strlen(FileDataBuffer), &BytesWritten);

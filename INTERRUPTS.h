@@ -41,7 +41,8 @@
 #define TIMER_2_INTERRUPT_PRIORITY			1
 #define TIMER_3_INTERRUPT_PRIORITY 			0
 #define UART_INTERRUPT_PRIORITY 			9
-#define USB_INTERRUPT_PRIORITY 				3
+#define USB_DEVICE_INTERRUPT_PRIORITY 		3
+#define USB_HOST_INTERRUPT_PRIORITY 		2
 
 /******************************************************************************/
 /* Global Variable                                                            */
