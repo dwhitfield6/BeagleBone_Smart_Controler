@@ -65,12 +65,6 @@ static char FileDataBuffer[USB_HOST_FILE_DATA_BUFFER_SIZE];
 #pragma DATA_ALIGN(g_sDirObject, SOC_CACHELINE_SIZE);
 static DIR g_sDirObject;
 
-#pragma DATA_ALIGN(g_sFileInfo, SOC_CACHELINE_SIZE);
-static FILINFO g_sFileInfo;
-
-#pragma DATA_ALIGN(g_sFileObject, SOC_CACHELINE_SIZE);
-static FIL g_sFileObject;
-
 /******************************************************************************/
 /* Global Variable                                                            */
 /******************************************************************************/
@@ -137,15 +131,18 @@ void Init_USB_Host(void)
 	//
 	Result = f_mount(USB_HOST_DRIVE, &g_USB_HOST_FatFs);
 
-	for(i=0;i<60;i++)
+	if(Result == FR_OK)
 	{
-		/* process a USB host event */
-		USB_HOST_Process();
-		if(g_eState == STATE_DEVICE_READY)
+		for(i=0;i<60;i++)
 		{
-			break;
+			/* process a USB host event */
+			USB_HOST_Process();
+			if(g_eState == STATE_DEVICE_READY)
+			{
+				break;
+			}
+			MSC_DelayUS(50000);
 		}
-		MSC_DelayUS(50000);
 	}
 }
 
@@ -410,10 +407,10 @@ void USB_HOST_Process(void)
 /******************************************************************************/
 void USB_Host_Test(void)
 {
-	unsigned char filename[20];
+	char filename[20];
 	static unsigned int i = 0;
 	sprintf(filename, "0:/Test%d.txt", i);
-	Result = f_open (&fileWrite, filename, FA_WRITE | FA_CREATE_ALWAYS | FA_OPEN_ALWAYS);
+	Result = f_open (&fileWrite, (const char*)filename, FA_WRITE | FA_CREATE_ALWAYS | FA_OPEN_ALWAYS);
 	Result = f_write (&fileWrite, FileDataBuffer, sizeof(FileDataBuffer), &BytesWritten);
 	Result = f_close (&fileWrite);
 	i++;

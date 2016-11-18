@@ -28,11 +28,11 @@
 /******************************************************************************/
 /* Definitions related to MMU Configuration. */
 #define START_ADDR_DDR                     (0x80000000)
-#define START_ADDR_DDR_CACHE               (0x90000000)
+#define START_ADDR_DDR_CACHE               (0x80200000)
 #define START_ADDR_DEV                     (0x44000000)
 #define START_ADDR_OCMC                    (0x40300000)
-#define NUM_SECTIONS_DDR                   (256)
-#define NUM_SECTIONS_DDR_CACHE             (256)
+#define NUM_SECTIONS_DDR                   (2)
+#define NUM_SECTIONS_DDR_CACHE             (510)
 #define NUM_SECTIONS_DEV                   (960)
 #define NUM_SECTIONS_OCMC                  (1)
 

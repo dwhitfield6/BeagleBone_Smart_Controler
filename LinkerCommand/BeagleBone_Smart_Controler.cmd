@@ -66,8 +66,8 @@
 
 MEMORY
 {
-        DDR_MEM        : org = 0x80000000  len = 0x10000000          /* DDR */
-        DDR_MEM_CACHE  : org = 0x90000000  len = 0x10000000          /* DDR with Cache*/
+        DDR_MEM        : org = 0x80000000  len = 0x00200000         /* DDR */
+        DDR_MEM_CACHE  : org = 0x80200000  len = 0x1FDFFFFF         /* DDR with Cache*/
         SRAM_MEM       : org = 0x402F0400  len = 0xFBFF           	/* SRAM */
         L3_SRAM_MEM    : org = 0x40300000  len = 0xFFFF           	/* L3_SRAM */
 }
@@ -102,5 +102,5 @@ Cache_Code         /* Name the output section        */
                     RUN_END(bss_end)
 
     .const   : load > DDR_MEM              	/* GLOBAL CONSTANTS              */
-    .stack   : load > 0x9FFFF000           	/* SOFTWARE SYSTEM STACK         */
+    .stack   : load > DDR_MEM
 }

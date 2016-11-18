@@ -270,10 +270,10 @@ EXE_OUTPUTS__QUOTED += \
 "BeagleBone_Smart_Controler.out" \
 
 BIN_OUTPUTS += \
-BeagleBone_Smart_Controler.hex \
+C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Debug/BeagleBone_Smart_Controler.bin \
 
 BIN_OUTPUTS__QUOTED += \
-"BeagleBone_Smart_Controler.hex" \
+"C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug\BeagleBone_Smart_Controler.bin" \
 
 
 # All Target
@@ -288,9 +288,9 @@ BeagleBone_Smart_Controler.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(A_SRCS) $(GEN_
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
 
-BeagleBone_Smart_Controler.hex: $(EXE_OUTPUTS)
+C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Debug/BeagleBone_Smart_Controler.bin: $(EXE_OUTPUTS)
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armhex"  -o "BeagleBone_Smart_Controler.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armhex"  -o "C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Debug/BeagleBone_Smart_Controler.bin" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -313,6 +313,8 @@ clean:
 	-@echo ' '
 
 post-build:
+	-"C:/ti/ccsv6/utils/tiobj2bin/tiobj2bin.bat"  "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler.out"  "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler.bin"  "C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armofd.exe"  "C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armhex.exe"  "C:/ti/ccsv6/utils/tiobj2bin/mkhex4bin.exe" & "C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/ti_image/tiimage.exe" "0x80000000" "NONE" "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler.bin" "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler_ti.bin"
+	-"C:/ti/ccsv6/utils/tiobj2bin/tiobj2bin.bat"  "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler.out"  "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler.bin"  "C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armofd.exe"  "C:/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armhex.exe"  "C:/ti/ccsv6/utils/tiobj2bin/mkhex4bin.exe" & "C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/AM335X_StarterWare_02_00_01_01/ti_image/tiimage.exe" "0x80000000" "NONE" "C:\Users\dwhitfield\Documents\GitHub\BeagleBone_Smart_Controler\Debug/BeagleBone_Smart_Controler.bin" "C:/Users/dwhitfield/Documents/GitHub/BeagleBone_Smart_Controler/Build_Image/Beaglebone/app"
 	-@echo ' '
 
 .PHONY: all clean dependents

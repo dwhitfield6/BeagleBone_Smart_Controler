@@ -55,7 +55,6 @@ static ENUM_USB_MSC_DEVICE Current_USB_Device = USB_MSC_SD;
 /******************************************************************************/
 unsigned char *dataBuffer;
 static unsigned int g_ulFlags;
-static unsigned int g_ulIdleTimeout;
 unsigned char USBChangeStatusFlag0 = FALSE;
 unsigned char USBMSCFlag0 = FALSE;
 unsigned int g_bufferIndex = 0;
@@ -347,11 +346,6 @@ unsigned int
 USBDMSCEventCallback(void *pvCBData, unsigned int ulEvent,
                      unsigned int ulMsgParam, void *pvMsgData)
 {
-    //
-    // Reset the time out every time an event occurs.
-    //
-    g_ulIdleTimeout = USBMSC_ACTIVITY_TIMEOUT;
-
     switch(ulEvent)
     {
         //
