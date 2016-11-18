@@ -72,7 +72,7 @@ ENUM_MSC_STATES g_eMSCState;
 /******************************************************************************/
 void Init_USB_Device(void)
 {
-	USB_SetMSCDevice_EMMC_or_SD(USB_MSC_USB_HOST);
+	USB_SetMSCDevice_EMMC_or_SD(USB_MSC_EMMC);
 }
 
 /******************************************************************************/
