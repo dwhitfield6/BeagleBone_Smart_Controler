@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v5.2.5                      
 ******************************************************************************
->> Linked Fri Nov 18 09:55:16 2016
+>> Linked Fri Nov 18 10:30:42 2016
 
 OUTPUT FILE NAME:   <BeagleBone_Smart_Controler.out>
 ENTRY POINT SYMBOL: "Entry"  address: 80000000
@@ -13,8 +13,8 @@ MEMORY CONFIGURATION
 ----------------------  --------  ---------  --------  --------  ----  --------
   SRAM_MEM              402f0400   0000fbff  00000000  0000fbff  RWIX
   L3_SRAM_MEM           40300000   0000ffff  00000000  0000ffff  RWIX
-  DDR_MEM               80000000   00200000  0017835e  00087ca2  RWIX
-  DDR_MEM_CACHE         80200000   1fdfffff  000071fc  1fdf8e03  RWIX
+  DDR_MEM               80000000   00200000  0017815e  00087ea2  RWIX
+  DDR_MEM_CACHE         80200000   1fdfffff  000073fc  1fdf8c03  RWIX
 
 
 SEGMENT ALLOCATION MAP
@@ -23,8 +23,6 @@ run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
 80000000    80000000    000000c8   000000c8    r-x
   80000000    80000000    000000c8   000000c8    r-x .text:Entry
-800000c8    800000c8    00000200   00000000    rw-
-  800000c8    800000c8    00000200   00000000    rw- .stack
 80004000    80004000    00110405   00000000    rw-
   80004000    80004000    00110405   00000000    rw- .bss
 80114408    80114408    0006377c   0006377c    r-x
@@ -34,6 +32,8 @@ run origin  load origin   length   init length attrs members
   80177b88    80177b88    00004515   00004515    rw- .data
 80200000    80200000    000071fc   000071fc    r-x
   80200000    80200000    000071fc   000071fc    r-x Cache_Code
+9ffff000    9ffff000    00000200   00000000    rw-
+  9ffff000    9ffff000    00000200   00000000    rw- .stack
 
 
 SECTION ALLOCATION MAP
@@ -44,9 +44,6 @@ section   page    origin      length       input sections
 .text:Entry 
 *          0    80000000    000000c8     
                   80000000    000000c8     init.obj (.text:Entry)
-
-.stack     0    800000c8    00000200     UNINITIALIZED
-                  800000c8    00000200     --HOLE--
 
 .bss       0    80004000    00110405     UNINITIALIZED
                   80004000    00100000     USB_MSC_HOST.obj (.bss:FileDataBuffer)
@@ -348,6 +345,9 @@ Cache_Code
                   80206e14    0000025c     usbdmscglue.obj (.text)
                   80207070    000000c4     usb.obj (.text)
                   80207134    000000c8     usbphyGS70.obj (.text)
+
+.stack     0    9ffff000    00000200     UNINITIALIZED
+                  9ffff000    00000200     --HOLE--
 
 
 FAR CALL TRAMPOLINES
@@ -1555,7 +1555,7 @@ UNDEFED   SHT$$INIT_ARRAY$$Limit
 8017c07c  _Tls_setup__Fenv                     
 8017be68  _Xbig                                
 8017be70  _Zero                                
-800002c8  __STACK_END                          
+9ffff200  __STACK_END                          
 00000200  __STACK_SIZE                         
 UNDEFED   __TI_CINIT_Base                      
 UNDEFED   __TI_CINIT_Limit                     
@@ -1582,7 +1582,7 @@ UNDEFED   __TI_Handler_Table_Limit
 80174a60  __aeabi_uldivmod                     
 ffffffff  __binit__                            
 ffffffff  __c_args__                           
-800000c8  __stack                              
+9ffff000  __stack                              
 80156bc8  _ctypes_                             
 8017c070  _lock                                
 801779c0  _nop                                 
@@ -1691,8 +1691,6 @@ address   name
 00000200  __STACK_SIZE                         
 80000000  Entry                                
 80000000  __TI_static_base__                   
-800000c8  __stack                              
-800002c8  __STACK_END                          
 80004000  bss_start                            
 80104000  EMMC_Buffer                          
 80108000  SD_Buffer                            
@@ -2856,6 +2854,8 @@ address   name
 8020710c  USBModuleClkDisable                  
 80207134  UsbPhyOn                             
 8020719c  UsbPhyOff                            
+9ffff000  __stack                              
+9ffff200  __STACK_END                          
 ffffffff  __binit__                            
 ffffffff  __c_args__                           
 ffffffff  binit                                

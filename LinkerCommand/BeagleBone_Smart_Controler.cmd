@@ -102,5 +102,5 @@ Cache_Code         /* Name the output section        */
                     RUN_END(bss_end)
 
     .const   : load > DDR_MEM              	/* GLOBAL CONSTANTS              */
-    .stack   : load > DDR_MEM
+    .stack   : load > 0x9FFFF000
 }
