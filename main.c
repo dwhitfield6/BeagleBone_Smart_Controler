@@ -78,8 +78,8 @@ void main (void)
     /* Configure and enable the MMU. */
 	MMU_ConfigAndEnable();
 
-    /* Enable all levels of Cache. */
-    CacheEnable(CACHE_ALL);
+    /* Enable instruction Cache. */
+    CacheEnable(CACHE_ICACHE);
 
     /* Initiate modules */
     Init_Modules();

@@ -88,14 +88,16 @@ void Init_USB0(void)
     //
     //USB0ModuleClkConfig(); // done in Init_USB_Host
 
+#ifdef DMA_MODE
+    CacheDataCleanInvalidateAll();
+#endif
+
+    USBDMSCInit(0, (tUSBDMSCDevice *)&g_sMSCDevice);
+
     //
     //USB Interrupt enable
     //
     USB_InterruptConfigure0();
-
-    CacheDataCleanInvalidateAll();
-
-    USBDMSCInit(0, (tUSBDMSCDevice *)&g_sMSCDevice);
 
 #ifdef DMA_MODE
     Cppi41DmaInit(USB_INSTANCE, epInfo, NUMBER_OF_ENDPOINTS);

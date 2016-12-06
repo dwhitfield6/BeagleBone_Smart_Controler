@@ -81,8 +81,8 @@ void MMU_ConfigAndEnable(void)
     */
     REGION regionOcmc = {
                          MMU_PGTYPE_SECTION, START_ADDR_OCMC, NUM_SECTIONS_OCMC,
-						 MMU_MEMTYPE_NORMAL_NON_SHAREABLE(MMU_NON_CACHEABLE,
-                        		 MMU_NON_CACHEABLE),
+						 MMU_MEMTYPE_NORMAL_NON_SHAREABLE(MMU_CACHE_WT_NOWA,
+														 	 MMU_CACHE_WB_WA),
                          MMU_REGION_NON_SECURE, MMU_AP_PRV_RW_USR_RW,
                          (unsigned int*)pageTable
                         };

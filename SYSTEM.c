@@ -70,11 +70,11 @@
 /******************************************************************************/
 void Init_Modules(void)
 {
-    /* Enabling IRQ in CPSR of ARM processor. */
-    IntMasterIRQEnable();
-
     /* Initialze ARM interrupt controller */
     IntAINTCInit();
+
+    /* Enabling IRQ in CPSR of ARM processor. */
+    IntMasterIRQEnable();
 
 	Init_GPIO();
 	Init_Timers();
